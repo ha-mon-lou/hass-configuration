@@ -1,0 +1,33 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+# https://www.pacienciadigital.com/redundancia-sensores-home-assistant/
+#
+- platform: template
+  sensors:
+    temperatura_exterior:
+      friendly_name: "T. exterior"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      unique_id: "temperatura_exterior"
+      value_template: >
+        {% from '2oo3.jinja' import macro_2oo3 %}
+        {{ macro_2oo3('sensor.aemet_temperature','sensor.temperatura_localidad','sensor.aemet_temperature_feeling') }}
+      icon_template: mdi:thermometer
+
+- platform: statistics
+  name: "Temperatura exterior máxima en 24h"
+  entity_id: sensor.temperatura_exterior
+  state_characteristic: value_max
+  max_age:
+    hours: 24
+  sampling_size: 200
+  unique_id: temperatura_exterior_maxima_24h
+
+- platform: statistics
+  name: "Temperatura exterior mínima en 24h"
+  entity_id: sensor.temperatura_exterior
+  state_characteristic: value_min
+  max_age:
+    hours: 24
+  sampling_size: 200
+  unique_id: temperatura_exterior_minima_24h

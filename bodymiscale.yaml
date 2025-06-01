@@ -1,0 +1,21 @@
+users:
+  ramon:
+    height: 168
+    born: "1967-03-30"
+    gender: "male"
+    model_miscale: "181D"
+    sensors:
+      impedance: sensor.body_composition_scale_71b5_impedance_low
+      weight: sensor.body_composition_scale_71b5_weight
+    profile_id: "1"
+    threshold: 65
+  pau:
+    height: 170
+    born: "2004-10-23"
+    gender: "male"
+    model_miscale: "181D"
+    sensors:
+      impedance: sensor.body_composition_scale_71b5_impedance_low
+      weight: sensor.body_composition_scale_71b5_weight
+    profile_id: "2"
+    threshold: 50

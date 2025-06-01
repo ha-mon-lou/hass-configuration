@@ -1,0 +1,50 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# https://www.home-assistant.io/integrations/bluetooth
+bluetooth:
+
+device_tracker: !include device_tracker.yaml
+automation manual: !include_dir_merge_list myAutomation
+automation: !include automations.yaml
+group: !include_dir_merge_named myGroup
+scene: !include scenes.yaml
+sensor manual: !include_dir_merge_list mySensors
+sensor: !include sensores.yaml
+climate: !include climate.yaml
+schedule dir: !include_dir_merge_list mySchedule
+schedule: !include mySchedule/schedulers.yaml
+switch: !include_dir_merge_list mySwitch
+script: !include_dir_merge_named myScripts
+#script: !include scripts.yaml
+recorder: !include recorder.yaml
+influxdb: !include influxdb.yaml
+rest_command: !include rest_commands.yaml
+
+input_boolean: !include myInput/input_booleans.yaml
+input_text: !include myInput/input_texts.yaml
+input_number: !include myInput/input_numbers.yaml
+# shell_command: !include myShellCommands/shell_commands.yaml
+# timer: !include_dir_merge_named myTimers
+
+logger:
+  default: warning
+  logs:
+    custom_components.bodymiscale: debug
+
+homeassistant:
+  packages: !include_dir_named myPackages
+
+lovelace:
+  resources:
+    - url: /local/tailwindcss-template-card/dist/tailwindcss-template-card.js
+      type: module
+    - url: /hacsfiles/decluttering-card/decluttering-card.js
+      type: module
+    - url: /hacsfiles/lovelace-body-miscale-card/body-miscale-card.js
+      type: module
+#bodymiscale: !include bodymiscale.yaml

@@ -1,0 +1,22 @@
+control_calefaccion:
+  alias: control calefaccion
+  fields:
+    mode:
+      description: "Modo de operación (heat, cool, off, etc.)"
+    temperatura:
+      description: "temperatura deseada"
+  sequence:
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.termostato_virtual
+      data:
+        temperature: "{{ temperatura }}"
+
+    - action: climate.set_hvac_mode
+      target:
+        entity_id:
+          - climate.termostato_virtual
+      data:
+        hvac_mode: "{{ mode | default('off') }}"
+  mode: single

@@ -1,0 +1,1 @@
+guardar_log_ventilador: "echo '{{ mensaje }}' >> /config/logs/ventilador.log 2>&1"

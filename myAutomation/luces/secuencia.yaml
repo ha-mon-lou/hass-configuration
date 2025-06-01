@@ -1,0 +1,43 @@
+- id: "1736097910938"
+  alias: TV off luces cortesia (NFC o boton)
+  description: ""
+  triggers:
+    - trigger: tag
+      tag_id: !secret nfc_tag_ha_37
+    - trigger: state
+      entity_id:
+        - input_button.a_dormir
+    - device_id: f2cf32e97e729a9a14fd3657ed260afe
+      domain: media_player
+      entity_id: 595047351c96be1289eefa62731cda3e
+      type: turned_off
+      trigger: device
+    - type: turned_off
+      device_id: 4212ed74edbdc7e8bd7b75f3ae1a9c4c
+      entity_id: 8c098c4f5799ff0d519ed64b05a880e1
+      domain: remote
+      trigger: device
+
+  conditions:
+    - condition: sun
+      after: sunset
+  actions:
+    - sequence:
+        - action: switch.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.enchufe_doble_socket_1
+        - delay: 00:00:01
+        - action: switch.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.enchufe_habitacion_socket_1
+        - delay: 00:00:01
+        - action: switch.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.enchufe_habitacion_socket_2
+  mode: single

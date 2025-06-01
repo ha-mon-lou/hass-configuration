@@ -1,0 +1,17 @@
+- id: "1735739612217"
+  alias: NFC Temporizador Helper
+  description: ""
+  triggers:
+    - trigger: tag
+      tag_id: !secret nfc_tag_ha_37
+  conditions: []
+  actions:
+    - entity_id: timer.cocina_10m
+      action: timer.start
+    - action: tts.speak
+      metadata: {}
+      data:
+        cache: true
+        message: "inicio temporal "
+        media_player_entity_id: media_player.my_box_2
+  mode: single

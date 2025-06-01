@@ -1,0 +1,18 @@
+toggle_modo_ventilador:
+  alias: Alternar modo auto/manual ventilador
+  fields:
+    dispositivo:
+      description: "Nombre del ventilador (ej: ventilador_habitacion)"
+      example: ventilador_habitacion
+  variables:
+    modo_entity: "input_select.{{ dispositivo }}_modo_auto"
+  sequence:
+    - service: input_select.select_option
+      data:
+        entity_id: "{{ modo_entity }}"
+        option: >
+          {% if is_state(modo_entity, 'manual') %}
+            auto
+          {% else %}
+            manual
+          {% endif %}

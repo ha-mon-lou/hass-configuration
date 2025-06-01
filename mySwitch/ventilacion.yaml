@@ -1,0 +1,11 @@
+- platform: group
+  name: "Alias Pinguino"
+  unique_id: "alias_pinguino"
+  entities:
+    - switch.zigbee_nous_enchufe_04
+
+- platform: group
+  name: "Alias Antimosquitos"
+  unique_id: "alias_antimosquitos"
+  entities:
+    - switch.zigbee_nous_enchufe_01

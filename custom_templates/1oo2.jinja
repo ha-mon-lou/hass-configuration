@@ -1,0 +1,22 @@
+{% macro macro_1oo2(sensor1, sensor2) %}
+  {# Tiempo de timeout en segundos (no se usa directamente aquí, puedes eliminar si no lo necesitas) #}
+  {% set timeout = 600 %}
+
+  {# Obtener valores de sensores y validar #}
+  {% set sensor1_value = states(sensor1) | float(default=-99) %}
+  {% set sensor2_value = states(sensor2) | float(default=-99) %}
+
+  {% set sensor1_valid = sensor1_value != -99 %}
+  {% set sensor2_valid = sensor2_value != -99 %}
+
+  {# Lógica de combinación #}
+  {% if sensor1_valid and sensor2_valid %}
+    {{ ((sensor1_value + sensor2_value) / 2) | round(2) }}
+  {% elif sensor1_valid %}
+    {{ sensor1_value | round(2) }}
+  {% elif sensor2_valid %}
+    {{ sensor2_value | round(2) }}
+  {% else %}
+    {{ none }}
+  {% endif %}
+{% endmacro %}

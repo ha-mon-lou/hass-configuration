@@ -1,0 +1,59 @@
+- id: "auto_calibrador_03"
+  alias: TRV Calibrator Despacho
+  description: ""
+  use_blueprint:
+    path: rotilho/trv_calibrator.yaml
+    input:
+      trv: climate.zigbee_sonoff_trvzb_03
+      temperature_sensor: sensor.tuya_termometro_wifi_temperature
+      trv_calibration_number: number.zigbee_sonoff_trvzb_03_local_temperature_calibration
+      delay_in_minutes: 2
+  condition:
+    - condition: state
+      entity_id: input_boolean.invierno
+      state: "on"
+
+- id: "auto_calibrador_01"
+  alias: TRV Calibrator Living 1
+  description: ""
+  use_blueprint:
+    path: rotilho/trv_calibrator.yaml
+    input:
+      trv: climate.zigbee_sonoff_trvzb_01
+      temperature_sensor: sensor.shelly_blu_5480_temperature
+      trv_calibration_number: number.zigbee_sonoff_trvzb_01_local_temperature_calibration
+      delay_in_minutes: 2
+  condition:
+    - condition: state
+      entity_id: input_boolean.invierno
+      state: "on"
+
+- id: "auto_calibrador_04"
+  alias: TRV Calibrator Living 2 (4)
+  description: ""
+  use_blueprint:
+    path: rotilho/trv_calibrator.yaml
+    input:
+      trv: climate.zigbee_sonoff_trvzb_04
+      temperature_sensor: sensor.shelly_blu_5480_temperature
+      trv_calibration_number: number.zigbee_sonoff_trvzb_04_local_temperature_calibration
+      delay_in_minutes: 2
+  condition:
+    - condition: state
+      entity_id: input_boolean.invierno
+      state: "on"
+
+- id: "auto_calibrador_02"
+  alias: TRV Calibrator Habitacion 1
+  description: ""
+  use_blueprint:
+    path: rotilho/trv_calibrator.yaml
+    input:
+      trv: climate.zigbee_sonoff_trvzb_02
+      temperature_sensor: sensor.zigbee_sonoff_snzb02_01_temperature
+      trv_calibration_number: number.zigbee_sonoff_trvzb_02_local_temperature_calibration
+      delay_in_minutes: 2
+  condition:
+    - condition: state
+      entity_id: input_boolean.invierno
+      state: "on"

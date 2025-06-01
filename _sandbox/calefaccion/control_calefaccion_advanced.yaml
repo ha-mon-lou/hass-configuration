@@ -1,0 +1,26 @@
+control_calefaccion_advanced:
+  alias: "Control calefacción avanzado"
+  fields:
+    mode:
+      description: "Modo de operación (heat, cool, off, etc.)"
+    st_target:
+      description: "Sensor de Temperatura deseada"
+    st_real:
+      description: "Sensor de Temperatura real"
+  sequence:
+    - if:
+        - condition: template
+          value_template: "{{ states(st_target) is defined and states(st_target) | float(default=0) > 0 and states(st_real) is defined and states(st_real) | float(default=0) > 0 }}"
+      then:
+        - action: climate.set_temperature
+          target:
+            entity_id: climate.termostato_virtual
+          data:
+            temperature: "{{ states(st_target) | float (0) }}"
+
+        - action: climate.set_hvac_mode
+          target:
+            entity_id: climate.termostato_virtual
+          data:
+            hvac_mode: "{{ 'heat' if (states(st_target) | float(0)) > (states(st_real) | float(0)) else 'off' }}"
+  mode: single

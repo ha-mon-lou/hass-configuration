@@ -1,0 +1,18 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+#
+- platform: template
+  sensors:
+    sensacion_termica_exterior:
+      friendly_name: "Sensación Térmica exterior"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.temperatura_exterior','sensor.humedad_exterior') }}
+
+    confort_termico_exterior:
+      friendly_name: "Confort Térmico exterior"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.temperatura_exterior', 'sensor.humedad_exterior') }}

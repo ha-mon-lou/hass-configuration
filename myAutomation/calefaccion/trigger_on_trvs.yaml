@@ -1,0 +1,46 @@
+- id: "trigger_on_trvs"
+  alias: Controlar calefacción según las TRVs individuales
+  trigger:
+    - platform: state
+      entity_id:
+        - climate.zigbee_sonoff_trvzb_01
+        - climate.zigbee_sonoff_trvzb_02
+        - climate.zigbee_sonoff_trvzb_03
+        - climate.zigbee_sonoff_trvzb_04
+      for:
+        seconds: 10
+  condition:
+    - condition: state
+      entity_id: input_boolean.invierno
+      state: "on"
+
+  action:
+    - choose:
+        # Si alguna TRV está en "heat" o "cool" → Encender calefacción
+        - conditions:
+            - condition: template
+              value_template: >
+                {% set trvs = state_attr('group.lista_trvs', 'entity_id') %}
+                {{ trvs | map('states') | select('in', ['heat', 'auto']) | list | count > 0 }}
+          sequence:
+            - delay: 00:00:05
+            - action: climate.set_hvac_mode
+              target:
+                entity_id: climate.termostato_virtual
+              data:
+                hvac_mode: "heat"
+
+        # Si **ninguna TRV** está activada → Apagar calefacción
+        - conditions:
+            - condition: template
+              value_template: >
+                {% set trvs = state_attr('group.lista_trvs', 'entity_id') %}
+                {{ trvs | map('states') | select('in', ['heat', 'auto']) | list | count == 0 }}
+          sequence:
+            - delay: 00:00:05
+            - action: climate.set_hvac_mode
+              target:
+                entity_id: climate.termostato_virtual
+              data:
+                hvac_mode: "off"
+  mode: single

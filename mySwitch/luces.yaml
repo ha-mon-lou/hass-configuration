@@ -1,0 +1,30 @@
+- platform: group
+  name: "Alias Shelly Habitacion"
+  unique_id: "alias_shelly_habitacion"
+  entities:
+    - switch.shelly1minig3_34b7dac6f3e4_switch_0
+
+- platform: group
+  name: GRP Luces habitacion
+  unique_id: "grupo_luces_habitacion"
+  entities:
+    - switch.enchufe_habitacion_socket_1
+    - switch.enchufe_habitacion_socket_2
+    - switch.alias_shelly_habitacion
+
+- platform: group
+  name: GRP luces
+  unique_id: "grupo_luces"
+  entities:
+    - switch.enchufe_doble_socket_1
+    - switch.enchufe_doble_socket_2
+    - switch.enchufe_habitacion_socket_2
+    - switch.enchufe_habitacion_socket_1
+    - switch.alias_shelly_habitacion
+
+- platform: group
+  name: GRP luces comedor
+  unique_id: "grupo_luces_comedor"
+  entities:
+    - switch.enchufe_doble_socket_1
+    - switch.enchufe_doble_socket_2

@@ -1,0 +1,35 @@
+- id: alerta_co2_activada
+  alias: Alerta CO2 activada
+  trigger:
+    - platform: state
+      entity_id: input_boolean.alerta_co2
+      to: "on"
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.alias_pinguino
+
+    - choose:
+        - conditions:
+            - condition: sun
+              after: sunset
+              before: sunrise
+          sequence:
+            - service: switch.turn_on
+              target:
+                entity_id: switch.alias_antimosquitos
+  mode: single
+
+- id: alerta_co2_desactivada
+  alias: Alerta CO2 desactivada
+  trigger:
+    - platform: state
+      entity_id: input_boolean.alerta_co2
+      to: "off"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.alias_pinguino
+          - switch.alias_antimosquitos
+  mode: single

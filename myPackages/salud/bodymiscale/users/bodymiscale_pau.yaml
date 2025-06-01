@@ -1,0 +1,105 @@
+input_number:
+  pkg_bodymiscale_pau_peso_last:
+    name: Último peso válido Pau
+    min: 0
+    max: 200
+    step: 0.1
+    unit_of_measurement: "kg"
+
+  pkg_bodymiscale_pau_impedance_last:
+    name: Última impedancia válida Pau
+    min: 0
+    max: 1000
+    step: 1
+    unit_of_measurement: "ohm"
+
+  pkg_bodymiscale_pau_impedance_low_last:
+    name: Última impedancia baja válida Pau
+    min: 0
+    max: 1000
+    step: 1
+    unit_of_measurement: "ohm"
+
+sensor:
+  - platform: template
+    sensors:
+      pkg_bodymiscale_pau_peso:
+        friendly_name: "Peso de Pau"
+        unique_id: "pkg_bodymiscale_pau_peso"
+        unit_of_measurement: "kg"
+        value_template: >
+          {% set peso = states('sensor.body_composition_scale_71b5_weight') | float(0) %}
+          {% set umbral = states('input_number.pkg_bodymiscale_threshold') | float %}
+          {% if peso < umbral %}
+            {{ peso }}
+          {% else %}
+            {{ states('input_number.pkg_bodymiscale_pau_peso_last') }}
+          {% endif %}
+
+      pkg_bodymiscale_pau_impedance:
+        friendly_name: "Impedancia de Pau"
+        unique_id: "pkg_bodymiscale_pau_impedance"
+        unit_of_measurement: "ohm"
+        value_template: >
+          {% set impedance = states('sensor.body_composition_scale_71b5_impedance') | float(0) %}
+          {% set peso = states('sensor.body_composition_scale_71b5_weight') | float(0) %}
+          {% set umbral = states('input_number.pkg_bodymiscale_threshold') | float %}
+          {% if peso < umbral %}
+            {{ impedance }}
+          {% else %}
+            {{ states('input_number.pkg_bodymiscale_pau_impedance_last') }}
+          {% endif %}
+
+      pkg_bodymiscale_pau_impedance_low:
+        friendly_name: "Impedancia baja de Pau"
+        unique_id: "pkg_bodymiscale_pau_impedance_low"
+        unit_of_measurement: "ohm"
+        value_template: >
+          {% set impedance_low = states('sensor.body_composition_scale_71b5_impedance_low') | float(0) %}
+          {% set peso = states('sensor.body_composition_scale_71b5_weight') | float(0) %}
+          {% set umbral = states('input_number.pkg_bodymiscale_threshold') | float %}
+          {% if peso < umbral %}
+            {{ impedance_low }}
+          {% else %}
+            {{ states('input_number.pkg_bodymiscale_pau_impedance_low_last') }}
+          {% endif %}
+
+automation:
+  - alias: Guardar peso Pau
+    trigger:
+      - platform: state
+        entity_id: sensor.pkg_bodymiscale_pau_peso
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state | float(0) > 0 }}"
+    action:
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.pkg_bodymiscale_pau_peso_last
+          value: "{{ trigger.to_state.state | float(0) }}"
+
+  - alias: Guardar impedancia Pau
+    trigger:
+      - platform: state
+        entity_id: sensor.pkg_bodymiscale_pau_impedance
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state | float(0) > 0 }}"
+    action:
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.pkg_bodymiscale_pau_impedance_last
+          value: "{{ trigger.to_state.state | float(0) }}"
+
+  - alias: Guardar impedancia baja Pau
+    trigger:
+      - platform: state
+        entity_id: sensor.pkg_bodymiscale_pau_impedance_low
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state | float(0) > 0 }}"
+    action:
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.pkg_bodymiscale_pau_impedance_low_last
+          value: "{{ trigger.to_state.state | float(0) }}"

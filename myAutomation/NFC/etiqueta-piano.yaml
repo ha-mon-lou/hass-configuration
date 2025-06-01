@@ -1,0 +1,14 @@
+- id: "nfc_etiqueta_piano"
+  alias: NFC etiqueta mesapiano
+  mode: single
+  trigger:
+    - platform: conversation
+      command: piano
+    - platform: tag
+      tag_id: !secret nfc_tag_ha_piano
+  action:
+    - action: switch.toggle
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.enchufe_habitacion_socket_1

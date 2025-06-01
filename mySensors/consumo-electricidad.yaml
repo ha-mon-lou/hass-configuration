@@ -1,0 +1,28 @@
+- platform: template
+  sensors:
+    custom_electro_consumo:
+      friendly_name: "Consumo electricidad"
+      unique_id: "custom_electro_consumo"
+      unit_of_measurement: "W" # Cambia esto si la unidad no es watts
+      value_template: >-
+        {% if states('sensor.fj0f_last_registered_consumption') | float(default=0) %}
+          {{ (states('sensor.fj0f_last_registered_consumption') | float * 1) }}
+        {% else %}
+          0
+        {% endif %}
+      icon_template: mdi:calculator
+
+- platform: template
+  sensors:
+    electro_consumo_regleta:
+      device_class: energy
+      friendly_name: "Consumo electricidad regleta"
+      unique_id: "electro_consumo_regleta"
+      unit_of_measurement: "W"
+      value_template: >-
+        {% if states('sensor.regleta_antela_power') | float(default=0) %}
+          {{ (states('sensor.regleta_antela_power') | float * 1) }}
+        {% else %}
+          0
+        {% endif %}
+      icon_template: mdi:calculator

@@ -1,0 +1,15 @@
+{% macro calculate_body_fat(weight, height_cm, birth_year, gender) %}
+  {% set height_m = height_cm | float / 100 %}
+  {% set birth_year = birth_year | int %}
+  {% if weight | float > 0.0 and height_m > 0.0 and birth_year > 1900 %}
+    {% set bmi = weight | float / (height_m ** 2) %}
+    {% set age = now().year - birth_year %}
+    {% if gender == "male" %}
+      {{ ((1.2 * bmi) + (0.23 * age) - 16.2) | round(2) }}
+    {% else %}
+      {{ ((1.2 * bmi) + (0.23 * age) - 5.4) | round(2) }}
+    {% endif %}
+  {% else %}
+    none
+  {% endif %}
+{% endmacro %}

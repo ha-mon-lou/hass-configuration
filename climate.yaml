@@ -1,0 +1,12 @@
+- platform: generic_thermostat
+  name: "Termostato virtual"
+  unique_id: "termostato_virtual"
+  heater: switch.alias_caldera
+  target_sensor: sensor.temperatura_caldera ## alias a temperatura minima de radiadores en marcha
+  min_temp: 0
+  max_temp: 35
+  ac_mode: false
+  cold_tolerance: 0.3
+  hot_tolerance: 0.3
+  precision: 0.1
+  target_temp_step: 0.1

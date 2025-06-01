@@ -1,0 +1,162 @@
+input_boolean:
+  ventilador_equation:
+    name: Ventilador Portátil
+    icon: mdi:fan
+
+  ventilador_equation_oscilacion:
+    name: Oscilación
+    icon: mdi:swap-horizontal
+
+input_select:
+  ventilador_equation_modo_auto:
+    name: Modo Ventilador Equation
+    options:
+      - "auto"
+      - "manual"
+
+timer:
+  ventilador_equation_timer:
+    name: Temporizador Ventilador
+    duration: "01:00:00"
+
+sensor:
+  - platform: template
+    sensors:
+      sensacion_termica_equation:
+        friendly_name: "Sensación térmica equation"
+        device_class: temperature
+        unit_of_measurement: "°C"
+        unique_id: "sensacion_termica_equation"
+        icon_template: mdi:thermometer
+        value_template: >
+          {{ states('sensor.cfg_sensacion_termica_living_2') }}
+
+script:
+  mando_ventilador_equation:
+    fields:
+      valor:
+        description: "Comando del ventilador (speed, apagar, oscilacion)"
+    sequence:
+      - service: script.envia_comando_broadlink
+        data:
+          dispositivo: "ventilador_equation"
+          comando: "{{ valor }}"
+
+  ventilador_equation_toggle_modo:
+    alias: Alternar modo auto/manual ventilador equation
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.ventilador_equation_modo_auto
+          option: >
+            {% if is_state('input_select.ventilador_equation_modo_auto', 'manual') %}
+              auto
+            {% else %}
+              manual
+            {% endif %}
+
+automation:
+  - alias: PKG EQ Ventilador Equation - alguien regresa
+    trigger:
+      - platform: state
+        entity_id: input_boolean.presencia
+        to: "on"
+    condition: []
+    action:
+      - service: script.modo_ventilador
+        data:
+          dispositivo: ventilador_habitacion
+          valor: auto
+    mode: single
+
+  - alias: PKG EQ Encender ventilador Equation desde input_boolean
+    trigger:
+      - platform: state
+        entity_id: input_boolean.ventilador_equation
+        to: "on"
+    action:
+      - service: script.mando_ventilador_equation
+        data:
+          valor: speed
+
+  - alias: PKG EQ Apagar ventilador Equation desde input_boolean
+    trigger:
+      - platform: state
+        entity_id: input_boolean.ventilador_equation
+        to: "off"
+    action:
+      - action: script.mando_ventilador_equation
+        data:
+          valor: Apagar
+      - action: script.modo_ventilador
+        data:
+          dispositivo: ventilador_equation
+          valor: manual
+
+  - alias: PKG EQ Oscilación ventilador Equation
+    trigger:
+      - platform: state
+        entity_id: input_boolean.ventilador_equation_oscilacion
+    condition:
+      - condition: state
+        entity_id: input_boolean.ventilador_equation
+        state: "on"
+    action:
+      - service: script.mando_ventilador_equation
+        data:
+          valor: oscilacion
+
+  - id: "ventilador_equation_auto"
+    alias: PKG VE  Control ventilador equation por temperatura
+    description: Ajusta la velocidad del ventilador equation según diferencia térmica (PCKG)
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.sensacion_termica_equation
+          - input_select.ventilador_equation_modo_auto
+          - input_number.ventilador_margen_calor
+          - input_number.nivel_sensacion_termica_ideal
+    condition:
+      - condition: state
+        entity_id: input_select.ventilador_equation_modo_auto
+        state: "auto"
+    action:
+      - variables:
+          dif_temp: >
+            {{ (states('sensor.sensacion_termica_equation') | float + states('input_number.ventilador_margen_calor') | float) -
+               states('input_number.nivel_sensacion_termica_ideal') | float }}
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp <= 0.0 }}"
+            sequence:
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: "input_boolean.ventilador_equation"
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp > 0.2 }}"
+            sequence:
+              - service: input_boolean.turn_on
+                target:
+                  entity_id: "input_boolean.ventilador_equation"
+    mode: single
+
+  - alias: Actualizar presencia en living 1
+    trigger:
+      - platform: state
+        entity_id:
+          - input_select.ubicacion_ramon
+          - input_select.ubicacion_pau
+    action:
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: >
+                  {% set ubicaciones = expand('group.ubicacion_personas') | map(attribute='state') | list %}
+                  {{ 'living_1' in ubicaciones or 'living_2' in ubicaciones }}
+            sequence:
+              - action: script.modo_ventilador
+                data:
+                  dispositivo: ventilador_equation
+                  valor: auto

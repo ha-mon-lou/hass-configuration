@@ -1,0 +1,34 @@
+#
+# https://homeassistant-notes.notion.site/Proyecto-lavavajillas-1909be0e2c1780fbb6fddb36f22ee599
+#
+- id: "scheduler_lavavajillas_on"
+  alias: Scheduler lavavajillas on
+  triggers:
+    - trigger: state
+      entity_id:
+        - schedule.lavavajillas_schedule
+      to: "on"
+  conditions: []
+  actions:
+    - sequence:
+        - action: switch.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.alias_lavavajillas
+  mode: single
+
+- id: "scheduler_lavavajillas_off"
+  alias: Scheduler lavavajillas off
+  trigger:
+    - platform: state
+      entity_id: schedule.lavavajillas_schedule
+      to: "off"
+  action:
+    - wait_template: "{{ states('sensor.zigbee_nous_enchufe_03_power')|float < 5 }}"
+      timeout: "00:10:00" # Espera máximo 10 minutos
+      continue_on_timeout: false # No apaga si el consumo no baja
+    - service: switch.turn_off
+      target:
+        entity_id: switch.alias_lavavajillas
+  mode: single

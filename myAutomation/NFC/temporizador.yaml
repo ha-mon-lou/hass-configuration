@@ -1,0 +1,22 @@
+- id: "1735485273824"
+  alias: NFC temporizador
+  description: ""
+  triggers:
+    - trigger: tag
+      tag_id: !secret nfc_tag_ha_37
+  conditions: []
+  actions:
+    - type: toggle
+      device_id: fd3d372290728ff8c9438f0d40b84e53
+      entity_id: 6eba2032971432a1ed86d5363bbd2770
+      domain: switch
+    - type: turn_on
+      device_id: 4212ed74edbdc7e8bd7b75f3ae1a9c4c
+      entity_id: 8c098c4f5799ff0d519ed64b05a880e1
+      domain: remote
+    - action: notify.mobile_app_sm_a155f
+      metadata: {}
+      data:
+        message: NFC Temporizador
+        title: HA NFC
+  mode: single

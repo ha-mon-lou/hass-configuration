@@ -1,0 +1,9 @@
+- platform: template
+  sensors:
+    temperatura_manual:
+      friendly_name: "Temperatura Manual"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      unique_id: "temperatura_manual"
+      value_template: " {{states('input_number.potenciometro_manual')}} "
+      icon_template: mdi:thermometer

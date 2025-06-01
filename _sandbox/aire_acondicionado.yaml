@@ -1,0 +1,273 @@
+input_boolean:
+  aire_acondicionado:
+    name: Aire acondicionado
+
+  aire_acondicionado_modo_temperatura:
+    name: Modo temperatura A/C
+
+input_number:
+  aire_acondicionado_timer:
+    name: Temporizador A/C (minutos)
+    min: 1
+    max: 90
+    step: 1
+    unit_of_measurement: "min"
+    mode: slider
+
+  aire_acondicionado_target:
+    name: Temperatura objetivo A/C
+    min: 18
+    max: 24
+    step: 0.1
+    unit_of_measurement: "°C"
+    mode: slider
+
+timer:
+  aire_acondicionado:
+    name: Timer AC
+    restore: true
+
+sensor:
+  - platform: template
+    sensors:
+      aire_acondicionado_diferencia_temperatura_target:
+        friendly_name: "Diferencia temperatura (target)"
+        value_template: >
+          {{ (states('sensor.aire_acondicionado_temperatura') | float) - (states('input_number.aire_acondicionado_target') | float) }}
+        icon_template: mdi:thermometer-alert
+        unit_of_measurement: "°C"
+
+  - platform: template
+    sensors:
+      aire_acondicionado_temperatura:
+        friendly_name: "Temperatura Aire Acondicionado"
+        unit_of_measurement: "°C"
+        value_template: >
+          {% set temp = states('sensor.cfg_temperatura_living_2') %}
+          {{ temp | float(0) if temp not in ['unknown', 'unavailable'] else 0 }}
+
+script:
+  aire_acondicionado_power:
+    alias: Aire acondicionado power
+    sequence:
+      - action: switch.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.enchufe_habitacion_socket_2
+
+  aire_acondicionado_power_good:
+    alias: Aire acondicionado power
+    sequence:
+      - service: script.envia_comando_broadlink
+        data:
+          dispositivo: "aire_acondicionado"
+          comando: "power"
+
+  aire_acondicionado_temporizador:
+    alias: Aire acondicionado - Temporizador
+    sequence:
+      - if:
+          - condition: state
+            entity_id: timer.aire_acondicionado
+            state: active
+        then:
+          - service: timer.finish
+            target:
+              entity_id: timer.aire_acondicionado
+        else:
+          - service: timer.start
+            data:
+              duration: "{{ states('input_number.aire_acondicionado_timer') | int * 60 }}"
+            target:
+              entity_id: timer.aire_acondicionado
+    mode: single
+    icon: mdi:air-conditioner
+
+  aire_acondicionado_modo_temperatura:
+    alias: Aire acondicionado - Modo temperatura
+    sequence:
+      - service: input_boolean.toggle
+        target:
+          entity_id: input_boolean.aire_acondicionado_modo_temperatura
+    mode: single
+    icon: mdi:air-conditioner
+
+automation:
+  - id: AC_actualizar_estado
+    alias: AC - Actualizar estado
+    trigger:
+      - platform: event
+        event_type: call_service
+        event_data:
+          domain: remote
+          service: script.aire_acondicionado_power
+    action:
+      - service: input_boolean.toggle
+        target:
+          entity_id: input_boolean.aire_acondicionado
+    mode: single
+
+  - id: AC_actualizacion_timer
+    alias: AC - Actualización timer
+    trigger:
+      - platform: state
+        entity_id: input_number.aire_acondicionado_timer
+    condition:
+      - condition: state
+        entity_id: timer.aire_acondicionado
+        state: active
+    action:
+      - service: timer.start
+        data:
+          duration: "{{ states('input_number.aire_acondicionado_timer') | int * 60 }}"
+        target:
+          entity_id: timer.aire_acondicionado
+    mode: single
+
+  - id: AC_encender_temporizador
+    alias: Encender AC cuando se active temporizador
+    trigger:
+      - platform: state
+        entity_id: timer.aire_acondicionado
+        to: "active"
+    condition:
+      - condition: state
+        entity_id: input_boolean.aire_acondicionado
+        state: "off"
+    action:
+      - service: script.aire_acondicionado_power
+    mode: single
+
+  - id: AC_apagar_y_finalizar
+    alias: Apagar AC y finalizar temporizador
+    trigger:
+      - platform: state
+        entity_id: timer.aire_acondicionado
+        to: "idle"
+      - platform: state
+        entity_id: input_boolean.aire_acondicionado
+        to: "off"
+    condition:
+      - condition: state
+        entity_id: input_boolean.aire_acondicionado_modo_temperatura
+        state: "off"
+    action:
+      - service: script.aire_acondicionado_power
+      - service: timer.finish
+        target:
+          entity_id: timer.aire_acondicionado
+    mode: single
+
+  - id: AC_encender_modo_temperatura
+    alias: Encender A/C al activar modo temperatura
+    trigger:
+      - platform: state
+        entity_id: input_boolean.aire_acondicionado_modo_temperatura
+        to: "on"
+      - platform: numeric_state
+        entity_id: sensor.aire_acondicionado_diferencia_temperatura_target
+        above: 0
+    condition:
+      - condition: state
+        entity_id: input_boolean.aire_acondicionado_modo_temperatura
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.aire_acondicionado
+        state: "off"
+      - condition: numeric_state
+        entity_id: sensor.aire_acondicionado_diferencia_temperatura_target
+        above: 0
+    action:
+      - service: script.aire_acondicionado_power
+    mode: single
+
+  - id: AC_apagar_por_temperatura
+    alias: Apagar A/C al alcanzar temperatura objetivo
+    trigger:
+      - platform: state
+        entity_id: sensor.aire_acondicionado_temperatura
+      - platform: numeric_state
+        entity_id: sensor.aire_acondicionado_diferencia_temperatura_target
+        below: 0.1
+    condition:
+      - condition: state
+        entity_id: input_boolean.aire_acondicionado
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.aire_acondicionado_modo_temperatura
+        state: "on"
+      - condition: numeric_state
+        entity_id: sensor.aire_acondicionado_diferencia_temperatura_target
+        below: 0.1
+    action:
+      - service: script.aire_acondicionado_power
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.aire_acondicionado_modo_temperatura
+    mode: single
+
+  - id: AC_apagar_modo_manual
+    alias: Apagar A/C al desactivar modo temperatura manualmente
+    trigger:
+      - platform: state
+        entity_id: input_boolean.aire_acondicionado_modo_temperatura
+        to: "off"
+    condition:
+      - condition: state
+        entity_id: input_boolean.aire_acondicionado
+        state: "on"
+      - condition: state
+        entity_id: timer.aire_acondicionado
+        state: "idle"
+    action:
+      - service: script.aire_acondicionado_power
+    mode: single
+
+  - id: AC_apagar_modo_si_ac_se_apaga_manual
+    alias: Desactivar modo temperatura al apagar A/C manualmente
+    trigger:
+      - platform: state
+        entity_id: input_boolean.aire_acondicionado
+        to: "off"
+    condition:
+      - condition: state
+        entity_id: input_boolean.aire_acondicionado_modo_temperatura
+        state: "on"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.aire_acondicionado_modo_temperatura
+    mode: single
+
+  - id: AC_temporizador_on_apaga_modo
+    alias: Aire acondicionado - Modo temperatura + Temporizador (on)
+    trigger:
+      - platform: state
+        entity_id: timer.aire_acondicionado
+        to: active
+    condition:
+      - condition: state
+        entity_id: input_boolean.aire_acondicionado_modo_temperatura
+        state: "on"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.aire_acondicionado_modo_temperatura
+    mode: single
+
+  - id: AC_modo_on_apaga_temporizador
+    alias: Aire acondicionado - Temporizador + Modo temperatura (on)
+    trigger:
+      - platform: state
+        entity_id: input_boolean.aire_acondicionado_modo_temperatura
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: timer.aire_acondicionado
+        state: active
+    action:
+      - service: timer.finish
+        target:
+          entity_id: timer.aire_acondicionado
+    mode: single

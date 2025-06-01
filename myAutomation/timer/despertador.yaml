@@ -1,0 +1,19 @@
+- id: "1735542263430"
+  alias: despertador 1
+  description: ""
+  use_blueprint:
+    path: Blackshome/timer.yaml
+    input:
+      entity_input:
+        area_id: habitacion_2
+      trigger_one_time: 07:45:00
+      trigger_one_duration:
+        hours: 0
+        minutes: 30
+        seconds: 0
+      weekday_options:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri

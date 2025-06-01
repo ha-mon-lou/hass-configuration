@@ -1,0 +1,181 @@
+input_boolean:
+  presencia:
+    name: Presencia en casa
+    icon: mdi:home-account
+
+  configuracion_espresense_activa:
+    name: ESPresense activa
+    icon: mdi:home-analytics
+
+group:
+  all_persons:
+    name: Todos
+    entities:
+      - person.ramon
+      - person.pau
+      - person.ha_beelink
+
+  ubicacion_personas:
+    name: UbicacionPersonas
+    entities:
+      - input_select.ubicacion_ramon
+      - input_select.ubicacion_pau
+
+input_select:
+  ubicacion_ramon:
+    name: Ubicación de Ramon
+    options:
+      - not_home
+      - despacho
+      - habitacion_1
+      - habitacion_2
+      - living_1
+      - living_2
+      - cocina
+      - bathroom_1
+      - bathroom_2
+      - away
+    initial: not_home
+
+  ubicacion_pau:
+    name: Ubicación de Pau
+    options:
+      - not_home
+      - despacho
+      - habitacion_1
+      - habitacion_2
+      - living_1
+      - living_2
+      - cocina
+      - bathroom_1
+      - bathroom_2
+      - away
+    initial: not_home
+
+sensor:
+  - platform: mqtt_room
+    device_id: "iBeacon:543f666f-e64b-4cbc-93b0-895ef6488bfb-100-40004"
+    unique_id: "presence_movil_ramon"
+    name: "Presence Movil Ramon"
+    state_topic: "espresense/devices/iBeacon:543f666f-e64b-4cbc-93b0-895ef6488bfb-100-40004"
+    timeout: 10
+    away_timeout: 60
+
+automation:
+  - alias: "[Presencia] Activar si alguien llega a casa"
+    trigger:
+      - platform: state
+        entity_id: group.all_persons
+        to: "home"
+    action:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.presencia
+
+  - alias: "[Presencia] Desactivar si todos se van (con FOR)"
+    trigger:
+      - platform: state
+        entity_id: group.all_persons
+        to: "not_home"
+        for: "00:01:00"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.presencia
+
+  - alias: "[Presencia] Sincronizar al iniciar Home Assistant"
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: group.all_persons
+                state: "home"
+            sequence:
+              - service: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.presencia
+          - conditions:
+              - condition: state
+                entity_id: group.all_persons
+                state: "not_home"
+            sequence:
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.presencia
+
+  - alias: Ramon - Actualizar ubicación con ESPresense
+    trigger:
+      - platform: state
+        entity_id: sensor.presence_movil_ramon
+        for: "00:00:10" # Evita cambios muy rápidos de ubicación (ajustable)
+    condition:
+      - condition: state
+        entity_id: input_boolean.configuracion_espresense_activa
+        state: "on"
+
+      - condition: template
+        value_template: >
+          {{ states('sensor.presence_movil_ramon') != states('input_select.ubicacion_ramon') }}
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_ramon
+        data:
+          option: "{{ states('sensor.presence_movil_ramon') }}"
+
+  # Detectar que Ramon está en el despacho
+  - alias: Ramon - Entrada al despacho
+    trigger:
+      - trigger: tag
+        tag_id: !secret nfc_tag_ha_despacho
+    condition:
+      - condition: template
+        value_template: "{{ states('input_select.ubicacion_ramon') != 'despacho' }}"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_ramon
+        data:
+          option: "despacho"
+
+  # Detectar que Ramon está en el piano
+  - alias: Ramon - Tocando el piano
+    trigger:
+      - platform: tag
+        tag_id: !secret nfc_tag_ha_piano
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_ramon
+        data:
+          option: "living_1"
+
+  # Detectar que Ramon está en la cama
+  - alias: Ramon - En la cama
+    trigger:
+      - platform: tag
+        tag_id: !secret nfc_tag_ha_bedroom_2
+      - platform: state
+        entity_id: sensor.sm_a155f_charger_type
+        to: "ac"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_ramon
+        data:
+          option: "habitacion_2"
+
+  - alias: Ramon - donde estara
+    trigger:
+      - platform: state
+        entity_id: sensor.sm_a155f_charger_type
+        to: "none"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_ramon
+        data:
+          option: "not_home"

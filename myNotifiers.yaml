@@ -1,0 +1,4 @@
+- name: log_ventilador
+  platform: file
+  filename: log_ventilador.log
+  timestamp: true

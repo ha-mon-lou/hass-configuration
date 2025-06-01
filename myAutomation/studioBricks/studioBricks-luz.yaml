@@ -1,0 +1,83 @@
+#
+# https://homeassistant-notes.notion.site/Proyecto-studioBricks-1819be0e2c178025bfbce68fd774ab8d
+#
+- id: "studioBricks.luz.on"
+  alias: StudioBricks luz on
+  description: "Al encender luz, secuencia de encendido"
+  triggers:
+    - type: turned_on
+      device_id: 28e6316f3bac782b057d5d82b60dc60a
+      entity_id: 729509638d02b0959917f15e1c9c1104
+      domain: switch
+      trigger: device
+  conditions: []
+  actions:
+    - sequence:
+        - action: switch.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.enchufe_habitacion_socket_1
+        - delay: 00:00:01
+        - action: switch.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_5
+        - delay: 00:00:01
+        - action: switch.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_1
+        - delay: 00:00:01
+        - action: switch.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_2
+  mode: single
+
+- id: "studioBricks.luz.off"
+  alias: StudioBricks luz off
+  description: "Al apagar luz, secuencia de apagado. aire, ultimo, con mas retardo"
+  triggers:
+    - type: turned_off
+      device_id: 28e6316f3bac782b057d5d82b60dc60a
+      entity_id: 729509638d02b0959917f15e1c9c1104
+      domain: switch
+      trigger: device
+  conditions: []
+  actions:
+    - sequence:
+        - action: switch.turn_off
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.enchufe_habitacion_socket_1
+        - delay: 00:00:01
+        - action: switch.turn_off
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_5
+        - delay: 00:00:02
+        - action: switch.turn_off
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_1
+        - delay: 00:00:02
+        - action: switch.turn_off
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_2
+        - delay: 00:00:03
+        - action: input_boolean.turn_off
+          metadata: {}
+          data: {}
+          target:
+            entity_id: input_boolean.ventilador_equation
+
+  mode: single

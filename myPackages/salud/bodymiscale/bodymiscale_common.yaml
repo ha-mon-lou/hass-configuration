@@ -1,0 +1,8 @@
+input_number:
+  pkg_bodymiscale_threshold:
+    name: Umbral de Peso
+    initial: 75
+    min: 70
+    max: 80
+    step: 1
+    unit_of_measurement: "kg"

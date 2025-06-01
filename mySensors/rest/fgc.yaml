@@ -1,0 +1,29 @@
+- platform: rest
+  name: FGC SQV
+  resource: "https://fgc.opendatasoft.com/api/explore/v2.1/catalog/datasets/posicionament-dels-trens/records?limit=20&origen=PC"
+  method: GET
+  headers:
+    Content-Type: application/json
+  params:
+    select: id,lin,properes_parades,geo_point_2d
+    where: lin='S2'
+    limit: 2
+  unique_id: "FGC SQV"
+  value_template: >
+    {% set results = value_json.results %}
+    {% set filtered = [] %}
+    {% for item in results %}
+      {% set parades_raw = item.properes_parades %}
+      {% set parades = parades_raw.split(';') %}
+      {% for parada_json in parades %}
+        {% set parada = parada_json | replace("'", '"') | from_json %}
+        {% if parada.parada == "SQ" %}
+          {% set filtered = filtered + [item.geo_point_2d] %}
+          {{ item.geo_point_2d }}
+          {% break %} 
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  json_attributes:
+    - coordenadas
+  scan_interval: 1200 # Intervalo de actualización en segundos

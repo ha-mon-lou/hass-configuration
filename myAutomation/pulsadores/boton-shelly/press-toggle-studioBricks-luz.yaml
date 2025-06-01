@@ -1,0 +1,45 @@
+#
+# https://homeassistant-notes.notion.site/Proyecto-studioBricks-1819be0e2c178025bfbce68fd774ab8d
+#
+- id: "boton_shelly_1_press_studioBricks_luz"
+  alias: Boton shelly H&T (press)
+  description: "Al apretar boton del shelly H&T, se enciende la luz. Otro trigger studioBricks.luz.on sobre la luz encendera el resto"
+  triggers:
+    - platform: conversation
+      command: caja
+    - trigger: state
+      entity_id:
+        - input_button.studiobricks_toggle
+    - device_id: 78214af407f022e52036cd35517b0838
+      domain: bthome
+      type: button
+      subtype: press
+      trigger: device
+  conditions: []
+  actions:
+    - sequence:
+        - action: switch.toggle
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_3
+  mode: single
+
+- id: "boton_shelly_1_double_press"
+  alias: Boton shelly H&T (double click)
+  description: "Al doble click  boton del shelly H&T..."
+  triggers:
+    - device_id: 78214af407f022e52036cd35517b0838
+      domain: bthome
+      type: button
+      subtype: double_press
+      trigger: device
+  conditions: []
+  actions:
+    - sequence:
+        - action: switch.toggle
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.enchufe_habitacion_socket_1
+  mode: single

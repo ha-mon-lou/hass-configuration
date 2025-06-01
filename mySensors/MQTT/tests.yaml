@@ -1,0 +1,10 @@
+#
+sensor:
+  - platform: mqtt
+    state_topic: ontopic
+    name: "OnTopic"
+  - platform: mqtt
+    state_topic: shelly1-bedroom
+    name: "shelly1-bedroom"
+    icon: mdi:water-percent
+    unit_of_measurement: "%"

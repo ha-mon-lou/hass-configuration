@@ -1,0 +1,37 @@
+- id: "ventilador_despacho_speed_1"
+  alias: ventilador despacho speed 1
+  triggers:
+    - platform: conversation
+      command: enciende ventilador despacho
+    - trigger: state
+      entity_id: input_boolean.ventilador_despacho
+      to: "on"
+  conditions: []
+  actions:
+    - sequence:
+        - service: script.selector_ventilador
+          data:
+            dispositivo: ventilador_despacho
+            desde: speed_1_Script            
+            valor: velocidad 1
+  mode: single
+
+- id: "ventilador_despacho_apagar"
+  alias: ventilador despacho apagar
+  triggers:
+    - platform: conversation
+      command: apaga ventilador despacho
+    - trigger: state
+      entity_id: input_button.ventilador_despacho_off
+    - trigger: state
+      entity_id: input_boolean.ventilador_despacho
+      to: "off"
+
+  conditions: []
+  actions:
+    - service: script.selector_ventilador
+      data:
+        dispositivo: ventilador_despacho
+        desde: speed_1_Script            
+        valor: Apagar
+  mode: single

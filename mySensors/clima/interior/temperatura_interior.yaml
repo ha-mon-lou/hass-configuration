@@ -1,0 +1,33 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+# https://www.pacienciadigital.com/redundancia-sensores-home-assistant/
+#
+- platform: template
+  sensors:
+    temperatura_interior:
+      friendly_name: "T. interior"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      unique_id: "temperatura_interior"
+      value_template: >
+        {% from '2oo3.jinja' import macro_2oo3 %}
+        {{ macro_2oo3('sensor.cfg_temperatura_living_1','sensor.cfg_temperatura_living_2','sensor.cfg_temperatura_despacho') }}
+      icon_template: mdi:thermometer
+
+- platform: statistics
+  name: "Temperatura interior máxima en 24h"
+  entity_id: sensor.temperatura_interior
+  state_characteristic: value_max
+  max_age:
+    hours: 24
+  sampling_size: 200
+  unique_id: temperatura_interior_maxima_24h
+
+- platform: statistics
+  name: "Temperatura interior mínima en 24h"
+  entity_id: sensor.temperatura_interior
+  state_characteristic: value_min
+  max_age:
+    hours: 24
+  sampling_size: 200
+  unique_id: temperatura_interior_minima_24h

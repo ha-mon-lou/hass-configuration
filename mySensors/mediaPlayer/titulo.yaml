@@ -1,0 +1,7 @@
+- platform: template
+  sensors:
+    sensor_media_title:
+      friendly_name: "Titulo en reproducción"
+      unique_id: "sensor_media_title"
+      value_template: >
+        {{ state_attr('media_player.my_box', 'media_title') | default(state_attr('media_player.my_box_2', 'app_name') | replace('com.', '')  | replace('google.android.', '') | replace('.androidtv', ''), true) | default("Desconocido") }}

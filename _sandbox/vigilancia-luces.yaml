@@ -1,0 +1,15 @@
+- id: "vigilancia_luces"
+  alias: "vigilancia luces"
+  description: "Apagar luces etiquetadas después de 5 minutos si es de día"
+  triggers:
+    - trigger: state
+      entity_id: switch.grp_luces
+      to: "on"
+  condition:
+    - condition: sun
+      after: sunset
+  action:
+    - delay: "00:01:00"
+    - service: switch.turn_off
+      target:
+        entity_id: switch.grp_luces

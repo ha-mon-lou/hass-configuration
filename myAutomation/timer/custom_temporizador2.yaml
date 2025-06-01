@@ -1,0 +1,32 @@
+#
+#
+- id: "custom_temporizador2_automation_on"
+  alias: Reloj 2 on
+  description: ""
+  triggers:
+    - trigger: state
+      entity_id:
+        - input_button.custom_temporizador2_toggle
+  conditions: []
+  action:
+    - service: timer.start
+      data:
+        duration: "{{ states('input_number.custom_temporizador2_mm') | int * 60 }}"
+      target:
+        entity_id: timer.custom_temporizador2
+  mode: single
+
+- id: "custom_temporizador2_automation_off"
+  alias: Reloj 2 off
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: timer.custom_temporizador2
+      to: idle
+  condition: []
+  actions:
+    - device_id: 2e125cc8a76db2210a51672189f23b01
+      domain: mobile_app
+      type: notify
+      message: Temporizador 2 off
+  mode: single

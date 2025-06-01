@@ -1,0 +1,12 @@
+- platform: template
+  sensors:
+    temperatura_localidad:
+      friendly_name: "Temperatura Local"
+      device_class: temperature
+      unit_of_measurement: '°C'
+      unique_id: "temperatura_localidad"
+      value_template: " {{states('sensor.st_quirze_del_v_vallsuau_barcelona_temperature')}} "
+      icon_template: mdi:thermometer
+
+
+

@@ -1,0 +1,15 @@
+modo_ventilador:
+  alias: Selector modo para ventilador
+  mode: queued
+  fields:
+    dispositivo:
+      description: "Nombre del ventilador (ej: ventilador_habitacion)"
+      example: ventilador_habitacion
+    valor:
+      description: "Comando y valor del selector (ej: Velocidad 1, Apagar)"
+      example: auto/manual
+  sequence:
+    - service: input_select.select_option
+      data:
+        entity_id: "input_select.{{ dispositivo }}_modo_auto"
+        option: "{{ valor }}"

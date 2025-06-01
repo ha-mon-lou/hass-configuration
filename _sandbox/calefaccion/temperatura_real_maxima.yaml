@@ -1,0 +1,29 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+#
+
+- platform: template
+  sensors:
+    temperatura_real_max:
+      friendly_name: "T. real maxima"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      unique_id: "temperatura_real_maxima"
+      value_template: >
+        {% set trvs = [
+          'climate.zigbee_sonoff_trvzb_01',
+          'climate.zigbee_sonoff_trvzb_02',
+          'climate.zigbee_sonoff_trvzb_03',
+          'climate.zigbee_sonoff_trvzb_04'
+        ] %}
+
+        {% set temps = namespace(lista=[]) %}
+
+        {% for trv in trvs %}
+          {% if states(trv) | lower in ['heat', 'auto']  and state_attr(trv, 'current_temperature') is number %}
+            {% set temps.lista = temps.lista + [ state_attr(trv, 'current_temperature') ] %}
+          {% endif %}
+        {% endfor %}
+
+        {{ temps.lista | max if temps.lista | length > 0 else states('input_number.nivel_sensacion_termica_ideal') }}
+      icon_template: mdi:thermometer

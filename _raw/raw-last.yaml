@@ -1,0 +1,1613 @@
+decluttering_templates:
+  dual_grafico_temperatura_humedad:
+    variables:
+      - nombre: Ambiente
+      - sensor_temp: null
+      - sensor_hum: null
+      - sensor_sensacion: null
+    card:
+      type: vertical-stack
+      cards:
+        - type: custom:mini-graph-card
+          name: 🌡 Temperatura [[nombre]]
+          icon: mdi:thermometer
+          entities:
+            - entity: "[[sensor_temp]]"
+              name: "[[nombre]]"
+            - entity: sensor.temperatura_interior
+              name: Interior
+            - entity: "[[sensor_sensacion]]"
+              name: Sensación
+          hours_to_show: 48
+          points_per_hour: 1
+          line_width: 3
+          show:
+            extrema: true
+            average: true
+            labels: true
+        - type: custom:mini-graph-card
+          name: 💧 Humedad [[nombre]]
+          icon: mdi:water-percent
+          entities:
+            - entity: "[[sensor_hum]]"
+              name: "[[nombre]]"
+            - entity: sensor.humedad_interior
+              name: Interior
+          hours_to_show: 48
+          points_per_hour: 1
+          line_width: 3
+          show:
+            extrema: true
+            average: true
+            labels: true
+  tarjeta_ventilador_control_auto:
+    variables:
+      - id: null
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:mushroom-template-card
+          primary: "[[id]]"
+          secondary: |
+            Temp {{ states('sensor.sensacion_termica_[[id]]') | float(2) }}ºC
+          icon: mdi:fan
+          icon_color: |
+            {% if is_state('input_boolean.ventilador_[[id]]', 'on') %}
+              teal
+            {% else %}
+              grey
+            {% endif %}
+          badge_icon: >
+            {% set temp = states('sensor.temperatura_interior') | float %}  {%
+            set min = states('sensor.input_number.pkg_ind_umbral_minimo') |
+            float %}  {% set max =
+            states('sensor.input_number.pkg_ind_umbral_maximo') | float %} {% if
+            temp < min %}
+              mdi:snowflake
+            {% elif temp > max %}
+              mdi:fire
+            {% endif %}
+          badge_color: >
+            {% set temp = states('sensor.temperatura_interior') | float %}  {%
+            set min = states('sensor.input_number.pkg_ind_umbral_minimo') |
+            float %}  {% set max =
+            states('sensor.input_number.pkg_ind_umbral_maximo') | float %} {% if
+            temp < min %}
+              blue
+            {% elif temp > max %}
+              red
+            {% endif %}
+          tap_action:
+            action: call-service
+            service: script.toggle_ventilador
+            data:
+              dispositivo: ventilador_[[id]]
+          entity: input_boolean.ventilador_[[id]]
+          fill_container: true
+          multiline_secondary: false
+          card_mod:
+            style: |-
+              ha-card {
+                border: 0px;
+              }
+              {% if is_state('input_boolean.ventilador_[[id]]', 'on') %}
+              ha-state-icon {
+                animation: spin 1.4s linear infinite;
+              }
+              {% endif %}
+        - type: custom:mushroom-template-card
+          primary: Modo
+          secondary: "{{ states('input_select.ventilador_[[id]]_modo_auto') | title }}"
+          icon: >
+            {% if is_state('input_select.ventilador_[[id]]_modo_auto', 'manual')
+            %}
+              mdi:fan
+            {% else %}
+              mdi:fan-auto
+            {% endif %}
+          icon_color: >
+            {% if is_state('input_select.ventilador_[[id]]_modo_auto', 'manual')
+            %}
+              amber
+            {% else %}
+              green
+            {% endif %}
+          tap_action:
+            action: call-service
+            service: script.toggle_modo_ventilador
+            data:
+              dispositivo: ventilador_[[id]]
+          entity: input_select.ventilador_[[id]]_modo_auto
+          fill_container: true
+          card_mod:
+            style: |
+              ha-card {
+                border: 0px;
+              }
+  tarjeta_ventilador_minima:
+    variables:
+      - id: null
+    card:
+      type: custom:mushroom-template-card
+      primary: "[[id]]"
+      secondary: |
+        Temp {{ states('sensor.sensacion_termica_[[id]]') | float(2) }}ºC
+      icon: mdi:fan
+      icon_color: |
+        {% if is_state('input_boolean.ventilador_[[id]]', 'on') %}
+          teal
+        {% else %}
+          grey
+        {% endif %}
+      badge_icon: >
+        {% set temp = states('sensor.temperatura_interior') | float %} {% set
+        min = states('sensor.input_number.pkg_ind_umbral_minimo') | float %} {%
+        set max = states('sensor.input_number.pkg_ind_umbral_maximo') | float %}
+        {% if temp < min %}
+          mdi:snowflake
+        {% elif temp > max %}
+          mdi:fire
+        {% endif %}
+      badge_color: >
+        {% set temp = states('sensor.temperatura_interior') | float %} {% set
+        min = states('sensor.input_number.pkg_ind_umbral_minimo') | float %} {%
+        set max = states('sensor.input_number.pkg_ind_umbral_maximo') | float %}
+        {% if temp < min %}
+          blue
+        {% elif temp > max %}
+          red
+        {% endif %}
+      tap_action:
+        action: perform-action
+        perform_action: input_boolean.toggle
+        target:
+          entity_id: input_boolean.ventilador_[[id]]
+      entity: input_boolean.ventilador_[[id]]
+      fill_container: true
+      multiline_secondary: false
+      card_mod:
+        style: |-
+          ha-card {
+            border: 0px;
+          }
+          {% if is_state('input_boolean.ventilador_[[id]]', 'on') %}
+          ha-state-icon {
+            animation: spin 1.4s linear infinite;
+          }
+          {% endif %}
+  tarjeta_umbrales:
+    variables:
+      - nombre: null
+      - sensor: null
+    card:
+      type: custom:bar-card
+      name: "[[nombre]]"
+      min: 0
+      max: 40
+      unit_of_measurement: °C
+      height: 20px
+      decimal: 1
+      positions:
+        icon: "off"
+        name: inside
+        value: inside
+      entities:
+        - entity: "[[sensor]]"
+      card_mod:
+        style: |
+          ha-card {
+            position: relative;
+          }
+          ha-card::after {
+            content: "";
+            position: absolute;
+            top: 15px;
+            height: 20px;
+            width: 2px;
+            background-color: #2ecc71;
+            left: calc({{ states('sensor.pkg_ind_barra_umbral_minimo_pct') | float(0) }}%);
+            z-index: 10;
+          }
+          ha-card::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            height: 20px;
+            width: 2px;
+            background-color: #e74c3c;
+            left: calc({{ states('sensor.pkg_ind_barra_umbral_maximo_pct') | float(0) }}%);
+            z-index: 10;
+          }
+  elemento_temporizador:
+    variables:
+      - id
+      - valor
+    card:
+      type: custom:button-card
+      entity_id: input_select.ventilador_[[id]]_temporizador
+      icon: mdi:numeric-[[valor]]-circle
+      tap_action:
+        action: call-service
+        service: input_select.select_option
+        data:
+          entity_id: input_select.ventilador_[[id]]_temporizador
+          option: "[[valor]]"
+      state:
+        - value: "[[valor]]"
+          styles:
+            card:
+              - background-color: "#2e2e2e"
+            icon:
+              - color: "#f44336"
+  grupo_temporizador:
+    variables:
+      - id
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:button-card
+          entity: timer.ventilador_[[id]]_file_timer
+          show_name: false
+          show_icon: false
+          show_state: true
+          styles:
+            card:
+              - width: 70px
+              - height: 48px
+              - text-align: center
+              - font-size: 14px
+              - padding: 4px
+        - type: custom:decluttering-card
+          template: elemento_temporizador
+          variables:
+            - id: "[[id]]"
+            - valor: 1
+        - type: custom:decluttering-card
+          template: elemento_temporizador
+          variables:
+            - id: "[[id]]"
+            - valor: 2
+        - type: custom:decluttering-card
+          template: elemento_temporizador
+          variables:
+            - id: "[[id]]"
+            - valor: 3
+        - type: custom:decluttering-card
+          template: elemento_temporizador
+          variables:
+            - id: "[[id]]"
+            - valor: 4
+  grupo_ventilador:
+    variables:
+      - id
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:decluttering-card
+          template: boton_ventilador_opcion
+          variables:
+            - id: "[[id]]"
+            - valor: Apagar
+            - icono: mdi:power
+            - color_background: "#b71c1c"
+            - color_icon: "#ef9a9a"
+        - type: custom:decluttering-card
+          template: boton_ventilador_opcion
+          variables:
+            - id: "[[id]]"
+            - valor: velocidad 1
+            - icono: mdi:fan-speed-1
+            - color_background: "#01579b"
+            - color_icon: "#4fc3f7"
+        - type: custom:decluttering-card
+          template: boton_ventilador_opcion
+          variables:
+            - id: "[[id]]"
+            - valor: velocidad 2
+            - icono: mdi:fan-speed-2
+            - color_background: "#01579b"
+            - color_icon: "#4fc3f7"
+        - type: custom:decluttering-card
+          template: boton_ventilador_opcion
+          variables:
+            - id: "[[id]]"
+            - valor: velocidad 3
+            - icono: mdi:fan-speed-3
+            - color_background: "#01579b"
+            - color_icon: "#4fc3f7"
+        - type: custom:decluttering-card
+          template: boton_ventilador_opcion
+          variables:
+            - id: "[[id]]"
+            - valor: brisa
+            - icono: mdi:weather-windy
+            - color_background: "#33691e"
+            - color_icon: "#aed581"
+  boton_ventilador_opcion:
+    variables:
+      - id
+      - valor
+      - icono
+      - color_background
+      - color_icon
+    card:
+      type: custom:button-card
+      entity: input_select.ventilador_[[id]]_botonera
+      icon: "[[icono]]"
+      show_name: false
+      tap_action:
+        action: call-service
+        service: script.selector_ventilador
+        data:
+          dispositivo: ventilador_[[id]]
+          desde: boton-off
+          modo: manual
+          valor: "[[valor]]"
+      styles:
+        card:
+          - display: |
+              [[[
+                const opts = entity?.attributes?.options;
+                return opts && opts.includes('[[valor]]') ? "block" : "none";
+              ]]]
+        icon:
+          - color: "[[color_icon]]"
+      state:
+        - value: "[[valor]]"
+          styles:
+            card:
+              - background-color: "[[color_background]]"
+  ventilador_control:
+    variables:
+      - nombre
+      - id
+      - powerful
+      - umbral
+      - opciones: input_select.ventilador_[[id]]_botonera
+      - fondo: "#1e1e2f"
+    card:
+      type: custom:mod-card
+      style:
+        .: |
+          ha-card {
+            background: [[fondo]];
+            padding: 12px;
+            border-radius: 12px;
+          }
+      card:
+        type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: "[[nombre]]"
+                secondary: |
+                  Temp {{ states(sensor.sensacion_termica_[[id]]') | int }}ºC
+                icon: mdi:fan
+                icon_color: |
+                  {% if is_state('input_boolean.ventilador_[[id]]', 'on') %}
+                    teal
+                  {% else %}
+                    grey
+                  {% endif %}
+                badge_icon: >
+                  {% if (states('[[umbral]]') | int) <=
+                  (states('sensor.sensacion_termica_[[id]]') | int) %}
+                    mdi:snowflake
+                  {% endif %}
+                badge_color: >
+                  {% if (states('sensor.[[umbral]]') | int) <=
+                  (states('sensor.sensacion_termica_[[id]]') | int) %}
+                    blue
+                  {% endif %}
+                entity: input_boolean.ventilador_[[id]]_running
+                tap_action:
+                  action: toggle
+                fill_container: false
+                layout: horizontal
+                card_mod:
+                  style: |-
+                    ha-card {
+                      border: 0px;
+                    }
+                    {% if is_state('input_boolean.ventilador_[[id]]', 'on') %}
+                    ha-state-icon {
+                      animation: spin 1.4s linear infinite;
+                    }
+                    {% endif %}
+              - type: custom:mushroom-entity-card
+                entity: sensor.sensacion_termica_[[id]]
+                name: Tuya
+                icon_color: auto
+                fill_container: true
+                secondary_info: last-updated
+                primary_info: state
+                icon_type: icon
+          - type: horizontal-stack
+            cards:
+              - type: custom:decluttering-card
+                template: grupo_ventilador
+                variables:
+                  - id: "[[id]]"
+          - type: horizontal-stack
+            cards:
+              - type: button
+                show_name: false
+                show_icon: true
+                show_state: true
+                icon: mdi:sun-snowflake
+                tap_action:
+                  action: call-service
+                  service: script.envia_comando_broadlink
+                  data:
+                    dispositivo: ventilador_[[id]]
+                    comando: reverse
+              - type: custom:button-card
+                entity: input_select.ventilador_[[id]]_modo_auto
+                name: " "
+                show-name: false
+                icon: mdi:fan-auto
+                tap_action:
+                  action: call-service
+                  service: script.modo_ventilador
+                  data:
+                    dispositivo: ventilador_[[id]]
+                    valor: auto
+                state:
+                  - value: auto
+                    styles:
+                      card:
+                        - background-color: "#2b5e90"
+                      icon:
+                        - color: "#FFFFFF"
+              - type: custom:button-card
+                entity: input_select.ventilador_[[id]]_botonera
+                name: " "
+                show-name: false
+                icon: mdi:wind-power
+                tap_action:
+                  action: call-service
+                  service: script.selector_ventilador
+                  data:
+                    dispositivo: ventilador_[[id]]
+                    modo: manual
+                    valor: "[[powerful]]"
+                state:
+                  - value: "[[powerful]]"
+                    styles:
+                      card:
+                        - background-color: "#1b5e20"
+                      icon:
+                        - color: "#81c784"
+          - type: horizontal-stack
+            cards:
+              - type: custom:decluttering-card
+                template: grupo_temporizador
+                variables:
+                  - id: "[[id]]"
+views:
+  - title: Termostato
+    sections:
+      - type: grid
+        cards:
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.invierno
+                    state: "on"
+                card:
+                  type: custom:mushroom-climate-card
+                  entity: climate.zigbee_sonoff_trvzb_02
+                  show_temperature_control: true
+                  hvac_modes:
+                    - auto
+                    - heat
+                    - "off"
+                  collapsible_controls: false
+                  tap_action:
+                    action: more-info
+                  grid_options:
+                    columns: 6
+                    rows: 2
+                  hold_action:
+                    action: toggle
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.invierno
+                    state: "on"
+                card:
+                  type: custom:mushroom-climate-card
+                  entity: climate.zigbee_sonoff_trvzb_03
+                  show_temperature_control: true
+                  hvac_modes:
+                    - auto
+                    - heat
+                    - "off"
+                  collapsible_controls: false
+                  tap_action:
+                    action: more-info
+                  grid_options:
+                    columns: 6
+                    rows: 2
+                  hold_action:
+                    action: toggle
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.invierno
+                    state: "on"
+                card:
+                  type: custom:mushroom-climate-card
+                  entity: climate.zigbee_sonoff_trvzb_01
+                  show_temperature_control: true
+                  hvac_modes:
+                    - auto
+                    - heat
+                    - "off"
+                  collapsible_controls: false
+                  tap_action:
+                    action: more-info
+                  grid_options:
+                    columns: 6
+                    rows: 2
+                  hold_action:
+                    action: toggle
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.invierno
+                    state: "on"
+                card:
+                  type: custom:mushroom-climate-card
+                  entity: climate.zigbee_sonoff_trvzb_04
+                  show_temperature_control: true
+                  hvac_modes:
+                    - auto
+                    - heat
+                    - "off"
+                  collapsible_controls: false
+                  tap_action:
+                    action: more-info
+                  grid_options:
+                    columns: 6
+                    rows: 2
+                  hold_action:
+                    action: toggle
+          - type: custom:mushroom-climate-card
+            entity: climate.termostato_virtual
+            show_temperature_control: true
+            hvac_modes:
+              - auto
+              - heat
+              - "off"
+            collapsible_controls: false
+            tap_action:
+              action: more-info
+            grid_options:
+              columns: 12
+              rows: 2
+            hold_action:
+              action: toggle
+          - type: custom:mushroom-climate-card
+            entity: climate.aire_acondicionado_virtual
+            show_temperature_control: true
+            hvac_modes:
+              - auto
+              - "off"
+              - cool
+            collapsible_controls: false
+            tap_action:
+              action: more-info
+            grid_options:
+              columns: 12
+              rows: 2
+            hold_action:
+              action: toggle
+          - type: entity
+            entity: sensor.zigbee_heiman_hs3aq_01_co2
+            name: CO₂ Nivel
+            icon: mdi:molecule-co2
+            state_color: true
+            card_mod:
+              style: |
+                ha-card {
+                  text-align: center;
+                }
+                .value {
+                  font-size: 32px;
+                  font-weight: bold;
+                  color: {% if states('sensor.zigbee_heiman_hs3aq_01_co2') | int < 800 %}
+                    lightgreen
+                  {% elif states('sensor.zigbee_heiman_hs3aq_01_co2') | int < 1500 %}
+                    orange
+                  {% elif states('sensor.zigbee_heiman_hs3aq_01_co2') | int < 2000 %}
+                    red
+                  {% else %}
+                    purple
+                  {% endif %};
+                }
+      - type: grid
+        cards:
+          - graph: line
+            type: sensor
+            detail: 2
+            entity: sensor.temperatura_exterior
+          - graph: line
+            type: sensor
+            detail: 1
+            entity: sensor.humedad_exterior
+          - graph: line
+            type: sensor
+            detail: 1
+            entity: sensor.temperatura_interior
+          - graph: line
+            type: sensor
+            detail: 2
+            entity: sensor.humedad_interior
+          - type: entities
+            entities:
+              - entity: input_boolean.invierno
+              - entity: input_number.nivel_confort_actual
+              - entity: input_button.send_confort
+              - entity: sensor.flask_server
+                name: T. predicción AI
+                icon: mdi:air-filter
+    type: sections
+    max_columns: 4
+    cards: []
+    icon: mdi:home-thermometer
+    badges:
+      - type: entity
+        show_name: false
+        show_state: true
+        show_icon: true
+        color: ""
+        entity: sensor.zigbee_heiman_hs3aq_01_co2
+  - type: sections
+    max_columns: 4
+    title: Luces
+    path: luces
+    icon: mdi:floor-lamp
+    sections:
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.enchufe_habitacion_socket_1
+                name: BR Socket 1
+                icon: mdi:power-socket-eu
+                icon_color: blue
+                tap_action:
+                  action: toggle
+              - type: custom:mushroom-entity-card
+                entity: switch.enchufe_habitacion_socket_2
+                name: BR Socket 2
+                icon: mdi:power-socket-eu
+                icon_color: blue
+                tap_action:
+                  action: toggle
+              - type: custom:mushroom-entity-card
+                entity: switch.alias_shelly_habitacion
+                name: Shelly habitacion F3E4
+                icon: mdi:lightbulb
+                icon_color: yellow
+                tap_action:
+                  action: toggle
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.enchufe_doble_socket_1
+                name: Comedor Socket 1
+                icon: mdi:power-socket-eu
+                icon_color: blue
+                tap_action:
+                  action: toggle
+              - type: custom:mushroom-entity-card
+                entity: switch.enchufe_doble_socket_2
+                name: Comedor Socket 2
+                icon: mdi:power-socket-eu
+                icon_color: blue
+                tap_action:
+                  action: toggle
+          - type: entities
+            entities:
+              - entity: input_button.shutdown
+              - entity: input_button.studiobricks_toggle
+  - type: sections
+    max_columns: 4
+    title: Rooms
+    path: rooms
+    sections:
+      - type: grid
+        cards:
+          - type: custom:tabbed-card
+            options:
+              default_tab: Hoy
+              title_field: name
+            tabs:
+              - attributes:
+                  icon: mdi:microphone-settings
+                card:
+                  type: entities
+                  title: studioBricks
+                  state_color: true
+                  show_header_toggle: true
+                  entities:
+                    - entity: switch.regleta_antela_socket_3
+                      secondary_info: last-changed
+                    - entity: switch.regleta_antela_socket_2
+                      secondary_info: last-changed
+                    - entity: switch.regleta_antela_socket_1
+                      secondary_info: last-changed
+                    - entity: switch.regleta_antela_socket_5
+                      secondary_info: last-changed
+                    - entity: input_button.studiobricks_toggle
+                    - entity: sensor.regleta_antela_power
+              - attributes:
+                  icon: mdi:bed-double-outline
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: entities
+                      title: Grande
+                      state_color: true
+                      show_header_toggle: true
+                      entities:
+                        - entity: sensor.zigbee_heiman_hs3aq_01_co2
+                        - entity: sensor.zigbee_heiman_hs3aq_01_temperature
+                          name: Temperatura Heiman
+                        - entity: sensor.zigbee_heiman_hs3aq_01_humidity
+                          name: Humedad Heiman
+                        - entity: switch.shelly1minig3_34b7dac6f3e4_switch_0
+                        - entity: sensor.zigbee_sonoff_trvzb_02_battery
+                        - entity: sensor.zigbee_scene_switch_01_battery
+                          name: Pulsador Scene switch
+                    - type: custom:mushroom-climate-card
+                      entity: climate.zigbee_sonoff_trvzb_02
+                      show_temperature_control: false
+                      hvac_modes:
+                        - auto
+                        - heat
+                        - "off"
+                      collapsible_controls: true
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: toggle
+                      grid_options:
+                        columns: 6
+                        rows: 2
+              - attributes:
+                  icon: mdi:bed-single-outline
+                card:
+                  type: entities
+                  title: Pequeña
+                  state_color: true
+                  show_header_toggle: true
+                  entities:
+                    - entity: sensor.zigbee_sonoff_snzb02_01_temperature
+                      name: Temperatura Sonoff
+                    - entity: sensor.zigbee_sonoff_snzb02_01_humidity
+                      name: Humedad Sonoff
+                    - type: custom:decluttering-card
+                      template: tarjeta_ventilador_control_auto
+                      variables:
+                        - id: habitacion
+              - attributes:
+                  icon: mdi:desktop-classic
+                card:
+                  type: entities
+                  title: Despacho
+                  state_color: true
+                  show_header_toggle: true
+                  entities:
+                    - entity: sensor.tuya_termometro_wifi_temperature
+                      name: Temperatura Tuya
+                    - entity: sensor.tuya_termometro_wifi_humidity
+                      name: Humedad Tuya
+                    - entity: sensor.confort_termico_tuya_wifi_1
+                    - entity: sensor.sensacion_termica_tuya_wifi_1
+                    - entity: sensor.zigbee_sonoff_trvzb_03_battery
+                    - type: custom:decluttering-card
+                      template: tarjeta_ventilador_control_auto
+                      variables:
+                        - id: despacho
+                    - type: custom:mushroom-climate-card
+                      entity: climate.zigbee_sonoff_trvzb_03
+                      show_temperature_control: false
+                      hvac_modes:
+                        - auto
+                        - heat
+                        - "off"
+                      collapsible_controls: true
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: toggle
+                      grid_options:
+                        columns: 6
+                        rows: 2
+              - attributes:
+                  icon: mdi:sofa-outline
+                card:
+                  type: entities
+                  title: Living
+                  state_color: true
+                  show_header_toggle: true
+                  entities:
+                    - entity: sensor.temperatura_interior
+                      name: Temperatura interior
+                    - entity: sensor.humedad_interior
+                      name: Humedad
+                    - entity: sensor.confort_termico
+                    - entity: sensor.sensacion_termica
+                    - entity: sensor.zigbee_sonoff_trvzb_01_battery
+                    - type: custom:decluttering-card
+                      template: tarjeta_ventilador_control_auto
+                      variables:
+                        - id: equation
+                    - type: custom:mushroom-climate-card
+                      entity: climate.zigbee_sonoff_trvzb_01
+                      show_temperature_control: false
+                      hvac_modes:
+                        - auto
+                        - heat
+                        - "off"
+                      collapsible_controls: true
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: toggle
+                      grid_options:
+                        columns: 6
+                        rows: 2
+                    - type: custom:mushroom-climate-card
+                      entity: climate.zigbee_sonoff_trvzb_04
+                      show_temperature_control: false
+                      hvac_modes:
+                        - auto
+                        - heat
+                        - "off"
+                      collapsible_controls: true
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: toggle
+                      grid_options:
+                        columns: 6
+                        rows: 2
+                    - type: custom:mushroom-climate-card
+                      entity: climate.aire_acondicionado_virtual
+                      show_temperature_control: false
+                      hvac_modes:
+                        - auto
+                        - cool
+                        - "off"
+                      collapsible_controls: true
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: toggle
+                      grid_options:
+                        columns: 6
+                        rows: 2
+              - attributes:
+                  icon: mdi:knife-military
+                card:
+                  type: entities
+                  title: Cocina
+                  state_color: true
+                  show_header_toggle: true
+                  entities:
+                    - entity: switch.alias_frigorifico
+                      secondary_info: last-changed
+                    - entity: switch.alias_lavavajillas
+                      secondary_info: last-changed
+    icon: mdi:home
+    cards: []
+    badges:
+      - type: entity
+        entity: input_boolean.presencia
+  - type: sections
+    max_columns: 4
+    title: Ventiladores
+    path: control-ventiladores
+    icon: mdi:fan
+    sections:
+      - type: grid
+        cards:
+          - type: custom:decluttering-card
+            template: ventilador_control
+            variables:
+              - nombre: Habitacion
+              - id: habitacion
+              - umbral: input_number.pkg_ind_umbral_maximo
+              - powerful: brisa
+              - fondo: "#001e00"
+          - type: custom:decluttering-card
+            template: ventilador_control
+            variables:
+              - nombre: Despacho
+              - powerful: brisa
+              - umbral: input_number.pkg_ind_umbral_maximo
+              - id: despacho
+          - type: custom:decluttering-card
+            template: tarjeta_ventilador_control_auto
+            variables:
+              - id: equation
+      - type: grid
+        cards:
+          - type: thermostat
+            entity: climate.aire_acondicionado_virtual
+            show_current_as_primary: true
+            features:
+              - type: climate-hvac-modes
+              - type: climate-preset-modes
+                style: dropdown
+            name: AC Comedor
+          - type: custom:decluttering-card
+            template: tarjeta_umbrales
+            variables:
+              - nombre: Interior
+              - sensor: sensor.temperatura_interior
+          - type: custom:mushroom-chips-card
+            alignment: start
+            chips:
+              - type: template
+                icon: mdi:thermometer
+                content: |
+                  {{ states('sensor.temperatura_interior') }}ºC
+              - type: template
+                icon: mdi:water
+                content: |
+                  {{ states('sensor.humedad_interior') }}%
+              - type: template
+                icon: mdi:weather-partly-cloudy
+                content: |
+                  {{ states('sensor.temperatura_exterior') }}ºC
+              - type: template
+                icon: mdi:water
+                content: |
+                  {{ states('sensor.humedad_exterior') }}%
+      - type: grid
+        cards:
+          - type: custom:stack-in-card
+            cards:
+              - square: false
+                type: grid
+                columns: 2
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Comedor
+                    secondary: |
+                      Temp {{ states('sensor.aire_acondicionado') | int }}ºC
+                    icon: mdi:fan
+                    icon_color: >
+                      {% if is_state('input_boolean.aire_acondicionado', 'on')
+                      %}
+                        teal
+                      {% else %}
+                        grey
+                      {% endif %}
+                    badge_icon: >
+                      {% if (states('sensor.temperatura_exterior') | int) <=
+                      (states('sensor.aire_acondicionado') | int) %}
+                        mdi:snowflake
+                      {% endif %}
+                    badge_color: >
+                      {% if (states('sensor.temperatura_exterior') | int) <=
+                      (states('sensor.aire_acondicionado') | int) %}
+                        blue
+                      {% endif %}
+                    tap_action:
+                      action: call-service
+                      service: script.aire_acondicionado_power
+                    entity: input_boolean.aire_acondicionado
+                    card_mod:
+                      style: >-
+                        ha-card {
+                          border: 0px;
+                        }
+
+                        {% if is_state('input_boolean.aire_acondicionado', 'on')
+                        %}
+
+                        ha-state-icon {
+                          animation: spin 1.4s linear infinite;
+                        }
+
+                        {% endif %}
+                  - type: custom:mushroom-chips-card
+                    alignment: end
+                    card_mod:
+                      style: |
+                        ha-card {
+                          margin-top: 15px;
+                          margin-right: 10px;
+                          border: 0px !important;
+                          --chip-box-shadow: 0px;
+                          --chip-spacing: 0px;
+                        }
+                    chips:
+                      - type: template
+                        icon: mdi:fan-minus
+                        content: ""
+                        tap_action:
+                          action: call-service
+                          service: remote.send_command
+                          target:
+                            entity_id: remote.broadlink
+                          data:
+                            device: aire_acondicionado
+                            command: powerfull
+                        card_mod:
+                          style: |
+                            ha-card {
+                            border: 0px;
+                            }
+                      - type: template
+                        icon: mdi:fan-plus
+                        content: ""
+                        tap_action:
+                          action: call-service
+                          service: script.aire_acondicionado_power
+                        card_mod:
+                          style: |
+                            ha-card {
+                            border: 0px;
+                            }
+                      - type: template
+                        icon: mdi:clock
+                        icon_color: >
+                          {% if is_state('timer.aire_acondicionado', 'active')
+                          %}
+                            white
+                          {% endif %}
+                        content: ""
+                        tap_action:
+                          action: call-service
+                          service: script.aire_acondicionado_temporizador
+                        card_mod:
+                          style: >
+                            ha-card {
+
+                            border: 0px;
+
+                            {% if is_state('timer.aire_acondicionado', 'active')
+                            %}
+                              background-color: teal !important;
+                            {% endif %}
+
+                            }
+                      - type: template
+                        icon: mdi:thermometer-alert
+                        icon_color: >
+                          {% if
+                          is_state('input_boolean.aire_acondicionado_modo_temperatura',
+                          'on') %}
+                            white
+                          {% endif %}
+                        content: ""
+                        tap_action:
+                          action: call-service
+                          service: script.aire_acondicionado_modo_temperatura
+                        card_mod:
+                          style: >
+                            ha-card { border: 0px; {% if
+                            is_state('input_boolean.aire_acondicionado_modo_temperatura',
+                            'on') %}
+                              background-color: teal !important;
+                            {% endif %} }
+              - type: conditional
+                conditions:
+                  - entity: timer.aire_acondicionado
+                    state: active
+                card:
+                  type: custom:timer-bar-card
+                  entity: timer.aire_acondicionado
+                  layout: full_row
+                  bar_background: "#1e4343"
+                  bar_foreground: "#008080"
+                  bar_height: 38px
+                  text_width: 0px
+                  sync_issues: ignore
+              - type: conditional
+                conditions:
+                  - entity: timer.aire_acondicionado
+                    state: active
+                card:
+                  type: custom:mushroom-chips-card
+                  card_mod:
+                    style: |
+                      ha-card {
+                        margin-top: -36px;
+                        margin-left: 15px;
+                        border: 0px !important;
+                        --chip-box-shadow: 0px;
+                        --chip-spacing: 0px;
+                        --primary-text-color: white;
+                      }
+                  chips:
+                    - type: template
+                      content: >
+                        Encendido hasta las
+
+                        {{ (as_datetime(state_attr('timer.aire_acondicionado',
+                        'finishes_at')) | as_local).strftime("%H:%M") }}
+
+                        {% set time =
+                        states('input_number.aire_acondicionado_timer') | int %}
+                        {% set horas = (time / 60) | int %} {% set minutos =
+                        time - (horas * 60) %}
+
+                        {% if horas > 0 %}({{ horas }}h{% if minutos > 0 %} y {{
+                        minutos }}'){% else %}){% endif %} {% else %}{% if
+                        minutos > 0 %}({{ minutos }}'){% endif %}{% endif %}
+                      card_mod:
+                        style: |
+                          ha-card {
+                            border:0px;
+                            background-color: transparent !important;
+                          }
+              - type: conditional
+                conditions:
+                  - entity: timer.aire_acondicionado
+                    state: active
+                card:
+                  type: custom:mushroom-chips-card
+                  alignment: end
+                  card_mod:
+                    style: |
+                      ha-card {
+                        margin-top: -36px;
+                        margin-right: 10px;
+                        border: 0px !important;
+                        --chip-box-shadow: 0px;
+                        --chip-spacing: 0px;
+                      }
+                  chips:
+                    - type: template
+                      icon: mdi:clock-minus
+                      icon_color: white
+                      card_mod:
+                        style: |
+                          ha-card {
+                            border:0px;
+                            background-color: transparent !important;
+                          }
+                      tap_action:
+                        action: call-service
+                        service: input_number.decrement
+                        target:
+                          entity_id: input_number.aire_acondicionado_timer
+                        data: {}
+                    - type: template
+                      icon: mdi:clock-plus
+                      icon_color: white
+                      card_mod:
+                        style: |
+                          ha-card {
+                            border:0px;
+                            background-color: transparent !important;
+                          }
+                      tap_action:
+                        action: call-service
+                        service: input_number.increment
+                        target:
+                          entity_id: input_number.aire_acondicionado_timer
+                        data: {}
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.aire_acondicionado_modo_temperatura
+                    state: "on"
+                card:
+                  type: custom:bar-card
+                  card_mod:
+                    style: |-
+                      ha-card {
+                        border: 0px;
+                        margin-top: -10px;
+                        margin-bottom: -16px;
+                        margin-left: -16px;
+                        margin-right: -16px;
+                      }
+                      bar-card-currentbar {
+                        border-radius: 0px !important;
+                      }
+                      bar-card-backgroundbar {
+                        background-color: #378b8b !important;
+                        border-radius: 0px !important;
+                        opacity: 0.9;
+                      }
+                  entities:
+                    - entity: sensor.aire_acondicionado_diferencia_temperatura_target
+                      direction: left-reverse
+                      color: teal
+                      height: 38px
+                      max: 5
+                      positions:
+                        icon: "off"
+                        name: "off"
+                        value: "off"
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.aire_acondicionado_modo_temperatura
+                    state: "on"
+                card:
+                  type: custom:mushroom-chips-card
+                  card_mod:
+                    style: |
+                      ha-card {
+                        margin-top: -36px;
+                        margin-left: 15px;
+                        border: 0px !important;
+                        --chip-box-shadow: 0px;
+                        --chip-spacing: 0px;
+                        --primary-text-color: white;
+                      }
+                  chips:
+                    - type: template
+                      content: >
+                        Encendido hasta los {{
+                        states('input_number.aire_acondicionado_target') | int
+                        }}ºC
+                      card_mod:
+                        style: |
+                          ha-card {
+                            border: 0px;
+                            background-color: transparent !important;
+                          }
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.aire_acondicionado_modo_temperatura
+                    state: "on"
+                card:
+                  type: custom:mushroom-chips-card
+                  alignment: end
+                  card_mod:
+                    style: |
+                      ha-card {
+                        margin-top: -36px;
+                        margin-right: 10px;
+                        border: 0px !important;
+                        --chip-box-shadow: 0px;
+                        --chip-spacing: 0px;
+                      }
+                  chips:
+                    - type: template
+                      icon: mdi:thermometer-minus
+                      icon_color: white
+                      card_mod:
+                        style: |
+                          ha-card {
+                            border: 0px;
+                            background-color: transparent !important;
+                          }
+                      tap_action:
+                        action: call-service
+                        service: input_number.decrement
+                        target:
+                          entity_id: input_number.aire_acondicionado_target
+                        data: {}
+                    - type: template
+                      icon: mdi:thermometer-plus
+                      icon_color: white
+                      card_mod:
+                        style: |
+                          ha-card {
+                            border: 0px;
+                            background-color: transparent !important;
+                          }
+                      tap_action:
+                        action: call-service
+                        service: input_number.increment
+                        target:
+                          entity_id: input_number.aire_acondicionado_target
+                        data: {}
+          - type: vertical-stack
+            cards:
+              - type: custom:stack-in-card
+                cards:
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:mushroom-entity-card
+                        entity: input_boolean.ac_panasonic_ion_encendido
+                        icon: mdi:power
+                        tap_action:
+                          action: toggle
+                        name: ""
+                      - type: custom:mushroom-entity-card
+                        entity: timer.ac_panasonic_ion_temporizador
+                        icon: mdi:timer
+                        tap_action:
+                          action: call-service
+                          service: script.ac_panasonic_ion_power
+                        name: ""
+                      - type: custom:mushroom-entity-card
+                        entity: input_boolean.ac_panasonic_ion_modo_auto
+                        icon: mdi:thermometer
+                        tap_action:
+                          action: toggle
+                        name: ""
+              - type: custom:stack-in-card
+                cards:
+                  - type: custom:mushroom-number-card
+                    entity: input_number.ac_panasonic_ion_temporizador_minutos
+                    icon: mdi:timer-cog-outline
+                    name: ""
+                    display_mode: slider
+                  - type: custom:mushroom-template-card
+                    primary: >
+                      Target: {{
+                      state_attr('climate.aire_acondicionado_virtual',
+                      'temperature') }}°C
+                    icon: mdi:air-conditioner
+                    entity: climate.aire_acondicionado_virtual
+                    fill_container: false
+                    layout: horizontal
+    badges:
+      - type: entity
+        show_name: false
+        show_state: true
+        show_icon: true
+        entity: sensor.temperatura_exterior
+  - type: sections
+    max_columns: 4
+    title: switch
+    path: switch
+    icon: mdi:toggle-switch
+    sections:
+      - type: grid
+        cards:
+          - type: entities
+            entities:
+              - entity: switch.zigbee_nous_enchufe_01
+                secondary_info: last-changed
+              - entity: switch.alias_frigorifico
+                secondary_info: last-changed
+              - entity: switch.alias_lavavajillas
+                secondary_info: last-changed
+              - entity: switch.zigbee_nous_enchufe_04
+                secondary_info: last-changed
+            state_color: false
+            show_header_toggle: true
+            title: Enchufes
+          - type: entities
+            entities:
+              - type: custom:decluttering-card
+                template: tarjeta_ventilador_control_auto
+                variables:
+                  - id: habitacion
+              - type: custom:decluttering-card
+                template: tarjeta_ventilador_control_auto
+                variables:
+                  - id: despacho
+              - type: custom:decluttering-card
+                template: tarjeta_ventilador_control_auto
+                variables:
+                  - id: equation
+  - type: sections
+    max_columns: 4
+    title: temporizador
+    path: temporizador
+    icon: mdi:home-clock-outline
+    sections:
+      - type: grid
+        cards:
+          - type: custom:clock-weather-card
+            entity: weather.st_quirze_del_v_vallsuau_barcelona
+          - type: entities
+            entities:
+              - entity: timer.custom_temporizador1
+              - entity: input_number.custom_temporizador1_mm
+              - entity: input_button.custom_temporizador1_toggle
+          - type: entities
+            entities:
+              - entity: timer.custom_temporizador2
+              - entity: input_number.custom_temporizador2_mm
+              - entity: input_button.custom_temporizador2_toggle
+          - type: custom:timer-bar-card
+            entities:
+              - entity: timer.custom_temporizador1
+                name: reloj 1
+              - entity: timer.custom_temporizador2
+                name: reloj 2
+            sync_issues: ignore
+  - type: sections
+    max_columns: 4
+    title: baterias
+    path: baterias
+    icon: mdi:battery-unknown
+    sections:
+      - type: grid
+        cards:
+          - type: custom:battery-state-card
+  - type: sections
+    max_columns: 4
+    title: Termostatos
+    path: termostatos
+    icon: mdi:temperature-celsius
+    sections:
+      - type: grid
+        cards:
+          - type: thermostat
+            entity: climate.zigbee_sonoff_trvzb_01
+            show_current_as_primary: true
+            features:
+              - type: climate-hvac-modes
+      - type: grid
+        cards:
+          - type: thermostat
+            entity: climate.zigbee_sonoff_trvzb_04
+            show_current_as_primary: true
+            features:
+              - type: climate-hvac-modes
+          - type: thermostat
+            entity: climate.termostato_virtual
+            features:
+              - type: climate-hvac-modes
+            show_current_as_primary: true
+      - type: grid
+        cards:
+          - type: thermostat
+            entity: climate.zigbee_sonoff_trvzb_03
+            show_current_as_primary: true
+            features:
+              - type: climate-hvac-modes
+      - type: grid
+        cards:
+          - type: thermostat
+            entity: climate.zigbee_sonoff_trvzb_02
+            show_current_as_primary: true
+            features:
+              - type: climate-hvac-modes
+          - type: entities
+            entities:
+              - entity: climate.termostato_virtual
+              - entity: sensor.temperatura_objetivo_max
+              - entity: sensor.temperatura_objetivo_minima
+              - entity: sensor.demanda_calefaccion
+              - entity: sensor.temperatura_real_max
+              - entity: sensor.temperatura_real_min
+              - entity: sensor.temperatura_caldera
+              - entity: sensor.temperatura_interior
+          - type: entity
+            entity: sensor.zigbee_heiman_hs3aq_01_co2
+            name: CO₂ Nivel
+            icon: mdi:molecule-co2
+            state_color: true
+            card_mod:
+              style: |
+                ha-card {
+                  text-align: center;
+                }
+                .value {
+                  font-size: 32px;
+                  font-weight: bold;
+                  color: {% if states('sensor.zigbee_heiman_hs3aq_01_co2') | int < 800 %}
+                    lightgreen
+                  {% elif states('sensor.zigbee_heiman_hs3aq_01_co2') | int < 1000 %}
+                    orange
+                  {% elif states('sensor.zigbee_heiman_hs3aq_01_co2') | int < 1500 %}
+                    red
+                  {% else %}
+                    purple
+                  {% endif %};
+                }
+    badges:
+      - type: entity
+        show_name: false
+        show_state: true
+        show_icon: true
+        color: ""
+        entity: climate.termostato_virtual
+  - type: sections
+    path: omie
+    max_columns: 4
+    title: OMIE
+    icon: mdi:lightning-bolt
+    sections:
+      - type: grid
+        cards:
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Precio OMIE por hora
+              show_states: false
+            graph_span: 2d
+            span:
+              start: day
+            now:
+              show: true
+            yaxis:
+              - decimals: 2
+                min: -10
+                max: 50
+            series:
+              - entity: sensor.omie_spot_price_es
+                name: Precio Hoy
+                type: column
+                data_generator: |
+                  let data = entity.attributes["today_hours"];
+                  return Object.keys(data).map((key) => {
+                    return [new Date(key).getTime(), data[key]];
+                  });
+                color: "#008FFB"
+              - entity: sensor.omie_spot_price_es
+                name: Precio Mañana
+                type: column
+                data_generator: |
+                  let data = entity.attributes["tomorrow_hours"];
+                  return Object.keys(data).map((key) => {
+                    return [new Date(key).getTime(), data[key]];
+                  });
+                color: "#00E396"
+  - type: sections
+    max_columns: 4
+    title: Graficos
+    path: graficos
+    icon: mdi:chart-line-variant
+    sections:
+      - type: grid
+        cards:
+          - type: custom:tabbed-card
+            options:
+              default_tab: Hoy
+              title_field: name
+            tabs:
+              - attributes:
+                  icon: mdi:bed-double-outline
+                card:
+                  type: custom:decluttering-card
+                  template: dual_grafico_temperatura_humedad
+                  variables:
+                    - nombre: Habitacion 1
+                    - sensor_temp: sensor.cfg_temperatura_habitacion_1
+                    - sensor_hum: sensor.cfg_humedad_habitacion_1
+                    - sensor_sensacion: sensor.cfg_sensacion_termica_habitacion_1
+              - attributes:
+                  icon: mdi:bed-single-outline
+                card:
+                  type: custom:decluttering-card
+                  template: dual_grafico_temperatura_humedad
+                  variables:
+                    - nombre: Habitacion 2
+                    - sensor_temp: sensor.cfg_temperatura_habitacion_2
+                    - sensor_hum: sensor.cfg_humedad_habitacion_2
+                    - sensor_sensacion: sensor.cfg_sensacion_termica_habitacion_2
+              - attributes:
+                  icon: mdi:desktop-classic
+                card:
+                  type: custom:decluttering-card
+                  template: dual_grafico_temperatura_humedad
+                  variables:
+                    - nombre: Despacho
+                    - sensor_temp: sensor.cfg_temperatura_despacho
+                    - sensor_hum: sensor.cfg_humedad_despacho
+                    - sensor_sensacion: sensor.cfg_sensacion_termica_despacho
+              - attributes:
+                  icon: mdi:sofa-outline
+                card:
+                  type: custom:decluttering-card
+                  template: dual_grafico_temperatura_humedad
+                  variables:
+                    - nombre: LIving 1
+                    - sensor_temp: sensor.cfg_temperatura_living_1
+                    - sensor_hum: sensor.cfg_humedad_living_1
+                    - sensor_sensacion: sensor.cfg_sensacion_termica_living_1
+              - attributes:
+                  icon: mdi:sofa-outline
+                card:
+                  type: custom:decluttering-card
+                  template: dual_grafico_temperatura_humedad
+                  variables:
+                    - nombre: LIving 2
+                    - sensor_temp: sensor.cfg_temperatura_living_2
+                    - sensor_hum: sensor.cfg_humedad_living_2
+                    - sensor_sensacion: sensor.cfg_sensacion_termica_living_2

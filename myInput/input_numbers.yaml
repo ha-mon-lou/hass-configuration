@@ -1,0 +1,7 @@
+ventilador_margen_calor:
+  name: Margen temperatura para los ventiladores
+  min: 0
+  max: 10
+  step: 0.5
+  unit_of_measurement: "°C"
+  mode: slider

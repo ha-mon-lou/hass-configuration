@@ -1,0 +1,11 @@
+- id: sincronizar_dos_enchufes
+  alias: Sincronizar dos enchufes
+  trigger:
+    - platform: state
+      entity_id: switch.enchufe_habitacion_socket_1
+  action:
+    - delay: 00:00:01
+    - service: switch.turn_{{ trigger.to_state.state }}
+      target:
+        entity_id: switch.enchufe_habitacion_socket_2
+  mode: single

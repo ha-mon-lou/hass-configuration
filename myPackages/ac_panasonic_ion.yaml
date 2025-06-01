@@ -1,0 +1,237 @@
+input_boolean:
+  ac_panasonic_ion_encendido:
+    name: Estado del A/C
+    icon: mdi:air-conditioner
+
+  ac_panasonic_ion_modo_auto:
+    name: Modo temperatura A/C
+
+input_number:
+  ac_panasonic_ion_temp_deseada:
+    name: Temperatura deseada
+    min: 18
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+
+  ac_panasonic_ion_temporizador_minutos:
+    name: Temporizador (minutos)
+    min: 1
+    max: 180
+    step: 1
+    unit_of_measurement: "min"
+
+input_select:
+  ac_panasonic_ion_modo:
+    name: Modo del A/C
+    options:
+      - cool
+      - auto
+      - "off"
+    initial: "off"
+    icon: mdi:fan
+
+input_text:
+  ac_panasonic_ion_motivo_apagado:
+    name: Motivo último apagado A/C
+
+  ac_panasonic_ion_ultima_desconexion:
+    name: Última desconexión del A/C
+
+timer:
+  ac_panasonic_ion_temporizador:
+    duration: "00:00:00"
+
+sensor:
+  - platform: template
+    sensors:
+      ac_panasonic_ion_temperatura:
+        friendly_name: "Temperatura Aire Acondicionado Panasonic Ion"
+        unit_of_measurement: "°C"
+        value_template: >
+          {% set temp = states('sensor.cfg_temperatura_living_2') %}
+          {{ temp | float(2) if temp not in ['unknown', 'unavailable'] else 0 }}
+
+      ac_panasonic_ion_ultima_desconexion:
+        friendly_name: "Último apagado del A/C"
+        value_template: "{{ states('sensor.time') }}"
+        icon_template: mdi:clock-end
+
+      ac_panasonic_ion_motivo_apagado:
+        friendly_name: "Motivo del último apagado del A/C"
+        value_template: >-
+          {% set timer_ended = (now() - states.timer.ac_panasonic_ion_temporizador.last_changed).total_seconds() < 30 %}
+          {% set temp = states('sensor.ac_panasonic_ion_temperatura') | float(0) %}
+          {% set target = state_attr('climate.aire_acondicionado_virtual', 'temperature') | float(0) %}
+          {% if is_state('timer.ac_panasonic_ion_temporizador', 'idle') and timer_ended %}
+            Apagado por temporizador
+          {% elif temp <= (target - 0.3) %}
+            Apagado por temperatura alcanzada
+          {% elif is_state('climate.aire_acondicionado_virtual', 'off') %}
+            Apagado manual o preset away
+          {% else %}
+            Apagado por causa desconocida
+          {% endif %}
+
+climate:
+  - platform: generic_thermostat
+    name: Aire Acondicionado Virtual
+    heater: input_boolean.ac_panasonic_ion_encendido
+    target_sensor: sensor.ac_panasonic_ion_temperatura
+    target_temp: 24
+    min_temp: 18
+    max_temp: 28
+    ac_mode: true
+    cold_tolerance: 0.3
+    hot_tolerance: 0.3
+    min_cycle_duration:
+      minutes: 2
+    initial_hvac_mode: "off"
+    away_temp: 28
+
+automation:
+  - alias: PKG AC Clima - Quitar away si alguien regresa
+    trigger:
+      - platform: state
+        entity_id: input_boolean.presencia
+        to: "on"
+      - platform: state
+        entity_id: group.simulador_personas
+        from: "off"
+        to: "on"
+    action:
+      - service: script.ac_panasonic_control_refrigeracion_home
+
+  - alias: PKG AC Encender aire si el climate lo solicita
+    trigger:
+      - platform: state
+        entity_id: input_boolean.ac_panasonic_ion_encendido
+        to: "on"
+    action:
+      - service: script.ac_panasonic_ion_power
+
+  - alias: PKG AC Apagar aire si el climate lo solicita
+    trigger:
+      - platform: state
+        entity_id: input_boolean.ac_panasonic_ion_encendido
+        to: "off"
+    action:
+      - service: script.ac_panasonic_ion_power
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.ac_panasonic_ion_motivo_apagado
+        data:
+          value: "{{ states('sensor.ac_panasonic_ion_motivo_apagado') }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.ac_panasonic_ion_ultima_desconexion
+        data:
+          value: "{{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+
+  - alias: PKG AC Iniciar temporizador al encender en modo AUTO
+    trigger:
+      - platform: state
+        entity_id: input_boolean.ac_panasonic_ion_encendido
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: input_select.ac_panasonic_ion_modo
+        state: "auto"
+    action:
+      - service: timer.start
+        data:
+          entity_id: timer.ac_panasonic_ion_temporizador
+          duration: >
+            {{ '%02d:%02d:00' | format(
+              (states('input_number.ac_panasonic_ion_temporizador_minutos') | int // 60),
+              (states('input_number.ac_panasonic_ion_temporizador_minutos') | int % 60)
+            ) }}
+
+  - alias: PKG AC Apagar aire al finalizar temporizador
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.ac_panasonic_ion_temporizador
+    condition:
+      - condition: state
+        entity_id: input_boolean.ac_panasonic_ion_encendido
+        state: "on"
+    action:
+      - service: script.ac_panasonic_ion_power
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.ac_panasonic_ion_encendido
+
+  - alias: PKG AC Ajustar AC al cambiar umbrales
+    trigger:
+      - platform: state
+        entity_id:
+          - input_number.pkg_ind_umbral_maximo
+          - sensor.ac_panasonic_ion_temperatura
+        for:
+          seconds: 30
+    condition:
+      - condition: state
+        entity_id: input_boolean.verano
+        state: "on"
+    action:
+      - service: script.ac_panasonic_control_refrigeracion
+        data:
+          st_target: "input_number.pkg_ind_umbral_maximo"
+          st_real: "sensor.ac_panasonic_ion_temperatura"
+
+script:
+  ac_panasonic_ion_power:
+    alias: PKG AC Aire acondicionado power
+    sequence:
+      - service: script.envia_comando_broadlink
+        data:
+          dispositivo: "aire_acondicionado"
+          comando: "power"
+
+  ac_panasonic_control_refrigeracion_home:
+    alias: PKG AC Control refrigeracion home
+    sequence:
+      - service: climate.set_preset_mode
+        target:
+          entity_id: climate.aire_acondicionado_virtual
+        data:
+          preset_mode: none
+
+  ac_panasonic_control_refrigeracion_away:
+    alias: PKG AC Control refrigeracion Away
+    sequence:
+      - service: climate.set_preset_mode
+        target:
+          entity_id: climate.aire_acondicionado_virtual
+        data:
+          preset_mode: away
+
+  ac_panasonic_control_refrigeracion:
+    alias: PKG AC Control refrigeracion
+    fields:
+      mode:
+        description: "Modo de operación"
+      st_target:
+        description: "Sensor de temperatura deseada"
+      st_real:
+        description: "Sensor de temperatura real"
+    sequence:
+      - condition: template
+        value_template: >
+          {{ states(st_target) | float(0) > 0 and states(st_real) | float(0) > 0 }}
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.aire_acondicionado_virtual
+        data:
+          temperature: "{{ states(st_target) | float(0) }}"
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ states(st_target) | float < states(st_real) | float }}"
+            sequence:
+              - service: climate.set_hvac_mode
+                target:
+                  entity_id: climate.aire_acondicionado_virtual
+                data:
+                  hvac_mode: cool

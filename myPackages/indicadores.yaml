@@ -1,0 +1,53 @@
+input_number:
+  pkg_ind_umbral_minimo:
+    name: Umbral mínimo
+    min: 5
+    max: 35
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:arrow-down
+
+  pkg_ind_umbral_maximo:
+    name: Umbral máximo
+    min: 5
+    max: 35
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:arrow-up
+
+template:
+  - sensor:
+      - name: "pkg_ind_temperatura_actual"
+        unique_id: pkg_ind_temperatura_actual
+        unit_of_measurement: "°C"
+        state: "{{ states('sensor.ac_panasonic_ion_temperatura') | float(0) }}"
+
+      - name: "pkg_ind_barra_umbral_minimo_pct"
+        unique_id: pkg_ind_barra_umbral_minimo_pct
+        unit_of_measurement: "%"
+        state: >
+          {% set min = states('input_number.pkg_ind_umbral_minimo') | float(0) %}
+          {% set max = 40 %}
+          {{ ((min / max) * 100) | round(1) }}
+
+      - name: "pkg_ind_barra_umbral_maximo_pct"
+        unique_id: pkg_ind_barra_umbral_maximo_pct
+        unit_of_measurement: "%"
+        state: >
+          {% set maximo = states('input_number.pkg_ind_umbral_maximo') | float(0) %}
+          {% set max = 40 %}
+          {{ ((maximo / max) * 100) | round(1) }}
+
+      - name: "pkg_ind_color_barra_temperatura"
+        unique_id: pkg_ind_color_barra_temperatura
+        state: >
+          {% set temp = states('sensor.pkg_ind_temperatura_actual') | float(0) %}
+          {% set min = states('input_number.pkg_ind_umbral_minimo') | float(0) %}
+          {% set max = states('input_number.pkg_ind_umbral_maximo') | float(0) %}
+          {% if temp < min %}
+            #3498db
+          {% elif temp > max %}
+            #e74c3c
+          {% else %}
+            #2ecc71
+          {% endif %}

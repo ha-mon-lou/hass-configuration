@@ -1,0 +1,36 @@
+#
+#
+- id: "temporizador_luces_automation_on"
+  alias: temporizador luces automation on
+  description: ""
+  triggers:
+    - trigger: state
+      entity_id:
+        - input_button.temporizador_luces
+  conditions: []
+  action:
+    - service: timer.start
+      data:
+        duration: "{{ states('input_number.temporizador_luces_mm') | int * 60 }}"
+      target:
+        entity_id: timer.temporizador_luces
+  mode: single
+
+- id: "temporizador_luces_automation_off"
+  alias: temporizador luces automation off
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: timer.temporizador_luces
+      to: idle
+  condition: []
+  actions:
+    - action: script.notifica_movil
+      data:
+        title: "luces automation off"
+        message: "Han pasado {{ states('input_number.temporizador_luces_mm') }} min"
+    - action: script.secuencia_by_friendly_name
+      data:
+        my_name: "comedor"
+        my_estado: "turn_off"
+  mode: single

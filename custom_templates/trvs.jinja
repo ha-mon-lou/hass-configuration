@@ -1,0 +1,23 @@
+{% macro trvs(parametroTemperatura,rango) %}
+        {% set trvs = expand('group.lista_trvs') | map(attribute='entity_id') | list %}        
+
+        {% set temps = namespace(lista=[]) %}
+
+        {% for trv in trvs %}
+          {% set action = state_attr(trv, 'hvac_action') %}
+          {% if states(trv) | lower in ['heat', 'auto']  and state_attr(trv, parametroTemperatura) is number %}
+            {% set temps.lista = temps.lista + [ state_attr(trv, parametroTemperatura) ] %}
+          {% endif %}
+        {% endfor %}
+
+        {% set sensorTemperatura = 'sensor.temperatura_interior' %}
+        {% if parametroTemperatura == 'temperature' %}
+          {% set sensorTemperatura = 'sensor.temperatura_caldera' %}
+        {% endif %}
+        {% if rango=='max' %}
+          {{ temps.lista | max if temps.lista | length > 0 else states(sensorTemperatura) }}
+        {% else %}
+          {{ temps.lista | min if temps.lista | length > 0 else states(sensorTemperatura) }}
+        {% endif %}
+{% endmacro %}
+

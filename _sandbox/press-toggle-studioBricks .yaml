@@ -1,0 +1,41 @@
+- id: "boton_shelly_1_press_studioBricks"
+  alias: Boton shelly H&T (press)
+  description: ""
+  triggers:
+    - platform: conversation
+      command: caja
+    - trigger: state
+      entity_id:
+        - input_button.studiobricks_toggle
+    - device_id: 78214af407f022e52036cd35517b0838
+      domain: bthome
+      type: button
+      subtype: press
+      trigger: device
+  conditions: []
+  actions:
+    - sequence:
+        - action: switch.toggle
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_3
+        - delay: 00:00:01
+        - action: switch.toggle
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_2
+        - delay: 00:00:01
+        - action: switch.toggle
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_1
+        - delay: 00:00:01
+        - action: switch.toggle
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_5
+  mode: single

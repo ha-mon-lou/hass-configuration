@@ -1,0 +1,18 @@
+envia_comando_broadlink:
+  alias: envia comando broadlink
+  fields:
+    dispositivo:
+      description: "nombre del dispositivo"
+    comando:
+      description: "comando"
+  sequence:
+    - action: remote.send_command
+      target:
+        device_id:
+          - 9a9976d66a24725c7ba6ce0725feaee7
+      data:
+        num_repeats: 1
+        delay_secs: 0.4
+        hold_secs: 0
+        device: "{{ dispositivo }}"
+        command: "{{ comando }}"

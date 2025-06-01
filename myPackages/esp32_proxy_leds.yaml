@@ -1,0 +1,53 @@
+input_boolean:
+  configuracion_espresense_activa:
+    name: ESPresense activa
+    icon: mdi:home-analytics
+
+sensor:
+  - platform: template
+    sensors:
+      esp32_btproxy_areas:
+        friendly_name: "Áreas con ESP32 Proxy activo"
+        value_template: >
+          {% set entities = states.light | map(attribute='entity_id') | list %}
+          {% set areas = entities
+            | select('match', '^light\.esp32_btproxy_.*_led_area$')
+            | map('regex_replace', '^light\.esp32_btproxy_(.*?)_led_area$', '\\1')
+            | unique | list %}
+          {{ areas | join(',') }}
+
+
+automation:
+  - alias: "Encender y apagar leds ESP32 Proxy según ubicación y áreas activas"
+    description: >
+      Enciende leds de ESP32 en áreas activas donde esté alguien.
+    trigger:
+      - platform: state
+        entity_id:
+          - input_select.ubicacion_ramon
+          - input_select.ubicacion_pau
+      - platform: state
+        entity_id: sensor.esp32_btproxy_areas
+    variables:
+      ubicaciones: >
+        {{ [ states('input_select.ubicacion_ramon'), states('input_select.ubicacion_pau') ] }}
+      areas_activas: >
+        {{ states('sensor.esp32_btproxy_areas').split(',') | reject('equalto', '') | list }}
+      leds_presentes: >
+        {{ areas_activas | select('in', ubicaciones)
+                         | map('regex_replace', '^(.*)$', 'light.esp32_btproxy_\\1_led_area')
+                         | list }}
+      all_leds: >
+        {{ states.light
+            | selectattr('entity_id', 'search', '^light\\.esp32_btproxy_.*_led_area$')
+            | map(attribute='entity_id')
+            | list }}
+      leds_ausentes: >
+        {{ all_leds | reject('in', leds_presentes) | list }}
+    action:
+      - service: light.turn_off
+        data:
+          entity_id: "{{ leds_ausentes }}"
+      - service: light.turn_on
+        data:
+          entity_id: "{{ leds_presentes }}"

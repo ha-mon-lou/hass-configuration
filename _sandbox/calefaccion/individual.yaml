@@ -1,0 +1,12 @@
+automation:
+  - alias: "Controlar válvula del salón"
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.temperatura_salon
+        below: 21  # Temperatura objetivo para el salón
+    action:
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.valvula_salon
+        data:
+          hvac_mode: "heat"

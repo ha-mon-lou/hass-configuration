@@ -1,0 +1,15 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+#
+
+- platform: template
+  sensors:
+    temperatura_real_max:
+      friendly_name: "T. real maxima"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      unique_id: "temperatura_real_maxima"
+      value_template: >
+        {% from 'trvs.jinja' import trvs %}
+        {{ trvs('current_temperature','max') }}
+      icon_template: mdi:thermometer

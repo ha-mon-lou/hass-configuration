@@ -1,0 +1,6 @@
+{% macro macro_confort_termico(sensorTemperatura, sensorHumedad) %}
+    {% set tempInC  = states(sensorTemperatura) | float(0) %}
+    {% set humValue = states(sensorHumedad) | float(0) %}
+    {% set confort = tempInC - (0.55 * (1 - 0.01 * humValue) * (tempInC - 14.5)) %}
+    {{ confort | round(2) }}
+{% endmacro %}

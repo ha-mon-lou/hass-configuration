@@ -1,0 +1,36 @@
+- id: "apagado_ventiladores_por_templado"
+  alias: Apaga ventiladores si ya no hace más calor fuera
+  description: Apaga ventiladores si la temperatura interior vuelve a ser menor o igual que la exterior - margen
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.temperatura_interior
+        - input_number.nivel_sensacion_termica_ideal
+  condition:
+    - condition: template
+      value_template: >
+        {{ states('sensor.temperatura_interior') | float <= (states('input_number.nivel_sensacion_termica_ideal') | float) }}
+    - condition: state
+      entity_id: person.ramon
+      state: "home"
+  action:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: input_boolean.ventilador_despacho
+              state: "on"
+          sequence:
+            - service: script.selector_ventilador
+              data:
+                dispositivo: ventilador_despacho
+                valor: Apagar
+        - conditions:
+            - condition: state
+              entity_id: input_boolean.ventilador_habitacion
+              state: "on"
+          sequence:
+            - service: script.selector_ventilador
+              data:
+                dispositivo: ventilador_habitacion
+                valor: Apagar
+  mode: single

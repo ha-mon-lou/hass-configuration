@@ -1,0 +1,8 @@
+template:
+  - sensor:
+      - name: "Precio OMIE mínimo hoy"
+        state: "{{ min(state_attr('sensor.omie_spot_price_es', 'Today hours').values() | list) }}"
+        unit_of_measurement: "€/MWh"
+      - name: "Precio OMIE máximo hoy"
+        state: "{{ max(state_attr('sensor.omie_spot_price_es', 'Today hours').values() | list) }}"
+        unit_of_measurement: "€/MWh"

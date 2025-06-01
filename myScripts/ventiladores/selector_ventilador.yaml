@@ -1,0 +1,101 @@
+selector_ventilador:
+  alias: Selector y comando para ventilador
+  description: Cambia el selector y envía comando según dispositivo
+  mode: queued
+  fields:
+    dispositivo:
+      description: "Nombre del ventilador (ej: ventilador_habitacion)"
+      example: ventilador_habitacion
+    valor:
+      description: "Comando y valor del selector (ej: Velocidad 1, Apagar)"
+      example: velocidad 1
+    modo:
+      description: "Modo auto o manual"
+      example: auto
+    desde:
+      description: "calling proc"
+      example: card
+  sequence:
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.resumen_shutdown
+        value: "MSG selector_ventilador. "
+
+    - if: "{{ modo is defined and modo | string | trim != '' }}"
+      then:
+        - service: input_select.select_option
+          data:
+            entity_id: "input_select.{{ dispositivo }}_modo_auto"
+            option: "{{ modo }}"
+        - service: input_text.set_value
+          data:
+            entity_id: input_text.resumen_shutdown
+            value: >
+              {{ states('input_text.resumen_shutdown') ~  " " ~ modo }}
+
+    - if: "{{ desde is defined and desde | string | trim != '' }}"
+      then:
+        - service: input_text.set_value
+          data:
+            entity_id: input_text.resumen_shutdown
+            value: >
+              {{ states('input_text.resumen_shutdown') ~ " " ~ desde }}
+
+    - if: "{{ valor is defined and valor | string | trim != '' }}"
+      then:
+        - choose:
+            # No hacer nada si el selector ya está en el valor pedido
+            - conditions: "{{ states('input_select.' ~ dispositivo ~ '_botonera') == valor }}"
+              sequence:
+                - service: input_text.set_value
+                  data:
+                    entity_id: input_text.resumen_shutdown
+                    value: >
+                      {{ states('input_text.resumen_shutdown') ~ "[sin cambios: ya en " ~ valor ~ "] " }}
+
+            # Cambiar selector y enviar comando si hace falta
+            - conditions: []
+              sequence:
+                - service: input_select.select_option
+                  data:
+                    entity_id: "input_select.{{ dispositivo }}_botonera"
+                    option: "{{ valor }}"
+                - service: input_text.set_value
+                  data:
+                    entity_id: input_text.resumen_shutdown
+                    value: >
+                      {{ states('input_text.resumen_shutdown') ~ valor ~ " " ~ dispositivo }}
+
+                # Evitar enviar 'apagar' si ya está apagado
+                - if: >
+                    {{ not (valor | lower == 'apagar' and is_state('input_boolean.' ~ dispositivo, 'off')) }}
+                  then:
+                    - service: script.envia_comando_broadlink
+                      data:
+                        dispositivo: "{{ dispositivo }}"
+                        comando: "{{ valor }}"
+                  else:
+                    - service: input_text.set_value
+                      data:
+                        entity_id: input_text.resumen_shutdown
+                        value: >
+                          {{ states('input_text.resumen_shutdown') ~ "[no envio: ya apagado] " }}
+
+                # Lógica ON/OFF y temporizador
+                - choose:
+                    - conditions: "{{ valor | lower == 'apagar' }}"
+                      sequence:
+                        - service: input_boolean.turn_off
+                          target:
+                            entity_id: "input_boolean.{{ dispositivo }}"
+                        - service: timer.cancel
+                          data:
+                            entity_id: "timer.{{ dispositivo }}_file_timer"
+                    - conditions: []
+                      sequence:
+                        - service: input_boolean.turn_on
+                          target:
+                            entity_id: "input_boolean.{{ dispositivo }}"
+                        - service: input_boolean.turn_on
+                          target:
+                            entity_id: "input_boolean.{{ dispositivo }}_running"

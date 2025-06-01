@@ -1,0 +1,33 @@
+- id: "pulsador_scene_switch_01"
+  alias: Zigbee Scene Switch - Todas las acciones
+  trigger:
+    - platform: state
+      entity_id: sensor.zigbee_scene_switch_01_action
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: sensor.zigbee_scene_switch_01_action
+              state: "1_single"
+          sequence:
+            - service: script.scene_switch_01_1_single
+        - conditions:
+            - condition: state
+              entity_id: sensor.zigbee_scene_switch_01_action
+              state: "2_single"
+          sequence:
+            - service: script.scene_switch_01_2_single
+        - conditions:
+            - condition: state
+              entity_id: sensor.zigbee_scene_switch_01_action
+              state: "1_double"
+          sequence:
+            - service: script.scene_switch_01_1_double
+        - conditions:
+            - condition: state
+              entity_id: sensor.zigbee_scene_switch_01_action
+              state: "2_double"
+          sequence:
+            - service: script.scene_switch_01_2_double
+  mode: single

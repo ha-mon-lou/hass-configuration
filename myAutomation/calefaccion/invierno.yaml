@@ -1,0 +1,14 @@
+- id: "invierno_calefaccion_toggle"
+  alias: Boton Invierno calefaccion toggle
+  triggers:
+    - trigger: state
+      entity_id:
+        - input_boolean.invierno
+  actions:
+    - sequence:
+        - action: script.control_calefaccion
+          data:
+            mode: "off"
+            temperatura: "{{ states('sensor.temperatura_interior') }}"
+
+  mode: single

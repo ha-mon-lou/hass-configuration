@@ -1,0 +1,19 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+# https://www.pacienciadigital.com/redundancia-sensores-home-assistant/
+#
+- platform: template
+  sensors:
+    demanda_calefaccion:
+      friendly_name: "Demanda de calefaccion"
+      unique_id: "demanda_calefaccion"
+      value_template: >
+        {% set trvs = [
+          states.climate.zigbee_sonoff_trvzb_01,
+          states.climate.zigbee_sonoff_trvzb_02,
+          states.climate.zigbee_sonoff_trvzb_03,
+          states.climate.zigbee_sonoff_trvzb_04
+        ] %}
+        {% set encendidas = trvs | selectattr('state', 'in', ['heat', 'auto']) | list %}
+        {{ 'on' if encendidas | length > 0 else 'off' }}
+      icon_template: mdi:thermometer

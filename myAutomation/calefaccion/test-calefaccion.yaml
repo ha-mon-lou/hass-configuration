@@ -1,0 +1,22 @@
+#
+# Boton de test para probar acciones sobre la calefaccion
+# Si esta a on pone la calefaccion y fija una tempertura del helper nivel_sensacion_termica_ideal
+# si esta a off desconecta la calefaccion  y fija una tempertura arbitraria de temperatura_exterior
+# cosa que hay que revisar para el verano...
+- id: "boton_calefaccion_toggle"
+  alias: Boton calefaccion toggle
+  triggers:
+    - trigger: state
+      entity_id:
+        - input_boolean.calefaccion_boolean
+  conditions:
+    - condition: state
+      entity_id: input_boolean.invierno
+      state: "on"
+  actions:
+    - sequence:
+        - action: script.control_calefaccion
+          data:
+            mode: "{{ 'heat' if states('input_boolean.calefaccion_boolean') == 'on' else 'off' }}"
+            temperatura: "{{states('input_number.nivel_sensacion_termica_ideal') if states('input_boolean.calefaccion_boolean') == 'on' else states('sensor.temperatura_exterior') }}"
+  mode: single

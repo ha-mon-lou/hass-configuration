@@ -1,0 +1,281 @@
+input_button:
+  ventilador_habitacion_running:
+    name: habitacion running
+
+input_select:
+  ventilador_habitacion_modo_auto:
+    name: Modo Ventilador habitacion
+    options:
+      - "auto"
+      - "manual"
+
+  ventilador_habitacion_botonera:
+    name: Selector botones ventilador
+    options:
+      - "Apagar"
+      - "velocidad 1"
+      - "velocidad 2"
+      - "velocidad 3"
+      - "brisa"
+    initial: "Apagar"
+    icon: mdi:fan
+
+  ventilador_habitacion_temporizador:
+    name: Temporizador habitacion
+    options:
+      - "idle"
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+
+timer:
+  ventilador_habitacion_file_timer:
+    name: Timer Vent. habitacion
+    restore: true
+
+sensor:
+  - platform: template
+    sensors:
+      sensacion_termica_habitacion:
+        friendly_name: "Sensacion termica habitacion"
+        device_class: temperature
+        unit_of_measurement: "°C"
+        unique_id: "sensacion_termica_habitacion"
+        value_template: >
+          {{ states('sensor.cfg_sensacion_termica_habitacion_2') }}
+        icon_template: mdi:thermometer
+
+script:
+  ventilador_habitacion_change:
+    alias: PKG VD Toggle switch según input_boolean
+    description: "Activa o desactiva un switch según el estado del input_boolean"
+    mode: queued
+    sequence:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: "input_boolean.ventilador_habitacion_running"
+                state: "on"
+            sequence:
+              - action: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_habitacion
+                  valor: velocidad 1
+          - conditions:
+              - condition: state
+                entity_id: "input_boolean.ventilador_habitacion_running"
+                state: "off"
+            sequence:
+              - action: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_habitacion
+                  valor: Apagar
+
+automation:
+  - alias: PKG VD  Ventilador habitacion - alguien regresa
+    trigger:
+      - trigger: state
+        entity_id: input_boolean.presencia
+        to: "on"
+
+    condition: []
+    action:
+      - action: script.modo_ventilador
+        data:
+          dispositivo: ventilador_habitacion
+          valor: auto
+    mode: single
+
+  - alias: PKG VD Encender ventilador habitacion
+    trigger:
+      - trigger: state
+        entity_id: input_boolean.ventilador_habitacion
+        to: "on"
+    action:
+      - action: script.selector_ventilador
+        data:
+          dispositivo: ventilador_habitacion
+          valor: velocidad 1
+
+  - alias: PKG VD Apagar ventilador habitacion
+    trigger:
+      - trigger: state
+        entity_id: input_boolean.ventilador_habitacion
+        to: "off"
+    action:
+      - action: script.selector_ventilador
+        data:
+          dispositivo: ventilador_habitacion
+          valor: Apagar
+
+  - id: "ventilador_habitacion_sinergia"
+    alias: PKG VD Ventilador habitacion - sinergia booleano/switch
+    trigger:
+      - trigger: state
+        entity_id: input_boolean.ventilador_habitacion_running
+    action:
+      - action: script.ventilador_habitacion_change
+    mode: restart
+
+  - id: "ventilador_habitacion_auto"
+    alias: PKG VD  Control ventilador habitacion por temperatura
+    description: Ajusta la velocidad del ventilador habitacion según diferencia térmica (PCKG)
+    trigger:
+      - trigger: state
+        entity_id:
+          - sensor.sensacion_termica_habitacion_2
+          - input_select.ventilador_habitacion_modo_auto
+          - input_number.ventilador_margen_calor
+          - input_number.nivel_sensacion_termica_ideal
+    condition:
+      - condition: state
+        entity_id: input_select.ventilador_habitacion_modo_auto
+        state: "auto"
+    action:
+      - variables:
+          dif_temp: >
+            {{ (states('sensor.cfg_sensacion_termica_habitacion_2') | float + states('input_number.ventilador_margen_calor') | float) -
+               states('input_number.nivel_sensacion_termica_ideal') | float }}
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp <= 0.0 }}"
+            sequence:
+              - condition: template
+                value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'Apagar' }}"
+              - action: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_habitacion
+                  modo: auto
+                  valor: Apagar
+
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp > 0.0 and dif_temp <= 2.0 }}"
+            sequence:
+              - condition: template
+                value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'velocidad 1' }}"
+              - action: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_habitacion
+                  modo: auto
+                  valor: velocidad 1
+
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp > 2.0 and dif_temp <= 2.5 }}"
+            sequence:
+              - condition: template
+                value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'velocidad 2' }}"
+              - action: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_habitacion
+                  modo: auto
+                  valor: velocidad 2
+
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp > 2.5 and dif_temp <= 3.0 }}"
+            sequence:
+              - condition: template
+                value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'velocidad 3' }}"
+              - action: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_habitacion
+                  modo: auto
+                  valor: velocidad 3
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp > 3.0 }}"
+            sequence:
+              - condition: template
+                value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'brisa' }}"
+              - action: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_habitacion
+                  modo: auto
+                  valor: brisa
+    mode: single
+
+  - id: "ventilador_habitacion_timer_on"
+    alias: PKG VD Iniciar temporizador del ventilador del habitacion
+    trigger:
+      - trigger: state
+        entity_id: input_select.ventilador_habitacion_temporizador
+    condition:
+      - condition: template
+        value_template: >
+          {{ trigger.to_state.state != 'idle'
+            and trigger.to_state.state in state_attr('input_select.ventilador_habitacion_temporizador', 'options') }}
+
+    action:
+      - action: timer.start
+        data:
+          entity_id: timer.ventilador_habitacion_file_timer
+          duration: >
+            {% set opt = trigger.to_state.state %}
+            {% if opt == "1" %}
+              00:30:00
+            {% elif opt == "2" %}
+              01:30:00
+            {% elif opt == "3" %}
+              06:00:00
+            {% elif opt == "4" %}
+              08:00:00
+            {% elif opt == "0" %}
+              00:03:00
+            {% endif %}
+
+  - id: "ventilador_habitacion_timer_off"
+    alias: PKG VD timer habitacion off
+    description: ""
+    trigger:
+      - trigger: state
+        entity_id: timer.ventilador_habitacion_file_timer
+        to: idle
+    condition: []
+    action:
+      - action: input_select.select_option
+        data:
+          entity_id: input_select.ventilador_habitacion_temporizador
+          option: idle
+      - action: script.selector_ventilador
+        data:
+          dispositivo: ventilador_habitacion
+          modo: manual
+          valor: Apagar
+    mode: single
+
+  - alias: Actualizar presencia en habitacion
+    trigger:
+      - platform: state
+        entity_id:
+          - input_select.ubicacion_ramon
+          - input_select.ubicacion_pau
+    action:
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ 'habitacion_2' in expand('group.ubicacion_personas') | map(attribute='state') | list }}
+            sequence:
+              - service: input_select.select_option
+                data:
+                  entity_id: input_select.ventilador_habitacion_temporizador
+                  option: 4
+              - action: script.modo_ventilador
+                data:
+                  dispositivo: ventilador_habitacion
+                  valor: auto
+
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ 'habitacion_2' not in expand('group.ubicacion_personas') | map(attribute='state') | list }}
+            sequence:
+              - service: input_select.select_option
+                data:
+                  entity_id: input_select.ventilador_habitacion_temporizador
+                  option: 0

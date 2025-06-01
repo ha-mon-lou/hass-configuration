@@ -1,0 +1,85 @@
+studiobricks_schedule:
+  name: "StudioBricks schedule"
+  monday:
+    - from: "04:20:00"
+      to: "04:50:00"
+    - from: "14:00:00"
+      to: "14:30:00"
+  tuesday:
+    - from: "04:20:00"
+      to: "04:50:00"
+    - from: "14:00:00"
+      to: "14:30:00"
+  wednesday:
+    - from: "04:20:00"
+      to: "04:50:00"
+    - from: "14:00:00"
+      to: "14:30:00"
+  thursday:
+    - from: "04:20:00"
+      to: "04:50:00"
+    - from: "14:00:00"
+      to: "14:30:00"
+  friday:
+    - from: "04:20:00"
+      to: "04:50:00"
+    - from: "14:00:00"
+      to: "14:30:00"
+  saturday:
+    - from: "04:20:00"
+      to: "04:50:00"
+    - from: "14:00:00"
+      to: "14:30:00"
+  sunday:
+    - from: "04:20:00"
+      to: "04:50:00"
+    - from: "14:00:00"
+      to: "14:30:00"
+
+lavavajillas_schedule:
+  name: "lavavajillas schedule"
+  monday:
+    - from: "00:05:00"
+      to: "08:00:00"
+  tuesday:
+    - from: "00:05:00"
+      to: "08:00:00"
+  wednesday:
+    - from: "00:05:00"
+      to: "08:00:00"
+  thursday:
+    - from: "00:05:00"
+      to: "08:00:00"
+  friday:
+    - from: "00:05:00"
+      to: "08:00:00"
+  saturday:
+    - from: "00:05:00"
+      to: "23:59:00"
+  sunday:
+    - from: "00:05:00"
+      to: "23:59:00"
+
+calefaccion_schedule:
+  name: "calefaccion schedule"
+  monday:
+    - from: "00:07:30"
+      to: "22:00:00"
+  tuesday:
+    - from: "00:07:30"
+      to: "22:00:00"
+  wednesday:
+    - from: "00:07:30"
+      to: "22:00:00"
+  thursday:
+    - from: "00:07:30"
+      to: "22:00:00"
+  friday:
+    - from: "00:07:30"
+      to: "22:00:00"
+  saturday:
+    - from: "00:08:30"
+      to: "22:00:00"
+  sunday:
+    - from: "00:08:30"
+      to: "22:00:00"

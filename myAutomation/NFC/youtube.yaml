@@ -1,0 +1,23 @@
+- id: "1735500800353"
+  alias: NFC lanza youtube
+  description: ""
+  triggers:
+    - trigger: tag
+      tag_id: !secret nfc_tag_ha_37
+    - platform: conversation
+      command: play youtube
+
+  conditions: []
+  actions:
+    - type: turn_on
+      device_id: 4212ed74edbdc7e8bd7b75f3ae1a9c4c
+      entity_id: 8c098c4f5799ff0d519ed64b05a880e1
+      domain: remote
+    - delay: 00:00:05
+    - action: media_player.play_media
+      target:
+        entity_id: media_player.you_box
+      data:
+        media_content_type: url
+        media_content_id: https://www.youtube.com/playlist?list=PLjF50Dlp9ienDb1cqXQOSDgNZFC-tVdya
+  mode: single

@@ -1,0 +1,15 @@
+secuencia_luces_off:
+  alias: secuencia luces off
+  sequence:
+    - action: switch.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.enchufe_doble_socket_1
+    - delay: 00:00:01
+    - action: switch.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.enchufe_doble_socket_2
+  mode: single

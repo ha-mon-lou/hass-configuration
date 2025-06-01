@@ -1,0 +1,22 @@
+- id: "update_titulo_video"
+  alias: Guardar Título de Reproducción
+  description: "Al cambiar el video se actualiza el nombre del titulo"
+  triggers:
+    - platform: state
+      entity_id: media_player.my_box
+      attribute: media_title
+    - platform: state
+      entity_id: media_player.my_box_2
+      attribute: app_name
+    - platform: conversation
+      command: titulo
+  conditions: []
+  actions:
+    - sequence:
+        - action: input_text.set_value
+          metadata: {}
+          data:
+            value: "{{ state_attr('media_player.my_box', 'media_title') | default(state_attr('media_player.my_box_2', 'app_name') | replace('com.', '')  | replace('google.android.', '') | replace('.androidtv', ''), true) | default('Desconocido') }}"
+          target:
+            entity_id: input_text.ultimo_video_reproducido
+  mode: restart

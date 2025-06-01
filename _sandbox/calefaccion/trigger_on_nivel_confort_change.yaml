@@ -1,0 +1,9 @@
+- id: "trigger_on_nivel_confort_change"
+  alias: "Cambio de nivel confort envía a InfluxDB"
+  trigger:
+    - platform: state
+      entity_id: input_number.nivel_confort_actual
+  action:
+    - service: rest_command.send_to_influxdb
+      data:
+        value: "{{ states('input_number.nivel_confort_actual') | float }}"

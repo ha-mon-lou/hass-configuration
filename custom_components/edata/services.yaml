@@ -1,0 +1,4 @@
+recreate_statistics:
+  name: Recreate statistics
+  description: Recreates statistics
+  target:

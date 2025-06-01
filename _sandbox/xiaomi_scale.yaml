@@ -1,0 +1,99 @@
+input_number:
+  ramon_height:
+    name: Altura de Ramón
+    initial: 168
+    min: 100
+    max: 250
+    step: 1
+    unit_of_measurement: "cm"
+
+  pau_height:
+    name: Altura de Pau
+    initial: 170
+    min: 100
+    max: 250
+    step: 1
+    unit_of_measurement: "cm"
+
+  ramon_born:
+    name: Año de Nacimiento de Ramón
+    initial: 1965
+    min: 1900
+    max: 2025
+    step: 1
+
+  pau_born:
+    name: Año de Nacimiento de Pau
+    initial: 2004
+    min: 1900
+    max: 2025
+    step: 1
+
+template:
+  - sensor:
+      - name: "Ramon Weight"
+        unique_id: "ramon_weight"
+        state: >
+          {% if states('sensor.body_composition_scale_71b5_profile_id') == "1" %}
+            {{ states('sensor.body_composition_scale_71b5_weight') }}
+          {% else %}
+            states('sensor.ramon_weight')
+          {% endif %}
+        unit_of_measurement: "kg"
+
+      - name: "Ramon Body Fat Percentage"
+        unique_id: "ramon_body_fat_percentage"
+        state: >
+          {% if states('sensor.body_composition_scale_71b5_profile_id') == "1" %}
+            {% set weight = states('sensor.body_composition_scale_71b5_weight') | float %}
+            {% set height = states('input_number.ramon_height') | float / 100 %}
+            {% set bmi = weight / (height ** 2) %}
+            {% set birth_year = states('input_number.ramon_born') | int %}
+            {% set current_year = now().year %}
+            {% set age = current_year - birth_year %}
+            {{ ((1.2 * bmi) + (0.23 * age) - 16.2) | round(2) }}
+          {% else %}
+            states('sensor.ramon_body_fat_percentage')
+          {% endif %}
+        unit_of_measurement: "%"
+
+      - name: "Pau Weight"
+        unique_id: "pau_weight"
+        state: >
+          {% if states('sensor.body_composition_scale_71b5_profile_id') == "2" %}
+            {{ states('sensor.body_composition_scale_71b5_weight') }}
+          {% else %}
+            states('sensor.pau_weight')
+          {% endif %}
+        unit_of_measurement: "kg"
+
+      - name: "Pau Body Fat Percentage"
+        unique_id: "pau_body_fat_percentage"
+        state: >
+          {% if states('sensor.body_composition_scale_71b5_profile_id') == "2" %}
+            {% set weight = states('sensor.body_composition_scale_71b5_weight') | float %}
+            {% set height = states('input_number.pau_height') | float / 100 %}
+            {% set bmi = weight / (height ** 2) %}
+            {% set birth_year = states('input_number.pau_born') | int %}
+            {% set current_year = now().year %}
+            {% set age = current_year - birth_year %}
+            {{ ((1.2 * bmi) + (0.23 * age) - 5.4) | round(2) }}
+          {% else %}
+            states('sensor.pau_body_fat_percentage')
+          {% endif %}
+        unit_of_measurement: "%"
+
+lovelace:
+  dashboards:
+    ramon-pau-metrics:
+      mode: yaml
+      filename: lovelace/ramon_pau_metrics.yaml
+      title: Ramón & Pau Metrics
+
+panel_custom:
+  - name: ramon_pau_metrics
+    sidebar_title: Ramón & Pau
+    sidebar_icon: mdi:scale-bathroom
+    url_path: ramon-pau-metrics
+    embed_iframe: false
+    require_admin: false

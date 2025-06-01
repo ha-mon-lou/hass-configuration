@@ -1,0 +1,107 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+#
+- platform: template
+  sensors:
+    sensacion_termica:
+      friendly_name: "Sensación Térmica"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.temperatura_interior','sensor.humedad_interior') }}
+
+    confort_termico:
+      friendly_name: "Confort Térmico"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.temperatura_interior', 'sensor.humedad_interior') }}
+    #
+    #   Tuya 1
+    #
+    sensacion_termica_tuya_wifi_1:
+      friendly_name: "Sensación Térmica (Tuya 1)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.tuya_termometro_wifi_temperature', 'sensor.tuya_termometro_wifi_humidity') }}
+
+    confort_termico_tuya_wifi_1:
+      friendly_name: "Confort Térmico (Tuya 1)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.tuya_termometro_wifi_temperature','sensor.tuya_termometro_wifi_humidity') }}
+
+    #
+    #   Tuya 2
+    #
+    sensacion_termica_tuya_wifi_2:
+      friendly_name: "Sensación Térmica (Tuya 2)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.tuya_termometro_wifi_2_temperature', 'sensor.tuya_termometro_wifi_2_humidity') }}
+
+    confort_termico_tuya_wifi_2:
+      friendly_name: "Confort Térmico (Tuya 1)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.tuya_termometro_wifi_2_temperature','sensor.tuya_termometro_wifi_2_humidity') }}
+
+    #
+    #   zigbee_sonoff_snzb02_01
+    #
+
+    sensacion_termica_zigbee_sonoff_snzb02_01:
+      friendly_name: "Sensación Térmica (Tuya 1)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.zigbee_sonoff_snzb02_01_temperature', 'sensor.zigbee_sonoff_snzb02_01_humidity') }}
+
+    confort_termico_zigbee_sonoff_snzb02_01:
+      friendly_name: "Confort Térmico (Tuya 1)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.zigbee_sonoff_snzb02_01_temperature','sensor.zigbee_sonoff_snzb02_01_humidity') }}
+
+    #
+    #   Shelly BLU
+    #
+
+    sensacion_termica_shelly_blu_5480:
+      friendly_name: "Sensación Térmica (Shelly Blue)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.shelly_blu_5480_temperature', 'sensor.shelly_blu_5480_humidity') }}
+
+    confort_termico_shelly_blu_5480:
+      friendly_name: "Confort Térmico (Shelly Blue)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.shelly_blu_5480_temperature','sensor.shelly_blu_5480_humidity') }}
+
+    #
+    #   Heiman HS3AQ
+    #
+
+    sensacion_termica_heiman_hs3aq:
+      friendly_name: "Sensación Térmica (Shelly Blue)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.zigbee_heiman_hs3aq_01_temperature', 'sensor.zigbee_heiman_hs3aq_01_humidity') }}
+
+    confort_termico_heiman_hs3aq:
+      friendly_name: "Confort Térmico (Shelly Blue)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.zigbee_heiman_hs3aq_01_temperature','sensor.zigbee_heiman_hs3aq_01_humidity') }}
+
+        zigbee_heiman_hs3aq_temperature

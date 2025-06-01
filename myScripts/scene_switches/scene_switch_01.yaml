@@ -1,0 +1,35 @@
+scene_switch_01_1_single:
+  alias: Pulsador 01 - Botón 1 simple (Toggle Switch)
+  sequence:
+    - service: homeassistant.toggle
+      target:
+        entity_id: switch.alias_shelly_habitacion
+    - service: input_boolean.toggle
+      target:
+        entity_id: input_boolean.scene_switch_01_1
+  mode: single
+
+scene_switch_01_2_single:
+  alias: Pulsador 01 - Botón 2 simple
+  sequence:
+    - service: homeassistant.toggle
+      target:
+        entity_id: switch.alias_pinguino
+    - service: input_boolean.toggle
+      target:
+        entity_id: input_boolean.scene_switch_01_2
+  mode: single
+
+## copiamos porque no se me ocurre nada que hacer con dos pulsaciones
+scene_switch_01_1_double:
+  alias: Pulsador 01 - Botón 1 doble (Toggle Switch)
+  sequence:
+    - service: script.scene_switch_01_1_single
+  mode: single
+
+## copiamos porque no se me ocurre nada que hacer con dos pulsaciones
+scene_switch_01_2_double:
+  alias: Pulsador 01 - Botón 2 doble
+  sequence:
+    - service: script.scene_switch_01_2_single
+  mode: single

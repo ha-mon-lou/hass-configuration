@@ -1,0 +1,117 @@
+- id: "seq_shutdown"
+  alias: Secuencia de apagado
+  mode: single
+  trigger:
+    - platform: conversation
+      command: desconecta
+    - platform: tag
+      tag_id: !secret nfc_tag_ha_door
+    - platform: state
+      entity_id: input_button.shutdown
+    - platform: state
+      entity_id: group.simulador_personas
+      from: "on"
+      to: "off"
+    - platform: state
+      entity_id: input_boolean.presencia
+      to: "off"
+  action:
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.resumen_shutdown
+        value: "🛑 Inicio desconexión total..."
+    - service: script.notifica_movil
+      data:
+        title: "Shut down"
+        message: "{{ states('input_text.resumen_shutdown') }}"
+
+    - action: script.control_calefaccion
+      data:
+        mode: "off"
+        temperatura: "{{ states('sensor.temperatura_exterior') }}"
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.resumen_shutdown
+        value: >
+          {{ "\n· Calefacción apagada (" ~ states('sensor.temperatura_interior') ~ "°C)" }}
+
+    - action: script.ac_panasonic_control_refrigeracion_away
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.resumen_shutdown
+        value: >
+          {{ "\n· Aire acondicionado apagado (" ~ states('sensor.temperatura_interior') ~ "°C)" }}
+
+    - action: script.secuencia_by_area
+      data:
+        my_area: "habitacion_1"
+        my_excludes: "sonoff_trvzb"
+        my_estado: "turn_off"
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.resumen_shutdown
+        value: >
+          {{ states('input_text.resumen_shutdown') ~ "\n· Dispositivos dormitorio apagados" }}
+
+    - action: script.secuencia_by_area
+      data:
+        my_area: "living_1"
+        my_excludes: "sonoff_trvzb"
+        my_estado: "turn_off"
+    - action: script.secuencia_by_area
+      data:
+        my_area: "living_2"
+        my_excludes: "sonoff_trvzb"
+        my_estado: "turn_off"
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.resumen_shutdown
+        value: >
+          {{ states('input_text.resumen_shutdown') ~ "\n· Dispositivos salón apagados" }}
+
+    - action: script.selector_ventilador
+      data:
+        dispositivo: ventilador_habitacion
+        desde: secuencia
+        modo: manual
+        valor: Apagar
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.resumen_shutdown
+        value: >
+          {{ states('input_text.resumen_shutdown') ~ "\n· Ventilador habitación apagado" }}
+
+    - delay: "00:00:01"
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.ventilador_equation
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.resumen_shutdown
+        value: >
+          {{ states('input_text.resumen_shutdown') ~ "\n· Ventilador equation apagado" }}
+
+    - delay: "00:00:01"
+
+    - action: script.selector_ventilador
+      data:
+        dispositivo: ventilador_despacho
+        desde: secuencia
+        modo: manual
+        valor: Apagar
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.resumen_shutdown
+        value: >
+          {{ states('input_text.resumen_shutdown') ~ "\n· Ventilador despacho apagado" }}
+
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.resumen_shutdown
+        value: >
+          {{ states('input_text.resumen_shutdown') ~ "\n✅ Fin desconexión total." }}
+
+    - service: script.notifica_movil
+      data:
+        title: "Shutdown"
+        message: "{{ states('input_text.resumen_shutdown') }}"

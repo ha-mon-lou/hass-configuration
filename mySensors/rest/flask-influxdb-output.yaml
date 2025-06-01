@@ -1,0 +1,16 @@
+- platform: rest
+  name: flask server
+  unique_id: "flask_server_data"
+  resource: "http://192.168.1.191:5000/data"
+  method: GET
+  headers:
+    Content-Type: application/json
+  value_template: "{{ value_json.temperature }}" # Aquí puedes obtener solo la temperatura
+  json_attributes:
+    - temperature
+    - humidity
+    - timestamp
+    - model
+    - sensores
+    - configuracion
+  scan_interval: 600 # Intervalo de actualización en segundos

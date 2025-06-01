@@ -1,0 +1,25 @@
+#
+# https://homeassistant-notes.notion.site/Proyecto-climatizaci-n-1819be0e2c17803f8c00e7a4696264e7
+#
+
+- id: "trigger_on_temperatura_change"
+  alias: Ajustar termostato según la TRV con mayor temperatura
+  triggers:
+    - trigger: state
+      entity_id: sensor.temperatura_objetivo_max
+    - trigger: state
+      entity_id: sensor.temperatura_caldera
+  conditions:
+    - condition: state
+      entity_id: input_boolean.invierno
+      state: "on"
+    - condition: state
+      entity_id: sensor.demanda_calefaccion
+      state: "on"
+  actions:
+    - sequence:
+        - action: script.control_calefaccion_advanced
+          data:
+            st_target: "sensor.temperatura_objetivo_max"
+            st_real: "sensor.temperatura_caldera"
+  mode: single

@@ -167,9 +167,6 @@ automation:
       - platform: state
         entity_id:
           - input_number.pkg_ind_umbral_maximo
-          - sensor.ac_panasonic_ion_temperatura
-        for:
-          seconds: 30
     condition:
       - condition: state
         entity_id: input_boolean.verano

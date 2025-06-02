@@ -142,10 +142,10 @@ automation:
           dif_temp: >
             {{ (states('sensor.cfg_sensacion_termica_despacho') | float + states('input_number.ventilador_margen_calor') | float)
               - states('input_number.nivel_sensacion_termica_ideal') | float }}
-          u1: {{ states('input_number.ventilador_umbral_velocidad_1') | float }}
-          u2: {{ states('input_number.ventilador_umbral_velocidad_2') | float }}
-          u3: {{ states('input_number.ventilador_umbral_velocidad_3') | float }}
-          ub: {{ states('input_number.ventilador_umbral_brisa') | float }}
+          u1: "{{ states('input_number.ventilador_umbral_velocidad_1') | float }}"
+          u2: "{{ states('input_number.ventilador_umbral_velocidad_2') | float }}"
+          u3: "{{ states('input_number.ventilador_umbral_velocidad_3') | float }}"
+          ub: "{{ states('input_number.ventilador_umbral_brisa') | float }}"
       - choose:
           - conditions:
               - condition: template

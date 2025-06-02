@@ -1,0 +1,29 @@
+input_number:
+  ventilador_umbral_velocidad_1:
+    name: Umbral velocidad 1
+    min: 0.1
+    max: 5
+    step: 0.1
+    unit_of_measurement: "°C"
+    mode: box
+  ventilador_umbral_velocidad_2:
+    name: Umbral velocidad 2
+    min: 0.1
+    max: 5
+    step: 0.1
+    unit_of_measurement: "°C"
+    mode: box
+  ventilador_umbral_velocidad_3:
+    name: Umbral velocidad 3
+    min: 0.1
+    max: 5
+    step: 0.1
+    unit_of_measurement: "°C"
+    mode: box
+  ventilador_umbral_brisa:
+    name: Umbral brisa
+    min: 0.1
+    max: 5
+    step: 0.1
+    unit_of_measurement: "°C"
+    mode: box

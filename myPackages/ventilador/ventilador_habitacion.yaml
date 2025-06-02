@@ -120,15 +120,19 @@ automation:
     mode: restart
 
   - id: "ventilador_habitacion_auto"
-    alias: PKG VD  Control ventilador habitacion por temperatura
-    description: Ajusta la velocidad del ventilador habitacion según diferencia térmica (PCKG)
+    alias: PKG VD  Control ventilador habitacion por temperatura (input_number)
+    description: Ajusta la velocidad del ventilador habitacion según diferencia térmica, con umbrales configurables
     trigger:
-      - trigger: state
+      - platform: state
         entity_id:
-          - sensor.sensacion_termica_habitacion_2
+          - sensor.sensacion_termica_habitacion
           - input_select.ventilador_habitacion_modo_auto
           - input_number.ventilador_margen_calor
           - input_number.nivel_sensacion_termica_ideal
+          - input_number.ventilador_umbral_velocidad_1
+          - input_number.ventilador_umbral_velocidad_2
+          - input_number.ventilador_umbral_velocidad_3
+          - input_number.ventilador_umbral_brisa
     condition:
       - condition: state
         entity_id: input_select.ventilador_habitacion_modo_auto
@@ -136,16 +140,20 @@ automation:
     action:
       - variables:
           dif_temp: >
-            {{ (states('sensor.cfg_sensacion_termica_habitacion_2') | float + states('input_number.ventilador_margen_calor') | float) -
-               states('input_number.nivel_sensacion_termica_ideal') | float }}
+            {{ (states('sensor.cfg_sensacion_termica_habitacion_2') | float + states('input_number.ventilador_margen_calor') | float)
+              - states('input_number.nivel_sensacion_termica_ideal') | float }}
+          u1: "{{ states('input_number.ventilador_umbral_velocidad_1') | float }}"
+          u2: "{{ states('input_number.ventilador_umbral_velocidad_2') | float }}"
+          u3: "{{ states('input_number.ventilador_umbral_velocidad_3') | float }}"
+          ub: "{{ states('input_number.ventilador_umbral_brisa') | float }}"
       - choose:
           - conditions:
               - condition: template
-                value_template: "{{ dif_temp <= 0.0 }}"
+                value_template: "{{ dif_temp <= 0 }}"
             sequence:
               - condition: template
                 value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'Apagar' }}"
-              - action: script.selector_ventilador
+              - service: script.selector_ventilador
                 data:
                   dispositivo: ventilador_habitacion
                   modo: auto
@@ -153,11 +161,11 @@ automation:
 
           - conditions:
               - condition: template
-                value_template: "{{ dif_temp > 0.0 and dif_temp <= 2.0 }}"
+                value_template: "{{ dif_temp > 0 and dif_temp <= u1 }}"
             sequence:
               - condition: template
                 value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'velocidad 1' }}"
-              - action: script.selector_ventilador
+              - service: script.selector_ventilador
                 data:
                   dispositivo: ventilador_habitacion
                   modo: auto
@@ -165,11 +173,11 @@ automation:
 
           - conditions:
               - condition: template
-                value_template: "{{ dif_temp > 2.0 and dif_temp <= 2.5 }}"
+                value_template: "{{ dif_temp > u1 and dif_temp <= u2 }}"
             sequence:
               - condition: template
                 value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'velocidad 2' }}"
-              - action: script.selector_ventilador
+              - service: script.selector_ventilador
                 data:
                   dispositivo: ventilador_habitacion
                   modo: auto
@@ -177,22 +185,23 @@ automation:
 
           - conditions:
               - condition: template
-                value_template: "{{ dif_temp > 2.5 and dif_temp <= 3.0 }}"
+                value_template: "{{ dif_temp > u2 and dif_temp <= u3 }}"
             sequence:
               - condition: template
                 value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'velocidad 3' }}"
-              - action: script.selector_ventilador
+              - service: script.selector_ventilador
                 data:
                   dispositivo: ventilador_habitacion
                   modo: auto
                   valor: velocidad 3
+
           - conditions:
               - condition: template
-                value_template: "{{ dif_temp > 3.0 }}"
+                value_template: "{{ dif_temp > u3 and dif_temp <= ub }}"
             sequence:
               - condition: template
                 value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'brisa' }}"
-              - action: script.selector_ventilador
+              - service: script.selector_ventilador
                 data:
                   dispositivo: ventilador_habitacion
                   modo: auto

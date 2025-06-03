@@ -17,7 +17,7 @@
         }
     },
     "0xa4c13819d046464f": {
-        "voltage": 229,
+        "voltage": 228,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -26,7 +26,7 @@
         "linkquality": 108,
         "power": 40,
         "energy": 91.71,
-        "current": 0.29
+        "current": 0.28
     },
     "0xa4c138b8caa59009": {
         "voltage": 228,
@@ -44,7 +44,7 @@
         "voltage": 3000,
         "battery": 100,
         "temperature": 25.22,
-        "humidity": 61.57,
+        "humidity": 61.78,
         "linkquality": 232
     },
     "0xa4c138b7c1781a47": {
@@ -171,8 +171,8 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 23.53,
-        "humidity": 65.51,
+        "temperature": 23.65,
+        "humidity": 69.24,
         "co2": 419,
         "linkquality": 232
     },

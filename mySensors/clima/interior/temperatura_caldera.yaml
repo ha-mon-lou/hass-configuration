@@ -9,5 +9,5 @@
       unit_of_measurement: "°C"
       unique_id: "temperatura_caldera"
       value_template: >
-        {{ states('sensor.temperatura_real_min') }}
+        {{ states('sensor.temperatura_real_min') | float}}
       icon_template: mdi:thermometer

@@ -6,7 +6,7 @@
       unit_of_measurement: "°C"
       unique_id: "cfg_temperatura_habitacion_2"
       value_template: >
-        {{ states('sensor.zigbee_sonoff_snzb02_01_temperature') }}
+        {{ states('sensor.zigbee_sonoff_snzb02_01_temperature') | float }}
       icon_template: mdi:thermometer
 
     cfg_humedad_habitacion_2:
@@ -15,7 +15,7 @@
       unit_of_measurement: "%"
       unique_id: "cfg_humedad_habitacion_2"
       value_template: >
-        {{ states('sensor.zigbee_sonoff_snzb02_01_humidity') }}
+        {{ states('sensor.zigbee_sonoff_snzb02_01_humidity') | float }}
       icon_template: mdi:water-percent
 
     cfg_sensacion_termica_habitacion_2:
@@ -24,5 +24,5 @@
       unit_of_measurement: "°C"
       unique_id: "cfg_sensacion_termica_habitacion_2"
       value_template: >
-        {{ states('sensor.sensacion_termica_zigbee_sonoff_snzb02_01') }}
+        {{ states('sensor.sensacion_termica_zigbee_sonoff_snzb02_01') | float }}
       icon_template: mdi:thermometer

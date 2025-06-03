@@ -52,27 +52,6 @@ sensor:
           {% set temp = states('sensor.cfg_temperatura_living_2') %}
           {{ temp | float(2) if temp not in ['unknown', 'unavailable'] else 0 }}
 
-      ac_panasonic_ion_ultima_desconexion:
-        friendly_name: "Último apagado del A/C"
-        value_template: "{{ states('sensor.time') }}"
-        icon_template: mdi:clock-end
-
-      ac_panasonic_ion_motivo_apagado:
-        friendly_name: "Motivo del último apagado del A/C"
-        value_template: >-
-          {% set timer_ended = (now() - states.timer.ac_panasonic_ion_temporizador.last_changed).total_seconds() < 30 %}
-          {% set temp = states('sensor.ac_panasonic_ion_temperatura') | float(0) %}
-          {% set target = state_attr('climate.aire_acondicionado_virtual', 'temperature') | float(0) %}
-          {% if is_state('timer.ac_panasonic_ion_temporizador', 'idle') and timer_ended %}
-            Apagado por temporizador
-          {% elif temp <= (target - 0.3) %}
-            Apagado por temperatura alcanzada
-          {% elif is_state('climate.aire_acondicionado_virtual', 'off') %}
-            Apagado manual o preset away
-          {% else %}
-            Apagado por causa desconocida
-          {% endif %}
-
 climate:
   - platform: generic_thermostat
     name: Aire Acondicionado Virtual

@@ -14,10 +14,20 @@ input_select:
       - "auto"
       - "manual"
 
+  ventilador_equation_temporizador:
+    name: Temporizador Equation
+    options:
+      - "idle"
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+
 timer:
-  ventilador_equation_timer:
-    name: Temporizador Ventilador
-    duration: "01:00:00"
+  ventilador_equation_file_timer:
+    name: Timer Vent. Equation
+    restore: true
 
 sensor:
   - platform: template
@@ -142,7 +152,54 @@ automation:
                   entity_id: "input_boolean.ventilador_equation"
     mode: single
 
-  - alias: Actualizar presencia en living 1
+  - id: "ventilador_equation_timer_on"
+    alias: PKG VE Iniciar temporizador del ventilador  equation
+    trigger:
+      - trigger: state
+        entity_id: input_select.ventilador_equation_temporizador
+    condition:
+      - condition: template
+        value_template: >
+          {{ trigger.to_state.state != 'idle'
+            and trigger.to_state.state in state_attr('input_select.ventilador_equation_temporizador', 'options') }}
+    action:
+      - action: timer.start
+        data:
+          entity_id: timer.ventilador_equation_file_timer
+          duration: >
+            {% set opt = trigger.to_state.state %}
+            {% if opt == "1" %}
+              00:30:00
+            {% elif opt == "2" %}
+              01:30:00
+            {% elif opt == "3" %}
+              06:00:00
+            {% elif opt == "4" %}
+              08:00:00
+            {% elif opt == "0" %}
+              00:03:00
+            {% endif %}
+
+  - id: "ventilador_equation_timer_off"
+    alias: PKG VE timer equation off
+    description: ""
+    trigger:
+      - trigger: state
+        entity_id: timer.ventilador_equation_file_timer
+        to: idle
+    condition: []
+    action:
+      - action: input_select.select_option
+        data:
+          entity_id: input_select.ventilador_equation_temporizador
+          option: idle
+      - service: input_boolean.turn_off
+        target:
+          entity_id: "input_boolean.ventilador_equation"
+
+    mode: single
+
+  - alias: Actualizar presencia en living
     trigger:
       - platform: state
         entity_id:
@@ -156,7 +213,27 @@ automation:
                   {% set ubicaciones = expand('group.ubicacion_personas') | map(attribute='state') | list %}
                   {{ 'living_1' in ubicaciones or 'living_2' in ubicaciones }}
             sequence:
+              - service: input_select.select_option
+                data:
+                  entity_id: input_select.ventilador_equation_temporizador
+                  option: 4
+
               - action: script.modo_ventilador
                 data:
                   dispositivo: ventilador_equation
                   valor: auto
+
+          - conditions:
+              - condition: template
+                value_template: >
+                  {% set ubicaciones = expand('group.ubicacion_personas') | map(attribute='state') | list %}
+                  {{ 'living_1' not in ubicaciones and 'living_2' not in ubicaciones }}
+            sequence:
+              - service: input_select.select_option
+                data:
+                  entity_id: input_select.ventilador_equation_temporizador
+                  option: 0
+              - action: script.modo_ventilador
+                data:
+                  dispositivo: ventilador_equation
+                  valor: manual

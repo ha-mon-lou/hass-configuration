@@ -12,3 +12,12 @@
       data: {}
       target:
         entity_id: switch.enchufe_habitacion_socket_1
+    - service: mqtt.publish
+      data:
+        topic: "iotlink/workgroup/pc-gaming/commands/notify"
+        payload: >
+          {
+            "title": "Notificación",
+            "message": "WWW.UPF.EDU",
+            "launchParams": "toast://open/https://www.upf.edu/"
+          }

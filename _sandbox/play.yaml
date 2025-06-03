@@ -1,49 +1,28 @@
-      type: vertical-stack
-      cards:
-        - type: custom:mini-graph-card
-          name: 🌡 Temperatura
-          icon: mdi:thermometer
-          entities:
-            - entity: sensor.temperatura_interior
-              name: Interior
-            - entity: sensor.cfg_temperatura_habitacion_1
-              name: 'Habitacion 1'
-            - entity: sensor.cfg_temperatura_habitacion_2
-              name: 'Habitacion 2'
-            - entity: sensor.cfg_temperatura_despacho
-              name: 'Despacho'
-            - entity: sensor.cfg_temperatura_living_1
-              name: 'Living 1'
-            - entity: sensor.cfg_temperatura_living_2
-              name: 'Living 2'
-          hours_to_show: 48
-          points_per_hour: 1
-          line_width: 3
-          show:
-            extrema: false
-            average: false
-            labels: false
-        - type: custom:mini-graph-card
-          name: 💧 Humedades
-          icon: mdi:water-percent
-          entities:
-            - entity: sensor.humedad_interior
-              name: Interior
-            - entity: sensor.cfg_humedad_habitacion_1
-              name: 'Habitacion 1'
-            - entity: sensor.cfg_humedad_habitacion_2
-              name: 'Habitacion 2'
-            - entity: sensor.cfg_humedad_despacho
-              name: 'Despacho'
-            - entity: sensor.cfg_humedad_living_1
-              name: 'Living 1'
-            - entity: sensor.cfg_humedad_living_2
-              name: 'Living 2'
-          hours_to_show: 48
-          points_per_hour: 1
-          line_width: 3
-          show:
-            extrema: true
-            average: true
-            labels: true
+type: vertical-stack
+cards:
+  - type: custom:mushroom-title-card
+    title: Umbrales Ventilador Despacho
 
+  - type: custom:mushroom-number-card
+    entity: input_number.ventilador_umbral_velocidad_1
+    name: Umbral velocidad 1 (⩾)
+    icon: mdi:numeric-1-circle
+    display_mode: slider
+
+  - type: custom:mushroom-number-card
+    entity: input_number.ventilador_umbral_velocidad_2
+    name: Umbral velocidad 2 (⩾)
+    icon: mdi:numeric-2-circle
+    display_mode: slider
+
+  - type: custom:mushroom-number-card
+    entity: input_number.ventilador_umbral_velocidad_3
+    name: Umbral velocidad 3 (⩾)
+    icon: mdi:numeric-3-circle
+    display_mode: slider
+
+  - type: custom:mushroom-number-card
+    entity: input_number.ventilador_umbral_brisa
+    name: Umbral brisa (⩾)
+    icon: mdi:weather-windy
+    display_mode: slider

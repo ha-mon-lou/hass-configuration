@@ -44,7 +44,7 @@ sensor:
         unit_of_measurement: "°C"
         unique_id: "sensacion_termica_despacho"
         value_template: >
-          {{ states('sensor.cfg_sensacion_termica_despacho') }}
+          {{ states('sensor.cfg_sensacion_termica_despacho') | float}}
         icon_template: mdi:thermometer
 
 script:

@@ -40,7 +40,7 @@
      stroke="#1C274C"
      stroke-width="1.5"
      id="path1"
-     style="fill:#cae717;fill-opacity:1" />
+     style="fill:#4fe717;fill-opacity:1" />
   <circle
      cx="12"
      cy="12"
@@ -48,7 +48,7 @@
      stroke="#1C274C"
      stroke-width="1.5"
      id="circle1"
-     style="fill:#cee733;fill-opacity:1" />
+     style="fill:#33e733;fill-opacity:1" />
   <path
      opacity="0.5"
      d="M12 18.0001V16.5"

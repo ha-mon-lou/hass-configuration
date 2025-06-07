@@ -32,7 +32,7 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="switch.alias_frigorifico" /><defs
+     inkscape:current-layer="layer2" /><defs
      id="defs1"><rect
        x="434.5661"
        y="176.58351"
@@ -868,7 +868,7 @@
        inkscape:label="cocina"><g
          style="fill:none"
          id="switch.alias_lavavajillas"
-         transform="matrix(0.46177737,-0.00191124,0.00198243,0.4451958,183.95758,167.43739)"
+         transform="matrix(0.46177737,-0.00191124,0.00198243,0.4451958,100.06811,213.29002)"
          inkscape:transform-center-x="102.3"
          inkscape:transform-center-y="49.326315"
          inkscape:label="switch.alias_lavavajillas"><path
@@ -907,7 +907,7 @@
            id="circle4" /></g><g
          style="fill:none"
          id="switch.alias_frigorifico"
-         transform="matrix(0.46177737,-0.00191124,0.00198243,0.4451958,183.61319,179.85107)"
+         transform="matrix(0.46177737,-0.00191124,0.00198243,0.4451958,68.634244,240.98791)"
          inkscape:transform-center-x="102.3"
          inkscape:transform-center-y="49.326315"
          inkscape:label="switch.alias_frigorifico"><path

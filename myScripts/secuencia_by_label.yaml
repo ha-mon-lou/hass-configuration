@@ -1,0 +1,26 @@
+secuencia_by_label:
+  alias: secuencia by label
+  fields:
+    my_label:
+      description: "Nombre del label (custom_etiquetas)"
+    my_estado:
+      description: "Acción (turn_on/turn_off/toggle)"
+    my_excludes:
+      description: "Texto a excluir en entity_id (opcional)"
+  sequence:
+    - repeat:
+        for_each: >
+          {% set etiqueta_objetivo = my_label %}
+          {% set entidades = states.switch
+             | selectattr('attributes.custom_etiquetas', 'defined')
+             | selectattr('attributes.custom_etiquetas', 'contains', etiqueta_objetivo) %}
+          {% if my_excludes | length > 0 %}
+            {% set entidades = entidades | rejectattr('entity_id', 'search', my_excludes) %}
+          {% endif %}
+          {{ entidades | map(attribute='entity_id') | list }}
+        sequence:
+          - delay: 00:00:01
+          - service: "switch.{{ my_estado }}"
+            target:
+              entity_id: "{{ repeat.item }}"
+  mode: single

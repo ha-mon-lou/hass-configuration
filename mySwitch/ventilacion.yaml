@@ -1,11 +1,27 @@
-- platform: group
-  name: "Alias Pinguino"
-  unique_id: "alias_pinguino"
-  entities:
-    - switch.zigbee_nous_enchufe_04
+- platform: template
+  switches:
+    alias_pinguino:
+      unique_id: alias_pinguino
+      friendly_name: "Alias Pinguino"
+      value_template: "{{ is_state('switch.zigbee_nous_enchufe_04', 'on') }}"
+      turn_on:
+        service: switch.turn_on
+        target:
+          entity_id: switch.zigbee_nous_enchufe_04
+      turn_off:
+        service: switch.turn_off
+        target:
+          entity_id: switch.zigbee_nous_enchufe_04
 
-- platform: group
-  name: "Alias Antimosquitos"
-  unique_id: "alias_antimosquitos"
-  entities:
-    - switch.zigbee_nous_enchufe_01
+    alias_antimosquitos:
+      unique_id: alias_antimosquitos
+      friendly_name: "alias Antimosquitos"
+      value_template: "{{ is_state('switch.zigbee_nous_enchufe_01', 'on') }}"
+      turn_on:
+        service: switch.turn_on
+        target:
+          entity_id: switch.zigbee_nous_enchufe_01
+      turn_off:
+        service: switch.turn_off
+        target:
+          entity_id: switch.zigbee_nous_enchufe_01

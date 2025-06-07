@@ -26,16 +26,13 @@
     - platform: time_pattern
       minutes: "/5"
   condition:
-    - condition: state
-      entity_id: switch.grp_luces_comedor
-      state: "on" # Solo actúa si el enchufe está encendido
     - condition: sun
       after: sunrise
       before: sunset
   action:
-    - action: script.secuencia_by_area
+    - action: script.secuencia_by_label
       data:
-        my_area: "Living room"
+        my_label: "nocturno"
         my_excludes: "sonoff_trvzb"
         my_estado: "turn_off"
   mode: single

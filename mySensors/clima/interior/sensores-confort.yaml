@@ -103,5 +103,3 @@
       value_template: >
         {% from 'confort_termico.jinja' import macro_confort_termico %}
         {{ macro_confort_termico('sensor.zigbee_heiman_hs3aq_01_temperature','sensor.zigbee_heiman_hs3aq_01_humidity') }}
-
-        zigbee_heiman_hs3aq_temperature

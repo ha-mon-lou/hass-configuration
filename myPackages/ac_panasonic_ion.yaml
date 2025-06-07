@@ -86,6 +86,10 @@ automation:
       - platform: state
         entity_id: input_boolean.ac_panasonic_ion_encendido
         to: "on"
+    condition:
+      - condition: state
+        entity_id: input_boolean.verano
+        state: "on"
     action:
       - service: script.ac_panasonic_ion_power
 
@@ -94,6 +98,10 @@ automation:
       - platform: state
         entity_id: input_boolean.ac_panasonic_ion_encendido
         to: "off"
+    condition:
+      - condition: state
+        entity_id: input_boolean.verano
+        state: "on"
     action:
       - service: script.ac_panasonic_ion_power
       - service: input_text.set_value
@@ -116,6 +124,9 @@ automation:
       - condition: state
         entity_id: input_select.ac_panasonic_ion_modo
         state: "auto"
+      - condition: state
+        entity_id: input_boolean.verano
+        state: "on"
     action:
       - service: timer.start
         data:
@@ -133,6 +144,10 @@ automation:
         event_data:
           entity_id: timer.ac_panasonic_ion_temporizador
     condition:
+    condition:
+      - condition: state
+        entity_id: input_boolean.verano
+        state: "on"
       - condition: state
         entity_id: input_boolean.ac_panasonic_ion_encendido
         state: "on"
@@ -160,6 +175,10 @@ script:
   ac_panasonic_ion_power:
     alias: PKG AC Aire acondicionado power
     sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.meross_switch_02_outlet     
+      - delay: 00:00:05     
       - service: script.envia_comando_broadlink
         data:
           dispositivo: "aire_acondicionado"

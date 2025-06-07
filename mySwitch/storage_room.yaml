@@ -1,0 +1,27 @@
+- platform: template
+  switches:
+    alias_storage_washing_machines:
+      unique_id: alias_storage_washing_machines
+      friendly_name: "STRG Washing Machines"
+      value_template: "{{ is_state('switch.meross_switch_01_outlet', 'on') }}"
+      turn_on:
+        service: switch.turn_on
+        target:
+          entity_id: switch.meross_switch_01_outlet
+      turn_off:
+        service: switch.turn_off
+        target:
+          entity_id: switch.meross_switch_01_outlet
+
+    alias_storage_ac_panasonic:
+      unique_id: alias_storage_ac_panasonic
+      friendly_name: "STRG AC"
+      value_template: "{{ is_state('switch.meross_switch_02_outlet', 'on') }}"
+      turn_on:
+        service: switch.turn_on
+        target:
+          entity_id: switch.meross_switch_02_outlet
+      turn_off:
+        service: switch.turn_off
+        target:
+          entity_id: switch.meross_switch_02_outlet

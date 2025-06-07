@@ -1,0 +1,18 @@
+homeassistant:
+  customize:
+    binary_sensor.exterior_mas_calido_que_interior:
+      friendly_name: "Exterior más cálido que interior"
+      icon: mdi:weather-sunny-alert
+
+template:
+  - binary_sensor:
+      - name: "Exterior más cálido que interior"
+        unique_id: exterior_mas_calido_que_interior
+        device_class: heat
+        state: >
+          {% set ext = states('sensor.sensacion_termica_exterior') | float(0) %}
+          {% set int = states('sensor.sensacion_termica') | float(0) %}
+          {{ ext > int }}
+        attributes:
+          temperatura_exterior: "{{ states('sensor.sensacion_termica_exterior') }}"
+          temperatura_interior: "{{ states('sensor.sensacion_termica') }}"

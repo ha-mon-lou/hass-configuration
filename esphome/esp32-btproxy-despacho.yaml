@@ -1,5 +1,5 @@
 substitutions:
-  nombre_dispositivo: esp32-btproxy-despacho   # hostname sin guion bajo
+  nombre_dispositivo: esp32-btproxy-despacho
   area_local: "despacho"
   invertido_led: "true"
 
@@ -22,22 +22,20 @@ esp32:
   framework:
     type: arduino
 
-
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   manual_ip:
-    static_ip: 192.168.1.220   # IP fija que quieras asignar (que esté libre en tu red)
-    gateway: 192.168.1.1       # La puerta de enlace de tu red (normalmente el router)
-    subnet: 255.255.255.0      # Máscara de subred típica para redes domésticas
-    dns1: 8.8.8.8              # DNS primario (opcional)
-    dns2: 8.8.4.4              # DNS secundario (opcional)
+    static_ip: 192.168.1.220
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0
+    dns1: 8.8.8.8
+    dns2: 8.8.4.4
   ap: {}
 
 logger:
+  level: WARN
 
-
-# Enable Home Assistant API
 api:
   encryption:
     key: "cM8kHFf4cDp6tr1NkDZe3/aVneXmYO5it79jQHku2u4="
@@ -46,7 +44,6 @@ ota:
   - platform: esphome
     password: "04085f2a51a6ac0c04575cb4fc661b3c"
 
-
 esp32_ble_tracker:
   scan_parameters:
     interval: 500ms
@@ -54,7 +51,6 @@ esp32_ble_tracker:
 
 bluetooth_proxy:
   active: true
-
 
 output:
   - platform: gpio
@@ -69,3 +65,39 @@ light:
     name: "LED area"
     output: gpio_led
 
+binary_sensor:
+  - platform: homeassistant
+    name: "Presencia"
+    entity_id: input_boolean.presencia
+    id: presencia
+    on_press:
+      then:
+        - script.execute: led_blink
+        - binary_sensor.template.publish:
+            id: estado_presencia
+            state: ON
+    on_release:
+      then:
+        - script.stop: led_blink
+        - light.turn_off: led_area
+        - binary_sensor.template.publish:
+            id: estado_presencia
+            state: OFF
+
+  - platform: template
+    name: "Presencia detectada"
+    id: estado_presencia
+    device_class: occupancy
+
+script:
+  - id: led_blink
+    mode: restart
+    then:
+      - while:
+          condition:
+            lambda: 'return id(presencia).state;'
+          then:
+            - light.turn_on: led_area
+            - delay: 50ms
+            - light.turn_off: led_area
+            - delay: 1950ms

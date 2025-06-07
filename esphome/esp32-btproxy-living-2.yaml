@@ -35,9 +35,8 @@ wifi:
   ap: {}
 
 logger:
+  level: WARN
 
-
-# Enable Home Assistant API
 api:
   encryption:
     key: "cM8kHFf4cDp6tr1NkDZe3/aVneXmYO5it79jQHku2u4="
@@ -55,7 +54,6 @@ esp32_ble_tracker:
 bluetooth_proxy:
   active: true
 
-
 output:
   - platform: gpio
     pin:
@@ -69,3 +67,39 @@ light:
     name: "LED area"
     output: gpio_led
 
+binary_sensor:
+  - platform: homeassistant
+    name: "Presencia"
+    entity_id: input_boolean.presencia
+    id: presencia
+    on_press:
+      then:
+        - script.execute: led_blink
+        - binary_sensor.template.publish:
+            id: estado_presencia
+            state: ON
+    on_release:
+      then:
+        - script.stop: led_blink
+        - light.turn_off: led_area
+        - binary_sensor.template.publish:
+            id: estado_presencia
+            state: OFF
+
+  - platform: template
+    name: "Presencia detectada"
+    id: estado_presencia
+    device_class: occupancy
+
+script:
+  - id: led_blink
+    mode: restart
+    then:
+      - while:
+          condition:
+            lambda: 'return id(presencia).state;'
+          then:
+            - light.turn_on: led_area
+            - delay: 50ms
+            - light.turn_off: led_area
+            - delay: 1950ms

@@ -38,6 +38,7 @@ logger:
 
 homeassistant:
   packages: !include_dir_named myPackages
+  customize: !include myCustomize/customize_switches.yaml
 
 lovelace:
   resources:

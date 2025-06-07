@@ -6,7 +6,7 @@
    version="1.1"
    id="svg426"
    sodipodi:docname="home.svg"
-   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -680,14 +680,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1001"
+     inkscape:window-height="1057"
      id="namedview428"
      showgrid="false"
      inkscape:zoom="5.6568545"
-     inkscape:cx="66.468034"
-     inkscape:cy="224.24123"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
+     inkscape:cx="167.5843"
+     inkscape:cy="125.24628"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg426"
      inkscape:showpageshadow="2"
@@ -1414,15 +1414,15 @@
      id="path338"
      d="m 58.296829,79.936829 -2.687,-0.424 -2.404,-0.99 -2.122,-1.414 -1.839,-1.839 -1.273,-2.263 -0.849,-2.404 -0.283,-2.546 m 33.379999,-11.74 0.566,-1.556 0.141,-1.697 m  0.849,3.253 -0.566,-1.556 -0.283,-1.697 m -55.018999,0.848 v -1.556 m 0,-2.262 v -1.131 m 0,-2.264 v -1.556 h 1.556 m 2.263,0 h 1.132 m 2.121,0 h 1.697 v 1.556 m 0,2.263 v 1.131 m  0,2.264 v 1.556 h -1.697 m -2.122,-0.001 h -1.132 m -2.262,0 h -1.556 M 5.6818276,124.48983 h 0.424 v -11.456 h -0.424 v 11.456 m 0,-12.022 H 16.996829" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:0.131;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
-     inkscape:connector-curvature="0"
-     id="path340"
-     d="m 5.6818276,124.48983 2.404,-0.283 2.4040014,-0.849 2.263,-1.273 1.839,-1.839 1.273,-2.122 0.849,-2.404 0.283,-2.687 m 0.566,-2.404 v 3.112 m -12.5880014,-3.112 v 3.112 m  0,-3.112 v 3.112 m 12.5880014,-3.112 v 3.112 m -12.5880014,0 H 17.562829 m 0,-3.112 H 4.9748276 m 0,3.112 h 0.707 v -2.404 h -0.707 v 2.404 m 12.0230014,0 h 0.566 v -2.404 h -0.566  v 2.404 m -12.0230014,0 H 17.562829 m -0.565,0 H 5.6828276 m -0.708,-2.405 v 2.404 m 12.5880014,-2.404 v 2.404 m -0.565,-2.404 v 2.404 m -11.3160014,0.001 v -2.404 m  11.8810014,-0.001 H 4.9748276 m 0.707,0 H 16.996829" />
-  <path
      style="fill:none;stroke:#000000;stroke-width:0.26100001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
      inkscape:connector-curvature="0"
      id="path342"
      d="m 18.694829,45.284829 h 0.849 m -0.849,9.759 v -9.759 m 0.848,9.759 h -0.849 m 0.849,-9.759 v 9.759 m 0.566,5.233 h -0.566 m 0.566,-10.042 v 10.042 m -0.566,-10.042 h 0.566  m -0.566,10.042 v -10.042 m 4.102,6.365 v -0.283 m -0.99,-0.707 0.99,0.99 m -0.99,-1.132 0.99,0.99 m -0.99,-1.131 0.99,0.99 m -2.121,0.283 v -0.283 m 1.131,-0.707 -1.132,0.99 m  1.132,-1.132 -1.132,0.99 m 1.132,-1.131 -1.132,0.99 m 1.132,2.687 v -3.677 m -5.092,10.466 h 3.112 m -3.112,-21.074 h 3.112 m -3.112,0 h 3.112 m -3.112,21.074 h 3.112 m 0,-21.074 v  21.074 m -3.112,0 v -21.074 m 1.132,10.325 h 0.849 m -0.849,0.566 v -0.566 m 0.848,0.566 h -0.849 m 0.849,-0.566 v 0.566 m 0,-0.566 v 0.566 m -0.848,-0.566 h 0.849 m -0.849,0.566 h  0.849 m -0.849,0 v -0.566 m -0.425,-10.325 h 2.404 m -2.404,0.566 v -0.566 m 2.405,0.566 h -2.404 m 2.404,-0.566 v 0.566 m -2.405,19.942 h 2.404 m -2.404,0.566 v -0.566 m  2.405,0.566 h -2.404 m 2.404,-0.566 v 0.566 m 0,-0.566 v -19.942 m 0,-0.566 v 21.074 m -2.405,-21.074 h 2.404 m -2.404,21.074 h 2.404 m -2.404,-0.566 h 2.404 m 10e-4,-19.942 h  -2.404 v 19.943 m -10e-4,0.565 v -21.074" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.131;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
+     inkscape:connector-curvature="0"
+     id="path340"
+     d="m 5.6818276,124.48983 2.404,-0.283 2.4040014,-0.849 2.263,-1.273 1.839,-1.839 1.273,-2.122 0.849,-2.404 0.283,-2.687 m 0.566,-2.404 v 3.112 m -12.5880014,-3.112 v 3.112 m  0,-3.112 v 3.112 m 12.5880014,-3.112 v 3.112 m -12.5880014,0 H 17.562829 m 0,-3.112 H 4.9748276 m 0,3.112 h 0.707 v -2.404 h -0.707 v 2.404 m 12.0230014,0 h 0.566 v -2.404 h -0.566  v 2.404 m -12.0230014,0 H 17.562829 m -0.565,0 H 5.6828276 m -0.708,-2.405 v 2.404 m 12.5880014,-2.404 v 2.404 m -0.565,-2.404 v 2.404 m -11.3160014,0.001 v -2.404 m  11.8810014,-0.001 H 4.9748276 m 0.707,0 H 16.996829" />
   <path
      style="fill:none;stroke:#000000;stroke-width:0.131;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
      inkscape:connector-curvature="0"
@@ -1804,8 +1804,7 @@
               <polygon
                  id="triangle"
                  fill="#3c3c3b"
-                 points="10,0 15,162 5,162 "
-                  />
+                 points="10,0 15,162 5,162 " />
             </g>
           </g>
         </g>
@@ -2144,8 +2143,8 @@
        y="114.23416"
        style="font-size:7.55914px;stroke-width:0.944892">Garage light</tspan></text>
   <g
-     id="switch.living_area_fan.button"
-     inkscape:label="switch.living_area_fan.button"
+     id="switch.alias_pinguino"
+     inkscape:label="switch.alias_pinguino"
      transform="translate(0,-6)">
     <rect
        style="fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"

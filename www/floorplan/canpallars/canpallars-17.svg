@@ -26,7 +26,7 @@
      inkscape:document-units="mm"
      inkscape:zoom="1.5233586"
      inkscape:cx="636.09448"
-     inkscape:cy="717.82179"
+     inkscape:cy="822.85287"
      inkscape:window-width="1920"
      inkscape:window-height="1057"
      inkscape:window-x="-8"
@@ -844,4 +844,13 @@
        y="179.52052"
        sodipodi:type="rect"
        inkscape:label="living_2"
-       transform="matrix(0.99996042,0.00889705,0.00151234,0.99999886,0,0)" /></g></svg>
+       transform="matrix(0.99996042,0.00889705,0.00151234,0.99999886,0,0)" /><rect
+       style="fill:#000000;fill-opacity:0.16763;stroke-width:0.505042"
+       id="living_2-9"
+       width="33.306648"
+       height="36.539631"
+       x="131.507"
+       y="250.83069"
+       sodipodi:type="rect"
+       inkscape:label="living_2"
+       transform="matrix(0.99998273,0.00587664,0.00228968,0.99999738,0,0)" /></g></svg>

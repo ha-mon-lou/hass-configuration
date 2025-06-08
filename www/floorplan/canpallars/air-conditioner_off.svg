@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   width="800px"
+   height="800px"
+   viewBox="0 0 24 24"
+   id="air-conditioner"
+   data-name="Line Color"
+   class="icon line-color"
+   version="1.1"
+   sodipodi:docname="air-conditioner_off.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.534375"
+     inkscape:cx="428.53801"
+     inkscape:cy="582.92398"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="air-conditioner" />
+  <path
+     id="secondary"
+     d="M 11.042546,16.661807 H 6.7656974 M 18.527029,10.058612 V 8.7379718 M 14.250182,10.058612 V 8.7379718 M 9.9733333,10.058612 V 8.7379718 M 5.6964846,10.058612 V 8.7379718 M 6.7656974,14.020528 H 17.457817 V 12.699889 H 6.7656974 Z"
+     style="fill:#e6e6e6;stroke:#b8e7ee;stroke-width:1.6805;stroke-linecap:round;stroke-linejoin:round;fill-opacity:0.38721806;stroke-opacity:1" />
+  <rect
+     id="primary"
+     x="-21.734663"
+     y="-19.303087"
+     width="19.245811"
+     height="6.6031957"
+     rx="1.0692118"
+     style="fill:none;stroke:#000000;stroke-width:1.6805;stroke-linecap:round;stroke-linejoin:round"
+     transform="scale(-1)" />
+</svg>

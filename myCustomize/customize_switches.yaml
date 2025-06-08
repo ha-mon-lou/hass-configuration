@@ -8,8 +8,7 @@ switch.alias_pinguino:
     - ventilacion
 switch.alias_shelly_habitacion:
   custom_etiquetas:
-    - nocturno
-    - luz
+    - permanente
 
 switch.alias_storage_ac_panasonic:
   custom_etiquetas:

@@ -44,17 +44,6 @@
 
     - action: script.secuencia_by_area
       data:
-        my_area: "habitacion_1"
-        my_excludes: "sonoff_trvzb"
-        my_estado: "turn_off"
-    - service: input_text.set_value
-      data:
-        entity_id: input_text.resumen_shutdown
-        value: >
-          {{ states('input_text.resumen_shutdown') ~ "\n· Dispositivos dormitorio apagados" }}
-
-    - action: script.secuencia_by_area
-      data:
         my_area: "living_1"
         my_excludes: "sonoff_trvzb"
         my_estado: "turn_off"

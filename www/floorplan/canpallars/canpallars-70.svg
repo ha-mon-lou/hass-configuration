@@ -25,8 +25,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.7616793"
-     inkscape:cx="116.19063"
-     inkscape:cy="685.98425"
+     inkscape:cx="115.53419"
+     inkscape:cy="580.95316"
      inkscape:window-width="1920"
      inkscape:window-height="1057"
      inkscape:window-x="-8"
@@ -1137,11 +1137,11 @@
            y="1026.2344"
            id="tspan9">temp</tspan></text><g
          style="fill:none"
-         id="switch.anti_mosquitos"
+         id="switch.alias_antimosquitos"
          transform="matrix(0.46177737,-0.00191124,0.00198243,0.4451958,138.06201,7.7275645)"
          inkscape:transform-center-x="102.3"
          inkscape:transform-center-y="49.326315"
-         inkscape:label="switch.anti_mosquitos"><path
+         inkscape:label="switch.alias_antimosquitos"><path
            opacity="0.5"
            d="M 2,12 C 2,7.28595 2,4.92893 3.46447,3.46447 4.92893,2 7.28595,2 12,2 16.714,2 19.0711,2 20.5355,3.46447 22,4.92893 22,7.28595 22,12 c 0,4.714 0,7.0711 -1.4645,8.5355 C 19.0711,22 16.714,22 12,22 7.28595,22 4.92893,22 3.46447,20.5355 2,19.0711 2,16.714 2,12 Z"
            stroke="#1c274c"
@@ -1385,7 +1385,7 @@
            fill="#1c274c"
            id="circle4-7-7-8-0-15" /></g></g></g><text
      xml:space="preserve"
-     transform="matrix(0.26458333,0,0,0.26458333,58.010526,-23.621052)"
+     transform="matrix(0.26458333,0,0,0.26458333,77.115789,-26.052631)"
      id="text1"
      style="text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect6);display:inline;fill:#277232;fill-opacity:0.00867052;stroke:#2da533"><tspan
        x="68.269531"

@@ -90,14 +90,14 @@
     #   Heiman HS3AQ
     #
 
-    sensacion_termica_heiman_hs3aq:
+    sensacion_termica_heiman_hs3aq_01:
       friendly_name: "Sensación Térmica (Shelly Blue)"
       unit_of_measurement: "°C"
       value_template: >
         {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
         {{ macro_sensacion_termica('sensor.zigbee_heiman_hs3aq_01_temperature', 'sensor.zigbee_heiman_hs3aq_01_humidity') }}
 
-    confort_termico_heiman_hs3aq:
+    confort_termico_heiman_hs3aq_01:
       friendly_name: "Confort Térmico (Shelly Blue)"
       unit_of_measurement: "°C"
       value_template: >

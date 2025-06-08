@@ -44,7 +44,7 @@
         "voltage": 3000,
         "battery": 100,
         "temperature": 25.49,
-        "humidity": 64.92,
+        "humidity": 65.02,
         "linkquality": 255
     },
     "0xa4c138b7c1781a47": {
@@ -171,9 +171,9 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 24.14,
-        "humidity": 64.24,
-        "co2": 546,
+        "temperature": 24.24,
+        "humidity": 64.25,
+        "co2": 547,
         "linkquality": 255
     },
     "0xe406bffffe34f94b": {

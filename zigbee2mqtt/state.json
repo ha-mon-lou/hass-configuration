@@ -17,7 +17,7 @@
         }
     },
     "0xa4c13819d046464f": {
-        "voltage": 230,
+        "voltage": 231,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -25,11 +25,11 @@
         "child_lock": "UNLOCK",
         "linkquality": 140,
         "power": 37,
-        "energy": 97.44,
+        "energy": 97.45,
         "current": 0.27
     },
     "0xa4c138b8caa59009": {
-        "voltage": 230,
+        "voltage": 231,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -43,8 +43,8 @@
     "0x00124b002a565fae": {
         "voltage": 3000,
         "battery": 100,
-        "temperature": 25.42,
-        "humidity": 67.8,
+        "temperature": 25.45,
+        "humidity": 67.7,
         "linkquality": 255
     },
     "0xa4c138b7c1781a47": {
@@ -171,9 +171,9 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 24.61,
-        "humidity": 71.02,
-        "co2": 419,
+        "temperature": 24.78,
+        "humidity": 70.11,
+        "co2": 423,
         "linkquality": 255
     },
     "0xe406bffffe34f94b": {

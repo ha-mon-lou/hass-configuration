@@ -443,17 +443,12 @@ views:
                           service_data:
                             style: >
                               > const temp = parseFloat(entity.state);
-
                               const min = 16, max = 25;
-
-                              const clamped = Math.min(Math.max(temp, min),
-                              max);
-
+                              const clamped = Math.min(Math.max(temp, min),max);
                               const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  const g =
-                              Math.round(100 * (1 - ratio));  const b
-                              =Math.round(255 * (1 - ratio));
-
+                              const r = Math.round(255 * ratio);  
+                              const g = Math.round(100 * (1 - ratio));  
+                              const b = Math.round(255 * (1 - ratio));
                               const alpha = 0.5; 
 
                               return `
@@ -469,17 +464,12 @@ views:
                           service_data:
                             style: >
                               > const temp = parseFloat(entity.state);
-
                               const min = 16, max = 25;
-
-                              const clamped = Math.min(Math.max(temp, min),
-                              max);
-
+                              const clamped = Math.min(Math.max(temp, min),max);
                               const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  const g =
-                              Math.round(100 * (1 - ratio));  const b
-                              =Math.round(255 * (1 - ratio));
-
+                              const r = Math.round(255 * ratio);  
+                              const g = Math.round(100 * (1 - ratio));  
+                              const b = Math.round(255 * (1 - ratio));
                               const alpha = 0.5; 
 
                               return `
@@ -495,19 +485,13 @@ views:
                           service_data:
                             style: >
                               > const temp = parseFloat(entity.state);
-
                               const min = 16, max = 25;
-
-                              const clamped = Math.min(Math.max(temp, min),
-                              max);
-
+                              const clamped = Math.min(Math.max(temp, min),max);
                               const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  const g =
-                              Math.round(100 * (1 - ratio));  const b
-                              =Math.round(255 * (1 - ratio));
-
+                              const r = Math.round(255 * ratio);  
+                              const g = Math.round(100 * (1 - ratio));  
+                              const b = Math.round(255 * (1 - ratio));
                               const alpha = 0.5; 
-
                               return `
                                 fill: rgba(${r}, ${g}, ${b}, ${alpha});
                                 transition: fill 1s ease;
@@ -521,17 +505,12 @@ views:
                           service_data:
                             style: >
                               > const temp = parseFloat(entity.state);
-
                               const min = 16, max = 25;
-
-                              const clamped = Math.min(Math.max(temp, min),
-                              max);
-
+                              const clamped = Math.min(Math.max(temp, min),max);
                               const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  const g =
-                              Math.round(100 * (1 - ratio));  const b
-                              =Math.round(255 * (1 - ratio));
-
+                              const r = Math.round(255 * ratio);  
+                              const g = Math.round(100 * (1 - ratio));  
+                              const b = Math.round(255 * (1 - ratio));
                               const alpha = 0.5; 
 
                               return `

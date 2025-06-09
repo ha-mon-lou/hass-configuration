@@ -1,1 +1,19 @@
 /local/floorplan/assets/cf-a01_off.svg
+
+          const temp = parseFloat(entity.state);
+
+          const min = 15, max = 30;
+          const clamped = Math.min(Math.max(temp, min), max);
+
+          // Escala de azul (frío) a rojo (calor)
+          const ratio = (clamped - min) / (max - min);
+          const r = Math.round(255 * ratio);
+          const g = Math.round(100 * (1 - ratio));
+          const b = Math.round(255 * (1 - ratio));
+
+          const alpha = 0.5; // 0 totalmente transparente, 1 opaco
+
+          return `
+            fill: rgba(${r}, ${g}, ${b}, ${alpha});
+            transition: fill 1s ease;
+          `;

@@ -1,0 +1,541 @@
+views:
+  - title: Floorplan
+    path: floorplan
+    theme: Google Dark Theme
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:floorplan-card
+                full_height: true
+                config:
+                  image: /local/floorplan/canpallars/canpallars-C1.svg
+                  stylesheet: /local/floorplan/assets/canpallars.css
+                  console_log_level: info
+                  defaults:
+                    hover_action: hover-info
+                    tap_action: more-info
+                  rules:
+                    - entity: switch.alias_caldera
+                      element: switch.alias_caldera
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: input_number.nivel_sensacion_termica_ideal
+                      element: puerta-test
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: |
+                              >
+                              var rotation = Math.floor(entity.state) ;
+
+                              return `
+                                transform-box: fill-box;
+                                transform-origin: center;
+                                transform: rotate(${rotation}deg);
+                              `;
+                      tap_action: false
+                    - entity: sensor.cfg_sensacion_termica_despacho
+                      element: room_despacho
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const temp = parseFloat(entity.state);
+
+                              const min = 18, max = 35;
+
+                              const clamped = Math.min(Math.max(temp, min),
+                              max);
+
+                              const ratio = (clamped - min) / (max - min); 
+                              const r = Math.round(255 * ratio);  const g =
+                              Math.round(100 * (1 - ratio));  const b
+                              =Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.2; 
+
+                              return `
+                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                transition: fill 1s ease;
+                              `;
+                      tap_action: false
+                    - entity: binary_sensor.presencia
+                      element: cerrada
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: |
+                              return `
+                                transform-box: fill-box;
+                                transform-origin: center;
+                                transform: rotate(${entity.state === 'on'? 90 : 0}deg);
+                                transition: transform 0.5s ease;
+                              `;
+                      tap_action: false
+                    - entity: input_boolean.ac_panasonic_ion_encendido
+                      element: input_boolean.ac_panasonic_ion_encendido
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/ac/air_conditioner_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: input_boolean.ventilador_despacho
+                      element: input_boolean.ventilador_despacho
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >-
+                            /local/floorplan/assets/ceiling_fan/cf_a01_${entity.state}.svg
+                        - action: call-service
+                          service: floorplan.class_set
+                          service_data:
+                            class: '${(entity.state === "on") ? "spinning" : ""}'
+                      tap_action: toggle
+                    - entity: input_boolean.ventilador_habitacion
+                      element: input_boolean.ventilador_habitacion
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >-
+                            /local/floorplan/assets/ceiling_fan/cf_a01_${entity.state}.svg
+                        - action: call-service
+                          service: floorplan.class_set
+                          service_data:
+                            class: '${(entity.state === "on") ? "spinning" : ""}'
+                      tap_action: toggle
+                    - entity: input_boolean.ventilador_equation
+                      element: input_boolean.ventilador_equation
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >-
+                            /local/floorplan/assets/ventilador/ventilador-a01_${entity.state}.svg
+                        - action: call-service
+                          service: floorplan.class_set
+                          service_data:
+                            class: '${(entity.state === "on") ? "spinning" : ""}'
+                      tap_action: toggle
+                    - entity: switch.alias_pinguino
+                      element: switch.alias_pinguino
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >-
+                            /local/floorplan/assets/ventilador/ventilador-a01_${entity.state}.svg
+                        - action: call-service
+                          service: floorplan.class_set
+                          service_data:
+                            class: '${(entity.state === "on") ? "spinning" : ""}'
+                      tap_action: toggle
+                    - entity: sensor.temperatura_exterior
+                      element: sensor.temperatura_exterior
+                      state_action:
+                        - action: call-service
+                          service: floorplan.text_set
+                          service_data: ${entity.state}º
+                      tap_action: false
+                    - entity: sensor.temperatura_exterior
+                      element: sensor.temperatura_exterior.fondo
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const temp = parseFloat(entity.state);
+
+                              const min = 18, max = 35;
+
+                              const clamped = Math.min(Math.max(temp, min),
+                              max);
+
+                              const ratio = (clamped - min) / (max - min); 
+                              const r = Math.round(255 * ratio);  const g =
+                              Math.round(100 * (1 - ratio));  const b
+                              =Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.2; 
+
+                              return `
+                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                transition: fill 1s ease;
+                              `;
+                      tap_action: false
+                    - entity: sensor.temperatura_interior
+                      element: sensor.temperatura_interior
+                      state_action:
+                        - action: call-service
+                          service: floorplan.text_set
+                          service_data: ${entity.state}º
+                      tap_action: false
+                    - entity: sensor.temperatura_interior
+                      element: sensor.temperatura_interior.fondo
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const temp = parseFloat(entity.state);
+
+                              const min = 18, max = 35;
+
+                              const clamped = Math.min(Math.max(temp, min),
+                              max);
+
+                              const ratio = (clamped - min) / (max - min); 
+                              const r = Math.round(255 * ratio);  const g =
+                              Math.round(100 * (1 - ratio));  const b
+                              =Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.2; 
+
+                              return `
+                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                transition: fill 1s ease;
+                              `;
+                      tap_action: false
+                    - entity: sensor.bms_pau_weight
+                      element: sensor.bms_pau_weight
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state} kg
+                      tap_action: false
+                    - entity: sensor.bms_ramon_weight
+                      element: sensor.bms_ramon_weight
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state} kg
+                      tap_action: false
+                    - entity: sensor.um_pasitos
+                      element: sensor.um_pasitos
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}
+                      tap_action: false
+                    - entity: sensor.zigbee_heiman_hs3aq_01_co2
+                      element: sensor.zigbee_heiman_hs3aq_01_co2
+                      state_action:
+                        - action: call-service
+                          service: floorplan.text_set
+                          service_data: ${entity.state} ppm
+                        - action: call-service
+                          service: floorplan.style_set
+                          style: |
+                            fill: ${ parseInt(entity.state) > 1200 ? "red" :
+                                    parseInt(entity.state) > 800 ? "orange" :
+                                    "green" };
+                      tap_action: false
+                    - entity: sensor.zigbee_heiman_hs3aq_01_co2
+                      element: room_habitacion_2
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const temp = parseInt(entity.state);
+
+                              const min = 400, max = 2000;
+
+                              const clamped = Math.min(Math.max(temp, min),
+                              max);
+
+                              const ratio = (clamped - min) / (max - min); 
+                              const r = Math.round(255 * ratio);  const g =
+                              Math.round(100 * (1 - ratio));  const b
+                              =Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.8; 
+
+                              return `
+                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                transition: fill 1s ease;
+                              `;
+                      tap_action: false
+                    - entity: switch.alias_antimosquitos
+                      element: switch.alias_antimosquitos
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.shelly1minig3_34b7dac6f3e4_switch_0
+                      element: switch.shelly1minig3_34b7dac6f3e4_switch_0
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: sensor.cfg_sensacion_termica_habitacion_1
+                      element: sensor.cfg_sensacion_termica_habitacion_1
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}º
+                      tap_action: false
+                    - entity: sensor.cfg_sensacion_termica_habitacion_2
+                      element: sensor.cfg_sensacion_termica_habitacion_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}º
+                      tap_action: false
+                    - entity: sensor.cfg_sensacion_termica_despacho
+                      element: sensor.cfg_sensacion_termica_despacho
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}º
+                      tap_action: false
+                    - entity: sensor.cfg_sensacion_termica_living_1
+                      element: sensor.cfg_sensacion_termica_living_1
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}º
+                      tap_action: false
+                    - entity: sensor.cfg_sensacion_termica_living_2
+                      element: sensor.cfg_sensacion_termica_living_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}º
+                      tap_action: false
+                    - entity: switch.regleta_antela_socket_1
+                      element: switch.regleta_antela_socket_1
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.regleta_antela_socket_2
+                      element: switch.regleta_antela_socket_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.regleta_antela_socket_3
+                      element: switch.regleta_antela_socket_3
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.regleta_antela_socket_4
+                      element: switch.regleta_antela_socket_4
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: false
+                    - entity: switch.enchufe_habitacion_socket_1
+                      element: switch.enchufe_habitacion_socket_1
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.enchufe_habitacion_socket_2
+                      element: switch.enchufe_habitacion_socket_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.enchufe_doble_socket_1
+                      element: switch.enchufe_doble_socket_1
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/light/light_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.enchufe_doble_socket_2
+                      element: switch.enchufe_doble_socket_2
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >-
+                            /local/floorplan/assets/light/light_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.alias_lavavajillas
+                      element: switch.alias_lavavajillas
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.alias_frigorifico
+                      element: switch.alias_frigorifico
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: false
+                    - entity: switch.meross_switch_01_outlet
+                      element: switch.meross_switch_01_outlet
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.meross_switch_02_outlet
+                      element: switch.meross_switch_02_outlet
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: binary_sensor.esp32_btproxy_living_2_presencia_detectada
+                      element: cerrada
+                      state_action:
+                        action: call-service
+                        service: floorplan.style_set
+                        service_data:
+                          style: >
+                            fill: ${ entity.state === "on" ? "green" : "red" };
+
+                            transition: ${ entity.state === "off" ? "fill 5s
+                            ease" : "" };
+                          tap_action: toggle
+                    - entity: media_player.my_box_2
+                      element: media_player.my_box
+                      state_action:
+                        action: call-service
+                        service: floorplan.style_set
+                        service_data:
+                          style: >
+                            fill: ${ entity.state === "on" ? "green" : "red" };
+
+                            transition: ${ entity.state === "off" ? "fill 5s
+                            ease" : "" };
+                          tap_action: toggle
+                    - entity: number.zigbee_sonoff_trvzb_01_external_temperature_input
+                      element: number.zigbee_sonoff_trvzb_01_external_temperature_input
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const temp = parseFloat(entity.state);
+
+                              const min = 16, max = 25;
+
+                              const clamped = Math.min(Math.max(temp, min),
+                              max);
+
+                              const ratio = (clamped - min) / (max - min); 
+                              const r = Math.round(255 * ratio);  const g =
+                              Math.round(100 * (1 - ratio));  const b
+                              =Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.5; 
+
+                              return `
+                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                transition: fill 1s ease;
+                              `;
+                      tap_action: false
+                    - entity: number.zigbee_sonoff_trvzb_02_external_temperature_input
+                      element: number.zigbee_sonoff_trvzb_02_external_temperature_input
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const temp = parseFloat(entity.state);
+
+                              const min = 16, max = 25;
+
+                              const clamped = Math.min(Math.max(temp, min),
+                              max);
+
+                              const ratio = (clamped - min) / (max - min); 
+                              const r = Math.round(255 * ratio);  const g =
+                              Math.round(100 * (1 - ratio));  const b
+                              =Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.5; 
+
+                              return `
+                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                transition: fill 1s ease;
+                              `;
+                      tap_action: false
+                    - entity: number.zigbee_sonoff_trvzb_03_external_temperature_input
+                      element: number.zigbee_sonoff_trvzb_03_external_temperature_input
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const temp = parseFloat(entity.state);
+
+                              const min = 16, max = 25;
+
+                              const clamped = Math.min(Math.max(temp, min),
+                              max);
+
+                              const ratio = (clamped - min) / (max - min); 
+                              const r = Math.round(255 * ratio);  const g =
+                              Math.round(100 * (1 - ratio));  const b
+                              =Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.5; 
+
+                              return `
+                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                transition: fill 1s ease;
+                              `;
+                      tap_action: false
+                    - entity: number.zigbee_sonoff_trvzb_04_external_temperature_input
+                      element: number.zigbee_sonoff_trvzb_04_external_temperature_input
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const temp = parseFloat(entity.state);
+
+                              const min = 16, max = 25;
+
+                              const clamped = Math.min(Math.max(temp, min),
+                              max);
+
+                              const ratio = (clamped - min) / (max - min); 
+                              const r = Math.round(255 * ratio);  const g =
+                              Math.round(100 * (1 - ratio));  const b
+                              =Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.5; 
+
+                              return `
+                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                transition: fill 1s ease;
+                              `;
+                      tap_action: false

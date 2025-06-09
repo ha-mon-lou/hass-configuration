@@ -434,87 +434,116 @@ views:
 
                             transition: ${ entity.state === "off" ? "fill 5s
                             ease" : "" };
-                          tap_action: toggle
+                      tap_action: toggle
                     - entity: number.zigbee_sonoff_trvzb_01_external_temperature_input
                       element: number.zigbee_sonoff_trvzb_01_external_temperature_input
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
-                          service_data:
+                          service_data: |
                             style: >
-                              > const temp = parseFloat(entity.state);
-                              const min = 16, max = 25;
-                              const clamped = Math.min(Math.max(temp, min),max);
-                              const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  
-                              const g = Math.round(100 * (1 - ratio));  
-                              const b = Math.round(255 * (1 - ratio));
-                              const alpha = 0.5; 
+                              > if (entity.state === 'unavailable') {
+                                  return `
+                                    fill: rgba(255, 255, 0, 0.6);
+                                    transition: fill 1s ease;
+                                  `;
+                                }
 
-                              return `
-                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                transition: fill 1s ease;
-                              `;
+                                const temp = parseFloat(entity.state);
+                                const min = 16, max = 25;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min); 
+                                const r = Math.round(255 * ratio);  
+                                const g = Math.round(100 * (1 - ratio));  
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.5; 
+
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
                       tap_action: false
                     - entity: number.zigbee_sonoff_trvzb_02_external_temperature_input
                       element: number.zigbee_sonoff_trvzb_02_external_temperature_input
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
-                          service_data:
+                          service_data: |
                             style: >
-                              > const temp = parseFloat(entity.state);
-                              const min = 16, max = 25;
-                              const clamped = Math.min(Math.max(temp, min),max);
-                              const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  
-                              const g = Math.round(100 * (1 - ratio));  
-                              const b = Math.round(255 * (1 - ratio));
-                              const alpha = 0.5; 
+                              > if (entity.state === 'unavailable') {
+                                  return `
+                                    fill: rgba(255, 255, 0, 0.6);
+                                    transition: fill 1s ease;
+                                  `;
+                                }
 
-                              return `
-                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                transition: fill 1s ease;
-                              `;
+                                const temp = parseFloat(entity.state);
+                                const min = 16, max = 25;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min); 
+                                const r = Math.round(255 * ratio);  
+                                const g = Math.round(100 * (1 - ratio));  
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.5; 
+
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
                       tap_action: false
                     - entity: number.zigbee_sonoff_trvzb_03_external_temperature_input
                       element: number.zigbee_sonoff_trvzb_03_external_temperature_input
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
-                          service_data:
+                          service_data: |
                             style: >
-                              > const temp = parseFloat(entity.state);
-                              const min = 16, max = 25;
-                              const clamped = Math.min(Math.max(temp, min),max);
-                              const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  
-                              const g = Math.round(100 * (1 - ratio));  
-                              const b = Math.round(255 * (1 - ratio));
-                              const alpha = 0.5; 
-                              return `
-                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                transition: fill 1s ease;
-                              `;
+                              > if (entity.state === 'unavailable') {
+                                  return `
+                                    fill: rgba(255, 255, 0, 0.6);
+                                    transition: fill 1s ease;
+                                  `;
+                                }
+
+                                const temp = parseFloat(entity.state);
+                                const min = 16, max = 25;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min); 
+                                const r = Math.round(255 * ratio);  
+                                const g = Math.round(100 * (1 - ratio));  
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.5; 
+
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
                       tap_action: false
                     - entity: number.zigbee_sonoff_trvzb_04_external_temperature_input
                       element: number.zigbee_sonoff_trvzb_04_external_temperature_input
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
-                          service_data:
+                          service_data: |
                             style: >
-                              > const temp = parseFloat(entity.state);
-                              const min = 16, max = 25;
-                              const clamped = Math.min(Math.max(temp, min),max);
-                              const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  
-                              const g = Math.round(100 * (1 - ratio));  
-                              const b = Math.round(255 * (1 - ratio));
-                              const alpha = 0.5; 
+                              > if (entity.state === 'unavailable') {
+                                  return `
+                                    fill: rgba(255, 255, 0, 0.6);
+                                    transition: fill 1s ease;
+                                  `;
+                                }
 
-                              return `
-                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                transition: fill 1s ease;
-                              `;
+                                const temp = parseFloat(entity.state);
+                                const min = 16, max = 25;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min); 
+                                const r = Math.round(255 * ratio);  
+                                const g = Math.round(100 * (1 - ratio));  
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.5; 
+
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
                       tap_action: false

@@ -24,12 +24,12 @@
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
         "linkquality": 140,
-        "power": 37,
+        "power": 0,
         "energy": 97.45,
-        "current": 0.27
+        "current": 0.03
     },
     "0xa4c138b8caa59009": {
-        "voltage": 231,
+        "voltage": 230,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -43,8 +43,8 @@
     "0x00124b002a565fae": {
         "voltage": 3000,
         "battery": 100,
-        "temperature": 25.45,
-        "humidity": 67.7,
+        "temperature": 25.46,
+        "humidity": 67.6,
         "linkquality": 255
     },
     "0xa4c138b7c1781a47": {
@@ -171,9 +171,9 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 24.78,
-        "humidity": 70.11,
-        "co2": 423,
+        "temperature": 24.77,
+        "humidity": 70.55,
+        "co2": 421,
         "linkquality": 255
     },
     "0xe406bffffe34f94b": {

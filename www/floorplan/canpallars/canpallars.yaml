@@ -11,8 +11,8 @@ views:
               - type: custom:floorplan-card
                 full_height: true
                 config:
-                  image: /local/floorplan/canpallars/canpallars-C1.svg
-                  stylesheet: /local/floorplan/assets/canpallars.css
+                  image: /local/floorplan/canpallars/canpallars-C1d.svg
+                  stylesheet: /local/floorplan/assets/canpallars-01.css
                   console_log_level: info
                   defaults:
                     hover_action: hover-info
@@ -436,114 +436,28 @@ views:
                             ease" : "" };
                       tap_action: toggle
                     - entity: number.zigbee_sonoff_trvzb_01_external_temperature_input
-                      element: number.zigbee_sonoff_trvzb_01_external_temperature_input
+                      elements:
+                        - zigbee_sonoff_trvzb_01_external_temperature_input
+                        - zigbee_sonoff_trvzb_02_external_temperature_input
+                        - zigbee_sonoff_trvzb_03_external_temperature_input
+                        - zigbee_sonoff_trvzb_04_external_temperature_input
                       state_action:
                         - action: call-service
-                          service: floorplan.style_set
-                          service_data: |
-                            style: >
-                              > if (entity.state === 'unavailable') {
-                                  return `
-                                    fill: rgba(255, 255, 0, 0.6);
-                                    transition: fill 1s ease;
-                                  `;
-                                }
-
-                                const temp = parseFloat(entity.state);
-                                const min = 16, max = 25;
-                                const clamped = Math.min(Math.max(temp, min), max);
-                                const ratio = (clamped - min) / (max - min); 
-                                const r = Math.round(255 * ratio);  
-                                const g = Math.round(100 * (1 - ratio));  
-                                const b = Math.round(255 * (1 - ratio));
-                                const alpha = 0.5; 
-
-                                return `
-                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                  transition: fill 1s ease;
-                                `;
-                      tap_action: false
-                    - entity: number.zigbee_sonoff_trvzb_02_external_temperature_input
-                      element: number.zigbee_sonoff_trvzb_02_external_temperature_input
-                      state_action:
-                        - action: call-service
-                          service: floorplan.style_set
-                          service_data: |
-                            style: >
-                              > if (entity.state === 'unavailable') {
-                                  return `
-                                    fill: rgba(255, 255, 0, 0.6);
-                                    transition: fill 1s ease;
-                                  `;
-                                }
-
-                                const temp = parseFloat(entity.state);
-                                const min = 16, max = 25;
-                                const clamped = Math.min(Math.max(temp, min), max);
-                                const ratio = (clamped - min) / (max - min); 
-                                const r = Math.round(255 * ratio);  
-                                const g = Math.round(100 * (1 - ratio));  
-                                const b = Math.round(255 * (1 - ratio));
-                                const alpha = 0.5; 
-
-                                return `
-                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                  transition: fill 1s ease;
-                                `;
-                      tap_action: false
-                    - entity: number.zigbee_sonoff_trvzb_03_external_temperature_input
-                      element: number.zigbee_sonoff_trvzb_03_external_temperature_input
-                      state_action:
-                        - action: call-service
-                          service: floorplan.style_set
-                          service_data: |
-                            style: >
-                              > if (entity.state === 'unavailable') {
-                                  return `
-                                    fill: rgba(255, 255, 0, 0.6);
-                                    transition: fill 1s ease;
-                                  `;
-                                }
-
-                                const temp = parseFloat(entity.state);
-                                const min = 16, max = 25;
-                                const clamped = Math.min(Math.max(temp, min), max);
-                                const ratio = (clamped - min) / (max - min); 
-                                const r = Math.round(255 * ratio);  
-                                const g = Math.round(100 * (1 - ratio));  
-                                const b = Math.round(255 * (1 - ratio));
-                                const alpha = 0.5; 
-
-                                return `
-                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                  transition: fill 1s ease;
-                                `;
-                      tap_action: false
-                    - entity: number.zigbee_sonoff_trvzb_04_external_temperature_input
-                      element: number.zigbee_sonoff_trvzb_04_external_temperature_input
-                      state_action:
-                        - action: call-service
-                          service: floorplan.style_set
-                          service_data: |
-                            style: >
-                              > if (entity.state === 'unavailable') {
-                                  return `
-                                    fill: rgba(255, 255, 0, 0.6);
-                                    transition: fill 1s ease;
-                                  `;
-                                }
-
-                                const temp = parseFloat(entity.state);
-                                const min = 16, max = 25;
-                                const clamped = Math.min(Math.max(temp, min), max);
-                                const ratio = (clamped - min) / (max - min); 
-                                const r = Math.round(255 * ratio);  
-                                const g = Math.round(100 * (1 - ratio));  
-                                const b = Math.round(255 * (1 - ratio));
-                                const alpha = 0.5; 
-
-                                return `
-                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                  transition: fill 1s ease;
-                                `;
-                      tap_action: false
+                          service: floorplan.class_set
+                          service_data:
+                            class: |-
+                              ${
+                                entity.state === 'unavailable'
+                                  ? 'trv-unavail'
+                                : isNaN(parseFloat(entity.state))
+                                  ? 'trv-invalid'
+                                : (function(t){
+                                    var min=16, max=25;
+                                    if(t<min) t=min;
+                                    if(t>max) t=max;
+                                    var pct = Math.round((t-min)/(max-min)*100);
+                                    var step = Math.round(pct/10)*10;
+                                    return 'trv-level-' + step;
+                                  })(parseFloat(entity.state))
+                              }
+                      tap_action: toggle

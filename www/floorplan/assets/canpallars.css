@@ -40,3 +40,27 @@ g.floorplan-long-click> :not(text):hover,
   }
 }
 
+
+/* Valores extremos */
+.trv-unavail  { fill: yellow; opacity:0.6; }
+.trv-invalid  { fill: gray;   opacity:0.4; }
+
+/* Gradiente por rangos */
+.trv-level-0   { fill: #0000FF; } /* 16 °C */
+.trv-level-10  { fill: #0033FF; }
+.trv-level-20  { fill: #0066FF; }
+.trv-level-30  { fill: #0099FF; }
+.trv-level-40  { fill: #00CCFF; }
+.trv-level-50  { fill: #00FFCC; }
+.trv-level-60  { fill: #00FF99; }
+.trv-level-70  { fill: #00FF66; }
+.trv-level-80  { fill: #66FF00; }
+.trv-level-90  { fill: #CCFF00; }
+.trv-level-100 { fill: #FFFF00; } /* 25 °C */
+
+/* Transición suave */
+rect.trv-unavail,
+rect.trv-invalid,
+rect[class^="trv-level-"] {
+  transition: fill 1s ease;
+}

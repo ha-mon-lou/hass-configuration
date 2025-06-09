@@ -1,6 +1,6 @@
 {
     "0xa4c1387fe2e7effc": {
-        "voltage": 231,
+        "voltage": 228,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -17,20 +17,20 @@
         }
     },
     "0xa4c13819d046464f": {
-        "voltage": 231,
+        "voltage": 228,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
         "linkquality": 140,
-        "power": 0,
-        "energy": 97.45,
-        "current": 0.03
+        "power": 41,
+        "energy": 97.73,
+        "current": 0.3
     },
     "0xa4c138b8caa59009": {
-        "voltage": 230,
-        "state": "ON",
+        "voltage": 227,
+        "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
@@ -43,12 +43,12 @@
     "0x00124b002a565fae": {
         "voltage": 3000,
         "battery": 100,
-        "temperature": 25.46,
-        "humidity": 67.6,
+        "temperature": 26.18,
+        "humidity": 67.21,
         "linkquality": 255
     },
     "0xa4c138b7c1781a47": {
-        "voltage": 231,
+        "voltage": 227,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -74,11 +74,11 @@
         "valve_opening_limit_voltage": 1891,
         "valve_closing_limit_voltage": 2682,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 26.2,
+        "local_temperature": 26.5,
         "occupied_heating_setpoint": 6,
         "system_mode": "off",
         "running_state": "idle",
-        "battery": 48,
+        "battery": 46,
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
         "weekly_schedule": {
@@ -110,7 +110,7 @@
         "valve_opening_limit_voltage": 1785,
         "valve_closing_limit_voltage": 2972,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 25.1,
+        "local_temperature": 26.1,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
@@ -171,9 +171,9 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 24.77,
-        "humidity": 70.55,
-        "co2": 421,
+        "temperature": 26.61,
+        "humidity": 62.02,
+        "co2": 460,
         "linkquality": 255
     },
     "0xe406bffffe34f94b": {

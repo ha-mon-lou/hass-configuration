@@ -17,3 +17,27 @@
             fill: rgba(${r}, ${g}, ${b}, ${alpha});
             transition: fill 1s ease;
           `;
+
+      - entity: number.zigbee_sonoff_trvzb_01_external_temperature_input
+        element: zigbee_sonoff_trvzb_01_external_temperature_input
+        state_action:
+          - action: call-service
+            service: floorplan.style_set
+            service_data:
+              style: >
+                if (entity.state === 'unavailable') {
+                  return 'fill: yellow; opacity: 0.5;';
+                }
+                var t = parseFloat(entity.state);
+                if (isNaN(t)) {
+                  return 'fill: gray; opacity: 0.3;';
+                }
+                var min = 16, max = 25;
+                var clamped = Math.min(Math.max(t, min), max);
+                var ratio = (clamped - min) / (max - min);
+                var r = Math.round(255 * ratio);
+                var g = Math.round(100 * (1 - ratio));
+                var b = Math.round(255 * (1 - ratio));
+                var a = 0.5;
+                return 'fill: rgba(' + r + ',' + g + ',' + b + ',' + a + '); transition: fill 1s ease;';
+        tap_action: none

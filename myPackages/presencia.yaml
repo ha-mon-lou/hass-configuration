@@ -16,6 +16,7 @@ input_select:
       - cocina
       - bathroom_1
       - bathroom_2
+      - trastero
       - away
     initial: not_home
 
@@ -31,6 +32,7 @@ input_select:
       - cocina
       - bathroom_1
       - bathroom_2
+      - trastero
       - away
     initial: not_home
 

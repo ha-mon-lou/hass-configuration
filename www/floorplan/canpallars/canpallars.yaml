@@ -11,7 +11,7 @@ views:
               - type: custom:floorplan-card
                 full_height: true
                 config:
-                  image: /local/floorplan/canpallars/canpallars-C1e.svg
+                  image: /local/floorplan/canpallars/canpallars-C1g.svg
                   stylesheet: /local/floorplan/assets/canpallars-01.css
                   console_log_level: info
                   defaults:

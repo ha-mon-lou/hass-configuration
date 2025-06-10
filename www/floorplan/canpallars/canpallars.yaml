@@ -11,21 +11,20 @@ views:
               - type: custom:floorplan-card
                 full_height: true
                 config:
-                  image: /local/floorplan/canpallars/canpallars-C1g.svg
+                  image: /local/floorplan/canpallars/canpallars-sun-03.svg
                   stylesheet: /local/floorplan/assets/canpallars-01.css
                   console_log_level: info
                   defaults:
                     hover_action: hover-info
                     tap_action: more-info
                   rules:
-                    - entity: switch.alias_caldera
+                    - entity: climate.termostato_virtual
                       element: switch.alias_caldera
                       state_action:
                         action: call-service
                         service: floorplan.image_set
                         service_data: >-
-                          /local/floorplan/assets/socket/socket_${entity.state}.svg
-                      tap_action: toggle
+                          /local/floorplan/assets/socket/socket_${entity.attributes.hvac_action}.svg
                     - entity: input_number.nivel_sensacion_termica_ideal
                       element: puerta-test
                       state_action:
@@ -41,33 +40,6 @@ views:
                                 transform-origin: center;
                                 transform: rotate(${rotation}deg);
                               `;
-                      tap_action: false
-                    - entity: sensor.cfg_sensacion_termica_despacho
-                      element: room_despacho
-                      state_action:
-                        - action: call-service
-                          service: floorplan.style_set
-                          service_data:
-                            style: >
-                              > const temp = parseFloat(entity.state);
-
-                              const min = 18, max = 35;
-
-                              const clamped = Math.min(Math.max(temp, min),
-                              max);
-
-                              const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  const g =
-                              Math.round(100 * (1 - ratio));  const b
-                              =Math.round(255 * (1 - ratio));
-
-                              const alpha = 0.2; 
-
-                              return `
-                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                transition: fill 1s ease;
-                              `;
-                      tap_action: false
                     - entity: binary_sensor.presencia
                       element: cerrada
                       state_action:
@@ -82,14 +54,13 @@ views:
                                 transition: transform 0.5s ease;
                               `;
                       tap_action: false
-                    - entity: input_boolean.ac_panasonic_ion_encendido
-                      element: input_boolean.ac_panasonic_ion_encendido
+                    - entity: climate.aire_acondicionado_virtual
+                      element: climate.aire_acondicionado_virtual
                       state_action:
                         action: call-service
                         service: floorplan.image_set
                         service_data: >-
                           /local/floorplan/assets/ac/air_conditioner_${entity.state}.svg
-                      tap_action: toggle
                     - entity: input_boolean.ventilador_despacho
                       element: input_boolean.ventilador_despacho
                       state_action:
@@ -144,7 +115,6 @@ views:
                         - action: call-service
                           service: floorplan.text_set
                           service_data: ${entity.state}º
-                      tap_action: false
                     - entity: sensor.temperatura_exterior
                       element: sensor.temperatura_exterior.fondo
                       state_action:
@@ -177,7 +147,6 @@ views:
                         - action: call-service
                           service: floorplan.text_set
                           service_data: ${entity.state}º
-                      tap_action: false
                     - entity: sensor.temperatura_interior
                       element: sensor.temperatura_interior.fondo
                       state_action:
@@ -210,60 +179,24 @@ views:
                         action: call-service
                         service: floorplan.text_set
                         service_data: ${entity.state} kg
-                      tap_action: false
                     - entity: sensor.bms_ramon_weight
                       element: sensor.bms_ramon_weight
                       state_action:
                         action: call-service
                         service: floorplan.text_set
                         service_data: ${entity.state} kg
-                      tap_action: false
                     - entity: sensor.um_pasitos
                       element: sensor.um_pasitos
                       state_action:
                         action: call-service
                         service: floorplan.text_set
                         service_data: ${entity.state}
-                      tap_action: false
                     - entity: sensor.zigbee_heiman_hs3aq_01_co2
                       element: sensor.zigbee_heiman_hs3aq_01_co2
                       state_action:
                         - action: call-service
                           service: floorplan.text_set
                           service_data: ${entity.state} ppm
-                        - action: call-service
-                          service: floorplan.style_set
-                          style: |
-                            fill: ${ parseInt(entity.state) > 1200 ? "red" :
-                                    parseInt(entity.state) > 800 ? "orange" :
-                                    "green" };
-                      tap_action: false
-                    - entity: sensor.zigbee_heiman_hs3aq_01_co2
-                      element: room_habitacion_2
-                      state_action:
-                        - action: call-service
-                          service: floorplan.style_set
-                          service_data:
-                            style: >
-                              > const temp = parseInt(entity.state);
-
-                              const min = 400, max = 2000;
-
-                              const clamped = Math.min(Math.max(temp, min),
-                              max);
-
-                              const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  const g =
-                              Math.round(100 * (1 - ratio));  const b
-                              =Math.round(255 * (1 - ratio));
-
-                              const alpha = 0.8; 
-
-                              return `
-                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                transition: fill 1s ease;
-                              `;
-                      tap_action: false
                     - entity: switch.alias_antimosquitos
                       element: switch.alias_antimosquitos
                       state_action:
@@ -286,35 +219,30 @@ views:
                         action: call-service
                         service: floorplan.text_set
                         service_data: ${entity.state}º
-                      tap_action: false
                     - entity: sensor.cfg_sensacion_termica_habitacion_2
                       element: sensor.cfg_sensacion_termica_habitacion_2
                       state_action:
                         action: call-service
                         service: floorplan.text_set
                         service_data: ${entity.state}º
-                      tap_action: false
                     - entity: sensor.cfg_sensacion_termica_despacho
                       element: sensor.cfg_sensacion_termica_despacho
                       state_action:
                         action: call-service
                         service: floorplan.text_set
                         service_data: ${entity.state}º
-                      tap_action: false
                     - entity: sensor.cfg_sensacion_termica_living_1
                       element: sensor.cfg_sensacion_termica_living_1
                       state_action:
                         action: call-service
                         service: floorplan.text_set
                         service_data: ${entity.state}º
-                      tap_action: false
                     - entity: sensor.cfg_sensacion_termica_living_2
                       element: sensor.cfg_sensacion_termica_living_2
                       state_action:
                         action: call-service
                         service: floorplan.text_set
                         service_data: ${entity.state}º
-                      tap_action: false
                     - entity: switch.regleta_antela_socket_1
                       element: switch.regleta_antela_socket_1
                       state_action:
@@ -435,106 +363,115 @@ views:
                             transition: ${ entity.state === "off" ? "fill 5s
                             ease" : "" };
                       tap_action: toggle
-                    - entity: number.zigbee_sonoff_trvzb_01_external_temperature_input
-                      element: zigbee_sonoff_trvzb_01_external_temperature_input
+                    - entity: climate.zigbee_sonoff_trvzb_01
+                      element: climate.zigbee_sonoff_trvzb_01
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
                           service_data:
-                            style: >
-                              > const temp = parseFloat(entity.state);
-
-                              const min = 16, max = 24;
-
-                              const clamped = Math.min(Math.max(temp, min), max);
-
-                              const ratio = (clamped - min) / (max - min);
-
-                              const r = Math.round(255 * ratio);
-                              const g = 0;
-                              const b = Math.round(255 * (1 - ratio));
-
-                              const alpha = 0.8;
-
-                              return `
-                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                transition: fill 1s ease;
-                              `;
-                      tap_action: false
-                    - entity: number.zigbee_sonoff_trvzb_02_external_temperature_input
-                      element: zigbee_sonoff_trvzb_02_external_temperature_input
+                            style: |
+                              > if (entity.state === "unavailable") {
+                                  return `
+                                    fill: #888;
+                                    fill-opacity: 0.5;
+                                    stroke: #444;
+                                    stroke-width: 1;
+                                    transition: fill 1s ease;
+                                  `;
+                                }
+                                const temp = entity.attributes.current_temperature;
+                                const min = 16, max = 30;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min);
+                                const r = Math.round(255 * ratio);
+                                const g = 0;
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.8;
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
+                    - entity: climate.zigbee_sonoff_trvzb_02
+                      element: climate.zigbee_sonoff_trvzb_02
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
                           service_data:
-                            style: >
-                              > const temp = parseFloat(entity.state);
-
-                              const min = 16, max = 24;
-
-                              const clamped = Math.min(Math.max(temp, min), max);
-
-                              const ratio = (clamped - min) / (max - min);
-
-                              const r = Math.round(255 * ratio);
-                              const g = 0;
-                              const b = Math.round(255 * (1 - ratio));
-
-                              const alpha = 0.8;
-
-                              return `
-                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                transition: fill 1s ease;
-                              `;
-                      tap_action: false
-                    - entity: number.zigbee_sonoff_trvzb_03_external_temperature_input
-                      element: zigbee_sonoff_trvzb_03_external_temperature_input
+                            style: |
+                              > if (entity.state === "unavailable") {
+                                  return `
+                                    fill: #888;
+                                    fill-opacity: 0.5;
+                                    stroke: #444;
+                                    stroke-width: 1;
+                                    transition: fill 1s ease;
+                                  `;
+                                }
+                                const temp = entity.attributes.current_temperature;
+                                const min = 16, max = 30;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min);
+                                const r = Math.round(255 * ratio);
+                                const g = 0;
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.8;
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
+                    - entity: climate.zigbee_sonoff_trvzb_03
+                      element: climate.zigbee_sonoff_trvzb_03
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
                           service_data:
-                            style: >
-                              > const temp = parseFloat(entity.state);
-
-                              const min = 16, max = 24;
-
-                              const clamped = Math.min(Math.max(temp, min), max);
-
-                              const ratio = (clamped - min) / (max - min);
-
-                              const r = Math.round(255 * ratio);
-                              const g = 0;
-                              const b = Math.round(255 * (1 - ratio));
-
-                              const alpha = 0.8;
-
-                              return `
-                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                transition: fill 1s ease;
-                              `;
-                      tap_action: false
-                    - entity: number.zigbee_sonoff_trvzb_04_external_temperature_input
-                      element: zigbee_sonoff_trvzb_04_external_temperature_input
+                            style: |
+                              > if (entity.state === "unavailable") {
+                                  return `
+                                    fill: #888;
+                                    fill-opacity: 0.5;
+                                    stroke: #444;
+                                    stroke-width: 1;
+                                    transition: fill 1s ease;
+                                  `;
+                                }
+                                const temp = entity.attributes.current_temperature;
+                                const min = 16, max = 30;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min);
+                                const r = Math.round(255 * ratio);
+                                const g = 0;
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.8;
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
+                    - entity: climate.zigbee_sonoff_trvzb_04
+                      element: climate.zigbee_sonoff_trvzb_04
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
                           service_data:
-                            style: >
-                              > const temp = parseFloat(entity.state);
-
-                              const min = 16, max = 24;
-
-                              const clamped = Math.min(Math.max(temp, min), max);
-
-                              const ratio = (clamped - min) / (max - min);
-
-                              const r = Math.round(255 * ratio);
-                              const g = 0;
-                              const b = Math.round(255 * (1 - ratio));
-
-                              const alpha = 0.8;
-                              return `
-                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
-                                transition: fill 1s ease;
-                              `;
-                      tap_action: false
+                            style: |
+                              > if (entity.state === "unavailable") {
+                                  return `
+                                    fill: #888;
+                                    fill-opacity: 0.5;
+                                    stroke: #444;
+                                    stroke-width: 1;
+                                    transition: fill 1s ease;
+                                  `;
+                                }
+                                const temp = entity.attributes.current_temperature;
+                                const min = 16, max = 30;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min);
+                                const r = Math.round(255 * ratio);
+                                const g = 0;
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.8;
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;

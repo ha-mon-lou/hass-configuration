@@ -134,6 +134,18 @@ automation:
         data:
           option: "habitacion_2"
 
+  - alias: Pau - En la habitacion
+    trigger:
+      - platform: state
+        entity_id: input_boolean.scene_switch_01_1
+        to: "on"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_pau
+        data:
+          option: "habitacion_1"
+
   - alias: "[Presencia] Actualizar ubicación Ramón si se va de casa"
     trigger:
       - platform: state

@@ -11,8 +11,8 @@ views:
               - type: custom:floorplan-card
                 full_height: true
                 config:
-                  image: /local/floorplan/canpallars/canpallars-C1.svg
-                  stylesheet: /local/floorplan/assets/canpallars.css
+                  image: /local/floorplan/canpallars/canpallars-C1e.svg
+                  stylesheet: /local/floorplan/assets/canpallars-01.css
                   console_log_level: info
                   defaults:
                     hover_action: hover-info
@@ -236,7 +236,7 @@ views:
                           style: |
                             fill: ${ parseInt(entity.state) > 1200 ? "red" :
                                     parseInt(entity.state) > 800 ? "orange" :
-                                    "green" };
+                                    "green" };                            
                       tap_action: false
                     - entity: sensor.zigbee_heiman_hs3aq_01_co2
                       element: room_habitacion_2
@@ -421,7 +421,7 @@ views:
                             fill: ${ entity.state === "on" ? "green" : "red" };
 
                             transition: ${ entity.state === "off" ? "fill 5s
-                            ease" : "" };
+                            ease" : "" };                      
                           tap_action: toggle
                     - entity: media_player.my_box_2
                       element: media_player.my_box
@@ -433,10 +433,10 @@ views:
                             fill: ${ entity.state === "on" ? "green" : "red" };
 
                             transition: ${ entity.state === "off" ? "fill 5s
-                            ease" : "" };
-                          tap_action: toggle
+                            ease" : "" };                      
+                      tap_action: toggle
                     - entity: number.zigbee_sonoff_trvzb_01_external_temperature_input
-                      element: number.zigbee_sonoff_trvzb_01_external_temperature_input
+                      element: zigbee_sonoff_trvzb_01_external_temperature_input
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
@@ -444,17 +444,17 @@ views:
                             style: >
                               > const temp = parseFloat(entity.state);
 
-                              const min = 16, max = 25;
+                              const min = 16, max = 24;
 
-                              const clamped = Math.min(Math.max(temp, min),
-                              max);
+                              const clamped = Math.min(Math.max(temp, min), max);
 
-                              const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  const g =
-                              Math.round(100 * (1 - ratio));  const b
-                              =Math.round(255 * (1 - ratio));
+                              const ratio = (clamped - min) / (max - min);
 
-                              const alpha = 0.5; 
+                              const r = Math.round(255 * ratio);
+                              const g = 0;
+                              const b = Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.8;
 
                               return `
                                 fill: rgba(${r}, ${g}, ${b}, ${alpha});
@@ -462,7 +462,7 @@ views:
                               `;
                       tap_action: false
                     - entity: number.zigbee_sonoff_trvzb_02_external_temperature_input
-                      element: number.zigbee_sonoff_trvzb_02_external_temperature_input
+                      element: zigbee_sonoff_trvzb_02_external_temperature_input
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
@@ -470,17 +470,17 @@ views:
                             style: >
                               > const temp = parseFloat(entity.state);
 
-                              const min = 16, max = 25;
+                              const min = 16, max = 24;
 
-                              const clamped = Math.min(Math.max(temp, min),
-                              max);
+                              const clamped = Math.min(Math.max(temp, min), max);
 
-                              const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  const g =
-                              Math.round(100 * (1 - ratio));  const b
-                              =Math.round(255 * (1 - ratio));
+                              const ratio = (clamped - min) / (max - min);
 
-                              const alpha = 0.5; 
+                              const r = Math.round(255 * ratio);
+                              const g = 0;
+                              const b = Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.8;
 
                               return `
                                 fill: rgba(${r}, ${g}, ${b}, ${alpha});
@@ -488,7 +488,7 @@ views:
                               `;
                       tap_action: false
                     - entity: number.zigbee_sonoff_trvzb_03_external_temperature_input
-                      element: number.zigbee_sonoff_trvzb_03_external_temperature_input
+                      element: zigbee_sonoff_trvzb_03_external_temperature_input
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
@@ -496,17 +496,17 @@ views:
                             style: >
                               > const temp = parseFloat(entity.state);
 
-                              const min = 16, max = 25;
+                              const min = 16, max = 24;
 
-                              const clamped = Math.min(Math.max(temp, min),
-                              max);
+                              const clamped = Math.min(Math.max(temp, min), max);
 
-                              const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  const g =
-                              Math.round(100 * (1 - ratio));  const b
-                              =Math.round(255 * (1 - ratio));
+                              const ratio = (clamped - min) / (max - min);
 
-                              const alpha = 0.5; 
+                              const r = Math.round(255 * ratio);
+                              const g = 0;
+                              const b = Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.8;
 
                               return `
                                 fill: rgba(${r}, ${g}, ${b}, ${alpha});
@@ -514,7 +514,7 @@ views:
                               `;
                       tap_action: false
                     - entity: number.zigbee_sonoff_trvzb_04_external_temperature_input
-                      element: number.zigbee_sonoff_trvzb_04_external_temperature_input
+                      element: zigbee_sonoff_trvzb_04_external_temperature_input
                       state_action:
                         - action: call-service
                           service: floorplan.style_set
@@ -522,18 +522,17 @@ views:
                             style: >
                               > const temp = parseFloat(entity.state);
 
-                              const min = 16, max = 25;
+                              const min = 16, max = 24;
 
-                              const clamped = Math.min(Math.max(temp, min),
-                              max);
+                              const clamped = Math.min(Math.max(temp, min), max);
 
-                              const ratio = (clamped - min) / (max - min); 
-                              const r = Math.round(255 * ratio);  const g =
-                              Math.round(100 * (1 - ratio));  const b
-                              =Math.round(255 * (1 - ratio));
+                              const ratio = (clamped - min) / (max - min);
 
-                              const alpha = 0.5; 
+                              const r = Math.round(255 * ratio);
+                              const g = 0;
+                              const b = Math.round(255 * (1 - ratio));
 
+                              const alpha = 0.8;
                               return `
                                 fill: rgba(${r}, ${g}, ${b}, ${alpha});
                                 transition: fill 1s ease;

@@ -100,6 +100,6 @@ script:
             lambda: 'return id(presencia).state;'
           then:
             - light.turn_on: led_area
-            - delay: 50ms
+            - delay: 100ms
             - light.turn_off: led_area
-            - delay: 1950ms
+            - delay: 8000ms

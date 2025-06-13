@@ -16,10 +16,11 @@
       entity_id: input_boolean.presencia
       to: "off"
   action:
+    - service: script.cerrar_puerta_principal
     - service: input_text.set_value
       data:
         entity_id: input_text.resumen_shutdown
-        value: "🛑 Inicio desconexión total..."
+        value: "🛑 Cerrando puerta..."
     - service: script.notifica_movil
       data:
         title: "Shut down"

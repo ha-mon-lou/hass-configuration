@@ -1,0 +1,12 @@
+- id: "nfc_etiqueta_yale_interior"
+  alias: NFC etiqueta yale interior
+  mode: single
+  trigger:
+    - platform: conversation
+      command: puerta
+    - platform: tag
+      tag_id: !secret nfc_tag_ha_yale
+    - platform: tag
+      tag_id: !secret nfc_tag_ha_exterior
+  action:
+    - action: script.abrir_puerta_principal

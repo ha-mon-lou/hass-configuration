@@ -1,0 +1,67 @@
+timer:
+  bloqueo_puerta_principal:
+    duration: "00:00:05"
+
+automation:
+  - alias: Iniciar o reiniciar temporizador de bloqueo al cerrar puerta
+    id: iniciar_temporizador_bloqueo_puerta
+    description: Inicia o reinicia el temporizador cuando se cierra la puerta
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.puerta_principal_door_2
+        to: "off"
+    action:
+      - service: timer.start
+        target:
+          entity_id: timer.bloqueo_puerta_principal
+
+  - alias: Bloquear puerta al terminar temporizador
+    id: bloquear_puerta_tras_temporizador
+    description: Bloquea la puerta cuando finaliza el temporizador
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.bloqueo_puerta_principal
+    condition:
+      - condition: state
+        entity_id: lock.puerta_principal_2
+        state: "unlocked"
+      - condition: state
+        entity_id: binary_sensor.puerta_principal_door_2
+        state: "off"
+    action:
+      - service: lock.lock
+        target:
+          entity_id: lock.puerta_principal_2
+
+script:
+  abrir_puerta_principal:
+    alias: Abrir puerta principal
+    sequence:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: lock.puerta_principal_2
+                state: "locked"
+            sequence:
+              - service: lock.unlock
+                target:
+                  entity_id: lock.puerta_principal_2
+              - delay: "00:00:02"
+      - service: lock.open
+        target:
+          entity_id: lock.puerta_principal_2
+
+  cerrar_puerta_principal:
+    alias: cerrar puerta principal
+    sequence:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: lock.puerta_principal_2
+                state: "unlocked"
+            sequence:
+              - service: lock.lock
+                target:
+                  entity_id: lock.puerta_principal_2

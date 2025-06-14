@@ -198,7 +198,7 @@ automation:
 
           - conditions:
               - condition: template
-                value_template: "{{ dif_temp > u3 and dif_temp <= ub }}"
+                value_template: "{{ dif_temp > u3 }}"
             sequence:
               - condition: template
                 value_template: "{{ states('input_select.ventilador_habitacion_botonera') != 'brisa' }}"
@@ -219,7 +219,6 @@ automation:
         value_template: >
           {{ trigger.to_state.state != 'idle'
             and trigger.to_state.state in state_attr('input_select.ventilador_habitacion_temporizador', 'options') }}
-
     action:
       - action: timer.start
         data:
@@ -275,6 +274,7 @@ automation:
                 data:
                   entity_id: input_select.ventilador_habitacion_temporizador
                   option: 4
+
               - action: script.modo_ventilador
                 data:
                   dispositivo: ventilador_habitacion

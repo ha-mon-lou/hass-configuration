@@ -198,7 +198,7 @@ automation:
 
           - conditions:
               - condition: template
-                value_template: "{{ dif_temp > u3 and dif_temp <= ub }}"
+                value_template: "{{ dif_temp > u3 }}"
             sequence:
               - condition: template
                 value_template: "{{ states('input_select.ventilador_despacho_botonera') != 'brisa' }}"

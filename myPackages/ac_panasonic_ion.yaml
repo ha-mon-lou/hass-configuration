@@ -49,14 +49,20 @@ sensor:
         friendly_name: "Temperatura Aire Acondicionado Panasonic Ion"
         unit_of_measurement: "°C"
         value_template: >
-          {% set temp = states('sensor.cfg_temperatura_living_2') %}
+          {% set temp = states('sensor.cfg_temperatura_living_1') %}
+          {{ temp | float(2) if temp not in ['unknown', 'unavailable'] else 0 }}
+      ac_panasonic_ion_sensacion_termica:
+        friendly_name: "Sensacion termica Aire Acondicionado Panasonic Ion"
+        unit_of_measurement: "°C"
+        value_template: >
+          {% set temp = states('sensor.cfg_sensacion_termica_living_1') %}
           {{ temp | float(2) if temp not in ['unknown', 'unavailable'] else 0 }}
 
 climate:
   - platform: generic_thermostat
     name: Aire Acondicionado Virtual
     heater: input_boolean.ac_panasonic_ion_encendido
-    target_sensor: sensor.ac_panasonic_ion_temperatura
+    target_sensor: sensor.ac_panasonic_ion_sensacion_termica
     target_temp: 24
     min_temp: 18
     max_temp: 28
@@ -169,7 +175,7 @@ automation:
       - service: script.ac_panasonic_control_refrigeracion
         data:
           st_target: "input_number.pkg_ind_umbral_maximo"
-          st_real: "sensor.ac_panasonic_ion_temperatura"
+          st_real: "sensor.ac_panasonic_ion_sensacion_termica"
 
 script:
   ac_panasonic_ion_power:

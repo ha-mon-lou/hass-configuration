@@ -29,7 +29,8 @@ sensor:
         unique_id: "sensacion_termica_equation"
         icon_template: mdi:thermometer
         value_template: >
-          {{ states('sensor.cfg_sensacion_termica_living_2') | float }}
+          {% set temp = states('sensor.cfg_temperatura_living_1') %}
+          {{ temp | float(2) if temp not in ['unknown', 'unavailable'] else 0 }}
 
 script:
   mando_ventilador_equation:

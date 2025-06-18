@@ -8,15 +8,16 @@ input_select:
     name: Ubicación de Ramon
     options:
       - not_home
-      - despacho
       - habitacion_1
       - habitacion_2
+      - despacho
       - living_1
       - living_2
       - cocina
       - bathroom_1
       - bathroom_2
       - trastero
+      - entrada
       - away
     initial: not_home
 
@@ -24,15 +25,16 @@ input_select:
     name: Ubicación de Pau
     options:
       - not_home
-      - despacho
       - habitacion_1
       - habitacion_2
+      - despacho
       - living_1
       - living_2
       - cocina
       - bathroom_1
       - bathroom_2
       - trastero
+      - entrada
       - away
     initial: not_home
 

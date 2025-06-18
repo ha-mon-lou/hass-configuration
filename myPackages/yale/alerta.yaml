@@ -1,0 +1,56 @@
+automation:
+  - alias: Notificar puerta abierta más de 10 minutos
+    id: notificar_puerta_abierta_10min
+    description: Envía una notificación si la puerta está abierta 10 minutos
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.puerta_principal_door_2
+        to: "on"
+        for: "00:01:30"
+    condition:
+      - condition: state
+        entity_id: lock.puerta_principal_2
+        state: "unlocked"
+    action:
+      - action: notify.mobile_app_sm_a155f
+        data:
+          title: "🚪 Puerta principal abierta"
+          message: "La puerta lleva abierta más de 10 minutos. ¿Quieres cerrarla?"
+          data:
+            actions:
+              - action: SABE_ABIERTA
+                title: "Sí, lo sé"
+              - action: CERRAR_PUERTA
+                title: "Ciérrala ahora"
+
+  - alias: Responder notificación interactiva - cerrar puerta
+    id: respuesta_cerrar_puerta
+    description: Ejecuta el script para cerrar la puerta si el usuario pulsa "Ciérrala ahora"
+    trigger:
+      - platform: event
+        event_type: mobile_app_notification_action
+        event_data:
+          action: CERRAR_PUERTA
+    condition:
+      - condition: state
+        entity_id: lock.puerta_principal_2
+        state: "unlocked"
+      - condition: state
+        entity_id: binary_sensor.puerta_principal_door_2
+        state: "on"
+    action:
+      - service: script.cerrar_puerta_principal
+
+  - alias: Registrar respuesta "sí, lo sé"
+    id: respuesta_sabe_abierta
+    description: Solo registra que el usuario lo sabe (opcional)
+    trigger:
+      - platform: event
+        event_type: mobile_app_notification_action
+        event_data:
+          action: SABE_ABIERTA
+    action:
+      - service: logbook.log
+        data:
+          name: "Puerta principal"
+          message: "El usuario ha confirmado que sabía que estaba abierta"

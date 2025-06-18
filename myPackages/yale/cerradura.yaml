@@ -1,11 +1,12 @@
 timer:
   bloqueo_puerta_principal:
-    duration: "00:00:05"
+    duration: "00:00:10"
 
 automation:
+  # Inicia el temporizador cuando la puerta se cierra
   - alias: Iniciar o reiniciar temporizador de bloqueo al cerrar puerta
     id: iniciar_temporizador_bloqueo_puerta
-    description: Inicia o reinicia el temporizador cuando se cierra la puerta
+    mode: restart
     trigger:
       - platform: state
         entity_id: binary_sensor.puerta_principal_door_2
@@ -14,10 +15,15 @@ automation:
       - service: timer.start
         target:
           entity_id: timer.bloqueo_puerta_principal
+      - service: system_log.write
+        data:
+          level: info
+          message: "Temporizador iniciado al cerrarse la puerta principal"
 
+  # Bloquea la puerta tras el temporizador, solo si está cerrada y desbloqueada
   - alias: Bloquear puerta al terminar temporizador
     id: bloquear_puerta_tras_temporizador
-    description: Bloquea la puerta cuando finaliza el temporizador
+    mode: single
     trigger:
       - platform: event
         event_type: timer.finished
@@ -29,11 +35,15 @@ automation:
         state: "unlocked"
       - condition: state
         entity_id: binary_sensor.puerta_principal_door_2
-        state: "off"
+        state: "off" # puerta cerrada
     action:
       - service: lock.lock
         target:
           entity_id: lock.puerta_principal_2
+      - service: system_log.write
+        data:
+          level: info
+          message: "Puerta principal bloqueada automáticamente tras cierre y temporizador"
 
 script:
   abrir_puerta_principal:
@@ -54,7 +64,7 @@ script:
           entity_id: lock.puerta_principal_2
 
   cerrar_puerta_principal:
-    alias: cerrar puerta principal
+    alias: Cerrar puerta principal
     sequence:
       - choose:
           - conditions:

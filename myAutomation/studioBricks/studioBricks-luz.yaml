@@ -73,11 +73,5 @@
           data: {}
           target:
             entity_id: switch.regleta_antela_socket_2
-        - delay: 00:00:03
-        - action: input_boolean.turn_off
-          metadata: {}
-          data: {}
-          target:
-            entity_id: input_boolean.ventilador_equation
 
   mode: single

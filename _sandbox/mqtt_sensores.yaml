@@ -16,3 +16,16 @@ mqtt:
       unit_of_measurement: "kg/m2"
       # Below lines only needed if long term statistics are required
       state_class: "measurement"
+
+
+notas de publish mqtt 
+
+- service: mqtt.publish
+      data:
+        topic: "iotlink/workgroup/pc-gaming/commands/notify"
+        payload: >
+          {
+            "title": "Notificación",
+            "message": "WWW.UPF.EDU",
+            "launchParams": "toast://open/https://www.upf.edu/"
+          }

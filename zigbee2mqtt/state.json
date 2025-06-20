@@ -1,13 +1,13 @@
 {
     "0xa4c1387fe2e7effc": {
-        "voltage": 228,
+        "voltage": 226,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
         "power": 0,
-        "energy": 3.71,
+        "energy": 3.76,
         "current": 0,
         "linkquality": 255,
         "update": {
@@ -23,41 +23,41 @@
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "linkquality": 56,
-        "power": 42,
-        "energy": 107.33,
-        "current": 0.3
+        "linkquality": 108,
+        "power": 88,
+        "energy": 109.99,
+        "current": 0.58
     },
     "0xa4c138b8caa59009": {
-        "voltage": 227,
-        "state": "ON",
-        "countdown": 0,
-        "power_outage_memory": "restore",
-        "indicator_mode": "off/on",
-        "child_lock": "UNLOCK",
-        "power": 0,
-        "energy": 32.32,
-        "current": 0,
-        "linkquality": 144
-    },
-    "0x00124b002a565fae": {
-        "voltage": 3000,
-        "battery": 100,
-        "temperature": 27.15,
-        "humidity": 61.24,
-        "linkquality": 255
-    },
-    "0xa4c138b7c1781a47": {
-        "voltage": 228,
+        "voltage": 224,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
         "power": 0,
-        "energy": 9.25,
+        "energy": 32.97,
         "current": 0,
-        "linkquality": 184,
+        "linkquality": 100
+    },
+    "0x00124b002a565fae": {
+        "voltage": 3000,
+        "battery": 100,
+        "temperature": 27.21,
+        "humidity": 56.19,
+        "linkquality": 220
+    },
+    "0xa4c138b7c1781a47": {
+        "voltage": 226,
+        "state": "ON",
+        "countdown": 0,
+        "power_outage_memory": "restore",
+        "indicator_mode": "off/on",
+        "child_lock": "UNLOCK",
+        "power": 37,
+        "energy": 10.21,
+        "current": 0.17,
+        "linkquality": 216,
         "update": {
             "state": "idle",
             "installed_version": 192,
@@ -74,7 +74,7 @@
         "valve_opening_limit_voltage": 1891,
         "valve_closing_limit_voltage": 2682,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 26.8,
+        "local_temperature": 27,
         "occupied_heating_setpoint": 6,
         "system_mode": "off",
         "running_state": "idle",
@@ -101,7 +101,7 @@
         "temperature_accuracy": -1
     },
     "0x0cae5ffffed9e20e": {
-        "local_temperature_calibration": -0.2,
+        "local_temperature_calibration": -1,
         "child_lock": "UNLOCK",
         "open_window": "OFF",
         "frost_protection_temperature": 7,
@@ -110,7 +110,7 @@
         "valve_opening_limit_voltage": 1785,
         "valve_closing_limit_voltage": 2972,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 26,
+        "local_temperature": 26.7,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
@@ -131,7 +131,7 @@
             "installed_version": 4864,
             "latest_version": 4864
         },
-        "linkquality": 255,
+        "linkquality": 220,
         "temperature_sensor_select": "internal",
         "external_temperature_input": 20.4,
         "temperature_accuracy": -1
@@ -171,14 +171,14 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 26.92,
-        "humidity": 57.7,
-        "co2": 633,
+        "temperature": 27.98,
+        "humidity": 53.11,
+        "co2": 628,
         "linkquality": 255
     },
     "0xe406bffffe34f94b": {
         "battery": 100,
         "voltage": 3000,
-        "linkquality": 184
+        "linkquality": 255
     }
 }

@@ -57,7 +57,7 @@ bluetooth_proxy:
 output:
   - platform: gpio
     pin:
-      number: GPIO2
+      number: GPIO4
       inverted: false
     id: gpio_led
 

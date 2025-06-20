@@ -1,0 +1,22 @@
+- alias: Encender luz piano con botón Shelly BLU 908F
+  id: shelly_blu_908f_luz_piano
+  trigger:
+    - platform: state
+      entity_id: event.shelly_blu_button1_908f_button
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.to_state.attributes.event_type == 'double_press' }}
+  action:
+    - service: hassio.addon_restart
+      data:
+        addon: 45df7312_zigbee2mqtt
+    - service: system_log.write
+      data:
+        message: "Zigbee2MQTT reiniciado automáticamente por sensores caídos."
+        level: warning
+    - action: switch.toggle
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.enchufe_habitacion_socket_1

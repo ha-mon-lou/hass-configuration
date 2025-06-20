@@ -6,18 +6,10 @@
       command: piano
     - platform: tag
       tag_id: !secret nfc_tag_ha_piano
+
   action:
     - action: switch.toggle
       metadata: {}
       data: {}
       target:
         entity_id: switch.enchufe_habitacion_socket_1
-    - service: mqtt.publish
-      data:
-        topic: "iotlink/workgroup/pc-gaming/commands/notify"
-        payload: >
-          {
-            "title": "Notificación",
-            "message": "WWW.UPF.EDU",
-            "launchParams": "toast://open/https://www.upf.edu/"
-          }

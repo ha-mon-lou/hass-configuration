@@ -1,7 +1,7 @@
 input_number:
   pkg_salut_threshold:
     name: Umbral de Peso
-    initial: 75
+    initial: 74
     min: 70
     max: 80
     step: 1
@@ -9,7 +9,7 @@ input_number:
 
   pkg_salut_ramon_height:
     name: Altura de Ramón
-    initial: 168
+    initial: 165
     min: 100
     max: 250
     step: 1
@@ -97,23 +97,6 @@ sensor:
             {{ states('input_number.pkg_salut_ramon_imc_last') }}
           {% endif %}
 
-      pkg_salut_ramon_imc_bia:
-        friendly_name: "Grasa corporal Ramón (BIA)"
-        unique_id: "pkg_salut_ramon_imc_bia"
-        unit_of_measurement: "%"
-        value_template: >
-          {% set peso = states('sensor.body_composition_scale_71b5_weight') | float(0) %}
-          {% set umbral = states('input_number.pkg_salut_threshold') | float %}
-          {% if peso >= umbral %}
-            {% set imp = states('sensor.body_composition_scale_71b5_impedance_low') | float(0) %}
-            {% set height_cm = states('input_number.pkg_salut_ramon_height') | float %}
-            {% set birth_year = states('input_number.pkg_salut_ramon_born') | int %}
-            {% from 'body_metrics_from_bia.jinja' import calculate_body_fat %}
-            {{ calculate_body_fat(peso, height_cm, birth_year, "male", imp) }}
-          {% else %}
-            unknown
-          {% endif %}
-
       pkg_salut_pau_peso:
         friendly_name: "Peso de Pau"
         unique_id: "pkg_salut_pau_peso"
@@ -141,23 +124,6 @@ sensor:
             {{ calculate_body_fat(peso, height_cm, birth_year, "male") }}
           {% else %}
             {{ states('input_number.pkg_salut_pau_imc_last') }}
-          {% endif %}
-
-      pkg_salut_pau_imc_bia:
-        friendly_name: "Grasa corporal Pau (BIA)"
-        unique_id: "pkg_salut_pau_imc_bia"
-        unit_of_measurement: "%"
-        value_template: >
-          {% set peso = states('sensor.body_composition_scale_71b5_weight') | float(0) %}
-          {% set umbral = states('input_number.pkg_salut_threshold') | float %}
-          {% if peso < umbral %}
-            {% set imp = states('sensor.body_composition_scale_71b5_impedance_low') | float(0) %}
-            {% set height_cm = states('input_number.pkg_salut_pau_height') | float %}
-            {% set birth_year = states('input_number.pkg_salut_pau_born') | int %}
-            {% from 'body_metrics_from_bia.jinja' import calculate_body_fat %}
-            {{ calculate_body_fat(peso, height_cm, birth_year, "male", imp) }}
-          {% else %}
-            unknown
           {% endif %}
 
 automation:

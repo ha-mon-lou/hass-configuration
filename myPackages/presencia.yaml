@@ -7,6 +7,7 @@ input_select:
   ubicacion_ramon:
     name: Ubicación de Ramon
     options:
+      - unknown
       - not_home
       - habitacion_1
       - habitacion_2
@@ -24,6 +25,7 @@ input_select:
   ubicacion_pau:
     name: Ubicación de Pau
     options:
+      - unknown
       - not_home
       - habitacion_1
       - habitacion_2

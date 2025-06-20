@@ -12,6 +12,7 @@ input_select:
       - habitacion_1
       - habitacion_2
       - despacho
+      - studioBricks
       - living_1
       - living_2
       - cocina
@@ -30,6 +31,7 @@ input_select:
       - habitacion_1
       - habitacion_2
       - despacho
+      - studioBricks
       - living_1
       - living_2
       - cocina

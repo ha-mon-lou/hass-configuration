@@ -11,8 +11,8 @@ views:
               - type: custom:floorplan-card
                 full_height: true
                 config:
-                  image: /local/floorplan/canpallars/canpallars-sun-03.svg
-                  stylesheet: /local/floorplan/assets/canpallars-01.css
+                  image: /local/floorplan/canpallars/canpallars-G04.svg
+                  stylesheet: /local/floorplan/assets/canpallars-02.css
                   console_log_level: info
                   defaults:
                     hover_action: hover-info
@@ -40,20 +40,6 @@ views:
                                 transform-origin: center;
                                 transform: rotate(${rotation}deg);
                               `;
-                    - entity: binary_sensor.presencia
-                      element: cerrada
-                      state_action:
-                        - action: call-service
-                          service: floorplan.style_set
-                          service_data:
-                            style: |
-                              return `
-                                transform-box: fill-box;
-                                transform-origin: center;
-                                transform: rotate(${entity.state === 'on'? 90 : 0}deg);
-                                transition: transform 0.5s ease;
-                              `;
-                      tap_action: false
                     - entity: climate.aire_acondicionado_virtual
                       element: climate.aire_acondicionado_virtual
                       state_action:
@@ -103,7 +89,7 @@ views:
                         - action: call-service
                           service: floorplan.image_set
                           service_data: >-
-                            /local/floorplan/assets/ventilador/ventilador-a01_${entity.state}.svg
+                            /local/floorplan/assets/ventilador/ventilador-a02_${entity.state}.svg
                         - action: call-service
                           service: floorplan.class_set
                           service_data:
@@ -197,6 +183,33 @@ views:
                         - action: call-service
                           service: floorplan.text_set
                           service_data: ${entity.state} ppm
+                    - entity: sensor.zigbee_heiman_hs3aq_01_co2
+                      element: sensor.zigbee_heiman_hs3aq_01_co2.fondo
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const ppm = parseFloat(entity.state);   let
+                              color = "#00FF00"; 
+
+                              if (ppm >= 700 && ppm < 1000) {
+                                color = "#CCFF00"; 
+                              } else if (ppm >= 1000 && ppm < 1200) {
+                                color = "#FFCC00"; 
+                              } else if (ppm >= 1200 && ppm < 1500) {
+                                color = "#FF6600"; 
+                              } else if (ppm >= 1500 && ppm <= 1800) {
+                                color = "#FF0000"; 
+                              } else if (ppm > 2000) {
+                                color = "#800080"; 
+                              }
+
+                              return `
+                                fill: ${color};
+                                fill-opacity: 0.3;
+                                transition: fill 1s ease;
+                              `;
                     - entity: switch.alias_antimosquitos
                       element: switch.alias_antimosquitos
                       state_action:
@@ -339,17 +352,18 @@ views:
                         service_data: >-
                           /local/floorplan/assets/socket/socket_${entity.state}.svg
                       tap_action: toggle
-                    - entity: binary_sensor.esp32_btproxy_living_2_presencia_detectada
+                    - entity: lock.puerta_principal_2
                       element: cerrada
                       state_action:
                         action: call-service
                         service: floorplan.style_set
                         service_data:
                           style: >
-                            fill: ${ entity.state === "on" ? "green" : "red" };
+                            fill: ${ entity.state === "locked" ? "green" : "red"
+                            };
 
-                            transition: ${ entity.state === "off" ? "fill 5s
-                            ease" : "" };
+                            transition: ${ entity.state === "locked" ? "fill 5s
+                            ease" : "" };                      
                           tap_action: toggle
                     - entity: media_player.my_box_2
                       element: media_player.my_box
@@ -361,7 +375,7 @@ views:
                             fill: ${ entity.state === "on" ? "green" : "red" };
 
                             transition: ${ entity.state === "off" ? "fill 5s
-                            ease" : "" };
+                            ease" : "" };                      
                       tap_action: toggle
                     - entity: climate.zigbee_sonoff_trvzb_01
                       element: climate.zigbee_sonoff_trvzb_01
@@ -475,3 +489,15 @@ views:
                                   fill: rgba(${r}, ${g}, ${b}, ${alpha});
                                   transition: fill 1s ease;
                                 `;
+                    - entity: climate.aire_acondicionado_virtual
+                      element: compresor.aire
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              fill: ${ entity.state === "cool" ? "blue" :
+                              "green" };
+
+                              transition: ${ entity.state === "cool" ? "fill 5s
+                              ease" : "" };                      

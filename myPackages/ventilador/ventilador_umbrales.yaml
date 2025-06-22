@@ -31,29 +31,3 @@ input_number:
     step: 0.1
     unit_of_measurement: "°C"
     mode: box
-
-automation:
-  - alias: Control modo nocturno
-    description: Activa modo nocturno con offsets sobre puesta y salida del sol
-    trigger:
-      - trigger: sun
-        event: sunset
-        offset: "00:30:00" # 30 minutos después de la puesta de sol
-      - trigger: sun
-        event: sunrise
-        offset: "00:30:00" # 30 minutos después de la salida del sol
-    action:
-      - choose:
-          - conditions:
-              - condition: sun
-                after: sunset
-                before: sunrise
-            sequence:
-              - service: input_boolean.turn_on
-                target:
-                  entity_id: input_boolean.modo_nocturno
-          - default:
-              - service: input_boolean.turn_off
-                target:
-                  entity_id: input_boolean.modo_nocturno
-    mode: single

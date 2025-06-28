@@ -14,7 +14,7 @@ scene_switch_01_2_single:
   sequence:
     - service: homeassistant.toggle
       target:
-        entity_id: switch.alias_pinguino
+        entity_id: switch.alias_antimosquitos
     - service: input_boolean.toggle
       target:
         entity_id: input_boolean.scene_switch_01_2

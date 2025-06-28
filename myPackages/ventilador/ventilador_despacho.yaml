@@ -232,9 +232,9 @@ automation:
             {% elif opt == "3" %}
               06:00:00
             {% elif opt == "4" %}
-              08:00:00
+              09:00:00
             {% elif opt == "0" %}
-              00:03:00
+              00:03:30
             {% endif %}
 
   - id: "ventilador_despacho_timer_off"

@@ -13,7 +13,7 @@ automation:
     trigger:
       - platform: numeric_state
         entity_id: sensor.meross_switch_01_power
-        above: 75
+        above: 60
     condition:
       - condition: state
         entity_id: input_boolean.washingmachine_en_uso
@@ -31,7 +31,7 @@ automation:
     trigger:
       - platform: numeric_state
         entity_id: sensor.meross_switch_01_power
-        below: 10
+        below: 5
     condition:
       - condition: state
         entity_id: input_boolean.washingmachine_en_uso

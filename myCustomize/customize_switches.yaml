@@ -1,6 +1,5 @@
 switch.alias_antimosquitos:
   custom_etiquetas:
-    - nocturno
     - ambiente
 switch.alias_pinguino:
   custom_etiquetas:

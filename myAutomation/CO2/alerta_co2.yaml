@@ -8,16 +8,6 @@
     - service: switch.turn_on
       target:
         entity_id: switch.alias_pinguino
-
-    - choose:
-        - conditions:
-            - condition: sun
-              after: sunset
-              before: sunrise
-          sequence:
-            - service: switch.turn_on
-              target:
-                entity_id: switch.alias_antimosquitos
   mode: single
 
 - id: alerta_co2_desactivada
@@ -31,5 +21,4 @@
       target:
         entity_id:
           - switch.alias_pinguino
-          - switch.alias_antimosquitos
   mode: single

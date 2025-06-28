@@ -50,7 +50,7 @@ sensor:
 
 script:
   ventilador_habitacion_change:
-    alias: PKG VD Toggle switch según input_boolean
+    alias: PKG VH Toggle switch según input_boolean
     description: "Activa o desactiva un switch según el estado del input_boolean"
     mode: queued
     sequence:
@@ -75,7 +75,7 @@ script:
                   valor: Apagar
 
 automation:
-  - alias: PKG VD  Ventilador habitacion - alguien regresa
+  - alias: PKG VH  Ventilador habitacion - alguien regresa
     trigger:
       - trigger: state
         entity_id: input_boolean.presencia
@@ -89,7 +89,7 @@ automation:
           valor: auto
     mode: single
 
-  - alias: PKG VD Encender ventilador habitacion
+  - alias: PKG VH Encender ventilador habitacion
     trigger:
       - trigger: state
         entity_id: input_boolean.ventilador_habitacion
@@ -100,7 +100,7 @@ automation:
           dispositivo: ventilador_habitacion
           valor: velocidad 1
 
-  - alias: PKG VD Apagar ventilador habitacion
+  - alias: PKG VH Apagar ventilador habitacion
     trigger:
       - trigger: state
         entity_id: input_boolean.ventilador_habitacion
@@ -112,7 +112,7 @@ automation:
           valor: Apagar
 
   - id: "ventilador_habitacion_sinergia"
-    alias: PKG VD Ventilador habitacion - sinergia booleano/switch
+    alias: PKG VH Ventilador habitacion - sinergia booleano/switch
     trigger:
       - trigger: state
         entity_id: input_boolean.ventilador_habitacion_running
@@ -121,7 +121,7 @@ automation:
     mode: restart
 
   - id: "ventilador_habitacion_auto"
-    alias: PKG VD  Control ventilador habitacion por temperatura (input_number)
+    alias: PKG VH  Control ventilador habitacion por temperatura (input_number)
     description: Ajusta la velocidad del ventilador habitacion según diferencia térmica, con umbrales configurables
     trigger:
       - platform: state
@@ -210,7 +210,7 @@ automation:
     mode: single
 
   - id: "ventilador_habitacion_timer_on"
-    alias: PKG VD Iniciar temporizador del ventilador del habitacion
+    alias: PKG VH Iniciar temporizador del ventilador de habitacion
     trigger:
       - trigger: state
         entity_id: input_select.ventilador_habitacion_temporizador
@@ -232,13 +232,13 @@ automation:
             {% elif opt == "3" %}
               06:00:00
             {% elif opt == "4" %}
-              08:00:00
+              09:00:00
             {% elif opt == "0" %}
-              00:03:00
+              00:03:30
             {% endif %}
 
   - id: "ventilador_habitacion_timer_off"
-    alias: PKG VD timer habitacion off
+    alias: PKG VH timer habitacion off
     description: ""
     trigger:
       - trigger: state

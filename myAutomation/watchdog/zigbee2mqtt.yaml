@@ -19,7 +19,7 @@ automation:
       - action: notify.mobile_app_sm_a155f
         data:
           title: "Zigbee unavailable"
-          message: "Dispositivos zigbee unavailable por 10 min. quieres resetear? "
+          message: "Dispositivos zigbee unavailable por 5 min. quieres resetear? "
           data:
             actions:
               - action: RESPONSE_WD_He_Knows

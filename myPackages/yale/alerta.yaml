@@ -6,7 +6,7 @@ automation:
       - platform: state
         entity_id: binary_sensor.puerta_principal_door_2
         to: "on"
-        for: "00:01:30"
+        for: "00:10:00"
     condition:
       - condition: state
         entity_id: lock.puerta_principal_2

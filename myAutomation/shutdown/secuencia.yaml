@@ -45,11 +45,6 @@
 
     - action: script.secuencia_by_area
       data:
-        my_area: "living_1"
-        my_excludes: "sonoff_trvzb"
-        my_estado: "turn_off"
-    - action: script.secuencia_by_area
-      data:
         my_area: "living_2"
         my_excludes: "sonoff_trvzb"
         my_estado: "turn_off"

@@ -1,3 +1,6 @@
+homeassistant:
+  customize: {}
+
 input_boolean:
   extractores_activos:
     name: Extractores activos
@@ -69,8 +72,8 @@ automation:
     condition:
       - condition: template
         value_template: >
-          {{ states('sensor.temperatura_exterior')|float(100) <
-             states('sensor.cfg_temperatura_habitacion_2')|float(0) }}
+          {{ states('sensor.temperatura_exterior') | float(default=100) <
+             states('sensor.cfg_temperatura_habitacion_2') | float(default=100) }}
     action:
       - service: input_boolean.turn_on
         target:
@@ -86,8 +89,8 @@ automation:
     condition:
       - condition: template
         value_template: >
-          {{ states('sensor.temperatura_exterior')|float(0) >=
-             states('sensor.cfg_temperatura_habitacion_2')|float(100) }}
+          {{ states('sensor.temperatura_exterior') | float(default=100) >=
+             states('sensor.cfg_temperatura_habitacion_2') | float(default=100) }}
     action:
       - service: input_boolean.turn_off
         target:
@@ -104,6 +107,8 @@ automation:
         event_type: timer.finished
         event_data:
           entity_id: timer.extractores_descanso
+      - platform: state
+        entity_id: input_select.modo_extractores          
     condition:
       - condition: state
         entity_id: input_boolean.extractores_activos
@@ -117,10 +122,10 @@ automation:
             sequence:
               - service: switch.turn_on
                 target:
-                  entity_id: switch.ventilador_extraccion
+                  entity_id: switch.alias_aire_extraccion_habitacion_02
               - service: switch.turn_off
                 target:
-                  entity_id: switch.ventilador_introduccion
+                  entity_id: switch.alias_aire_introduccion_habitacion_02
 
           - conditions:
               - condition: state
@@ -129,10 +134,10 @@ automation:
             sequence:
               - service: switch.turn_off
                 target:
-                  entity_id: switch.ventilador_extraccion
+                  entity_id: switch.alias_aire_extraccion_habitacion_02
               - service: switch.turn_on
                 target:
-                  entity_id: switch.ventilador_introduccion
+                  entity_id: switch.alias_aire_introduccion_habitacion_02
 
           - conditions:
               - condition: state
@@ -142,15 +147,24 @@ automation:
               - service: switch.turn_on
                 target:
                   entity_id:
-                    - switch.ventilador_extraccion
-                    - switch.ventilador_introduccion
+                    - switch.alias_aire_extraccion_habitacion_02
+              - delay: "00:00:05"
+              - service: switch.turn_on
+                target:
+                  entity_id:
+                    - switch.alias_aire_introduccion_habitacion_02
         default: []
-      - delay: "00:10:00"
+      - delay: "00:05:00"
       - service: switch.turn_off
         target:
           entity_id:
-            - switch.ventilador_extraccion
-            - switch.ventilador_introduccion
+            - switch.alias_aire_extraccion_habitacion_02
+      - delay: "00:00:05"
+      - service: switch.turn_off
+        target:
+          entity_id:
+            - switch.alias_aire_introduccion_habitacion_02
+
       - service: timer.start
         target:
           entity_id: timer.extractores_descanso
@@ -165,8 +179,8 @@ automation:
       - service: switch.turn_off
         target:
           entity_id:
-            - switch.ventilador_extraccion
-            - switch.ventilador_introduccion
+            - switch.alias_aire_extraccion_habitacion_02
+            - switch.alias_aire_introduccion_habitacion_02
       - service: timer.cancel
         target:
           entity_id: timer.extractores_descanso
@@ -182,7 +196,7 @@ automation:
         target:
           entity_id: input_number.temperatura_inicial
         data:
-          value: "{{ states('sensor.cfg_temperatura_habitacion_2') | float(0) }}"
+          value: "{{ states('sensor.cfg_temperatura_habitacion_2') | float(default=0) }}"
 
   - alias: Comprobar si temperatura bajó tras ciclo con extractores encendidos
     id: alerta_temp_no_baja
@@ -197,8 +211,8 @@ automation:
         state: "on"
       - condition: template
         value_template: >
-          {% set temp_actual = states('sensor.cfg_temperatura_habitacion_2') | float(0) %}
-          {% set temp_inicial = states('input_number.temperatura_inicial') | float(0) %}
+          {% set temp_actual = states('sensor.cfg_temperatura_habitacion_2') | float(default=0) %}
+          {% set temp_inicial = states('input_number.temperatura_inicial') | float(default=0) %}
           {{ temp_actual >= temp_inicial }}
     action:
       - service: input_text.set_value
@@ -206,7 +220,6 @@ automation:
           entity_id: input_text.extractores_modo_alerta
         data:
           value: "{{ states('input_select.modo_extractores') }}"
-
       - service: script.notifica_movil
         data:
           title: "Alerta Extractores"
@@ -222,9 +235,9 @@ automation:
         event: start
     action:
       - variables:
-          fallos_extraccion: "{{ states('sensor.fallos_en_modo_extraccion') | int(99) }}"
-          fallos_introduccion: "{{ states('sensor.fallos_en_modo_introduccion') | int(99) }}"
-          fallos_mixto: "{{ states('sensor.fallos_en_modo_mixto') | int(99) }}"
+          fallos_extraccion: "{{ states('sensor.fallos_en_modo_extraccion') | int(default=99) }}"
+          fallos_introduccion: "{{ states('sensor.fallos_en_modo_introduccion') | int(default=99) }}"
+          fallos_mixto: "{{ states('sensor.fallos_en_modo_mixto') | int(default=99) }}"
       - choose:
           - conditions:
               - condition: template

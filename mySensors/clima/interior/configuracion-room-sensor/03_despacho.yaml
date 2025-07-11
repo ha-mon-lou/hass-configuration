@@ -17,7 +17,7 @@
       unique_id: "cfg_humedad_despacho"
       value_template: >
         {% set temp = states('sensor.tuya_termometro_wifi_humidity') %}
-        {{ temp | float(2) if temp not in ['unknown', 'unavailable'] else none }}
+        {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else none }}
       icon_template: mdi:water-percent
 
     cfg_sensacion_termica_despacho:
@@ -27,5 +27,5 @@
       unique_id: "cfg_sensacion_termica_despacho"
       value_template: >
         {% set temp = states('sensor.sensacion_termica_tuya_wifi_1') %}
-        {{ temp | float(2) if temp not in ['unknown', 'unavailable'] else none }}
+        {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else none }}
       icon_template: mdi:thermometer

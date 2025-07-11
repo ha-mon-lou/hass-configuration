@@ -17,7 +17,7 @@
       unique_id: "cfg_humedad_habitacion_2"
       value_template: >
         {% set hum = states('sensor.zigbee_sonoff_snzb02_01_humidity') %}
-        {{ hum | float(2) if hum not in ['unknown', 'unavailable'] else none }}
+        {{ hum | float | round(2) if hum not in ['unknown', 'unavailable'] else none }}
       icon_template: mdi:water-percent
 
     cfg_sensacion_termica_habitacion_2:
@@ -27,5 +27,5 @@
       unique_id: "cfg_sensacion_termica_habitacion_2"
       value_template: >
         {% set sens = states('sensor.sensacion_termica_zigbee_sonoff_snzb02_01') %}
-        {{ sens | float(2) if sens not in ['unknown', 'unavailable'] else none }}
+        {{ sens | float | round(2) if sens not in ['unknown', 'unavailable'] else none }}
       icon_template: mdi:thermometer

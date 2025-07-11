@@ -50,13 +50,13 @@ sensor:
         unit_of_measurement: "°C"
         value_template: >
           {% set temp = states('sensor.cfg_temperatura_living_1') %}
-          {{ temp | float(2) if temp not in ['unknown', 'unavailable'] else 0 }}
+          {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else 0 }}
       ac_panasonic_ion_sensacion_termica:
         friendly_name: "Sensacion termica Aire Acondicionado Panasonic Ion"
         unit_of_measurement: "°C"
         value_template: >
           {% set temp = states('sensor.cfg_sensacion_termica_living_1') %}
-          {{ temp | float(2) if temp not in ['unknown', 'unavailable'] else 0 }}
+          {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else 0 }}
 
 climate:
   - platform: generic_thermostat

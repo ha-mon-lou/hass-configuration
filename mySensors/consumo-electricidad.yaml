@@ -26,3 +26,19 @@
           0
         {% endif %}
       icon_template: mdi:calculator
+
+- platform: template
+  sensors:
+    electro_consumo_regleta_02:
+      device_class: energy
+      friendly_name: "Consumo electricidad regleta 02"
+      unique_id: "electro_consumo_regleta_02"
+      unit_of_measurement: "W"
+      value_template: >-
+        {% if states('sensor.regleta_antela_power_2') | float(default=0) %}
+          {{ (states('sensor.regleta_antela_power_2') | float * 1) }}
+        {% else %}
+          0
+        {% endif %}
+      icon_template: mdi:calculator
+

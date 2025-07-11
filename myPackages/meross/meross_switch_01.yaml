@@ -5,14 +5,14 @@ template:
         unit_of_measurement: "W"
         device_class: power
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_consumption') | float(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_consumption') | float | round(2) }}
 
       - name: "Meross Switch 01 Current"
         unique_id: meross_switch_01_current
         unit_of_measurement: "A"
         device_class: current
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_current') | float(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_current') | float | round(2) }}
 
       - name: "Meross Switch 01 Energy"
         unique_id: meross_switch_01_energy
@@ -20,14 +20,14 @@ template:
         device_class: energy
         state_class: total_increasing
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_energy') | float(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_energy') | float | round(2) }}
 
       - name: "Meross Switch 01 Power"
         unique_id: meross_switch_01_power
         unit_of_measurement: "W"
         device_class: power
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_power') | float(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_power') | float | round(2) }}
 
       - name: "Meross Switch 01 Power Log"
         unique_id: meross_switch_01_power_log
@@ -47,14 +47,14 @@ template:
         unit_of_measurement: "dBm"
         device_class: signal_strength
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_signal_strength') | float(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_signal_strength') | float | round(2) }}
 
       - name: "Meross Switch 01 Voltage"
         unique_id: meross_switch_01_voltage
         unit_of_measurement: "V"
         device_class: voltage
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_voltage') | float(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_voltage') | float | round(2) }}
 
 switch:
   - platform: template

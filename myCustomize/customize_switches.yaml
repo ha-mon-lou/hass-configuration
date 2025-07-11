@@ -4,6 +4,7 @@ switch.alias_antimosquitos:
 switch.alias_pinguino:
   custom_etiquetas:
     - ventilacion
+
 switch.alias_shelly_habitacion:
   custom_etiquetas:
     - permanente
@@ -12,9 +13,15 @@ switch.alias_storage_ac_panasonic:
   custom_etiquetas:
     - diurno
 
+switch.enchufe_habitacion_socket_1:
+  custom_etiquetas:
+    - cortesia
+
 switch.enchufe_doble_socket_1:
   custom_etiquetas:
     - nocturno
+    - cortesia
+
 switch.enchufe_doble_socket_2:
   custom_etiquetas:
     - nocturno

@@ -1,0 +1,260 @@
+input_boolean:
+  extractores_activos:
+    name: Extractores activos
+    icon: mdi:fan
+
+input_select:
+  modo_extractores:
+    name: Modo Extractores
+    options:
+      - Extracción
+      - Introducción
+      - Mixto
+    initial: Extracción
+    icon: mdi:swap-vertical
+
+input_number:
+  temperatura_inicial:
+    name: Temperatura Inicial
+    initial: 0
+    min: -40
+    max: 40
+    step: 0.1
+    mode: box
+
+input_text:
+  extractores_modo_alerta:
+    name: Último modo con fallo de temperatura
+    max: 50
+
+timer:
+  extractores_descanso:
+    duration: "00:02:00"
+
+sensor:
+  - platform: history_stats
+    name: Fallos en modo Extracción
+    entity_id: input_text.extractores_modo_alerta
+    state: "Extracción"
+    type: count
+    start: "{{ now() - timedelta(days=7) }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: Fallos en modo Introducción
+    entity_id: input_text.extractores_modo_alerta
+    state: "Introducción"
+    type: count
+    start: "{{ now() - timedelta(days=7) }}"
+    end: "{{ now() }}"
+
+  - platform: history_stats
+    name: Fallos en modo Mixto
+    entity_id: input_text.extractores_modo_alerta
+    state: "Mixto"
+    type: count
+    start: "{{ now() - timedelta(days=7) }}"
+    end: "{{ now() }}"
+
+automation:
+  - alias: Activar extractores si temperatura exterior es menor
+    id: activar_extractores_si_temp_exterior_menor
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.temperatura_exterior
+          - sensor.cfg_temperatura_habitacion_2
+      - platform: homeassistant
+        event: start
+    condition:
+      - condition: template
+        value_template: >
+          {{ states('sensor.temperatura_exterior')|float(100) <
+             states('sensor.cfg_temperatura_habitacion_2')|float(0) }}
+    action:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.extractores_activos
+
+  - alias: Desactivar extractores si temperatura exterior no es menor
+    id: desactivar_extractores_si_temp_exterior_no_menor
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.temperatura_exterior
+          - sensor.cfg_temperatura_habitacion_2
+    condition:
+      - condition: template
+        value_template: >
+          {{ states('sensor.temperatura_exterior')|float(0) >=
+             states('sensor.cfg_temperatura_habitacion_2')|float(100) }}
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.extractores_activos
+
+  - alias: Ciclo de trabajo de extractores según modo (2 switches)
+    id: ciclo_extractores_modos_2switch
+    mode: restart
+    trigger:
+      - platform: state
+        entity_id: input_boolean.extractores_activos
+        to: "on"
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.extractores_descanso
+    condition:
+      - condition: state
+        entity_id: input_boolean.extractores_activos
+        state: "on"
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: input_select.modo_extractores
+                state: "Extracción"
+            sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: switch.ventilador_extraccion
+              - service: switch.turn_off
+                target:
+                  entity_id: switch.ventilador_introduccion
+
+          - conditions:
+              - condition: state
+                entity_id: input_select.modo_extractores
+                state: "Introducción"
+            sequence:
+              - service: switch.turn_off
+                target:
+                  entity_id: switch.ventilador_extraccion
+              - service: switch.turn_on
+                target:
+                  entity_id: switch.ventilador_introduccion
+
+          - conditions:
+              - condition: state
+                entity_id: input_select.modo_extractores
+                state: "Mixto"
+            sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id:
+                    - switch.ventilador_extraccion
+                    - switch.ventilador_introduccion
+        default: []
+      - delay: "00:10:00"
+      - service: switch.turn_off
+        target:
+          entity_id:
+            - switch.ventilador_extraccion
+            - switch.ventilador_introduccion
+      - service: timer.start
+        target:
+          entity_id: timer.extractores_descanso
+
+  - alias: Apagar extractores si input_boolean se apaga
+    id: apagar_extractores_manual
+    trigger:
+      - platform: state
+        entity_id: input_boolean.extractores_activos
+        to: "off"
+    action:
+      - service: switch.turn_off
+        target:
+          entity_id:
+            - switch.ventilador_extraccion
+            - switch.ventilador_introduccion
+      - service: timer.cancel
+        target:
+          entity_id: timer.extractores_descanso
+
+  - alias: Guardar temperatura inicial al activar extractores
+    id: guardar_temp_inicial_extractores
+    trigger:
+      - platform: state
+        entity_id: input_boolean.extractores_activos
+        to: "on"
+    action:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.temperatura_inicial
+        data:
+          value: "{{ states('sensor.cfg_temperatura_habitacion_2') | float(0) }}"
+
+  - alias: Comprobar si temperatura bajó tras ciclo con extractores encendidos
+    id: alerta_temp_no_baja
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.extractores_descanso
+    condition:
+      - condition: state
+        entity_id: input_boolean.extractores_activos
+        state: "on"
+      - condition: template
+        value_template: >
+          {% set temp_actual = states('sensor.cfg_temperatura_habitacion_2') | float(0) %}
+          {% set temp_inicial = states('input_number.temperatura_inicial') | float(0) %}
+          {{ temp_actual >= temp_inicial }}
+    action:
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.extractores_modo_alerta
+        data:
+          value: "{{ states('input_select.modo_extractores') }}"
+
+      - service: script.notifica_movil
+        data:
+          title: "Alerta Extractores"
+          message: >
+            La temperatura interior no ha bajado tras 15 minutos de ventilación.\nModo activo: {{ states('input_select.modo_extractores') }}
+
+  - alias: Elegir modo óptimo según fallos
+    id: elegir_modo_optimo_extractores
+    trigger:
+      - platform: time
+        at: "07:00:00"
+      - platform: homeassistant
+        event: start
+    action:
+      - variables:
+          fallos_extraccion: "{{ states('sensor.fallos_en_modo_extraccion') | int(99) }}"
+          fallos_introduccion: "{{ states('sensor.fallos_en_modo_introduccion') | int(99) }}"
+          fallos_mixto: "{{ states('sensor.fallos_en_modo_mixto') | int(99) }}"
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ fallos_extraccion <= fallos_introduccion and fallos_extraccion <= fallos_mixto }}
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.modo_extractores
+                data:
+                  option: "Extracción"
+
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ fallos_introduccion < fallos_extraccion and fallos_introduccion <= fallos_mixto }}
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.modo_extractores
+                data:
+                  option: "Introducción"
+
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ fallos_mixto < fallos_extraccion and fallos_mixto < fallos_introduccion }}
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.modo_extractores
+                data:
+                  option: "Mixto"

@@ -1,0 +1,27 @@
+- platform: template
+  switches:
+    alias_aire_extraccion_habitacion_02:
+      unique_id: alias_aire_extraccion_habitacion_02
+      friendly_name: "Aire extraccion habitacion_02"
+      value_template: "{{ is_state('switch.regleta_antela_02_socket_01', 'on') }}"
+      turn_on:
+        service: switch.turn_on
+        target:
+          entity_id: switch.regleta_antela_socket_1_2
+      turn_off:
+        service: switch.turn_off
+        target:
+          entity_id: switch.regleta_antela_socket_1_2
+
+    alias_aire_introduccion_habitacion_02:
+      unique_id: alias_aire_introduccion_habitacion_02
+      friendly_name: "Aire introduccion habitacion_02"
+      value_template: "{{ is_state('switch.regleta_antela_02_socket_02', 'on') }}"
+      turn_on:
+        service: switch.turn_on
+        target:
+          entity_id: switch.regleta_antela_socket_2_2
+      turn_off:
+        service: switch.turn_off
+        target:
+          entity_id: switch.regleta_antela_socket_2_2

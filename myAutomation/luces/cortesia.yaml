@@ -1,0 +1,40 @@
+- id: luces_cortesia
+  alias: Dispositivos de cortesía al abrir la puerta
+  description: Enciende los dispositivos con etiqueta "cortesia" si estaban apagados y los apaga después
+  mode: restart
+  trigger:
+    - platform: conversation
+      command: test
+    - platform: state
+      entity_id: binary_sensor.puerta_principal_door_2
+      from: "off"
+      to: "on"
+
+  condition:
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: media_player.my_box_2
+          state: "on"
+
+  action:
+    - variables:
+        dispositivos_a_encender: >-
+          {% set dispositivos = states.switch
+            | selectattr('attributes.custom_etiquetas', 'defined')
+            | selectattr('attributes.custom_etiquetas', 'search', 'cortesia')
+            | selectattr('state', 'eq', 'off')
+            | map(attribute='entity_id') | list %}
+          {{ dispositivos }}
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ dispositivos_a_encender | length > 0 }}"
+          sequence:
+            - service: switch.turn_on
+              data:
+                entity_id: "{{ dispositivos_a_encender }}"
+            - delay: "00:02:00"
+            - service: switch.turn_off
+              data:
+                entity_id: "{{ dispositivos_a_encender }}"

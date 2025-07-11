@@ -103,3 +103,21 @@
       value_template: >
         {% from 'confort_termico.jinja' import macro_confort_termico %}
         {{ macro_confort_termico('sensor.zigbee_heiman_hs3aq_01_temperature','sensor.zigbee_heiman_hs3aq_01_humidity') }}
+
+    #
+    #   SwitchBot indoor/outdoor thermo hygrometer 01
+    #
+
+    sensacion_termica_switchbot_ioth_01:
+      friendly_name: "Sensación Térmica (switchbot ioth 01)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.indoor_outdoor_meter_5427_temperature', 'sensor.indoor_outdoor_meter_5427_humidity') }}
+
+    confort_termico_switchbot_ioth_01:
+      friendly_name: "Confort Térmico (switchbot ioth 01)"
+      unit_of_measurement: "°C"
+      value_template: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.indoor_outdoor_meter_5427_temperature','sensor.indoor_outdoor_meter_5427_humidity') }}

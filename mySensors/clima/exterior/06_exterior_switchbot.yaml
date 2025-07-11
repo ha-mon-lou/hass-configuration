@@ -1,0 +1,28 @@
+- platform: template
+  sensors:
+    cfg_temperatura_exterior_cercana:
+      friendly_name: "CFG Temperatura exterior_cercana"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      unique_id: "cfg_temperatura_exterior_cercana"
+      value_template: >
+        {{ states('sensor.indoor_outdoor_meter_5427_temperature') | float(2) }}
+      icon_template: mdi:thermometer
+
+    cfg_humedad_exterior_cercana:
+      friendly_name: "CFG Humedad exterior_cercana"
+      device_class: humidity
+      unit_of_measurement: "%"
+      unique_id: "cfg_humedad_exterior_cercana"
+      value_template: >
+        {{ states('sensor.indoor_outdoor_meter_5427_humidity') | float(2) }}
+      icon_template: mdi:water-percent
+
+    cfg_sensacion_termica_exterior_cercana:
+      friendly_name: "CFG Sensacion Termica exterior_cercana"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      unique_id: "cfg_sensacion_termica_exterior_cercana"
+      value_template: >
+        {{ states('sensor.sensacion_termica_switchbot_ioth_01') | float(2) }}
+      icon_template: mdi:thermometer

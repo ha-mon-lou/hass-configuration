@@ -9,6 +9,7 @@ sensor.zigbee_sonoff_trvzb_03_battery
 sensor.zigbee_sonoff_trvzb_04_battery
 sensor.zigbee_sonoff_snzb02_01_battery
 sensor.zigbee_scene_switch_01_battery
+sensor.shelly_blu_button1_908f_battery
 
 sensor.cfg_temperatura_exterior_cercana
 

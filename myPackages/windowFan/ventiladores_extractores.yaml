@@ -6,6 +6,10 @@ input_boolean:
     name: Extractores activos
     icon: mdi:fan
 
+  extractores_habilitados:
+    name: Extractores habilitados
+    icon: mdi:power
+
 input_select:
   modo_extractores:
     name: Modo Extractores
@@ -60,6 +64,7 @@ sensor:
     end: "{{ now() }}"
 
 automation:
+
   - alias: Activar extractores si temperatura exterior es menor
     id: activar_extractores_si_temp_exterior_menor
     trigger:
@@ -70,6 +75,12 @@ automation:
       - platform: homeassistant
         event: start
     condition:
+      - condition: state
+        entity_id: input_boolean.extractores_habilitados
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.ventilador_habitacion
+        state: "off"
       - condition: template
         value_template: >
           {{ states('sensor.temperatura_exterior') | float(default=100) <
@@ -87,6 +98,9 @@ automation:
           - sensor.temperatura_exterior
           - sensor.cfg_temperatura_habitacion_2
     condition:
+      - condition: state
+        entity_id: input_boolean.extractores_habilitados
+        state: "on"
       - condition: template
         value_template: >
           {{ states('sensor.temperatura_exterior') | float(default=100) >=
@@ -108,7 +122,7 @@ automation:
         event_data:
           entity_id: timer.extractores_descanso
       - platform: state
-        entity_id: input_select.modo_extractores          
+        entity_id: input_select.modo_extractores
     condition:
       - condition: state
         entity_id: input_boolean.extractores_activos
@@ -164,7 +178,6 @@ automation:
         target:
           entity_id:
             - switch.alias_aire_introduccion_habitacion_02
-
       - service: timer.start
         target:
           entity_id: timer.extractores_descanso
@@ -233,6 +246,10 @@ automation:
         at: "07:00:00"
       - platform: homeassistant
         event: start
+    condition:
+      - condition: state
+        entity_id: input_boolean.extractores_habilitados
+        state: "on"
     action:
       - variables:
           fallos_extraccion: "{{ states('sensor.fallos_en_modo_extraccion') | int(default=99) }}"
@@ -271,3 +288,80 @@ automation:
                   entity_id: input_select.modo_extractores
                 data:
                   option: "Mixto"
+
+  - alias: Apagar extractores si se enciende el ventilador de techo
+    id: extractores_apagan_si_ventilador_techo_on
+    trigger:
+      - platform: state
+        entity_id: input_boolean.ventilador_habitacion
+        to: "on"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.extractores_activos
+      - service: switch.turn_off
+        target:
+          entity_id:
+            - switch.alias_aire_extraccion_habitacion_02
+            - switch.alias_aire_introduccion_habitacion_02
+      - service: timer.cancel
+        target:
+          entity_id: timer.extractores_descanso
+
+  - alias: Apagar extractores si se deshabilitan manualmente
+    id: extractores_desactivados_por_maestro
+    trigger:
+      - platform: state
+        entity_id: input_boolean.extractores_habilitados
+        to: "off"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.extractores_activos
+      - service: switch.turn_off
+        target:
+          entity_id:
+            - switch.alias_aire_extraccion_habitacion_02
+            - switch.alias_aire_introduccion_habitacion_02
+      - service: timer.cancel
+        target:
+          entity_id: timer.extractores_descanso
+
+  - alias: Revisar si deben activarse extractores al habilitarlos
+    id: revisar_extractores_al_habilitar
+    trigger:
+      - platform: state
+        entity_id: input_boolean.extractores_habilitados
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: input_boolean.ventilador_habitacion
+        state: "off"
+      - condition: template
+        value_template: >
+          {{ states('sensor.temperatura_exterior') | float(default=100) <
+             states('sensor.cfg_temperatura_habitacion_2') | float(default=100) }}
+    action:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.extractores_activos
+
+  - alias: Evitar activación extractores si no están habilitados o ventilador ON
+    id: evitar_activacion_extractores_no_permitida
+    trigger:
+      - platform: state
+        entity_id: input_boolean.extractores_activos
+        to: "on"
+    condition:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_boolean.extractores_habilitados
+            state: "off"
+          - condition: state
+            entity_id: input_boolean.ventilador_habitacion
+            state: "on"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.extractores_activos

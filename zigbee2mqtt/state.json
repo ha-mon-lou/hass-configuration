@@ -6,10 +6,10 @@
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "power": 30,
-        "energy": 15.03,
+        "power": 31,
+        "energy": 15.45,
         "current": 0.15,
-        "linkquality": 216,
+        "linkquality": 240,
         "update": {
             "state": "idle",
             "installed_version": 192,
@@ -23,10 +23,10 @@
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "linkquality": 112,
-        "power": 0,
-        "energy": 139.53,
-        "current": 0.02
+        "linkquality": 164,
+        "power": 46,
+        "energy": 140.31,
+        "current": 0.33
     },
     "0xa4c138b8caa59009": {
         "voltage": 229,
@@ -38,13 +38,13 @@
         "power": 0,
         "energy": 36.23,
         "current": 0,
-        "linkquality": 160
+        "linkquality": 164
     },
     "0x00124b002a565fae": {
         "voltage": 3000,
         "battery": 100,
-        "temperature": 27.65,
-        "humidity": 67.7,
+        "temperature": 27.57,
+        "humidity": 70.27,
         "linkquality": 255
     },
     "0xa4c138b7c1781a47": {
@@ -57,7 +57,7 @@
         "power": 0,
         "energy": 19.75,
         "current": 0,
-        "linkquality": 216,
+        "linkquality": 204,
         "update": {
             "state": "idle",
             "installed_version": 192,
@@ -74,7 +74,7 @@
         "valve_opening_limit_voltage": 1848,
         "valve_closing_limit_voltage": 2929,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 27.2,
+        "local_temperature": 27.7,
         "occupied_heating_setpoint": 6,
         "system_mode": "off",
         "running_state": "idle",
@@ -110,7 +110,7 @@
         "valve_opening_limit_voltage": 1785,
         "valve_closing_limit_voltage": 2972,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 27.9,
+        "local_temperature": 27.4,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
@@ -171,9 +171,9 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 26.18,
-        "humidity": 63.78,
-        "co2": 896,
+        "temperature": 26.71,
+        "humidity": 70.03,
+        "co2": 732,
         "linkquality": 255
     },
     "0xe406bffffe34f94b": {

@@ -1,0 +1,36 @@
+sensor.puerta_principal_battery_2
+sensor.tuya_termometro_wifi_2_battery
+sensor.tuya_termometro_wifi_battery
+sensor.shelly_blu_5480_battery
+sensor.indoor_outdoor_meter_5427_battery
+sensor.zigbee_sonoff_trvzb_01_battery
+sensor.zigbee_sonoff_trvzb_02_battery
+sensor.zigbee_sonoff_trvzb_03_battery
+sensor.zigbee_sonoff_trvzb_04_battery
+sensor.zigbee_sonoff_snzb02_01_battery
+sensor.zigbee_scene_switch_01_battery
+
+sensor.cfg_temperatura_exterior_cercana
+
+
+
+
+- entity: sensor.puerta_principal_battery_2
+  element: sensor.puerta_principal_battery_2
+  state_action:
+    - action: call-service
+      service: floorplan.image_set
+      service_data: >
+        > const raw = parseInt(entity.state);
+        const level = Math.min(100, Math.max(0, Math.round(raw / 10) * 10));
+        return `/local/floorplan/assets/battery/battery-${level}-level.svg`;
+
+- entity: sensor.tuya_termometro_wifi_2_battery
+  element: sensor.tuya_termometro_wifi_2_battery
+  state_action:
+    - action: call-service
+      service: floorplan.image_set
+      service_data: >
+        > const raw = parseInt(entity.state);
+        const level = Math.min(100, Math.max(0, Math.round(raw / 10) * 10));
+        return `/local/floorplan/assets/battery/battery-${level}-level.svg`;

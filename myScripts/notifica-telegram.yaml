@@ -1,0 +1,11 @@
+notifica_telegram:
+  alias: notifica telegram
+  fields:
+    message:
+      description: "The message content"
+  sequence:
+    - service: telegram_bot.send_message
+      data_template:
+        message: "{{ message | replace('_', ' ') }}"
+        parse_mode: html
+        target: "6280028522"

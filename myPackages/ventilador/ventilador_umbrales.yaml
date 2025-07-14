@@ -31,3 +31,28 @@ input_number:
     step: 0.1
     unit_of_measurement: "°C"
     mode: box
+
+automation:
+  - alias: PKG TH Apagar ventiladores al desactivar verano
+    id: pkg_th_apagar_ventiladores_fin_verano
+    description: Apaga todos los dispositivos
+    trigger:
+      - platform: state
+        entity_id: input_boolean.verano
+        to: "off"
+    action:
+      - service: homeassistant.turn_off
+        target:
+          entity_id:
+            - input_boolean.ventilador_equation
+      - delay: 00:00:02
+      - action: script.selector_ventilador
+        data:
+          dispositivo: "ventilador_habitacion"
+          valor: "Apagar"
+
+      - delay: 00:00:02
+      - action: script.selector_ventilador
+        data:
+          dispositivo: "ventilador_despacho"
+          valor: "Apagar"

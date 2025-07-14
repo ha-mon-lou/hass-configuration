@@ -62,7 +62,10 @@ automation:
       - platform: state
         entity_id: input_boolean.presencia
         to: "on"
-    condition: []
+    condition:
+      - condition: state
+        entity_id: input_boolean.verano
+        state: "on"
     action:
       - service: script.modo_ventilador
         data:
@@ -75,6 +78,10 @@ automation:
       - platform: state
         entity_id: input_boolean.ventilador_equation
         to: "on"
+    condition:
+      - condition: state
+        entity_id: input_boolean.verano
+        state: "on"
     action:
       - service: script.mando_ventilador_equation
         data:
@@ -86,10 +93,10 @@ automation:
         entity_id: input_boolean.ventilador_equation
         to: "off"
     action:
-      - action: script.mando_ventilador_equation
+      - service: script.mando_ventilador_equation
         data:
           valor: Apagar
-      - action: script.modo_ventilador
+      - service: script.modo_ventilador
         data:
           dispositivo: ventilador_equation
           valor: manual
@@ -101,6 +108,9 @@ automation:
     condition:
       - condition: state
         entity_id: input_boolean.ventilador_equation
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.verano
         state: "on"
     action:
       - service: script.mando_ventilador_equation
@@ -121,6 +131,9 @@ automation:
       - condition: state
         entity_id: input_select.ventilador_equation_modo_auto
         state: "auto"
+      - condition: state
+        entity_id: input_boolean.verano
+        state: "on"
     action:
       - variables:
           dif_temp: >
@@ -149,6 +162,10 @@ automation:
         entity_id:
           - input_select.ubicacion_ramon
           - input_select.ubicacion_pau
+    condition:
+      - condition: state
+        entity_id: input_boolean.verano
+        state: "on"
     action:
       - choose:
           - conditions:
@@ -157,7 +174,7 @@ automation:
                   {% set ubicaciones = expand('group.ubicacion_personas') | map(attribute='state') | list %}
                   {{ 'living_1' in ubicaciones or 'living_2' in ubicaciones }}
             sequence:
-              - action: script.modo_ventilador
+              - service: script.modo_ventilador
                 data:
                   dispositivo: ventilador_equation
                   valor: auto

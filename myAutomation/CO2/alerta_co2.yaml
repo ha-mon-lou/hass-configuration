@@ -8,6 +8,10 @@
     - service: switch.turn_on
       target:
         entity_id: switch.alias_pinguino
+    - service: script.notifica_telegram
+      data:
+        message: "<b>Alerta CO2</b>: {{ states('sensor.zigbee_heiman_hs3aq_01_co2') }}ppm "
+
   mode: single
 
 - id: alerta_co2_desactivada

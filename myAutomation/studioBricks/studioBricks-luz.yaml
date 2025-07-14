@@ -17,12 +17,6 @@
           metadata: {}
           data: {}
           target:
-            entity_id: switch.enchufe_habitacion_socket_1
-        - delay: 00:00:01
-        - action: switch.turn_on
-          metadata: {}
-          data: {}
-          target:
             entity_id: switch.regleta_antela_socket_5
         - delay: 00:00:01
         - action: switch.turn_on
@@ -50,12 +44,6 @@
   conditions: []
   actions:
     - sequence:
-        - action: switch.turn_off
-          metadata: {}
-          data: {}
-          target:
-            entity_id: switch.enchufe_habitacion_socket_1
-        - delay: 00:00:01
         - action: switch.turn_off
           metadata: {}
           data: {}

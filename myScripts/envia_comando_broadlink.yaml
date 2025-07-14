@@ -1,18 +1,22 @@
 envia_comando_broadlink:
-  alias: envia comando broadlink
+  alias: Enviar comando Broadlink
   fields:
     dispositivo:
-      description: "nombre del dispositivo"
+      description: "Nombre del dispositivo"
+      default: "desconocido"
     comando:
-      description: "comando"
+      description: "Comando"
+      default: "nulo"
   sequence:
-    - action: remote.send_command
+    - service: remote.send_command
       target:
-        device_id:
-          - 9a9976d66a24725c7ba6ce0725feaee7
+        device_id: 9a9976d66a24725c7ba6ce0725feaee7
       data:
         num_repeats: 1
         delay_secs: 0.4
         hold_secs: 0
         device: "{{ dispositivo }}"
         command: "{{ comando }}"
+    - service: script.notifica_telegram
+      data:
+        message: <b>BroadLink</b> {{ dispositivo }} <b>comando</b> {{ comando }}

@@ -1,0 +1,93 @@
+# timers.yaml
+timer:
+  luces_cortesia_entrada:
+    duration: "00:01:00"
+
+# Encender dispositivos de cortesía al entrar
+automation:
+  - id: pkg_kts_encender_luces_cortesia_entrada
+    alias: Encender dispositivos de cortesía al entrar
+    description: Enciende los interruptores con etiqueta 'cortesia' si están apagados, y arranca un temporizador
+    mode: restart
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presencia_zona_entrada
+        from: "off"
+        to: "on"
+      - platform: conversation
+        command: test
+
+    condition:
+      - condition: state
+        entity_id: sun.sun
+        state: "above_horizon" # Solo se activa de día
+
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: media_player.my_box_2
+            state: "on"
+    action:
+      - variables:
+          dispositivos_a_encender: >-
+            {% set dispositivos = states.switch
+              | selectattr('attributes.custom_etiquetas', 'defined')
+              | selectattr('attributes.custom_etiquetas', 'search', 'cortesia')
+              | selectattr('state', 'eq', 'off')
+              | map(attribute='entity_id') | list %}
+            {{ dispositivos }}
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ dispositivos_a_encender | length > 0 }}"
+            sequence:
+              - service: switch.turn_on
+                data:
+                  entity_id: "{{ dispositivos_a_encender }}"
+              - service: timer.start
+                data:
+                  entity_id: timer.luces_cortesia_entrada
+
+  # Apagar dispositivos con etiqueta 'cortesia' al terminar el temporizador
+  - id: pkg_kts_apagar_luces_cortesia_entrada_timer
+    alias: Apagar dispositivos de cortesía al finalizar el temporizador
+    description: Apaga los dispositivos con etiqueta 'cortesia' al terminar el temporizador
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.luces_cortesia_entrada
+    action:
+      - variables:
+          dispositivos_a_apagar: >-
+            {% set dispositivos = states.switch
+              | selectattr('attributes.custom_etiquetas', 'defined')
+              | selectattr('attributes.custom_etiquetas', 'search', 'cortesia')
+              | selectattr('state', 'eq', 'on')
+              | map(attribute='entity_id') | list %}
+            {{ dispositivos }}
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ dispositivos_a_apagar | length > 0 }}"
+            sequence:
+              - service: switch.turn_off
+                data:
+                  entity_id: "{{ dispositivos_a_apagar }}"
+
+  # Cancelar el temporizador si pasas a zona living_1
+  - id: pkg_kts_cancelar_temporizador_cortesia_por_living
+    alias: Cancelar temporizador cortesía si pasas a living_1
+    description: Cancela el temporizador si se detecta presencia en living_1
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presencia_zona_living_1
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: timer.luces_cortesia_entrada
+        state: "active"
+    action:
+      - service: timer.cancel
+        data:
+          entity_id: timer.luces_cortesia_entrada

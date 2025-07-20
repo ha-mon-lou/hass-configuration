@@ -45,13 +45,18 @@ automation:
         target:
           entity_id:
             - input_boolean.ventilador_equation
-      - delay: 00:00:02
+      - delay: 00:00:01
+      - service: homeassistant.turn_off
+        target:
+          entity_id:
+            - switch.alias_ventilador_living_1
+      - delay: 00:00:01
       - action: script.selector_ventilador
         data:
           dispositivo: "ventilador_habitacion"
           valor: "Apagar"
 
-      - delay: 00:00:02
+      - delay: 00:00:01
       - action: script.selector_ventilador
         data:
           dispositivo: "ventilador_despacho"

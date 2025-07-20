@@ -1,0 +1,121 @@
+homeassistant:
+  customize: {}
+
+template:
+  - binary_sensor:
+      - name: "Presencia en casa"
+        unique_id: "presencia_en_casa"
+        device_class: occupancy
+        state: >
+          {{
+            states.binary_sensor
+              | selectattr('attributes.device_class', '==', 'occupancy')
+              | selectattr('state', '==', 'on')
+              | list
+              | count > 0
+          }}
+
+      - name: "Presencia zona habitacion_1"
+        unique_id: "presencia_zona_habitacion_1"
+        device_class: occupancy
+        state: >
+          {{
+            is_state('input_select.ubicacion_pau', 'habitacion_1') or
+            is_state('input_select.ubicacion_ramon', 'habitacion_1') 
+          }}
+
+      - name: "Presencia zona habitacion_2"
+        unique_id: "presencia_zona_habitacion_2"
+        device_class: occupancy
+        state: >
+          {{
+            is_state('input_select.ubicacion_pau', 'habitacion_2') or
+            is_state('input_select.ubicacion_ramon', 'habitacion_2')
+          }}
+
+      - name: "Presencia zona despacho"
+        unique_id: "presencia_zona_despacho"
+        device_class: occupancy
+        state: >
+          {{
+            is_state('input_select.ubicacion_pau', 'despacho') or
+            is_state('input_select.ubicacion_ramon', 'despacho')
+          }}
+
+      - name: "Presencia zona studioBricks"
+        unique_id: "presencia_zona_studiobricks"
+        device_class: occupancy
+        state: >
+          {{
+            is_state('input_select.ubicacion_pau', 'studioBricks') or
+            is_state('input_select.ubicacion_ramon', 'studioBricks')
+          }}
+
+      - name: "Presencia zona living_1"
+        unique_id: "presencia_zona_living_1"
+        device_class: occupancy
+        state: >
+          {{
+            (
+              (states('number.human_presence_sensor_clostest_target_distance') | float(99)) < 2.8 and
+              is_state('binary_sensor.human_presence_sensor_occupancy', 'on')
+            ) or
+            is_state('input_select.ubicacion_pau', 'living_1') or
+            is_state('input_select.ubicacion_ramon', 'living_1')
+          }}
+
+      - name: "Presencia zona living_2"
+        unique_id: "presencia_zona_living_2"
+        device_class: occupancy
+        state: >
+          {{
+            is_state('input_select.ubicacion_pau', 'living_2') or
+            is_state('input_select.ubicacion_ramon', 'living_2')
+          }}
+
+      - name: "Presencia zona cocina"
+        unique_id: "presencia_zona_cocina"
+        device_class: occupancy
+        state: >
+          {{
+            is_state('input_select.ubicacion_pau', 'cocina') or
+            is_state('input_select.ubicacion_ramon', 'cocina')
+          }}
+
+      - name: "Presencia zona bathroom_1"
+        unique_id: "presencia_zona_bathroom_1"
+        device_class: occupancy
+        state: >
+          {{
+            is_state('input_select.ubicacion_pau', 'bathroom_1') or
+            is_state('input_select.ubicacion_ramon', 'bathroom_1') 
+          }}
+
+      - name: "Presencia zona bathroom_2"
+        unique_id: "presencia_zona_bathroom_2"
+        device_class: occupancy
+        state: >
+          {{
+            is_state('input_select.ubicacion_pau', 'bathroom_2') or
+            is_state('input_select.ubicacion_ramon', 'bathroom_2') or
+            (now() - states.sensor.body_composition_scale_71b5_weight.last_changed).total_seconds() < 120
+          }}
+
+      - name: "Presencia zona trastero"
+        unique_id: "presencia_zona_trastero"
+        device_class: occupancy
+        state: >
+          {{
+            is_state('input_select.ubicacion_pau', 'trastero') or
+            is_state('input_select.ubicacion_ramon', 'trastero')
+          }}
+
+      - name: "Presencia zona entrada"
+        unique_id: "presencia_zona_entrada"
+        device_class: occupancy
+        state: >
+          {{
+            is_state('binary_sensor.puerta_principal_door_2', 'on') or
+            is_state('input_select.ubicacion_pau', 'entrada') or
+            is_state('input_select.ubicacion_ramon', 'entrada')
+          }}

@@ -1,0 +1,40 @@
+automation:
+  - alias: Encender ventilador living_1 en verano con presencia
+    id: encender_ventilador_living_1_verano
+    description: Enciende el ventilador si hay presencia en living_1 y es verano
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presencia_zona_living_1
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: input_boolean.verano
+        state: "on"
+    action:
+      - service: switch.turn_on
+        target:
+          entity_id:
+            - switch.alias_ventilador_living_1
+
+  # Apagar ventilador si no hay presencia y está encendido
+  - alias: Apagar ventilador living_1 sin presencia
+    id: apagar_ventilador_living_1_sin_presencia
+    description: Apaga el ventilador si no hay presencia en living_1 y está encendido
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presencia_zona_living_1
+        to: "off"
+        for:
+          minutes: 3
+
+    condition:
+      - condition: state
+        entity_id: switch.alias_ventilador_living_1
+        state: "on"
+    action:
+      - service: switch.turn_off
+        target:
+          entity_id:
+            - switch.alias_ventilador_living_1

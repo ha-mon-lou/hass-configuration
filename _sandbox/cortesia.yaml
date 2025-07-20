@@ -6,7 +6,7 @@
     - platform: conversation
       command: test
     - platform: state
-      entity_id: binary_sensor.puerta_principal_door_2
+      entity_id: binary_sensor.presencia_zona_entrada
       from: "off"
       to: "on"
 
@@ -34,7 +34,7 @@
             - service: switch.turn_on
               data:
                 entity_id: "{{ dispositivos_a_encender }}"
-            - delay: "00:02:00"
+            - delay: "00:03:00"
             - service: switch.turn_off
               data:
                 entity_id: "{{ dispositivos_a_encender }}"

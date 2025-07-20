@@ -8,8 +8,6 @@
   name: GRP Luces habitacion
   unique_id: "grupo_luces_habitacion"
   entities:
-    - switch.enchufe_habitacion_socket_1
-    - switch.enchufe_habitacion_socket_2
     - switch.alias_shelly_habitacion
 
 - platform: group

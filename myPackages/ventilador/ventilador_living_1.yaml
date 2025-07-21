@@ -7,6 +7,8 @@ automation:
       - platform: state
         entity_id: binary_sensor.presencia_zona_living_1
         to: "on"
+        for:
+          seconds: 20
     condition:
       - condition: state
         entity_id: input_boolean.verano

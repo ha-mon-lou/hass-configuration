@@ -114,5 +114,8 @@ devices:
     optimistic: true
   '0xe406bffffe34f94b':
     friendly_name: zigbee_scene_switch_01
+  '0xa4c138b8c5468a38':
+    friendly_name: zigbee_tuya_TS0012_01
+    description: LED ATOMANT Interruptor de Cristal ZigBee 3.0, 2 Vias
 availability:
   enabled: true

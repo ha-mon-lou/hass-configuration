@@ -1,12 +1,14 @@
 automation:
   - alias: Encender luzled living_1 con presencia
-    id: encender_luzled_living_1_verano
+    id: encender_luzled_living_1_presencia
     description: Enciende el luzled si hay presencia en living_1
     mode: single
     trigger:
       - platform: state
         entity_id: binary_sensor.presencia_zona_living_1
         to: "on"
+        for:
+          seconds: 15
     condition:
       - condition: not
         conditions:
@@ -29,7 +31,7 @@ automation:
         entity_id: binary_sensor.presencia_zona_living_1
         to: "off"
         for:
-          minutes: 5
+          minutes: 3
 
     condition:
       - condition: state

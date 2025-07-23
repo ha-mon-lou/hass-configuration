@@ -4,8 +4,6 @@
   trigger:
     - platform: conversation
       command: desconecta
-    - platform: tag
-      tag_id: !secret nfc_tag_ha_door
     - platform: state
       entity_id: input_button.shutdown
     - platform: state

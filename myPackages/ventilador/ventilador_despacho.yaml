@@ -260,30 +260,28 @@ automation:
   - alias: Actualizar presencia en despacho
     trigger:
       - platform: state
-        entity_id:
-          - input_select.ubicacion_ramon
-          - input_select.ubicacion_pau
+        entity_id: binary_sensor.presencia_zona_despacho
     action:
       - choose:
           - conditions:
-              - condition: template
-                value_template: >
-                  {{ 'despacho' in expand('group.ubicacion_personas') | map(attribute='state') | list }}
+              - condition: state
+                entity_id: binary_sensor.presencia_zona_despacho
+                state: "on"
             sequence:
               - service: input_select.select_option
                 data:
                   entity_id: input_select.ventilador_despacho_temporizador
                   option: 4
 
-              - action: script.modo_ventilador
+              - service: script.modo_ventilador
                 data:
                   dispositivo: ventilador_despacho
                   valor: auto
 
           - conditions:
-              - condition: template
-                value_template: >
-                  {{ 'despacho' not in expand('group.ubicacion_personas') | map(attribute='state') | list }}
+              - condition: state
+                entity_id: binary_sensor.presencia_zona_despacho
+                state: "off"
             sequence:
               - service: input_select.select_option
                 data:

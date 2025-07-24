@@ -7,19 +7,11 @@
     humedad_interior:
       friendly_name: "H. interior"
       device_class: humidity
-      unit_of_measurement: '%'
+      unit_of_measurement: "%"
       unique_id: "humedad_interior"
-      value_template: "
-
-      {% set sensor1 = 'sensor.cfg_humedad_living_1' %}
-      {% set sensor1_value = states(sensor1) %}
-
-      {% if sensor1_value in ['unavailable', 'unknown', None] %}
-          {{ sensor1_value }}
-      {% else %}
-          {{ sensor1_value | float(default=-99) }}
-      {% endif %}
-      "
+      value_template: >
+        {% from '2oo3.jinja' import macro_2oo3 %}
+        {{ macro_2oo3('sensor.cfg_humedad_living_1','sensor.cfg_humedad_living_2','sensor.cfg_humedad_despacho') }}
       icon_template: mdi:water-percent-alert
 
 - platform: statistics

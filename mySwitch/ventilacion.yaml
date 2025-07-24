@@ -51,3 +51,5 @@
         service: switch.turn_off
         target:
           entity_id: switch.enchufe_habitacion_socket_2
+
+          

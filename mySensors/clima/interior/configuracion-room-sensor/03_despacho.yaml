@@ -16,8 +16,8 @@
       unit_of_measurement: "%"
       unique_id: "cfg_humedad_despacho"
       value_template: >
-        {% set temp = states('sensor.tuya_termometro_wifi_humidity') %}
-        {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else none }}
+        {% set hum = states('sensor.tuya_termometro_wifi_humidity') %}
+        {{ hum | float | round(2) if hum not in ['unknown', 'unavailable'] else none }}
       icon_template: mdi:water-percent
 
     cfg_sensacion_termica_despacho:

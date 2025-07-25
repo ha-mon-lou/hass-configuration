@@ -4,6 +4,14 @@
 #
 - platform: template
   sensors:
+    humedad_localidad:
+      friendly_name: "Humedad Local"
+      device_class: humidity
+      unit_of_measurement: "%"
+      unique_id: "humedad_localidad"
+      value_template: " {{states('sensor.st_quirze_del_v_vallsuau_barcelona_humidity')}} "
+      icon_template: mdi:water-percent-alert
+
     humedad_exterior:
       friendly_name: "H. Exterior"
       device_class: humidity
@@ -11,7 +19,7 @@
       unique_id: "humedad_exterior"
       value_template: >
         {% from '1oo2.jinja' import macro_1oo2 %}
-        {{ macro_1oo2('sensor.aemet_humidity','sensor.st_quirze_del_v_vallsuau_barcelona_humidity') }}
+        {{ macro_1oo2('sensor.aemet_humidity','sensor.humedad_localidad') }}
 
       icon_template: mdi:calculator
 

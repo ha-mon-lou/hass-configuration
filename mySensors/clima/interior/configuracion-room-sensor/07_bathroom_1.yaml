@@ -24,5 +24,6 @@
       unit_of_measurement: "°C"
       unique_id: "cfg_sensacion_termica_bathroom_1"
       value_template: >
-        {{ states('sensor.sensacion_termica_switchbot_ioth_01') | float | round(2) }}
+        {% set temp = states('sensor.sensacion_termica_switchbot_ioth_01') %}
+        {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else none }}
       icon_template: mdi:thermometer

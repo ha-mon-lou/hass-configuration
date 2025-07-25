@@ -10,8 +10,8 @@
       unit_of_measurement: "%"
       unique_id: "humedad_interior"
       value_template: >
-        {% from '2oo3.jinja' import macro_2oo3 %}
-        {{ macro_2oo3('sensor.cfg_humedad_living_1','sensor.cfg_humedad_living_2','sensor.cfg_humedad_despacho') }}
+        {% from 'mediana_grupo.jinja' import mediana_grupo %}
+        {{ mediana_grupo('group.grupo_humedad_interior') }}
       icon_template: mdi:water-percent-alert
 
 - platform: statistics

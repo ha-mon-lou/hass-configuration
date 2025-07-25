@@ -1,0 +1,30 @@
+{% macro mediana_grupo(group_entity_id) %}
+  {# Obtiene lista de entidades del grupo #}
+  {% set sensores = expand(group_entity_id) %}
+  
+  {# Obtiene valores numéricos válidos (float), descartando -99 #}
+  {% set valores = sensores
+    | map(attribute='entity_id')
+    | map('states')
+    | map('float', -99)
+    | reject('equalto', -99)
+    | list
+  %}
+  
+  {% set count = valores | length %}
+  
+  {% if count == 0 %}
+    {{ none }}
+  {% elif count == 1 %}
+    {{ valores[0] | round(2) }}
+  {% else %}
+    {% set sorted = valores | sort %}
+    {% if count % 2 == 1 %}
+      {# Cantidad impar: valor central #}
+      {{ sorted[count // 2] | round(2) }}
+    {% else %}
+      {# Cantidad par: promedio de los dos centrales #}
+      {{ ((sorted[(count // 2) - 1] + sorted[count // 2]) / 2) | round(2) }}
+    {% endif %}
+  {% endif %}
+{% endmacro %}

@@ -1,0 +1,18 @@
+group:
+  grupo_termometros_interior:
+    name: "GRP Termometros interior"
+    entities:
+      - sensor.cfg_temperatura_living_1
+      - sensor.cfg_temperatura_living_2
+      - sensor.cfg_temperatura_despacho
+      - sensor.cfg_temperatura_habitacion_1
+      - sensor.cfg_temperatura_habitacion_2
+
+  grupo_humedad_interior:
+    name: "GRP Higrometros interior"
+    entities:
+      - sensor.cfg_humedad_living_1
+      - sensor.cfg_humedad_living_2
+      - sensor.cfg_humedad_despacho
+      - sensor.cfg_humedad_habitacion_1
+      - sensor.cfg_humedad_habitacion_2

@@ -39,7 +39,7 @@ template:
         state: >
           {{
             (
-              (states('number.human_presence_sensor_2_clostest_target_distance') | float(99)) < 2.0 and
+              (states('number.human_presence_sensor_2_clostest_target_distance') | float(99)) < 2.8 and
               is_state('binary_sensor.human_presence_sensor_2_occupancy', 'on')
             ) or
             is_state('input_select.ubicacion_pau', 'despacho') or

@@ -19,4 +19,4 @@ envia_comando_broadlink:
         command: "{{ comando }}"
     - service: script.notifica_telegram
       data:
-        message: <b>BroadLink</b> {{ dispositivo }} <b>comando</b> {{ comando }}
+        message: <b>BL</b> {{ dispositivo }} <b>cmd</b> {{ comando }}

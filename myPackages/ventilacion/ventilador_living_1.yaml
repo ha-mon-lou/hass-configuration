@@ -10,9 +10,12 @@ automation:
         for:
           seconds: 20
     condition:
-      - condition: state
-        entity_id: input_boolean.verano
-        state: "on"
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: media_player.my_box_2
+            state: "on"
+
     action:
       - service: switch.turn_on
         target:

@@ -15,16 +15,6 @@ switch:
             entity_id: switch.zigbee_tuya_ts0012_01_left
 
 input_number:
-  umbral_encendido_extractor_bathroom_01:
-    name: Umbral encendido extractor bathroom 01
-    initial: 70
-    min: 30
-    max: 100
-    step: 1
-    unit_of_measurement: "%"
-    mode: slider
-    icon: mdi:water-percent
-
   margen_humedad_apagado_extractor_bathroom_01:
     name: Margen apagado extractor baño 01
     initial: 4
@@ -34,6 +24,28 @@ input_number:
     unit_of_measurement: "%"
     mode: slider
     icon: mdi:blur-linear
+
+  margen_humedad_encendido_extractor_bathroom_01:
+    name: Margen encendido extractor baño 01
+    initial: 4
+    min: 0
+    max: 10
+    step: 0.5
+    unit_of_measurement: "%"
+    mode: slider
+    icon: mdi:blur-linear
+
+sensor:
+  - platform: template
+    sensors:
+      umbral_dinamico_encendido_extractor_bathroom_01:
+        friendly_name: "Umbral dinámico extractor bathroom 01"
+        unique_id: "umbral_dinamico_encendido_extractor_bathroom_01"
+        unit_of_measurement: "%"
+        value_template: >
+          {% set h = states('sensor.humedad_interior') | float(0) %}
+          {% set m = states('input_number.margen_humedad_encendido_extractor_bathroom_01') | float(0) %}
+          {{ h + m }}
 
 timer:
   temporizador_extractor_bathroom_01:
@@ -51,13 +63,12 @@ automation:
           entity_id: timer.temporizador_extractor_bathroom_01
     mode: single
 
-  # ENCENDER extractor por humedad alta
   - alias: "Encender extractor bathroom 01 por humedad alta"
     trigger:
       - platform: template
         value_template: >
           {{ states('sensor.cfg_humedad_bathroom_1') | float(0) >
-             states('input_number.umbral_encendido_extractor_bathroom_01') | float(70) }}
+             states('sensor.umbral_dinamico_extractor_bathroom_01') | float(70) }}
     condition:
       - condition: state
         entity_id: switch.alias_aire_extractor_bathroom_01
@@ -68,7 +79,6 @@ automation:
           entity_id: switch.alias_aire_extractor_bathroom_01
     mode: single
 
-  # APAGAR extractor por humedad normalizada con margen
   - alias: "Apagar extractor bathroom 01 por humedad baja"
     trigger:
       - platform: template
@@ -89,7 +99,6 @@ automation:
           entity_id: switch.alias_aire_extractor_bathroom_01
     mode: single
 
-  # APAGAR extractor al acabar el temporizador
   - alias: "Apagar extractor bathroom 01 tras 1 hora (por temporizador)"
     trigger:
       - platform: event
@@ -106,7 +115,6 @@ automation:
           entity_id: switch.alias_aire_extractor_bathroom_01
     mode: single
 
-  # PARAR temporizador si el extractor se apaga manualmente o por humedad
   - alias: "Parar temporizador extractor baño 01 si se apaga"
     trigger:
       - platform: state

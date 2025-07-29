@@ -20,7 +20,7 @@ automation:
     condition:
       - condition: state
         entity_id: sun.sun
-        state: "above_horizon" # Solo se activa de día
+        state: "below_horizon"
 
       - condition: not
         conditions:

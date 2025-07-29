@@ -32,7 +32,7 @@ advanced:
     - 77
     - 19
     - 156
-  log_level: warning
+  log_level: info
   log_directory: /config/zigbee2mqtt/log/
   log_file: log_%TIMESTAMP%.log
 mqtt:

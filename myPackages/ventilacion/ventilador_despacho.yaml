@@ -261,6 +261,7 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.presencia_zona_despacho
+        for: "00:00:05"
     action:
       - choose:
           - conditions:

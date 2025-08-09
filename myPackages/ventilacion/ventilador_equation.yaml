@@ -3,6 +3,10 @@ input_boolean:
     name: Ventilador Portátil
     icon: mdi:fan
 
+  ventilador_equation_running:
+    name: Ventilador Portátil running
+    icon: mdi:fan
+
   ventilador_equation_oscilacion:
     name: Oscilación
     icon: mdi:swap-horizontal
@@ -14,23 +18,48 @@ input_select:
       - "auto"
       - "manual"
 
+input_number:
+  potencia_ventilador_equation:
+    name: Potencia Ventilador Equation
+    initial: 50
+    min: 1
+    max: 300
+    unit_of_measurement: "W"
+    icon: mdi:flash
+
 timer:
   ventilador_equation_timer:
     name: Temporizador Ventilador
     duration: "01:00:00"
 
 sensor:
-  - platform: template
-    sensors:
-      sensacion_termica_equation:
-        friendly_name: "Sensación térmica equation"
+  - platform: history_stats
+    name: Horas ventilador equation hoy
+    entity_id: input_boolean.ventilador_equation_running
+    state: "on"
+    type: time
+    start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+    end: "{{ now() }}"
+
+template:
+  - sensor:
+      - name: "Consumo acumulado ventilador equation"
+        unique_id: energia_ventilador_equation
+        state: >
+          {{ (states('sensor.horas_ventilador_equation_hoy')|float(0) *
+            states('input_number.potencia_ventilador_equation')|float(0) / 1000) | round(3) }}
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total_increasing
+
+      - name: "Sensacion termica equation"
+        unique_id: sensacion_termica_equation
         device_class: temperature
         unit_of_measurement: "°C"
-        unique_id: "sensacion_termica_equation"
-        icon_template: mdi:thermometer
-        value_template: >
-          {% set temp = states('sensor.cfg_temperatura_living_1') %}
-          {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else 0 }}
+        icon: mdi:thermometer
+        state: >
+          {% set temp = states('sensor.cfg_sensacion_termica_living_2') %}
+          {{ temp | float(0) if temp not in ['unknown', 'unavailable'] else 0 }}
 
 script:
   mando_ventilador_equation:
@@ -69,7 +98,7 @@ automation:
     action:
       - service: script.modo_ventilador
         data:
-          dispositivo: ventilador_habitacion
+          dispositivo: ventilador_equation
           valor: auto
     mode: single
 
@@ -86,6 +115,9 @@ automation:
       - service: script.mando_ventilador_equation
         data:
           valor: speed
+      - service: input_boolean.turn_on
+        target:
+          entity_id: "input_boolean.ventilador_equation_running"
 
   - alias: PKG EQ Apagar ventilador Equation desde input_boolean
     trigger:
@@ -100,6 +132,9 @@ automation:
         data:
           dispositivo: ventilador_equation
           valor: manual
+      - service: input_boolean.turn_off
+        target:
+          entity_id: "input_boolean.ventilador_equation_running"
 
   - alias: PKG EQ Oscilación ventilador Equation
     trigger:
@@ -146,14 +181,14 @@ automation:
             sequence:
               - service: input_boolean.turn_off
                 target:
-                  entity_id: "input_boolean.ventilador_equation"
+                  entity_id: input_boolean.ventilador_equation
           - conditions:
               - condition: template
                 value_template: "{{ dif_temp > 0.2 }}"
             sequence:
               - service: input_boolean.turn_on
                 target:
-                  entity_id: "input_boolean.ventilador_equation"
+                  entity_id: input_boolean.ventilador_equation
     mode: single
 
   - alias: Actualizar presencia en living 1

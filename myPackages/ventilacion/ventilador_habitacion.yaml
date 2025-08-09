@@ -1,4 +1,4 @@
-input_button:
+input_boolean:
   ventilador_habitacion_running:
     name: habitacion running
 
@@ -35,18 +35,43 @@ timer:
     name: Timer Vent. habitacion
     restore: true
 
+input_number:
+  potencia_ventilador_habitacion:
+    name: Potencia Ventilador habitacion
+    initial: 35
+    min: 1
+    max: 300
+    unit_of_measurement: "W"
+    icon: mdi:flash
+
 sensor:
-  - platform: template
-    sensors:
-      sensacion_termica_habitacion:
-        friendly_name: "Sensacion termica habitacion"
+  - platform: history_stats
+    name: Horas ventilador habitacion hoy
+    entity_id: input_boolean.ventilador_habitacion
+    state: "on"
+    type: time
+    start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+    end: "{{ now() }}"
+
+template:
+  - sensor:
+      - name: "Consumo acumulado ventilador habitacion"
+        unique_id: energia_ventilador_habitacion
+        state: >
+          {{ (states('sensor.horas_ventilador_habitacion_hoy')|float(0) *
+            states('input_number.potencia_ventilador_habitacion')|float(0) / 1000) | round(3) }}
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total_increasing
+
+      - name: "Sensacion termica habitacion"
+        unique_id: sensacion_termica_habitacion
         device_class: temperature
         unit_of_measurement: "°C"
-        unique_id: "sensacion_termica_habitacion"
-        value_template: >
+        icon: mdi:thermometer
+        state: >
           {% set temp = states('sensor.cfg_sensacion_termica_habitacion_2') %}
           {{ temp | float(0) if temp not in ['unknown', 'unavailable'] else 0 }}
-        icon_template: mdi:thermometer
 
 script:
   ventilador_habitacion_change:

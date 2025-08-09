@@ -13,4 +13,4 @@
     - model
     - sensores
     - configuracion
-  scan_interval: 600 # Intervalo de actualización en segundos
+  scan_interval: 1200 # Intervalo de actualización en segundos

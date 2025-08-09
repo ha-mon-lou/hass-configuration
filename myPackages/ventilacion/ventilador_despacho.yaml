@@ -1,4 +1,4 @@
-input_button:
+input_boolean:
   ventilador_despacho_running:
     name: despacho running
 
@@ -35,18 +35,43 @@ timer:
     name: Timer Vent. despacho
     restore: true
 
+input_number:
+  potencia_ventilador_despacho:
+    name: Potencia Ventilador Despacho
+    initial: 35
+    min: 1
+    max: 300
+    unit_of_measurement: "W"
+    icon: mdi:flash
+
 sensor:
-  - platform: template
-    sensors:
-      sensacion_termica_despacho:
-        friendly_name: "Sensacion termica despacho"
+  - platform: history_stats
+    name: Horas ventilador despacho hoy
+    entity_id: input_boolean.ventilador_despacho
+    state: "on"
+    type: time
+    start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+    end: "{{ now() }}"
+
+template:
+  - sensor:
+      - name: "Consumo acumulado ventilador despacho"
+        unique_id: energia_ventilador_despacho
+        state: >
+          {{ (states('sensor.horas_ventilador_despacho_hoy')|float(0) *
+            states('input_number.potencia_ventilador_despacho')|float(0) / 1000) | round(3) }}
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total_increasing
+
+      - name: "Sensacion termica despacho"
+        unique_id: sensacion_termica_despacho
         device_class: temperature
         unit_of_measurement: "°C"
-        unique_id: "sensacion_termica_despacho"
-        value_template: >
+        icon: mdi:thermometer
+        state: >
           {% set temp = states('sensor.cfg_sensacion_termica_despacho') %}
           {{ temp | float(0) if temp not in ['unknown', 'unavailable'] else 0 }}
-        icon_template: mdi:thermometer
 
 script:
   ventilador_despacho_change:
@@ -262,6 +287,10 @@ automation:
       - platform: state
         entity_id: binary_sensor.presencia_zona_despacho
         for: "00:00:05"
+    condition:
+      - condition: state
+        entity_id: input_boolean.control_por_presencia
+        state: "on"
     action:
       - choose:
           - conditions:

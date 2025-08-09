@@ -1,43 +1,102 @@
-/local/floorplan/assets/cf-a01_off.svg
+input_boolean:
+  ventilador_living_1:
+    name: Ventilador living 1
+    icon: mdi:fan
 
-          const temp = parseFloat(entity.state);
+input_number:
+  potencia_ventilador_living_1:
+    name: Potencia ventilador living_1
+    unit_of_measurement: W
+    min: 0
+    max: 100
+    step: 1
+    mode: box
+    initial: 45
 
-          const min = 15, max = 30;
-          const clamped = Math.min(Math.max(temp, min), max);
+binary_sensor:
+  - platform: template
+    sensors:
+      ventilador_living_1_activo:
+        friendly_name: "Ventilador living_1 activo"
+        device_class: power
+        value_template: >
+          {{ is_state('input_boolean.ventilador_living_1', 'on') }}
 
-          // Escala de azul (frío) a rojo (calor)
-          const ratio = (clamped - min) / (max - min);
-          const r = Math.round(255 * ratio);
-          const g = Math.round(100 * (1 - ratio));
-          const b = Math.round(255 * (1 - ratio));
+sensor:
+  - platform: template
+    sensors:
+      consumo_mensual_ventilador_living_1:
+        friendly_name: "Consumo mensual ventilador living_1"
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total
+        value_template: >
+          {% set horas = states('sensor.ventilador_living_1_tiempo_mensual') | float(0) %}
+          {% set w = states('input_number.potencia_ventilador_living_1') | float(0) %}
+          {{ (horas * w / 1000) | round(2) }}
 
-          const alpha = 0.5; // 0 totalmente transparente, 1 opaco
+  - platform: template
+    sensors:
+      sensacion_termica_living_1:
+        friendly_name: "Sensación térmica living_1"
+        device_class: temperature
+        unit_of_measurement: "°C"
+        unique_id: "sensacion_termica_living_1"
+        icon_template: mdi:thermometer
+        value_template: >
+          {% set temp = states('sensor.cfg_temperatura_living_1') %}
+          {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else 0 }}
 
-          return `
-            fill: rgba(${r}, ${g}, ${b}, ${alpha});
-            transition: fill 1s ease;
-          `;
+utility_meter:
+  ventilador_living_1_tiempo_mensual:
+    source: binary_sensor.ventilador_living_1_activo
+    cycle: monthly
+    unit_of_measurement: h
+    name: Tiempo mensual ventilador living_1
 
-      - entity: number.zigbee_sonoff_trvzb_01_external_temperature_input
-        element: zigbee_sonoff_trvzb_01_external_temperature_input
-        state_action:
-          - action: call-service
-            service: floorplan.style_set
-            service_data:
-              style: >
-                if (entity.state === 'unavailable') {
-                  return 'fill: yellow; opacity: 0.5;';
-                }
-                var t = parseFloat(entity.state);
-                if (isNaN(t)) {
-                  return 'fill: gray; opacity: 0.3;';
-                }
-                var min = 16, max = 25;
-                var clamped = Math.min(Math.max(t, min), max);
-                var ratio = (clamped - min) / (max - min);
-                var r = Math.round(255 * ratio);
-                var g = Math.round(100 * (1 - ratio));
-                var b = Math.round(255 * (1 - ratio));
-                var a = 0.5;
-                return 'fill: rgba(' + r + ',' + g + ',' + b + ',' + a + '); transition: fill 1s ease;';
-        tap_action: none
+automation:
+  - alias: Encender ventilador living_1 en verano con presencia
+    id: encender_ventilador_living_1_verano
+    description: Enciende el ventilador si hay presencia en living_1 y es verano
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presencia_zona_living_1
+        to: "on"
+        for:
+          seconds: 20
+    condition:
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: media_player.my_box_2
+            state: "on"
+    action:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.alias_ventilador_living_1
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.ventilador_living_1
+
+  - alias: Apagar ventilador living_1 sin presencia
+    id: apagar_ventilador_living_1_sin_presencia
+    description: Apaga el ventilador si no hay presencia en living_1 y está encendido
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presencia_zona_living_1
+        to: "off"
+        for:
+          minutes: 3
+    condition:
+      - condition: state
+        entity_id: switch.alias_ventilador_living_1
+        state: "on"
+    action:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.alias_ventilador_living_1
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.ventilador_living_1

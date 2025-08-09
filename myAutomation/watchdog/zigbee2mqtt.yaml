@@ -1,59 +1,18 @@
-automation:
-  - alias: Reiniciar Zigbee2MQTT si sensores están caídos
-    id: WD_reiniciar_zigbee2mqtt_por_sensores_caidos
-    description: WatchDog Reinicia Zigbee2MQTT  sensores están unavailable más de 10 minutos
-    mode: single
-    trigger:
-      - platform: state
-        entity_id:
-          - switch.zigbee_nous_enchufe_02
-          - sensor.zigbee_heiman_hs3aq_01_co2
-        to: "unavailable"
-        for: "00:05:00"
-    condition:
-      - condition: template
-        value_template: >
-          {{ is_state('switch.zigbee_nous_enchufe_02', 'unavailable') and
-             is_state('sensor.zigbee_heiman_hs3aq_01_co2', 'unavailable') }}
-    action:
-      - action: notify.mobile_app_sm_a155f
-        data:
-          title: "Zigbee unavailable"
-          message: "Dispositivos zigbee unavailable por 5 min. quieres resetear? "
-          data:
-            actions:
-              - action: RESPONSE_WD_He_Knows
-                title: "Sí, lo sé"
-              - action: RESPONSE_WD_Reset
-                title: "Resetea"
-
-  - alias: Responder notificación interactiva - resetear Zigbee2mqtt
-    id: WD_respuesta_RESPONSE_WD_Reset
-    description: Ejecuta el script para cerrar la puerta si el usuario pulsa "Ciérrala ahora"
-    trigger:
-      - platform: event
-        event_type: mobile_app_notification_action
-        event_data:
-          action: RESPONSE_WD_Reset
-    action:
-      - service: hassio.addon_restart
-        data:
-          addon: 45df7312_zigbee2mqtt
-      - service: system_log.write
-        data:
-          message: "Zigbee2MQTT reiniciado automáticamente por sensores caídos."
-          level: warning
-
-  - alias: Registrar respuesta RESPONSE_WD_He_Knows
-    id: WD_respuesta_RESPONSE_WD_He_Knows
-    description: Solo registra que el usuario lo sabe (opcional)
-    trigger:
-      - platform: event
-        event_type: mobile_app_notification_action
-        event_data:
-          action: RESPONSE_WD_He_Knows
-    action:
-      - service: logbook.log
-        data:
-          name: "Servicio Zigbee2MQTT"
-          message: "El usuario ha confirmado que sabía que estaba unavailable"
+- alias: "WD Watchdog Zigbee2MQTT"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.zigbee2mqtt_bridge_connection_state
+      to: "offline"
+      for:
+        minutes: 2
+  action:
+    - service: script.notifica_telegram
+      data:
+        message: "<b>Alerta addon_restart</b>: {{ states('binary_sensor.zigbee2mqtt_bridge_connection_state') }} "
+    - service: hassio.addon_restart
+      data:
+        addon: 45df7312_zigbee2mqtt
+    - service: system_log.write
+      data:
+        message: "Zigbee2MQTT reiniciado automáticamente por sensores caídos."
+        level: warning

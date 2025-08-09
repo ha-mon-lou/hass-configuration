@@ -3,6 +3,10 @@ input_boolean:
     name: Presencia en casa
     icon: mdi:home-account
 
+  control_por_presencia:
+    name: Control por presencia
+    icon: mdi:motion-sensor
+
 input_select:
   ubicacion_ramon:
     name: Ubicación de Ramon

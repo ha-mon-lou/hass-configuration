@@ -6,6 +6,9 @@
       minutes: "/6"
   condition:
     - condition: state
+      entity_id: input_boolean.modo_ahorro
+      state: "on"
+    - condition: state
       entity_id: switch.grp_luces_habitacion
       state: "on" # Solo actúa si el enchufe está encendido
     - condition: sun
@@ -26,6 +29,9 @@
     - platform: time_pattern
       minutes: "/5"
   condition:
+    - condition: state
+      entity_id: input_boolean.modo_ahorro
+      state: "on"
     - condition: sun
       after: sunrise
       before: sunset

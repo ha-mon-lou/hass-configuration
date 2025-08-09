@@ -13,10 +13,6 @@ switch.alias_storage_ac_panasonic:
   custom_etiquetas:
     - diurno
 
-switch.enchufe_habitacion_socket_1:
-  custom_etiquetas:
-    - cortesia
-
 switch.enchufe_doble_socket_1:
   custom_etiquetas:
     - nocturno

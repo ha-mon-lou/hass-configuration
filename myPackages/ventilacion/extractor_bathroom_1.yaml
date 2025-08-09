@@ -49,7 +49,7 @@ sensor:
 
 timer:
   temporizador_extractor_bathroom_01:
-    duration: "01:00:00"
+    duration: "00:30:00"
 
 automation:
   - alias: "Iniciar temporizador extractor bathroom 01 al encender"

@@ -1,37 +1,315 @@
-- id: "ventilador_despacho_speed_1"
-  alias: ventilador despacho speed 1
-  triggers:
-    - platform: conversation
-      command: enciende ventilador despacho
-    - trigger: state
-      entity_id: input_boolean.ventilador_despacho
-      to: "on"
-  conditions: []
-  actions:
-    - sequence:
-        - service: script.selector_ventilador
-          data:
-            dispositivo: ventilador_despacho
-            desde: speed_1_Script            
-            valor: velocidad 1
-  mode: single
+input_boolean:
+  ventilador_despacho_running:
+    name: despacho running
 
-- id: "ventilador_despacho_apagar"
-  alias: ventilador despacho apagar
-  triggers:
-    - platform: conversation
-      command: apaga ventilador despacho
-    - trigger: state
-      entity_id: input_button.ventilador_despacho_off
-    - trigger: state
-      entity_id: input_boolean.ventilador_despacho
-      to: "off"
+input_select:
+  ventilador_despacho_modo_auto:
+    name: Modo Ventilador despacho
+    options:
+      - "auto"
+      - "manual"
 
-  conditions: []
-  actions:
-    - service: script.selector_ventilador
-      data:
-        dispositivo: ventilador_despacho
-        desde: speed_1_Script            
-        valor: Apagar
-  mode: single
+  ventilador_despacho_botonera:
+    name: Selector botones ventilador
+    options:
+      - "Apagar"
+      - "velocidad 1"
+      - "velocidad 2"
+      - "velocidad 3"
+      - "brisa"
+    initial: "Apagar"
+    icon: mdi:fan
+
+  ventilador_despacho_temporizador:
+    name: Temporizador despacho
+    options:
+      - "idle"
+      - "0"
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+
+timer:
+  ventilador_despacho_file_timer:
+    name: Timer Vent. despacho
+    restore: true
+
+input_number:
+  potencia_ventilador_despacho:
+    name: Potencia Ventilador Despacho
+    initial: 35
+    min: 1
+    max: 300
+    unit_of_measurement: "W"
+    icon: mdi:flash
+
+sensor:
+  - platform: history_stats
+    name: Horas ventilador despacho hoy
+    entity_id: input_boolean.ventilador_despacho_running
+    state: "on"
+    type: time
+    start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+    end: "{{ now() }}"
+
+template:
+  - sensor:
+      - name: "Consumo acumulado ventilador despacho"
+        unique_id: energia_ventilador_despacho
+        state: >
+          {{ (states('sensor.horas_ventilador_despacho_hoy')|float(0) *
+            states('input_number.potencia_ventilador_despacho')|float(0) / 1000) | round(3) }}
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total_increasing
+
+      - name: "Sensacion termica despacho"
+        unique_id: sensacion_termica_despacho
+        device_class: temperature
+        unit_of_measurement: "°C"
+        icon: mdi:thermometer
+        state: >
+          {% set temp = states('sensor.cfg_sensacion_termica_despacho') %}
+          {{ temp | float(0) if temp not in ['unknown', 'unavailable'] else 0 }}
+
+script:
+  ventilador_despacho_change:
+    alias: PKG VD Toggle switch según input_boolean
+    description: "Activa o desactiva un switch según el estado del input_boolean"
+    mode: queued
+    sequence:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: "input_boolean.ventilador_despacho_running"
+                state: "on"
+            sequence:
+              - action: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_despacho
+                  valor: velocidad 1
+          - conditions:
+              - condition: state
+                entity_id: "input_boolean.ventilador_despacho_running"
+                state: "off"
+            sequence:
+              - action: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_despacho
+                  valor: Apagar
+
+automation:
+  - alias: PKG VD  Ventilador Despacho - alguien regresa
+    trigger:
+      - trigger: state
+        entity_id: input_boolean.presencia
+        to: "on"
+
+    condition: []
+    action:
+      - action: script.modo_ventilador
+        data:
+          dispositivo: ventilador_despacho
+          valor: auto
+    mode: single
+
+  - alias: PKG VD Encender ventilador despacho
+    trigger:
+      - trigger: state
+        entity_id: input_boolean.ventilador_despacho
+        to: "on"
+    action:
+      - action: script.selector_ventilador
+        data:
+          dispositivo: ventilador_despacho
+          valor: velocidad 1
+
+  - alias: PKG VD Apagar ventilador despacho
+    trigger:
+      - trigger: state
+        entity_id: input_boolean.ventilador_despacho
+        to: "off"
+    action:
+      - action: script.selector_ventilador
+        data:
+          dispositivo: ventilador_despacho
+          valor: Apagar
+
+  - id: "ventilador_despacho_sinergia"
+    alias: PKG VD Ventilador despacho - sinergia booleano/switch
+    trigger:
+      - trigger: state
+        entity_id: input_boolean.ventilador_despacho_running
+    action:
+      - action: script.ventilador_despacho_change
+    mode: restart
+
+  - id: "ventilador_despacho_auto"
+    alias: PKG VD  Control ventilador despacho por temperatura (input_number)
+    description: Ajusta la velocidad del ventilador despacho según diferencia térmica, con umbrales configurables
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.sensacion_termica_despacho
+          - input_select.ventilador_despacho_modo_auto
+          - input_number.ventilador_margen_calor
+          - input_number.nivel_sensacion_termica_ideal
+          - input_number.ventilador_umbral_velocidad_1
+          - input_number.ventilador_umbral_velocidad_2
+          - input_number.ventilador_umbral_velocidad_3
+          - input_number.ventilador_umbral_brisa
+    condition:
+      - condition: state
+        entity_id: input_select.ventilador_despacho_modo_auto
+        state: "auto"
+    action:
+      - variables:
+          dif_temp: >
+            {{ (states('sensor.cfg_sensacion_termica_despacho') | float + states('input_number.ventilador_margen_calor') | float)
+              - states('input_number.nivel_sensacion_termica_ideal') | float }}
+          u1: "{{ states('input_number.ventilador_umbral_velocidad_1') | float }}"
+          u2: "{{ states('input_number.ventilador_umbral_velocidad_2') | float }}"
+          u3: "{{ states('input_number.ventilador_umbral_velocidad_3') | float }}"
+          ub: "{{ states('input_number.ventilador_umbral_brisa') | float }}"
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp <= 0 }}"
+            sequence:
+              - condition: template
+                value_template: "{{ states('input_select.ventilador_despacho_botonera') != 'Apagar' }}"
+              - service: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_despacho
+                  modo: auto
+                  valor: Apagar
+
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp > 0 and dif_temp <= u1 }}"
+            sequence:
+              - condition: template
+                value_template: "{{ states('input_select.ventilador_despacho_botonera') != 'velocidad 1' }}"
+              - service: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_despacho
+                  modo: auto
+                  valor: velocidad 1
+
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp > u1 and dif_temp <= u2 }}"
+            sequence:
+              - condition: template
+                value_template: "{{ states('input_select.ventilador_despacho_botonera') != 'velocidad 2' }}"
+              - service: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_despacho
+                  modo: auto
+                  valor: velocidad 2
+
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp > u2 and dif_temp <= u3 }}"
+            sequence:
+              - condition: template
+                value_template: "{{ states('input_select.ventilador_despacho_botonera') != 'velocidad 3' }}"
+              - service: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_despacho
+                  modo: auto
+                  valor: velocidad 3
+
+          - conditions:
+              - condition: template
+                value_template: "{{ dif_temp > u3 }}"
+            sequence:
+              - condition: template
+                value_template: "{{ states('input_select.ventilador_despacho_botonera') != 'brisa' }}"
+              - service: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_despacho
+                  modo: auto
+                  valor: brisa
+    mode: single
+
+  - id: "ventilador_despacho_timer_on"
+    alias: PKG VD Iniciar temporizador del ventilador del despacho
+    trigger:
+      - trigger: state
+        entity_id: input_select.ventilador_despacho_temporizador
+    condition:
+      - condition: template
+        value_template: >
+          {{ trigger.to_state.state != 'idle'
+            and trigger.to_state.state in state_attr('input_select.ventilador_despacho_temporizador', 'options') }}
+    action:
+      - action: timer.start
+        data:
+          entity_id: timer.ventilador_despacho_file_timer
+          duration: >
+            {% set opt = trigger.to_state.state %}
+            {% if opt == "1" %}
+              00:30:00
+            {% elif opt == "2" %}
+              01:30:00
+            {% elif opt == "3" %}
+              06:00:00
+            {% elif opt == "4" %}
+              09:00:00
+            {% elif opt == "0" %}
+              00:03:30
+            {% endif %}
+
+  - id: "ventilador_despacho_timer_off"
+    alias: PKG VD timer despacho off
+    description: ""
+    trigger:
+      - trigger: state
+        entity_id: timer.ventilador_despacho_file_timer
+        to: idle
+    condition: []
+    action:
+      - action: input_select.select_option
+        data:
+          entity_id: input_select.ventilador_despacho_temporizador
+          option: idle
+      - action: script.selector_ventilador
+        data:
+          dispositivo: ventilador_despacho
+          modo: manual
+          valor: Apagar
+    mode: single
+
+  - alias: Actualizar presencia en despacho
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presencia_zona_despacho
+        for: "00:00:05"
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.presencia_zona_despacho
+                state: "on"
+            sequence:
+              - service: input_select.select_option
+                data:
+                  entity_id: input_select.ventilador_despacho_temporizador
+                  option: 4
+
+              - service: script.modo_ventilador
+                data:
+                  dispositivo: ventilador_despacho
+                  valor: auto
+
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.presencia_zona_despacho
+                state: "off"
+            sequence:
+              - service: input_select.select_option
+                data:
+                  entity_id: input_select.ventilador_despacho_temporizador
+                  option: 0

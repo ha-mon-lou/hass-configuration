@@ -1,15 +1,15 @@
 {
     "0xa4c1387fe2e7effc": {
-        "voltage": 230,
+        "voltage": 227,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "power": 31,
-        "energy": 26.1,
+        "power": 30,
+        "energy": 31.9,
         "current": 0.15,
-        "linkquality": 172,
+        "linkquality": 192,
         "update": {
             "state": "idle",
             "installed_version": 192,
@@ -17,18 +17,37 @@
         }
     },
     "0xa4c13819d046464f": {
-        "voltage": 231,
+        "voltage": 227,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "linkquality": 76,
-        "power": 148,
-        "energy": 161.29,
-        "current": 0.64
+        "linkquality": 64,
+        "power": 82,
+        "energy": 175.02,
+        "current": 0.54
     },
     "0xa4c138b8caa59009": {
+        "voltage": 224,
+        "state": "ON",
+        "countdown": 0,
+        "power_outage_memory": "restore",
+        "indicator_mode": "off/on",
+        "child_lock": "UNLOCK",
+        "power": 0,
+        "energy": 40.44,
+        "current": 0,
+        "linkquality": 124
+    },
+    "0x00124b002a565fae": {
+        "voltage": 3000,
+        "battery": 100,
+        "temperature": 28.94,
+        "humidity": 67.7,
+        "linkquality": 255
+    },
+    "0xa4c138b7c1781a47": {
         "voltage": 226,
         "state": "OFF",
         "countdown": 0,
@@ -36,28 +55,9 @@
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
         "power": 0,
-        "energy": 38.72,
+        "energy": 21.44,
         "current": 0,
-        "linkquality": 104
-    },
-    "0x00124b002a565fae": {
-        "voltage": 3000,
-        "battery": 100,
-        "temperature": 26.18,
-        "humidity": 65.92,
-        "linkquality": 255
-    },
-    "0xa4c138b7c1781a47": {
-        "voltage": 228,
-        "state": "OFF",
-        "countdown": 0,
-        "power_outage_memory": "restore",
-        "indicator_mode": "off/on",
-        "child_lock": "UNLOCK",
-        "power": 0,
-        "energy": 20.96,
-        "current": 0,
-        "linkquality": 240,
+        "linkquality": 244,
         "update": {
             "state": "idle",
             "installed_version": 192,
@@ -74,11 +74,11 @@
         "valve_opening_limit_voltage": 1848,
         "valve_closing_limit_voltage": 2929,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 26.8,
+        "local_temperature": 27.8,
         "occupied_heating_setpoint": 6,
         "system_mode": "off",
         "running_state": "idle",
-        "battery": 22,
+        "battery": 20,
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
         "weekly_schedule": {
@@ -110,13 +110,13 @@
         "valve_opening_limit_voltage": 1785,
         "valve_closing_limit_voltage": 2972,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 24.9,
+        "local_temperature": 27.9,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
-        "battery": 20,
+        "battery": 18,
         "weekly_schedule": {
             "monday": "00:00/16 07:00/19 10:00/19 10:00/19 17:00/19 23:00/16",
             "tuesday": "00:00/16 07:00/19 10:00/19 10:00/19 17:00/19 23:00/16",
@@ -171,9 +171,9 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 26.28,
-        "humidity": 60.36,
-        "co2": 709,
+        "temperature": 26.78,
+        "humidity": 74.6,
+        "co2": 562,
         "linkquality": 255
     },
     "0xe406bffffe34f94b": {
@@ -184,7 +184,7 @@
     "0xa4c138b8c5468a38": {
         "power_on_behavior": "previous",
         "power_on_behavior_left": "previous",
-        "state_left": "OFF",
+        "state_left": "ON",
         "state_right": "OFF",
         "backlight_mode": "normal",
         "linkquality": 255

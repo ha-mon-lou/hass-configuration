@@ -10,6 +10,9 @@ scene_switch_01_2:
 verano:
   name: modo verano
 
+modo_ahorro:
+  name: modo ahorro
+
 persona_1:
   name: Persona 1
   icon: mdi:account

@@ -17,7 +17,7 @@ switch:
 input_number:
   margen_humedad_apagado_extractor_bathroom_01:
     name: Margen apagado extractor baño 01
-    initial: 4
+    initial: 1
     min: 0
     max: 10
     step: 0.5
@@ -27,7 +27,7 @@ input_number:
 
   margen_humedad_encendido_extractor_bathroom_01:
     name: Margen encendido extractor baño 01
-    initial: 4
+    initial: 8
     min: 0
     max: 10
     step: 0.5
@@ -39,7 +39,7 @@ sensor:
   - platform: template
     sensors:
       umbral_dinamico_encendido_extractor_bathroom_01:
-        friendly_name: "Umbral dinámico extractor bathroom 01"
+        friendly_name: "Umbral dinámico encendido extractor bathroom 01"
         unique_id: "umbral_dinamico_encendido_extractor_bathroom_01"
         unit_of_measurement: "%"
         value_template: >
@@ -47,9 +47,18 @@ sensor:
           {% set m = states('input_number.margen_humedad_encendido_extractor_bathroom_01') | float(0) %}
           {{ h + m }}
 
+      umbral_dinamico_apagado_extractor_bathroom_01:
+        friendly_name: "Umbral dinámico apagado extractor bathroom 01"
+        unique_id: "umbral_dinamico_apagado_extractor_bathroom_01"
+        unit_of_measurement: "%"
+        value_template: >
+          {% set h = states('sensor.humedad_interior') | float(0) %}
+          {% set m = states('input_number.margen_humedad_apagado_extractor_bathroom_01') | float(0) %}
+          {{ h + m }}
+
 timer:
   temporizador_extractor_bathroom_01:
-    duration: "00:30:00"
+    duration: "00:35:00"
 
 automation:
   - alias: "Iniciar temporizador extractor bathroom 01 al encender"
@@ -67,8 +76,10 @@ automation:
     trigger:
       - platform: template
         value_template: >
-          {{ states('sensor.cfg_humedad_bathroom_1') | float(0) >
-             states('sensor.umbral_dinamico_extractor_bathroom_01') | float(70) }}
+          {{ 
+            states('sensor.cfg_humedad_bathroom_1') | float(0) >
+            states('sensor.umbral_dinamico_encendido_extractor_bathroom_01') | float(70) 
+          }}
     condition:
       - condition: state
         entity_id: switch.alias_aire_extractor_bathroom_01
@@ -83,12 +94,12 @@ automation:
     trigger:
       - platform: template
         value_template: >
-          {{
-            states('sensor.cfg_humedad_bathroom_1') | float(100) <
-            (states('sensor.humedad_interior') | float(100) +
-             states('input_number.margen_humedad_apagado_extractor_bathroom_01') | float(2))
+          {{ 
+             states('sensor.cfg_humedad_bathroom_1') | float(0) <
+             states('sensor.umbral_dinamico_apagado_extractor_bathroom_01') | float(70) 
           }}
-        for: "00:05:00"
+
+        for: "00:03:00"
     condition:
       - condition: state
         entity_id: switch.alias_aire_extractor_bathroom_01
@@ -99,7 +110,7 @@ automation:
           entity_id: switch.alias_aire_extractor_bathroom_01
     mode: single
 
-  - alias: "Apagar extractor bathroom 01 tras 1 hora (por temporizador)"
+  - alias: "Apagar extractor bathroom 01 tras x minutos (por temporizador)"
     trigger:
       - platform: event
         event_type: timer.finished

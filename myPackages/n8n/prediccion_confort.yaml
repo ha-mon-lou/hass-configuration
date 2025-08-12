@@ -1,0 +1,104 @@
+input_number:
+  n8n_python_prediction_humedad_exterior:
+    name: Humedad exterior predicción
+    icon: mdi:water-percent
+    min: 0
+    max: 100
+    step: 0.1
+    mode: box
+
+  n8n_python_prediction_humedad_interior:
+    name: Humedad interior predicción
+    icon: mdi:water-percent
+    min: 0
+    max: 100
+    step: 0.1
+    mode: box
+
+  n8n_python_prediction_temperatura_exterior:
+    name: Temperatura exterior predicción
+    icon: mdi:thermometer
+    min: 0
+    max: 50
+    step: 0.1
+    mode: box
+
+  n8n_python_prediction_temperatura_interior:
+    name: Temperatura interior predicción
+    icon: mdi:thermometer
+    min: 0
+    max: 50
+    step: 0.1
+    mode: box
+
+input_text:
+  n8n_python_prediction_hora_prediccion:
+    name: Hora de la predicción
+    icon: mdi:clock-outline
+    max: 50
+
+  n8n_python_prediction_hora_actual:
+    name: Hora de la llamada
+    icon: mdi:clock-outline
+    max: 50
+
+  n8n_python_prediction_workflow:
+    name: Workflow que actualizó predicción
+    icon: mdi:script-text-outline
+    max: 100
+
+script:
+  actualizar_predicciones:
+    alias: Actualizar predicciones desde JSON
+    description: Actualiza varios input_number e input_text con valores enviados en JSON
+    fields:
+      humedad_exterior:
+        description: "Valor humedad exterior"
+      humedad_interior:
+        description: "Valor humedad interior"
+      temperatura_exterior:
+        description: "Valor temperatura exterior"
+      temperatura_interior:
+        description: "Valor temperatura interior"
+      hora_prediccion:
+        description: "Hora de la predicción"
+      hora_actual:
+        description: "Hora de la llamada"
+      workflow:
+        description: "Nombre del workflow n8n"
+    sequence:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_python_prediction_humedad_exterior
+        data:
+          value: "{{ humedad_exterior }}"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_python_prediction_humedad_interior
+        data:
+          value: "{{ humedad_interior }}"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_python_prediction_temperatura_exterior
+        data:
+          value: "{{ temperatura_exterior }}"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_python_prediction_temperatura_interior
+        data:
+          value: "{{ temperatura_interior }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.n8n_python_prediction_hora_prediccion
+        data:
+          value: "{{ hora_prediccion }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.n8n_python_prediction_hora_actual
+        data:
+          value: "{{ hora_actual }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.n8n_python_prediction_workflow
+        data:
+          value: "{{ workflow }}"

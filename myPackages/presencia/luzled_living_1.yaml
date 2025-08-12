@@ -10,6 +10,9 @@ automation:
         for:
           seconds: 15
     condition:
+      - condition: state
+        entity_id: input_boolean.control_por_presencia
+        state: "on"
       - condition: not
         conditions:
           - condition: state
@@ -34,6 +37,9 @@ automation:
           minutes: 3
 
     condition:
+      - condition: state
+        entity_id: input_boolean.control_por_presencia
+        state: "on"
       - condition: state
         entity_id: switch.enchufe_habitacion_socket_1
         state: "on"

@@ -105,6 +105,7 @@ automation:
                 target:
                   entity_id: input_boolean.presencia
 
+  ## Si  hay control por presencia entonces al leer el tag simplemente actualiza que estamos en el despacho
   - alias: Ramon - Entrada al despacho
     trigger:
       - platform: tag
@@ -112,12 +113,31 @@ automation:
     condition:
       - condition: template
         value_template: "{{ states('input_select.ubicacion_ramon') != 'despacho' }}"
+      - condition: state
+        entity_id: input_boolean.control_por_presencia
+        state: "on"
     action:
       - service: input_select.select_option
         target:
           entity_id: input_select.ubicacion_ramon
         data:
           option: "despacho"
+
+  ## Si no hay control por presencia entonces al leer el tag directamente lo pone en modo auto
+  - alias: Tag despacho
+    trigger:
+      - platform: tag
+        tag_id: !secret nfc_tag_ha_despacho
+    condition:
+      - condition: state
+        entity_id: input_boolean.control_por_presencia
+        state: "off"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ventilador_despacho_modo_auto
+        data:
+          option: "auto"
 
   - alias: Ramon - Tocando el piano
     trigger:

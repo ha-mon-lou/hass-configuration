@@ -1,0 +1,20 @@
+automation:
+  - id: "WH_Luz_Habitacion_2"
+    alias: Webhook luz habitacion_2
+    description: ""
+    triggers:
+      - trigger: webhook
+        allowed_methods:
+          - POST
+          - PUT
+          - GET
+        local_only: true
+        webhook_id: "wh_luz_habitacion_2"
+    conditions: []
+    actions:
+      - action: switch.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.regleta_antela_socket_4_2
+    mode: single

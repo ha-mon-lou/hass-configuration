@@ -1,0 +1,44 @@
+homeassistant:
+  customize: {}
+
+rest_command:
+  clima_adaptativo:
+    url: "http://192.168.1.169:5678/webhook/clima_adaptativo"
+    method: POST
+    content_type: "application/json"
+    payload: >
+      {
+        "temperatura_interior": "{{ states('sensor.temperatura_interior') }}",
+        "temperatura_exterior": "{{ states('sensor.temperatura_exterior') }}",
+        "prediccion_temperatura": "{{ states('sensor.aemet_daily_forecast_temperature') }}",
+        "humedad_interior": "{{ states('sensor.humedad_interior') }}",
+        "humedad_exterior": "{{ states('sensor.humedad_exterior') }}",
+        "hora": "{{ now().strftime('%H:%M') }}"
+      }
+
+automation:
+  - alias: Clima Adaptativo con Predicción
+    id: clima_adaptativo_prediccion
+    trigger:
+      - platform: state
+        entity_id: input_button.n8n_test
+
+    #      - platform: time_pattern
+    #        minutes: "/15" # Ejecuta cada 15 minutos
+    action:
+      - service: rest_command.clima_adaptativo
+
+input_button:
+  n8n_test:
+
+input_text:
+  n8n_motivo_clima:
+    name: Motivo último ajuste de clima
+    icon: mdi:comment-text-outline
+# ENTIDADES USADAS
+# - sensor.temperatura_interior
+# - sensor.temperatura_exterior
+# - sensor.humedad_interior
+# - sensor.humedad_exterior
+# - climate.aire_acondicionado
+# - fan.ventilador

@@ -1,0 +1,112 @@
+################################################################################
+# Package: correlaciones_n8n
+# Lee un JSON de correlaciones enviado desde n8n y actualiza entidades
+################################################################################
+
+script:
+  actualizar_correlaciones:
+    alias: Actualizar correlaciones desde JSON
+    description: Actualiza input_number e input_text con valores enviados en JSON
+    fields:
+      temperatura_correlacion:
+        description: "Valor de correlación para temperatura"
+      temperatura_lag:
+        description: "Retardo (horas) para temperatura"
+      temperatura_interpretacion:
+        description: "Interpretación para temperatura"
+      humedad_correlacion:
+        description: "Valor de correlación para humedad"
+      humedad_lag:
+        description: "Retardo (horas) para humedad"
+      humedad_interpretacion:
+        description: "Interpretación para humedad"
+      hora_actual:
+        description: "Hora de la llamada"
+      workflow:
+        description: "Nombre del workflow n8n"
+    sequence:
+      # --- Temperatura ---
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_correlacion_temperatura
+        data:
+          value: "{{ temperatura_correlacion }}"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_lag_temperatura
+        data:
+          value: "{{ temperatura_lag }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.n8n_interpretacion_temperatura
+        data:
+          value: "{{ temperatura_interpretacion }}"
+
+      # --- Humedad ---
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_correlacion_humedad
+        data:
+          value: "{{ humedad_correlacion }}"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_lag_humedad
+        data:
+          value: "{{ humedad_lag }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.n8n_interpretacion_humedad
+        data:
+          value: "{{ humedad_interpretacion }}"
+
+      # --- Meta ---
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.n8n_correlaciones_hora_actual
+        data:
+          value: "{{ hora_actual }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.n8n_correlaciones_workflow
+        data:
+          value: "{{ workflow }}"
+
+################################################################################
+# Definición de entidades usadas por el script
+################################################################################
+
+input_number:
+  n8n_correlacion_temperatura:
+    name: Correlación Temperatura
+    min: -1
+    max: 1
+    step: 0.001
+    mode: box
+  n8n_lag_temperatura:
+    name: Lag Temperatura (h)
+    min: 0
+    max: 48
+    step: 1
+    mode: box
+  n8n_correlacion_humedad:
+    name: Correlación Humedad
+    min: -1
+    max: 1
+    step: 0.001
+    mode: box
+  n8n_lag_humedad:
+    name: Lag Humedad (h)
+    min: 0
+    max: 48
+    step: 1
+    mode: box
+
+input_text:
+  n8n_interpretacion_temperatura:
+    name: Interpretación Temperatura
+  n8n_interpretacion_humedad:
+    name: Interpretación Humedad
+  n8n_correlaciones_hora_actual:
+    name: Hora Actual Correlaciones
+  n8n_correlaciones_workflow:
+    name: Workflow Correlaciones

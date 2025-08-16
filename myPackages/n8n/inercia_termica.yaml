@@ -1,0 +1,57 @@
+input_number:
+  n8n_python_inercia_factor:
+    name: Factor f
+    min: 0
+    max: 1
+    step: 0.01
+  n8n_python_inercia_phi_h:
+    name: Desfase phi (h)
+    min: 0
+    max: 24
+    step: 0.1
+  n8n_python_inercia_tau_h:
+    name: Constante de tiempo tau (h)
+    min: 0
+    max: 300
+    step: 0.1
+
+input_text:
+  n8n_python_inercia_workflow:
+    name: Workflow que actualizó inercia
+    icon: mdi:script-text-outline
+    max: 100
+
+script:
+  actualizar_inercia:
+    alias: Actualizar inercia térmica desde JSON
+    description: Actualiza los input_number con valores enviados en JSON desde n8n
+    fields:
+      factor:
+        description: "Factor f de inercia térmica"
+      phi:
+        description: "Desfase phi en horas"
+      tau:
+        description: "Constante de tiempo tau en horas"
+      workflow:
+        description: "Nombre del workflow n8n (opcional)"
+    sequence:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_python_inercia_factor
+        data:
+          value: "{{ factor }}"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_python_inercia_phi_h
+        data:
+          value: "{{ phi }}"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_python_inercia_tau_h
+        data:
+          value: "{{ tau }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.n8n_python_inercia_workflow
+        data:
+          value: "{{ workflow }}"

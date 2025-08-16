@@ -31,6 +31,22 @@ input_number:
     step: 0.1
     mode: box
 
+  n8n_python_prediction_sensacion_interior:
+    name: Sensacion termica interior predicción
+    icon: mdi:thermometer
+    min: 0
+    max: 50
+    step: 0.1
+    mode: box
+
+  n8n_python_prediction_sensacion_exterior:
+    name: Sensacion termica exterior predicción
+    icon: mdi:thermometer
+    min: 0
+    max: 50
+    step: 0.1
+    mode: box
+
 input_text:
   n8n_python_prediction_hora_prediccion:
     name: Hora de la predicción
@@ -60,6 +76,10 @@ script:
         description: "Valor temperatura exterior"
       temperatura_interior:
         description: "Valor temperatura interior"
+      sensacion_termica:
+        description: "Valor sensacion termica interior"
+      sensacion_termica_exterior:
+        description: "Valor sensacion termica exterior"
       hora_prediccion:
         description: "Hora de la predicción"
       hora_actual:
@@ -87,6 +107,19 @@ script:
           entity_id: input_number.n8n_python_prediction_temperatura_interior
         data:
           value: "{{ temperatura_interior }}"
+
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_python_prediction_sensacion_interior
+        data:
+          value: "{{ sensacion_termica }}"
+
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.n8n_python_prediction_sensacion_exterior
+        data:
+          value: "{{ sensacion_termica_exterior }}"
+
       - service: input_text.set_value
         target:
           entity_id: input_text.n8n_python_prediction_hora_prediccion

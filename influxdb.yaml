@@ -13,3 +13,4 @@ include:
     - sensor
     - binary_sensor
     - switch
+    - input_select

@@ -15,6 +15,7 @@
     humedad_exterior:
       friendly_name: "H. Exterior"
       device_class: humidity
+      state_class: measurement      
       unit_of_measurement: "%"
       unique_id: "humedad_exterior"
       value_template: >

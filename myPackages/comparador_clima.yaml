@@ -16,3 +16,5 @@ template:
         attributes:
           temperatura_exterior: "{{ states('sensor.sensacion_termica_exterior') }}"
           temperatura_interior: "{{ states('sensor.sensacion_termica') }}"
+
+          

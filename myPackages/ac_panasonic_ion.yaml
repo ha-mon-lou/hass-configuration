@@ -65,12 +65,12 @@ climate:
     target_sensor: sensor.ac_panasonic_ion_sensacion_termica
     target_temp: 24
     min_temp: 18
-    max_temp: 28
+    max_temp: 30
     ac_mode: true
     cold_tolerance: 0.3
     hot_tolerance: 0.3
     min_cycle_duration:
-      minutes: 2
+      minutes: 3
     initial_hvac_mode: "off"
     away_temp: 28
 

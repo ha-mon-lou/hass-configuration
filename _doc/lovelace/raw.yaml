@@ -1,4 +1,228 @@
 decluttering_templates:
+  histograma_temperatura_humedad:
+    card:
+      type: custom:plotly-graph
+      title: "[[device_name]] - Last [[hours_to_show]] hours"
+      entities:
+        - entity: sensor.[[device_name]]_temperature
+          period: hour
+          internal: true
+          fn: |
+            $fn ({ ys, vars, value }) => {
+              vars.temperature = ys;
+              vars.current_temperature = value;
+            }
+        - entity: sensor.[[device_name]]_humidity
+          period: hour
+          internal: true
+          fn: |
+            $fn ({ ys, vars, value }) => {
+              vars.humidity = ys;
+              vars.current_humidity = value;
+            }
+        - entity: sensor.[[device_name]]_temperature
+          period: hour
+          internal: true
+          fn: $fn ({ ys, vars }) => vars.temperature = ys
+        - entity: sensor.[[device_name]]_humidity
+          period: hour
+          internal: true
+          fn: $fn ({ ys, vars }) => vars.humidity = ys
+        - entity: ""
+          x: $fn ({ vars }) => vars.temperature
+          "y": $fn ({ vars }) => vars.humidity
+          mode: markers
+          name: points
+          marker:
+            color: rgb(102,0,0)
+            size: 2
+            opacity: 0.4
+          type: scatter
+        - entity: ""
+          x: $fn ({ vars }) => vars.temperature
+          "y": $fn ({ vars }) => vars.humidity
+          name: density
+          ncontours: 20
+          colorscale: Hot
+          reversescale: true
+          showscale: false
+          line:
+            color: null
+          type: histogram2dcontour
+        - entity: ""
+          x: |
+            $fn ({}) => {
+              const xc = 24, yc = 50;
+              const a = 5, b = 10;
+              const theta = Math.PI/6;
+              const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
+              return t.map(tt => xc + a*Math.cos(tt)*Math.cos(theta) - b*Math.sin(tt)*Math.sin(theta));
+            }
+          "y": |
+            $fn ({}) => {
+              const xc = 24, yc = 50;
+              const a = 5, b = 10;
+              const theta = Math.PI/6;
+              const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
+              return t.map(tt => yc + a*Math.cos(tt)*Math.sin(theta) + b*Math.sin(tt)*Math.cos(theta));
+            }
+          mode: lines
+          fill: toself
+          fillcolor: rgba(0,255,0,0.2)
+          line:
+            color: rgba(0,255,0,0)
+          name: zona confort
+          type: scatter
+        - entity: ""
+          x: |
+            $fn ({}) => {
+              const xc = 30, yc = 70;
+              const a = 5, b = 12;
+              const theta = Math.PI/8;
+              const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
+              return t.map(tt => xc + a*Math.cos(tt)*Math.cos(theta) - b*Math.sin(tt)*Math.sin(theta));
+            }
+          "y": |
+            $fn ({}) => {
+              const xc = 30, yc = 70;
+              const a = 5, b = 12;
+              const theta = Math.PI/8;
+              const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
+              return t.map(tt => yc + a*Math.cos(tt)*Math.sin(theta) + b*Math.sin(tt)*Math.cos(theta));
+            }
+          mode: lines
+          fill: toself
+          fillcolor: rgba(255,0,0,0.2)
+          line:
+            color: rgba(255,0,0,0)
+          name: zona peligrosa
+          type: scatter
+      hours_to_show: "[[hours_to_show]]"
+      raw_plotly_config: true
+      layout:
+        plot_bgcolor: white
+        paper_bgcolor: white
+        margin:
+          t: 10
+          l: 40
+          r: 20
+          b: 40
+        height: 400
+        bargap: 0.2
+        showlegend: false
+        xaxis:
+          title:
+            text: Temperature
+          autorange: true
+          domain:
+            - 0
+            - 0.85
+          showgrid: false
+          zeroline: false
+        yaxis:
+          title:
+            text: Humidity
+          autorange: true
+          domain:
+            - 0
+            - 0.85
+          showgrid: false
+          zeroline: false
+        xaxis2:
+          domain:
+            - 0.85
+            - 1
+          showgrid: false
+          zeroline: false
+        yaxis2:
+          domain:
+            - 0.85
+            - 1
+          showgrid: false
+          zeroline: false
+  meross_switch_full_card:
+    variables:
+      - switch_prefix: null
+      - switch_name_overtemp: Overtemp
+      - switch_name_outlet: Outlet
+    card:
+      type: vertical-stack
+      cards:
+        - type: entities
+          title: "[[switch_prefix]] - Sensors"
+          entities:
+            - entity: sensor.[[switch_prefix]]_consumption
+              name: Energy Consumption (Wh)
+            - entity: sensor.[[switch_prefix]]_current
+              name: Current (A)
+            - entity: sensor.[[switch_prefix]]_energy
+              name: Total Energy (Wh)
+            - entity: sensor.[[switch_prefix]]_power
+              name: Power (W)
+        - type: horizontal-stack
+          cards:
+            - type: custom:button-card
+              entity: switch.[[switch_prefix]]_config_overtemp_enable
+              name: "[[switch_name_overtemp]]"
+              show_name: true
+              show_state: false
+              icon: mdi:power
+              size: 20px
+              color_type: icon
+              state:
+                - value: "on"
+                  color: green
+                - value: "off"
+                  color: red
+              tap_action:
+                action: none
+              hold_action:
+                action: none
+              styles:
+                card:
+                  - width: 80px
+                  - height: 40px
+                name:
+                  - font-size: 12px
+                  - color: var(--primary-text-color)
+                icon:
+                  - width: 18px
+                  - height: 18px
+            - type: custom:button-card
+              entity: switch.[[switch_prefix]]_outlet
+              name: "[[switch_name_outlet]]"
+              show_name: true
+              show_state: false
+              icon: mdi:power
+              size: 20px
+              color_type: icon
+              state:
+                - value: "on"
+                  color: green
+                - value: "off"
+                  color: red
+              tap_action:
+                action: toggle
+              hold_action:
+                action: none
+              styles:
+                card:
+                  - width: 80px
+                  - height: 40px
+                name:
+                  - font-size: 12px
+                  - color: var(--primary-text-color)
+                icon:
+                  - width: 18px
+                  - height: 18px
+        - type: gauge
+          entity: sensor.[[switch_prefix]]_power_log
+          max: 4
+          needle: true
+          severity:
+            green: 1
+            yellow: 2
+            red: 3
   dual_grafico_temperatura_humedad:
     variables:
       - nombre: Ambiente
@@ -49,7 +273,7 @@ decluttering_templates:
         - type: custom:mushroom-template-card
           primary: "[[id]]"
           secondary: |
-            Temp {{ states('sensor.sensacion_termica_[[id]]') | float | round(2) }}ºC
+            Temp {{ states('sensor.sensacion_termica_[[id]]') | float(2) }}ºC
           icon: mdi:fan
           icon_color: |
             {% if is_state('input_boolean.ventilador_[[id]]', 'on') %}
@@ -131,7 +355,7 @@ decluttering_templates:
       type: custom:mushroom-template-card
       primary: "[[id]]"
       secondary: |
-        Temp {{ states('sensor.sensacion_termica_[[id]]') | float | round(2) }}ºC
+        Temp {{ states('sensor.sensacion_termica_[[id]]') | float(2) }}ºC
       icon: mdi:fan
       icon_color: |
         {% if is_state('input_boolean.ventilador_[[id]]', 'on') %}
@@ -643,6 +867,14 @@ views:
             entity: sensor.humedad_exterior
           - graph: line
             type: sensor
+            detail: 2
+            entity: sensor.indoor_outdoor_meter_5427_temperature
+          - graph: line
+            type: sensor
+            detail: 2
+            entity: sensor.indoor_outdoor_meter_5427_humidity
+          - graph: line
+            type: sensor
             detail: 1
             entity: sensor.temperatura_interior
           - graph: line
@@ -653,11 +885,9 @@ views:
             entities:
               - entity: input_boolean.verano
               - entity: input_boolean.invierno
+              - entity: input_boolean.modo_ahorro
               - entity: input_number.nivel_confort_actual
               - entity: input_button.send_confort
-              - entity: sensor.flask_server
-                name: T. predicción AI
-                icon: mdi:air-filter
     type: sections
     max_columns: 4
     cards: []
@@ -687,7 +917,7 @@ views:
                   action: toggle
               - type: custom:mushroom-entity-card
                 entity: switch.enchufe_habitacion_socket_2
-                name: Piano Audio
+                name: Ventilador
                 icon: mdi:power-socket-eu
                 icon_color: blue
                 tap_action:
@@ -718,6 +948,9 @@ views:
           - type: entities
             entities:
               - entity: input_button.shutdown
+          - type: entities
+            entities:
+              - input_boolean.modo_ahorro
   - type: sections
     max_columns: 4
     title: Rooms
@@ -725,6 +958,60 @@ views:
     sections:
       - type: grid
         cards:
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - entity: lock.puerta_principal_2
+                        state: locked
+                    card:
+                      type: custom:button-card
+                      icon: mdi:lock
+                      tap_action:
+                        action: call-service
+                        service: lock.unlock
+                        service_data:
+                          entity_id: lock.puerta_principal_2
+                      styles:
+                        card:
+                          - width: 60px
+                          - height: 60px
+                          - border-radius: 10px
+                        icon:
+                          - color: green
+                  - type: conditional
+                    conditions:
+                      - entity: lock.puerta_principal_2
+                        state: unlocked
+                    card:
+                      type: custom:button-card
+                      icon: mdi:lock-open
+                      tap_action:
+                        action: call-service
+                        service: lock.lock
+                        service_data:
+                          entity_id: lock.puerta_principal_2
+                      styles:
+                        card:
+                          - width: 60px
+                          - height: 60px
+                          - border-radius: 10px
+                        icon:
+                          - color: orange
+                  - type: custom:button-card
+                    icon: mdi:door-open
+                    tap_action:
+                      action: call-service
+                      service: script.abrir_puerta_principal
+                    styles:
+                      card:
+                        - width: 60px
+                        - height: 60px
+                        - border-radius: 10px
+                      icon:
+                        - color: blue
           - type: custom:tabbed-card
             options:
               default_tab: Hoy
@@ -738,11 +1025,11 @@ views:
                   state_color: true
                   show_header_toggle: true
                   entities:
-                    - entity: switch.enchufe_habitacion_socket_1
-                      name: Luz Piano
+                    - entity: switch.alias_ventilador_living_1
+                      name: Ventilador Living 1
                       secondary_info: last-changed
-                    - entity: switch.enchufe_habitacion_socket_2
-                      name: Audio piano y PC
+                    - entity: switch.enchufe_habitacion_socket_1
+                      name: Luz & Audio piano y PC
                       secondary_info: last-changed
                     - entity: switch.regleta_antela_socket_3
                       secondary_info: last-changed
@@ -773,6 +1060,10 @@ views:
                         - entity: sensor.zigbee_sonoff_trvzb_02_battery
                         - entity: sensor.zigbee_scene_switch_01_battery
                           name: Pulsador Scene switch
+                        - entity: switch.zigbee_tuya_ts0012_01_left
+                          name: Luz y extractor
+                        - entity: switch.zigbee_tuya_ts0012_01_right
+                          name: Luz baño
                     - type: custom:mushroom-climate-card
                       entity: climate.zigbee_sonoff_trvzb_02
                       show_temperature_control: false
@@ -800,6 +1091,16 @@ views:
                       name: Temperatura Sonoff
                     - entity: sensor.zigbee_sonoff_snzb02_01_humidity
                       name: Humedad Sonoff
+                    - entity: switch.regleta_antela_socket_1_2
+                      secondary_info: last-changed
+                    - entity: switch.regleta_antela_socket_2_2
+                      secondary_info: last-changed
+                    - entity: switch.regleta_antela_socket_3_2
+                      secondary_info: last-changed
+                    - entity: switch.regleta_antela_socket_4_2
+                      secondary_info: last-changed
+                    - entity: switch.regleta_antela_socket_5_2
+                      secondary_info: last-changed
                     - type: custom:decluttering-card
                       template: tarjeta_ventilador_control_auto
                       variables:
@@ -922,6 +1223,60 @@ views:
             entities:
               - entity: input_select.ubicacion_ramon
               - entity: input_select.ubicacion_pau
+          - type: vertical-stack
+            title: Presencia por zonas
+            cards:
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Zonas con presencia
+                  show_header_toggle: false
+                filter:
+                  include:
+                    - domain: binary_sensor
+                      attributes:
+                        device_class: occupancy
+                      options:
+                        type: custom:mushroom-entity-card
+                        icon: >
+                          {{ iif(states(config.entity) == 'on',
+                          'mdi:motion-sensor', 'mdi:motion-sensor-off') }}
+                        icon_color: >
+                          {{ iif(states(config.entity) == 'on', 'green', 'grey')
+                          }}
+                        secondary_info: last-changed
+                sort:
+                  method: name
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Presencia por zonas
+                show_header_toggle: false
+                entities:
+                  - entity: binary_sensor.presencia_en_casa
+                    name: Casa
+                  - entity: binary_sensor.presencia_zona_habitacion_1
+                    name: Habitación 1
+                  - entity: binary_sensor.presencia_zona_habitacion_2
+                    name: Habitación 2
+                  - entity: binary_sensor.presencia_zona_despacho
+                    name: Despacho
+                  - entity: binary_sensor.presencia_zona_studiobricks
+                    name: StudioBricks
+                  - entity: binary_sensor.presencia_zona_living_1
+                    name: Living 1
+                  - entity: binary_sensor.presencia_zona_living_2
+                    name: Living 2
+                  - entity: binary_sensor.presencia_zona_cocina
+                    name: Cocina
+                  - entity: binary_sensor.presencia_zona_bathroom_1
+                    name: Baño 1
+                  - entity: binary_sensor.presencia_zona_bathroom_2
+                    name: Baño 2
+                  - entity: binary_sensor.presencia_zona_trastero
+                    name: Trastero
+                  - entity: binary_sensor.presencia_zona_entrada
+                    name: Entrada
     icon: mdi:home
     cards: []
     badges:
@@ -955,7 +1310,7 @@ views:
             variables:
               - id: equation
           - type: custom:button-card
-            entity: timer.ventilador_equation_file_timer
+            entity: timer.ventilador_equation_timer
             show_name: false
             show_icon: false
             show_state: true
@@ -966,6 +1321,10 @@ views:
                 - text-align: center
                 - font-size: 14px
                 - padding: 4px
+          - type: entity
+            entity: input_boolean.modo_nocturno
+            state_color: true
+            icon: mdi:weather-night
       - type: grid
         cards:
           - type: thermostat
@@ -1005,6 +1364,14 @@ views:
             detail: 2
             entity: sensor.cfg_sensacion_termica_living_2
             name: Sensación Living 2
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.exterior_mas_calido_que_interior
+            name: Exterior más cálido
+            icon: mdi:weather-sunny-alert
+            secondary_info: state
+            tap_action:
+              action: more-info
+            layout: horizontal
       - type: grid
         cards:
           - type: custom:stack-in-card
@@ -1340,6 +1707,29 @@ views:
                         target:
                           entity_id: input_number.aire_acondicionado_target
                         data: {}
+          - type: entities
+            title: Control Extractor Baño 01
+            entities:
+              - entity: switch.alias_aire_extractor_bathroom_01
+                name: Extractor baño 01
+              - entity: timer.temporizador_extractor_bathroom_01
+                name: Tiempo restante de funcionamiento
+              - entity: sensor.umbral_dinamico_apagado_extractor_bathroom_01
+                name: Umbral dinámico apagado
+              - entity: sensor.cfg_humedad_bathroom_1
+                name: Humedad baño
+                unit: "%"
+              - entity: sensor.umbral_dinamico_extractor_bathroom_01
+                name: Umbral dinámico encendido
+              - entity: sensor.cfg_humedad_habitacion_1
+                unit: "%"
+              - entity: sensor.humedad_interior
+                name: Humedad interior
+                unit: "%"
+              - entity: input_number.margen_humedad_apagado_extractor_bathroom_01
+                name: Margen apagado humedad
+              - entity: input_number.margen_humedad_encendido_extractor_bathroom_01
+                name: Margen encendido humedad
     badges:
       - type: entity
         show_name: false
@@ -1348,25 +1738,161 @@ views:
         entity: sensor.temperatura_exterior
   - type: sections
     max_columns: 4
+    icon: mdi:fan-plus
+    path: ""
+    sections:
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                entity: input_boolean.extractores_activos
+                primary: >
+                  {{ iif(is_state(entity, 'on'), 'Extractores activos',
+                  'Extractores inactivos') }}
+                icon: mdi:fan
+                icon_color: |
+                  {{ iif(is_state(entity, 'on'), 'green', 'grey') }}
+                tap_action:
+                  action: toggle
+              - type: custom:mushroom-entity-card
+                entity: input_select.modo_extractores
+                name: Modo
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: switch.alias_aire_extraccion_habitacion_02
+                    name: Extracción
+                  - type: custom:mushroom-entity-card
+                    entity: switch.alias_aire_introduccion_habitacion_02
+                    name: Introducción
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.sensacion_termica_switchbot_ioth_01
+                    name: Temp. Exterior
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.cfg_sensacion_termica_habitacion_2
+                    name: Temp. Habitación
+              - type: custom:mushroom-entity-card
+                entity: input_text.extractores_modo_alerta
+                name: Último modo con fallo
+          - type: entities
+            entities:
+              - sensor.cfg_humedad_exterior_cercana
+              - sensor.humedad_exterior
+              - sensor.cfg_temperatura_exterior_cercana
+              - sensor.temperatura_exterior
+              - sensor.sensacion_termica_switchbot_ioth_01
+          - type: vertical-stack
+            title: Control de Extractores
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: input_boolean.extractores_activos
+                name: Extractores activos
+                icon: mdi:fan
+                tap_action:
+                  action: toggle
+                secondary_info: last-changed
+              - type: custom:mushroom-select-card
+                entity: input_select.modo_extractores
+                name: Modo actual
+                icon: mdi:swap-vertical
+                secondary_info: last-changed
+              - type: custom:mushroom-entity-card
+                entity: input_number.temperatura_inicial
+                name: Temperatura al iniciar
+                icon: mdi:thermometer
+                tap_action:
+                  action: more-info
+              - type: custom:bar-card
+                title: Historial de fallos (últimos 7 días)
+                entities:
+                  - sensor.fallos_en_modo_extraccion
+                  - sensor.fallos_en_modo_introduccion
+                  - sensor.fallos_en_modo_mixto
+                unit_of_measurement: fallos
+                height: 20px
+                positions:
+                  icon: "off"
+                  name: left
+                  value: right
+                severity:
+                  - color: "#43a047"
+                    from: 0
+                    to: 1
+                  - color: "#fdd835"
+                    from: 2
+                    to: 4
+                  - color: "#e53935"
+                    from: 5
+                    to: 100
+              - type: custom:mushroom-template-card
+                primary: Último fallo registrado
+                secondary: >
+                  {{ states('input_text.extractores_modo_alerta') or 'Sin datos'
+                  }}
+                icon: mdi:alert-circle
+                icon_color: red
+                tap_action:
+                  action: more-info
+                entity: input_text.extractores_modo_alerta
+      - type: grid
+        cards:
+          - type: heading
+            heading: New section
+          - type: entities
+            title: Control Extractores
+            show_header_toggle: false
+            entities:
+              - entity: input_boolean.extractores_habilitados
+                name: Habilitar Extractores (maestro)
+              - entity: input_boolean.extractores_activos
+                name: Extractores activos
+                icon: mdi:fan
+              - entity: input_select.modo_extractores
+                name: Modo extractores
+              - entity: input_number.temperatura_inicial
+                name: Temperatura inicial
+              - entity: sensor.temperatura_exterior
+              - entity: sensor.cfg_temperatura_habitacion_2
+              - entity: input_boolean.ventilador_habitacion
+                name: Ventilador de techo encendido
+                icon: mdi:fan
+              - type: custom:button-card
+                entity: input_boolean.extractores_activos
+                name: Apagar extractores manualmente
+                show_icon: true
+                show_name: true
+                tap_action:
+                  action: toggle
+                styles:
+                  card:
+                    - background-color: |
+                        [[[
+                          return states['input_boolean.extractores_activos'].state === 'on' ? '#4caf50' : '#f44336';
+                        ]]]
+                    - color: white
+  - type: sections
+    max_columns: 4
     title: switch
     path: switch
     icon: mdi:toggle-switch
     sections:
       - type: grid
         cards:
-          - type: entities
-            entities:
-              - entity: switch.zigbee_nous_enchufe_01
-                secondary_info: last-changed
-              - entity: switch.alias_frigorifico
-                secondary_info: last-changed
-              - entity: switch.alias_lavavajillas
-                secondary_info: last-changed
-              - entity: switch.zigbee_nous_enchufe_04
-                secondary_info: last-changed
-            state_color: false
-            show_header_toggle: true
-            title: Enchufes
+          - type: custom:auto-entities
+            card:
+              type: entities
+              title: Enchufes alias
+            filter:
+              include:
+                - domain: switch
+                  entity_id: switch.alias_*
+            sort:
+              method: name
+            show_state: true
+            state_color: true
           - type: entities
             entities:
               - type: custom:decluttering-card
@@ -1381,6 +1907,46 @@ views:
                 template: tarjeta_ventilador_control_auto
                 variables:
                   - id: equation
+      - type: grid
+        cards:
+          - type: custom:decluttering-card
+            template: meross_switch_full_card
+            variables:
+              - switch_prefix: meross_switch_01
+              - switch_name_overtemp: Protection
+              - switch_name_outlet: Outlet
+          - type: custom:decluttering-card
+            template: meross_switch_full_card
+            variables:
+              - switch_prefix: meross_switch_02
+              - switch_name_overtemp: Protection
+              - switch_name_outlet: Outlet
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: WashingMachine Estado
+                entities:
+                  - entity: input_boolean.washingmachine_en_uso
+                    name: Maquina en uso
+                  - entity: timer.washingmachine_temporizador
+                    name: Temporizador
+              - type: horizontal-stack
+                cards:
+                  - type: button
+                    entity: input_boolean.washingmachine_en_uso
+                    name: Activar/Desactivar
+                    show_icon: true
+                    show_name: true
+                  - type: button
+                    entity: timer.washingmachine_temporizador
+                    name: Reiniciar temporizador
+                    show_icon: true
+                    show_name: true
+                    tap_action:
+                      action: call-service
+                      service: timer.start
+                      service_data:
+                        entity_id: timer.washingmachine_temporizador
   - type: sections
     max_columns: 4
     title: temporizador
@@ -1551,6 +2117,17 @@ views:
                     return [new Date(key).getTime(), data[key]];
                   });
                 color: "#00E396"
+          - type: statistics-graph
+            title: Consumo mensual - Ventiladores
+            entities:
+              - entity: sensor.consumo_mensual_ventilador_equation
+                name: Ventilador Equation
+              - entity: sensor.consumo_mensual_ventildaor_living_1
+                name: Ventilador Living 1
+            chart_type: bar
+            period: month
+            stat_types:
+              - sum
   - type: sections
     max_columns: 4
     title: Graficos
@@ -1664,6 +2241,17 @@ views:
                   extrema: false
                   average: false
                   labels: false
+      - cards:
+          - type: heading
+            heading: History
+          - title: History
+            type: history-graph
+            hours_to_show: 38
+            entities:
+              - sensor.consumo_acumulado_ventilador_despacho
+              - sensor.consumo_acumulado_ventilador_equation
+              - sensor.consumo_acumulado_ventilador_habitacion
+              - sensor.consumo_acumulado_ventilador_living_1
     badges:
       - type: entity
         show_name: false
@@ -1733,8 +2321,6 @@ views:
                             name: Peso (kg)
                           - entity: sensor.pkg_salut_ramon_imc
                             name: Grasa Corporal (%)
-                          - entity: sensor.pkg_salut_ramon_imc_bia
-                            name: Grasa Corporal (%)
                       - type: custom:mushroom-number-card
                         entity: input_number.pkg_salut_ramon_height
                         name: Altura (cm)
@@ -1747,8 +2333,6 @@ views:
                           - entity: sensor.pkg_salut_pau_peso
                             name: Peso (kg)
                           - entity: sensor.pkg_salut_pau_imc
-                            name: Grasa Corporal (%)
-                          - entity: sensor.pkg_salut_pau_imc_bia
                             name: Grasa Corporal (%)
                       - type: custom:mushroom-number-card
                         entity: input_number.pkg_salut_pau_height
@@ -1772,68 +2356,497 @@ views:
     sections:
       - type: grid
         cards:
-          - type: grid
-            title: Control de Reproducción
-            columns: 3
-            square: false
+          - type: entities
+            entities:
+              - input_button.n8n_test
+              - input_text.n8n_motivo_clima
+          - type: vertical-stack
             cards:
-              - show_name: true
+              - type: entities
+                entities:
+                  - type: custom:template-entity-row
+                    entity: input_text.n8n_python_prediction_hora_prediccion
+                    name: Hora predicción
+                  - type: custom:template-entity-row
+                    entity: input_text.n8n_python_prediction_hora_actual
+                  - entity: input_text.n8n_python_prediction_workflow
+                    name: Workflow
+              - type: horizontal-stack
+                cards:
+                  - type: entities
+                    title: Predicción
+                    entities:
+                      - type: custom:template-entity-row
+                        entity: >-
+                          input_number.n8n_python_prediction_temperatura_interior
+                        name: >
+                          {% set pred =
+                          states('input_number.n8n_python_prediction_temperatura_interior')
+                          | float(0) %} {% set real =
+                          states('sensor.temperatura_interior') | float(0) %} {%
+                          if pred > real %}
+                            🔺
+                          {% elif pred < real %}
+                            🔻
+                          {% else %}
+                            ➖
+                          {% endif %}
+                      - type: custom:template-entity-row
+                        entity: >-
+                          input_number.n8n_python_prediction_temperatura_exterior
+                        name: >
+                          {% set pred =
+                          states('input_number.n8n_python_prediction_temperatura_exterior')
+                          | float(0) %} {% set real =
+                          states('sensor.temperatura_exterior') | float(0) %} {%
+                          if pred > real %}
+                            🔺
+                          {% elif pred < real %}
+                            🔻
+                          {% else %}
+                            ➖
+                          {% endif %}
+                      - type: custom:template-entity-row
+                        entity: input_number.n8n_python_prediction_humedad_interior
+                        name: >
+                          {% set pred =
+                          states('input_number.n8n_python_prediction_humedad_interior')
+                          | float(0) %} {% set real =
+                          states('sensor.humedad_interior') | float(0) %} {% if
+                          pred > real %}
+                            🔺
+                          {% elif pred < real %}
+                            🔻
+                          {% else %}
+                            ➖
+                          {% endif %}
+                      - type: custom:template-entity-row
+                        entity: input_number.n8n_python_prediction_humedad_exterior
+                        name: >
+                          {% set pred =
+                          states('input_number.n8n_python_prediction_humedad_exterior')
+                          | float(0) %} {% set real =
+                          states('sensor.humedad_exterior') | float(0) %} {% if
+                          pred > real %}
+                            🔺
+                          {% elif pred < real %}
+                            🔻
+                          {% else %}
+                            ➖
+                          {% endif %}
+                      - type: custom:template-entity-row
+                        entity: input_number.n8n_python_prediction_sensacion_exterior
+                        name: >
+                          {% set pred =
+                          states('input_number.n8n_python_prediction_sensacion_exterior')
+                          | float(0) %} {% set real =
+                          states('sensor.sensacion_termica_exterior') | float(0)
+                          %} {% if pred > real %}
+                            🔺
+                          {% elif pred < real %}
+                            🔻
+                          {% else %}
+                            ➖
+                          {% endif %}
+                  - type: entities
+                    title: Reales
+                    entities:
+                      - type: custom:template-entity-row
+                        entity: sensor.temperatura_interior
+                        name: T Interior
+                      - type: custom:template-entity-row
+                        entity: sensor.temperatura_exterior
+                        name: T Exterior
+                      - type: custom:template-entity-row
+                        entity: sensor.humedad_interior
+                        name: H Interior
+                      - type: custom:template-entity-row
+                        entity: sensor.humedad_exterior
+                        name: H Exterior
+                      - type: custom:template-entity-row
+                        entity: sensor.sensacion_termica_exterior
+                        name: Sens.T. Exterior
+          - type: vertical-stack
+            cards:
+              - type: custom:mini-graph-card
+                name: 🌡 Temperatura interior
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.temperatura_interior
+                  - entity: input_number.n8n_python_prediction_temperatura_interior
+                    color: green
+                hours_to_show: 36
+                points_per_hour: 2
+                line_width: 2
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+              - type: custom:mini-graph-card
+                name: 🌡 Temperatura exterior
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.temperatura_exterior
+                  - entity: input_number.n8n_python_prediction_temperatura_exterior
+                    name: T. Pred
+                  - entity: sensor.sensacion_termica_exterior
+                    name: Sens.T.
+                  - entity: input_number.n8n_python_prediction_sensacion_exterior
+                    name: Sens.T Pred
+                    color: green
+                hours_to_show: 36
+                points_per_hour: 2
+                line_width: 2
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+              - type: custom:mini-graph-card
+                name: 🌡 Humedad interior
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.humedad_interior
+                  - entity: input_number.n8n_python_prediction_humedad_interior
+                    color: green
+                hours_to_show: 36
+                points_per_hour: 2
+                line_width: 2
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+              - type: custom:mini-graph-card
+                name: 🌡 Humedad exterior
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.humedad_exterior
+                  - entity: input_number.n8n_python_prediction_humedad_exterior
+                    color: green
+                hours_to_show: 36
+                points_per_hour: 2
+                line_width: 2
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+              - type: custom:mini-graph-card
+                name: 🌡 Sensacion termica exterior
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.sensacion_termica_exterior
+                  - entity: input_number.n8n_python_prediction_sensacion_exterior
+                    color: green
+                hours_to_show: 36
+                points_per_hour: 2
+                line_width: 2
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+      - type: grid
+        cards:
+          - type: heading
+            heading: Puerta
+            heading_style: title
+          - type: vertical-stack
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.puerta_principal_door_2
+                    state: "off"
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: conditional
+                      conditions:
+                        - entity: lock.puerta_principal_2
+                          state: unlocked
+                      card:
+                        type: custom:button-card
+                        icon: mdi:lock
+                        tap_action:
+                          action: call-service
+                          service: lock.lock
+                          service_data:
+                            entity_id: lock.puerta_principal_2
+                        styles:
+                          card:
+                            - width: 60px
+                            - height: 60px
+                            - border-radius: 10px
+                          icon:
+                            - color: orange
+                    - type: conditional
+                      conditions:
+                        - entity: lock.puerta_principal_2
+                          state: locked
+                      card:
+                        type: custom:button-card
+                        icon: mdi:lock-open
+                        tap_action:
+                          action: call-service
+                          service: lock.unlock
+                          service_data:
+                            entity_id: lock.puerta_principal_2
+                        styles:
+                          card:
+                            - width: 60px
+                            - height: 60px
+                            - border-radius: 10px
+                          icon:
+                            - color: green
+                    - type: custom:button-card
+                      icon: mdi:door-open
+                      tap_action:
+                        action: call-service
+                        service: script.abrir_puerta_principal
+                      styles:
+                        card:
+                          - width: 60px
+                          - height: 60px
+                          - border-radius: 10px
+                        icon:
+                          - color: blue
+                    - type: custom:button-card
+                      icon: mdi:door
+                      show_name: true
+                      show_state: false
+                      tap_action:
+                        action: none
+                      styles:
+                        card:
+                          - width: 60px
+                          - height: 60px
+                          - border-radius: 10px
+                        icon:
+                          - color: >
+                              [[[ return
+                              states['binary_sensor.puerta_principal_door_2'].state
+                              === 'on' ? 'red' : 'lightgreen' ]]]
+                      label: >
+                        [[[ return
+                        states['binary_sensor.puerta_principal_door_2'].state
+                        === 'on' ? 'Abierta' : 'Cerrada' ]]]
+          - type: custom:bar-card
+            title: Correlaciones
+            entities:
+              - entity: input_number.n8n_correlacion_temperatura
+                name: Temperatura
+                icon: mdi:thermometer
+                severity:
+                  - color: "#d32f2f"
+                    from: 0
+                    to: 0.3
+                  - color: "#fbc02d"
+                    from: 0.3
+                    to: 0.6
+                  - color: "#388e3c"
+                    from: 0.6
+                    to: 1
+              - entity: input_number.n8n_correlacion_humedad
+                name: Humedad
+                icon: mdi:water-percent
+                severity:
+                  - color: "#d32f2f"
+                    from: 0
+                    to: 0.3
+                  - color: "#fbc02d"
+                    from: 0.3
+                    to: 0.6
+                  - color: "#388e3c"
+                    from: 0.6
+                    to: 1
+          - type: entities
+            title: Correlación Temperatura / Humedad
+            entities:
+              - entity: input_number.n8n_correlacion_temperatura
+                name: Corr. Temperatura
+                icon: mdi:thermometer
+              - entity: input_number.n8n_lag_temperatura
+                name: Retardo Temperatura (h)
+                icon: mdi:clock-outline
+              - entity: input_text.n8n_interpretacion_temperatura
+                name: Interpretación Temperatura
+                icon: mdi:text
+              - type: divider
+              - entity: input_number.n8n_correlacion_humedad
+                name: Corr. Humedad
+                icon: mdi:water-percent
+              - entity: input_number.n8n_lag_humedad
+                name: Retardo Humedad (h)
+                icon: mdi:clock-outline
+              - entity: input_text.n8n_interpretacion_humedad
+                name: Interpretación Humedad
+                icon: mdi:text
+          - type: vertical-stack
+            title: Inercia Térmica
+            cards:
+              - type: custom:bar-card
+                name: Factor f
+                unit: "%"
+                min: 0
+                max: 1
+                severity:
+                  - color: "#00FF00"
+                    from: 0
+                    to: 0.33
+                  - color: "#FFFF00"
+                    from: 0.33
+                    to: 0.66
+                  - color: "#FF0000"
+                    from: 0.66
+                    to: 1
                 show_icon: true
-                type: button
-                name: Play
-                icon: mdi:play-circle
-                tap_action:
-                  action: call-service
-                  service: mqtt.publish
-                  service_data:
-                    topic: iotlink/workgroup/pc-gaming/commands/media/playpause
-                    payload: ""
-              - type: button
-                name: Stop
-                icon: mdi:stop-circle
-                tap_action:
-                  action: call-service
-                  service: mqtt.publish
-                  service_data:
-                    topic: iotlink/workgroup/pc-gaming/commands/media/stop
-                    payload: ""
-              - type: button
-                name: Next
-                icon: mdi:skip-next-circle
-                tap_action:
-                  action: call-service
-                  service: mqtt.publish
-                  service_data:
-                    topic: iotlink/workgroup/pc-gaming/commands/media/next
-                    payload: ""
-              - type: button
-                name: Previous
-                icon: mdi:skip-previous-circle
-                tap_action:
-                  action: call-service
-                  service: mqtt.publish
-                  service_data:
-                    topic: iotlink/workgroup/pc-gaming/commands/media/previous
-                    payload: ""
-              - type: button
-                name: Display
-                icon: mdi:fullscreen-exit
-                tap_action:
-                  action: call-service
-                  service: mqtt.publish
-                  service_data:
-                    topic: iotlink/workgroup/pc-gaming/commands/displays/off
-                    payload: ""
-              - type: button
-                name: tts
-                icon: mdi:speaker
-                tap_action:
-                  action: call-service
-                  service: mqtt.publish
-                  service_data:
-                    topic: iotlink/workgroup/pc-gaming/commands/commands/tts
-                    payload: |
-                      {
-                        "message": "¡Hola, esto viene desde Home Assistant!",
-                        "language": "es"
-                      }
+                icon: mdi:percent
+                entities:
+                  - entity: input_number.n8n_python_inercia_factor
+              - type: custom:bar-card
+                entity: input_number.n8n_python_inercia_phi_h
+                name: Desfase φ (h)
+                unit: h
+                min: 0
+                max: 24
+                severity:
+                  - color: "#00FF00"
+                    from: 0
+                    to: 8
+                  - color: "#FFFF00"
+                    from: 8
+                    to: 16
+                  - color: "#FF0000"
+                    from: 16
+                    to: 24
+                show_icon: true
+                icon: mdi:clock-outline
+              - type: custom:bar-card
+                entity: input_number.n8n_python_inercia_tau_h
+                name: Constante τ (h)
+                unit: h
+                min: 0
+                max: 50
+                severity:
+                  - color: "#00FF00"
+                    from: 0
+                    to: 15
+                  - color: "#FFFF00"
+                    from: 15
+                    to: 30
+                  - color: "#FF0000"
+                    from: 30
+                    to: 50
+                show_icon: true
+                icon: mdi:timer-sand
+              - type: entities
+                title: Workflow
+                entities:
+                  - entity: input_text.n8n_python_inercia_workflow
+                    name: Workflow n8n
+                    icon: mdi:code-braces
+  - type: sections
+    max_columns: 4
+    icon: mdi:broadcast
+    path: 2d
+    title: 2D
+    sections:
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: aemet
+                  - hours_to_show: 240
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: st_quirze_del_v_vallsuau_barcelona
+                  - hours_to_show: 240
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: tuya_termometro_wifi
+                  - hours_to_show: 240
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: tuya_termometro_wifi_2
+                  - hours_to_show: 240
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: shelly_blu_5480
+                  - hours_to_show: 240
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: zigbee_heiman_hs3aq_01
+                  - hours_to_show: 240
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: aemet
+                  - hours_to_show: 24
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: st_quirze_del_v_vallsuau_barcelona
+                  - hours_to_show: 24
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: tuya_termometro_wifi
+                  - hours_to_show: 24
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: tuya_termometro_wifi_2
+                  - hours_to_show: 24
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: shelly_blu_5480
+                  - hours_to_show: 24
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: zigbee_heiman_hs3aq_01
+                  - hours_to_show: 24
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: aemet
+                  - hours_to_show: 6
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: st_quirze_del_v_vallsuau_barcelona
+                  - hours_to_show: 6
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: tuya_termometro_wifi
+                  - hours_to_show: 6
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: tuya_termometro_wifi_2
+                  - hours_to_show: 6
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: shelly_blu_5480
+                  - hours_to_show: 6
+              - type: custom:decluttering-card
+                template: histograma_temperatura_humedad
+                variables:
+                  - device_name: zigbee_heiman_hs3aq_01
+                  - hours_to_show: 6

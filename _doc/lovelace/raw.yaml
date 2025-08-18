@@ -1,145 +1,177 @@
 decluttering_templates:
   histograma_temperatura_humedad:
     card:
-      type: custom:plotly-graph
-      title: "[[device_name]] - Last [[hours_to_show]] hours"
-      entities:
-        - entity: sensor.[[device_name]]_temperature
-          period: hour
-          internal: true
-          fn: |
-            $fn ({ ys, vars, value }) => {
-              vars.temperature = ys;
-              vars.current_temperature = value;
-            }
-        - entity: sensor.[[device_name]]_humidity
-          period: hour
-          internal: true
-          fn: |
-            $fn ({ ys, vars, value }) => {
-              vars.humidity = ys;
-              vars.current_humidity = value;
-            }
-        - entity: sensor.[[device_name]]_temperature
-          period: hour
-          internal: true
-          fn: $fn ({ ys, vars }) => vars.temperature = ys
-        - entity: sensor.[[device_name]]_humidity
-          period: hour
-          internal: true
-          fn: $fn ({ ys, vars }) => vars.humidity = ys
-        - entity: ""
-          x: $fn ({ vars }) => vars.temperature
-          "y": $fn ({ vars }) => vars.humidity
-          mode: markers
-          name: points
-          marker:
-            color: rgb(102,0,0)
-            size: 2
-            opacity: 0.4
-          type: scatter
-        - entity: ""
-          x: $fn ({ vars }) => vars.temperature
-          "y": $fn ({ vars }) => vars.humidity
-          name: density
-          ncontours: 20
-          colorscale: Hot
-          reversescale: true
-          showscale: false
-          line:
-            color: null
-          type: histogram2dcontour
-        - entity: ""
-          x: |
-            $fn ({}) => {
-              const xc = 24, yc = 50;
-              const a = 5, b = 10;
-              const theta = Math.PI/6;
-              const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
-              return t.map(tt => xc + a*Math.cos(tt)*Math.cos(theta) - b*Math.sin(tt)*Math.sin(theta));
-            }
-          "y": |
-            $fn ({}) => {
-              const xc = 24, yc = 50;
-              const a = 5, b = 10;
-              const theta = Math.PI/6;
-              const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
-              return t.map(tt => yc + a*Math.cos(tt)*Math.sin(theta) + b*Math.sin(tt)*Math.cos(theta));
-            }
-          mode: lines
-          fill: toself
-          fillcolor: rgba(0,255,0,0.2)
-          line:
-            color: rgba(0,255,0,0)
-          name: zona confort
-          type: scatter
-        - entity: ""
-          x: |
-            $fn ({}) => {
-              const xc = 30, yc = 70;
-              const a = 5, b = 12;
-              const theta = Math.PI/8;
-              const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
-              return t.map(tt => xc + a*Math.cos(tt)*Math.cos(theta) - b*Math.sin(tt)*Math.sin(theta));
-            }
-          "y": |
-            $fn ({}) => {
-              const xc = 30, yc = 70;
-              const a = 5, b = 12;
-              const theta = Math.PI/8;
-              const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
-              return t.map(tt => yc + a*Math.cos(tt)*Math.sin(theta) + b*Math.sin(tt)*Math.cos(theta));
-            }
-          mode: lines
-          fill: toself
-          fillcolor: rgba(255,0,0,0.2)
-          line:
-            color: rgba(255,0,0,0)
-          name: zona peligrosa
-          type: scatter
-      hours_to_show: "[[hours_to_show]]"
-      raw_plotly_config: true
-      layout:
-        plot_bgcolor: white
-        paper_bgcolor: white
-        margin:
-          t: 10
-          l: 40
-          r: 20
-          b: 40
-        height: 400
-        bargap: 0.2
-        showlegend: false
-        xaxis:
-          title:
-            text: Temperature
-          autorange: true
-          domain:
-            - 0
-            - 0.85
-          showgrid: false
-          zeroline: false
-        yaxis:
-          title:
-            text: Humidity
-          autorange: true
-          domain:
-            - 0
-            - 0.85
-          showgrid: false
-          zeroline: false
-        xaxis2:
-          domain:
-            - 0.85
-            - 1
-          showgrid: false
-          zeroline: false
-        yaxis2:
-          domain:
-            - 0.85
-            - 1
-          showgrid: false
-          zeroline: false
+      type: vertical-stack
+      cards:
+        - type: custom:mushroom-template-card
+          primary: "[[device_name]]"
+          secondary: >
+            {{ states('sensor.[[device_name]]_temperature') }} °C | {{
+            states('sensor.[[device_name]]_humidity') }} %
+          icon: mdi:thermometer
+        - type: custom:plotly-graph
+          entities:
+            - entity: ""
+              x: |
+                $fn ({}) => {
+                  const xc = 24, yc = 50;
+                  const a = 8, b = 12;
+                  const theta = Math.PI/6;
+                  const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
+                  return t.map(tt => xc + a*Math.cos(tt)*Math.cos(theta) - b*Math.sin(tt)*Math.sin(theta));
+                }
+              "y": |
+                $fn ({}) => {
+                  const xc = 24, yc = 50;
+                  const a = 8, b = 12;
+                  const theta = Math.PI/6;
+                  const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
+                  return t.map(tt => yc + a*Math.cos(tt)*Math.sin(theta) + b*Math.sin(tt)*Math.cos(theta));
+                }
+              mode: lines
+              fill: toself
+              fillcolor: rgba(255,255,0,0.1)
+              line:
+                color: rgba(255,255,0,0)
+              name: zona aceptable
+              type: scatter
+            - entity: ""
+              x: |
+                $fn ({}) => {
+                  const xc = 24, yc = 50;
+                  const a = 5, b = 12;
+                  const theta = Math.PI/6;
+                  const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
+                  return t.map(tt => xc + a*Math.cos(tt)*Math.cos(theta) - b*Math.sin(tt)*Math.sin(theta));
+                }
+              "y": |
+                $fn ({}) => {
+                  const xc = 24, yc = 50;
+                  const a = 5, b = 12;
+                  const theta = Math.PI/6;
+                  const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
+                  return t.map(tt => yc + a*Math.cos(tt)*Math.sin(theta) + b*Math.sin(tt)*Math.cos(theta));
+                }
+              mode: lines
+              fill: toself
+              fillcolor: rgba(0,255,0,0.2)
+              line:
+                color: rgba(0,255,0,0)
+              name: zona confort
+              type: scatter
+            - entity: ""
+              x: |
+                $fn ({}) => {
+                  const xc = 30, yc = 70;
+                  const a = 5, b = 12;
+                  const theta = Math.PI/8;
+                  const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
+                  return t.map(tt => xc + a*Math.cos(tt)*Math.cos(theta) - b*Math.sin(tt)*Math.sin(theta));
+                }
+              "y": |
+                $fn ({}) => {
+                  const xc = 30, yc = 70;
+                  const a = 5, b = 12;
+                  const theta = Math.PI/8;
+                  const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
+                  return t.map(tt => yc + a*Math.cos(tt)*Math.sin(theta) + b*Math.sin(tt)*Math.cos(theta));
+                }
+              mode: lines
+              fill: toself
+              fillcolor: rgba(255,0,0,0.2)
+              line:
+                color: rgba(255,0,0,0)
+              name: zona peligrosa
+              type: scatter
+            - entity: sensor.[[device_name]]_temperature
+              period: hour
+              internal: true
+              fn: |
+                $fn ({ ys, vars, value }) => {
+                  vars.temperature = ys;
+                  vars.current_temperature = value;
+                }
+            - entity: sensor.[[device_name]]_humidity
+              period: hour
+              internal: true
+              fn: |
+                $fn ({ ys, vars, value }) => {
+                  vars.humidity = ys;
+                  vars.current_humidity = value;
+                }
+            - entity: sensor.[[device_name]]_temperature
+              period: hour
+              internal: true
+              fn: $fn ({ ys, vars }) => vars.temperature = ys
+            - entity: sensor.[[device_name]]_humidity
+              period: hour
+              internal: true
+              fn: $fn ({ ys, vars }) => vars.humidity = ys
+            - entity: ""
+              x: $fn ({ vars }) => vars.temperature
+              "y": $fn ({ vars }) => vars.humidity
+              mode: markers
+              name: points
+              marker:
+                color: rgb(102,0,0)
+                size: 2
+                opacity: 0.4
+              type: scatter
+            - entity: ""
+              x: $fn ({ vars }) => vars.temperature
+              "y": $fn ({ vars }) => vars.humidity
+              name: density
+              ncontours: 20
+              colorscale: Hot
+              reversescale: true
+              showscale: false
+              line:
+                color: null
+              type: histogram2dcontour
+          hours_to_show: "[[hours_to_show]]"
+          raw_plotly_config: true
+          layout:
+            plot_bgcolor: white
+            paper_bgcolor: white
+            margin:
+              t: 10
+              l: 40
+              r: 10
+              b: 40
+            bargap: 0.2
+            showlegend: false
+            xaxis:
+              title:
+                text: Temperature
+              autorange: true
+              domain:
+                - 0
+                - 0.85
+              showgrid: true
+              gridcolor: rgba(0,0,0,0.3)
+              zeroline: false
+            yaxis:
+              title:
+                text: Humidity
+              autorange: true
+              domain:
+                - 0
+                - 0.85
+              showgrid: true
+              gridcolor: rgba(0,0,0,0.3)
+              zeroline: false
+            xaxis2:
+              domain:
+                - 0.85
+                - 1
+              showgrid: true
+              zeroline: false
+            yaxis2:
+              domain:
+                - 0.85
+                - 1
+              showgrid: true
+            zeroline: false
   meross_switch_full_card:
     variables:
       - switch_prefix: null
@@ -2750,103 +2782,148 @@ views:
     sections:
       - type: grid
         cards:
-          - type: vertical-stack
-            cards:
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: aemet
-                  - hours_to_show: 240
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: st_quirze_del_v_vallsuau_barcelona
-                  - hours_to_show: 240
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: tuya_termometro_wifi
-                  - hours_to_show: 240
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: tuya_termometro_wifi_2
-                  - hours_to_show: 240
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: shelly_blu_5480
-                  - hours_to_show: 240
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: zigbee_heiman_hs3aq_01
-                  - hours_to_show: 240
-      - type: grid
-        cards:
-          - type: vertical-stack
-            cards:
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: aemet
-                  - hours_to_show: 24
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: st_quirze_del_v_vallsuau_barcelona
-                  - hours_to_show: 24
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: tuya_termometro_wifi
-                  - hours_to_show: 24
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: tuya_termometro_wifi_2
-                  - hours_to_show: 24
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: shelly_blu_5480
-                  - hours_to_show: 24
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: zigbee_heiman_hs3aq_01
-                  - hours_to_show: 24
-      - type: grid
-        cards:
-          - type: vertical-stack
-            cards:
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: aemet
-                  - hours_to_show: 6
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: st_quirze_del_v_vallsuau_barcelona
-                  - hours_to_show: 6
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: tuya_termometro_wifi
-                  - hours_to_show: 6
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: tuya_termometro_wifi_2
-                  - hours_to_show: 6
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: shelly_blu_5480
-                  - hours_to_show: 6
-              - type: custom:decluttering-card
-                template: histograma_temperatura_humedad
-                variables:
-                  - device_name: zigbee_heiman_hs3aq_01
-                  - hours_to_show: 6
+          - type: custom:tabbed-card
+            options:
+              default_tab: Hoy
+              title_field: name
+            tabs:
+              - attributes:
+                  label: 6h
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: aemet
+                        - hours_to_show: 6
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: st_quirze_del_v_vallsuau_barcelona
+                        - hours_to_show: 6
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: tuya_termometro_wifi
+                        - hours_to_show: 6
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: tuya_termometro_wifi_2
+                        - hours_to_show: 6
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: shelly_blu_5480
+                        - hours_to_show: 6
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: zigbee_heiman_hs3aq_01
+                        - hours_to_show: 6
+              - attributes:
+                  label: 24h
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: aemet
+                        - hours_to_show: 24
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: st_quirze_del_v_vallsuau_barcelona
+                        - hours_to_show: 24
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: tuya_termometro_wifi
+                        - hours_to_show: 24
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: tuya_termometro_wifi_2
+                        - hours_to_show: 24
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: shelly_blu_5480
+                        - hours_to_show: 24
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: zigbee_heiman_hs3aq_01
+                        - hours_to_show: 24
+              - attributes:
+                  label: 48h
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: aemet
+                        - hours_to_show: 48
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: st_quirze_del_v_vallsuau_barcelona
+                        - hours_to_show: 48
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: tuya_termometro_wifi
+                        - hours_to_show: 48
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: tuya_termometro_wifi_2
+                        - hours_to_show: 48
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: shelly_blu_5480
+                        - hours_to_show: 48
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: zigbee_heiman_hs3aq_01
+                        - hours_to_show: 48
+              - attributes:
+                  label: 240h
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: aemet
+                        - hours_to_show: 240
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: st_quirze_del_v_vallsuau_barcelona
+                        - hours_to_show: 240
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: tuya_termometro_wifi
+                        - hours_to_show: 240
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: tuya_termometro_wifi_2
+                        - hours_to_show: 240
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: shelly_blu_5480
+                        - hours_to_show: 240
+                    - type: custom:decluttering-card
+                      template: histograma_temperatura_humedad
+                      variables:
+                        - device_name: zigbee_heiman_hs3aq_01
+                        - hours_to_show: 240

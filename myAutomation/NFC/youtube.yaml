@@ -5,7 +5,7 @@
     - trigger: tag
       tag_id: !secret nfc_tag_ha_37
     - platform: conversation
-      command: play youtube
+      command: musica
 
   conditions: []
   actions:
@@ -16,8 +16,8 @@
     - delay: 00:00:05
     - action: media_player.play_media
       target:
-        entity_id: media_player.you_box
+        entity_id: media_player.my_box_2
       data:
         media_content_type: url
-        media_content_id: https://www.youtube.com/playlist?list=PLjF50Dlp9ienDb1cqXQOSDgNZFC-tVdya
+        media_content_id: https://www.youtube.com/watch?v=aelpqWEBHR4&list=PL9cZWaO9mg-Re-NKyuQA25s7igEbNZd8-
   mode: single

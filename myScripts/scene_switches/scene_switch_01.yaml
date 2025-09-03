@@ -12,9 +12,6 @@ scene_switch_01_1_single:
 scene_switch_01_2_single:
   alias: Pulsador 01 - Botón 2 simple
   sequence:
-    - service: homeassistant.toggle
-      target:
-        entity_id: switch.alias_antimosquitos
     - service: input_boolean.toggle
       target:
         entity_id: input_boolean.scene_switch_01_2

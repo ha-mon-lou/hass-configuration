@@ -1,62 +1,72 @@
+# myPackages/lavadora_bayesiana.yaml
+
 input_boolean:
   washingmachine_en_uso:
     name: WashingMachine en uso
     icon: mdi:tumble-dryer
 
-timer:
-  washingmachine_temporizador:
-    duration: "00:03:00"
+binary_sensor:
+  - platform: bayesian
+    name: "washing_machine_ciclo_en_curso"
+    device_class: running
+    prior: 0.5
+    probability_threshold: 0.8
+    observations:
+      # Consumo alto → casi seguro en uso
+      - platform: numeric_state
+        entity_id: sensor.meross_switch_01_power
+        above: 90
+        prob_given_true: 0.95
+        prob_given_false: 0.05
+
+      # Consumo bajo durante >2min → probablemente acabada
+      - platform: template
+        value_template: >
+          {{ states('sensor.meross_switch_01_power') | float(0) < 10
+             and (as_timestamp(now()) - as_timestamp(states.sensor.meross_switch_01_power.last_changed, 0)) > 120 }}
+        prob_given_true: 0.1
+        prob_given_false: 0.9
+
+      # Consumo medio/fluctuante (10–90 W) → sigue trabajando
+      - platform: template
+        value_template: >
+          {% set p = states('sensor.meross_switch_01_power') | float(0) %}
+          {{ p >= 10 and p <= 90 }}
+        prob_given_true: 0.7
+        prob_given_false: 0.3
 
 automation:
-  - alias: "Detectar inicio WashingMachine"
-    id: WM_detectar_inicio_WashingMachine
+  # Sincronizar el input_boolean con el bayesiano evitando notificación falsa al reinicio
+  - alias: "Actualizar estado WashingMachine"
+    id: wm_actualizar_estado
     trigger:
-      - platform: numeric_state
-        entity_id: sensor.meross_switch_01_power
-        above: 60
-    condition:
-      - condition: state
-        entity_id: input_boolean.washingmachine_en_uso
-        state: "off"
+      - platform: state
+        entity_id: binary_sensor.washing_machine_ciclo_en_curso
     action:
-      - service: input_boolean.turn_on
-        target:
-          entity_id: input_boolean.washingmachine_en_uso
-      - service: timer.cancel
-        target:
-          entity_id: timer.washingmachine_temporizador
+      - choose:
+          # Si el bayesiano pasa a ON → activamos el boolean
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.washing_machine_ciclo_en_curso
+                state: "on"
+            sequence:
+              - service: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.washingmachine_en_uso
 
-  - alias: "Detectar fin WashingMachine (inicia temporizador)"
-    id: WM_detectar_fin_WashingMachine_temporizador
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.meross_switch_01_power
-        below: 5
-    condition:
-      - condition: state
-        entity_id: input_boolean.washingmachine_en_uso
-        state: "on"
-    action:
-      - service: timer.start
-        target:
-          entity_id: timer.washingmachine_temporizador
-
-  - alias: "Notificar fin de secado"
-    id: WM_notificar_fin_washingmachine
-    trigger:
-      - platform: event
-        event_type: timer.finished
-        event_data:
-          entity_id: timer.washingmachine_temporizador
-    condition:
-      - condition: state
-        entity_id: input_boolean.washingmachine_en_uso
-        state: "on"
-    action:
-      - service: script.notifica_movil
-        data:
-          title: "WashingMachine terminada"
-          message: "La WashingMachine ha finalizado su ciclo. Puedes vaciarla."
-      - service: input_boolean.turn_off
-        target:
-          entity_id: input_boolean.washingmachine_en_uso
+          # Si el bayesiano pasa a OFF y el boolean estaba activo → notificar
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.washing_machine_ciclo_en_curso
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.washingmachine_en_uso
+                state: "on"
+            sequence:
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.washingmachine_en_uso
+              - service: script.notifica_movil
+                data:
+                  title: "WashingMachine terminada"
+                  message: "La WashingMachine ha finalizado su ciclo. Puedes vaciarla."

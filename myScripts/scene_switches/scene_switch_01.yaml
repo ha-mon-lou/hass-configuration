@@ -15,6 +15,9 @@ scene_switch_01_2_single:
     - service: input_boolean.toggle
       target:
         entity_id: input_boolean.scene_switch_01_2
+    - service: input_boolean.toggle
+      target:
+        entity_id: input_boolean.ventilador_habitacion_01_running
   mode: single
 
 ## copiamos porque no se me ocurre nada que hacer con dos pulsaciones

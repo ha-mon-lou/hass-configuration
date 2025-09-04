@@ -1,3 +1,7 @@
+input_boolean:
+  ventilador_habitacion_01_running:
+    name: habitacion 01 running
+
 climate:
   - platform: generic_thermostat
     name: Ventilador Habitacion 01
@@ -21,12 +25,12 @@ automation:
     mode: restart
     trigger:
       - platform: state
-        entity_id: input_boolean.scene_switch_01_2
+        entity_id: input_boolean.ventilador_habitacion_01_running
     action:
       - choose:
           - conditions:
               - condition: state
-                entity_id: input_boolean.scene_switch_01_2
+                entity_id: input_boolean.ventilador_habitacion_01_running
                 state: "on"
             sequence:
               - service: climate.turn_on
@@ -34,7 +38,7 @@ automation:
                   entity_id: climate.ventilador_habitacion_01
           - conditions:
               - condition: state
-                entity_id: input_boolean.scene_switch_01_2
+                entity_id: input_boolean.ventilador_habitacion_01_running
                 state: "off"
             sequence:
               - service: climate.turn_off
@@ -58,7 +62,7 @@ automation:
             sequence:
               - service: input_boolean.turn_on
                 target:
-                  entity_id: input_boolean.scene_switch_01_2
+                  entity_id: input_boolean.ventilador_habitacion_01_running
           - conditions:
               - condition: state
                 entity_id: climate.ventilador_habitacion_01
@@ -66,4 +70,4 @@ automation:
             sequence:
               - service: input_boolean.turn_off
                 target:
-                  entity_id: input_boolean.scene_switch_01_2
+                  entity_id: input_boolean.ventilador_habitacion_01_running

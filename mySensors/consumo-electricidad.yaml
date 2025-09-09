@@ -10,12 +10,12 @@
         {% else %}
           0
         {% endif %}
-      icon_template: mdi:calculator
+      icon_template: mdi:flash
 
 - platform: template
   sensors:
     electro_consumo_regleta:
-      device_class: energy
+      device_class: power
       friendly_name: "Consumo electricidad regleta"
       unique_id: "electro_consumo_regleta"
       unit_of_measurement: "W"
@@ -25,12 +25,12 @@
         {% else %}
           0
         {% endif %}
-      icon_template: mdi:calculator
+      icon_template: mdi:flash
 
 - platform: template
   sensors:
     electro_consumo_regleta_02:
-      device_class: energy
+      device_class: power
       friendly_name: "Consumo electricidad regleta 02"
       unique_id: "electro_consumo_regleta_02"
       unit_of_measurement: "W"
@@ -40,5 +40,4 @@
         {% else %}
           0
         {% endif %}
-      icon_template: mdi:calculator
-
+      icon_template: mdi:flash

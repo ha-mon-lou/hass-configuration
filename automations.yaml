@@ -1,0 +1,7 @@
+- id: '1757145415659'
+  alias: BP Bring!
+  description: ''
+  use_blueprint:
+    path: TitoTB/Improved_shopping_list_bring.yaml
+    input:
+      bring_list: todo.alimentacion

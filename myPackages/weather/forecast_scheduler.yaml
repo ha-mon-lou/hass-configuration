@@ -1,0 +1,17 @@
+automation:
+  - alias: "Forecast scheduler"
+    id: forecast_scheduler
+    trigger:
+      - platform: time_pattern
+        minutes: "/15"
+    action:
+      - action: weather.get_forecasts
+        target:
+          entity_id: weather.forecast_home_2
+        data:
+          type: hourly
+        response_variable: pronostico
+
+      - service: python_script.forecast_process
+        data:
+          forecast: "{{ pronostico['weather.forecast_home_2']['forecast'] }}"

@@ -60,7 +60,58 @@ group:
       - input_select.ubicacion_ramon
       - input_select.ubicacion_pau
 
+binary_sensor:
+  - platform: bayesian
+    name: "ramon_en_habitacion_02"
+    device_class: occupancy
+    prior: 0.3
+    probability_threshold: 0.8
+    observations:
+      # El móvil cargando → muy probable que esté en la habitacion
+      - platform: state
+        entity_id: sensor.sm_a155f_charger_type
+        to_state: "ac"
+        prob_given_true: 0.9
+        prob_given_false: 0.1
+
+      # Hora de la noche → más probable que esté en la cama
+      - platform: template
+        value_template: >
+          {% set h = now().hour %}
+          {{ h >= 21 or h <= 8 }}
+        prob_given_true: 0.7
+        prob_given_false: 0.3
+
 automation:
+  - alias: "[Presencia] Ramon - Actualizar ubicación habitacion 02"
+    id: ramon_actualizar_ubicacion_habitacion_02
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.ramon_en_habitacion_02
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.ramon_en_habitacion_02
+                state: "on"
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.ubicacion_ramon
+                data:
+                  option: "habitacion_2"
+
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.ramon_en_habitacion_02
+                state: "off"
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.ubicacion_ramon
+                data:
+                  option: "unknown"
+
   - alias: "[Presencia] Activar si alguien llega a casa"
     trigger:
       - platform: state
@@ -154,9 +205,6 @@ automation:
     trigger:
       - platform: tag
         tag_id: !secret nfc_tag_ha_bedroom_2
-      - platform: state
-        entity_id: sensor.sm_a155f_charger_type
-        to: "ac"
     action:
       - service: input_select.select_option
         target:

@@ -1,0 +1,52 @@
+automation:
+  - alias: "Aviso de lluvia próximas 12 horas con debug"
+    id: aviso_lluvia_12h_debug
+    trigger:
+      - platform: time
+        at: "08:00:00" # Ajusta la hora de chequeo
+      - platform: state
+        entity_id: binary_sensor.salida_casa_detectada
+        to: "on"
+      - trigger: tag
+        tag_id: !secret nfc_tag_ha_despacho
+      - platform: state
+        entity_id: binary_sensor.ramon_en_habitacion_02
+        to: "off"
+    action:
+      - action: weather.get_forecasts
+        target:
+          entity_id: weather.forecast_home_2
+        data:
+          type: hourly
+        response_variable: pronostico
+
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: >
+                  {% set condiciones = ['rainy','pouring','hail','lightning','lightning-rainy','snowy-rainy'] %}
+                  {% set fc = pronostico['weather.forecast_home_2']['forecast'] | default([]) %}
+                  {{ fc[:24] | selectattr('condition','defined') | selectattr('condition','in',condiciones) | list | count > 0 }}
+            sequence:
+              - service: script.notifica_telegram
+                data:
+                  message: >
+                    🌧️ Parece que hoy va a llover. No te olvides el paraguas ☂️
+
+                    🔹 Pronóstico completo (próximas 24h):
+
+                    {% for f in pronostico['weather.forecast_home_2']['forecast'][:24] %}
+                    - {{ as_datetime(f.datetime).strftime('%H:%M') }}: {{ f.condition }}, T: {{ f.temperature }}°C
+                    {% endfor %}
+
+        default:
+          - service: script.notifica_telegram
+            data:
+              message: >
+                ☀️ No hay previsión de lluvia en las próximas 24h.
+
+                🔹 Pronóstico completo (próximas 24h):
+                  
+                {% for f in pronostico['weather.forecast_home_2']['forecast'][:24] %}
+                - {{ as_datetime(f.datetime).strftime('%H:%M') }}: {{ f.condition }}, T: {{ f.temperature }}°C
+                {% endfor %}

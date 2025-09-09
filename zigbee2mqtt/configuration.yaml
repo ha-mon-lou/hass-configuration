@@ -84,7 +84,7 @@ devices:
     homeassistant:
       name: zigbee_nous_enchufe_04
     optimistic: true
-    description: asignacion pendiente
+    description: alias pinguino
   '0x842712fffe173a94':
     friendly_name: zigbee_sonoff_trvzb_01
     thermostat_unit: celsius

@@ -1,15 +1,15 @@
 {
     "0xa4c1387fe2e7effc": {
-        "voltage": 228,
-        "state": "OFF",
+        "voltage": 230,
+        "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "power": 0,
-        "energy": 47.02,
-        "current": 0,
-        "linkquality": 212,
+        "power": 31,
+        "energy": 47.17,
+        "current": 0.15,
+        "linkquality": 248,
         "update": {
             "state": "idle",
             "installed_version": 192,
@@ -17,16 +17,16 @@
         }
     },
     "0xa4c13819d046464f": {
-        "voltage": 229,
+        "voltage": 230,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "linkquality": 60,
-        "power": 86,
-        "energy": 211.66,
-        "current": 0.56
+        "linkquality": 56,
+        "power": 0,
+        "energy": 212.49,
+        "current": 0.02
     },
     "0xa4c138b8caa59009": {
         "voltage": 229,
@@ -38,17 +38,17 @@
         "power": 0,
         "energy": 44.19,
         "current": 0,
-        "linkquality": 112
+        "linkquality": 116
     },
     "0x00124b002a565fae": {
         "voltage": 3000,
         "battery": 100,
-        "temperature": 25.51,
-        "humidity": 70.97,
+        "temperature": 25.45,
+        "humidity": 70.68,
         "linkquality": 255
     },
     "0xa4c138b7c1781a47": {
-        "voltage": 228,
+        "voltage": 230,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -57,7 +57,7 @@
         "power": 0,
         "energy": 21.95,
         "current": 0,
-        "linkquality": 248,
+        "linkquality": 216,
         "update": {
             "state": "idle",
             "installed_version": 192,
@@ -74,7 +74,7 @@
         "valve_opening_limit_voltage": 1848,
         "valve_closing_limit_voltage": 2929,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 26.5,
+        "local_temperature": 27,
         "occupied_heating_setpoint": 6,
         "system_mode": "off",
         "running_state": "idle",
@@ -110,7 +110,7 @@
         "valve_opening_limit_voltage": 1578,
         "valve_closing_limit_voltage": 2985,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 24.2,
+        "local_temperature": 23.2,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
@@ -171,15 +171,15 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 24.89,
-        "humidity": 74.44,
-        "co2": 654,
-        "linkquality": 248
+        "temperature": 24.63,
+        "humidity": 67.06,
+        "co2": 593,
+        "linkquality": 255
     },
     "0xe406bffffe34f94b": {
         "battery": 100,
         "voltage": 3000,
-        "linkquality": 248
+        "linkquality": 255
     },
     "0xa4c138b8c5468a38": {
         "power_on_behavior": "previous",
@@ -187,6 +187,6 @@
         "state_left": "OFF",
         "state_right": "OFF",
         "backlight_mode": "normal",
-        "linkquality": 244
+        "linkquality": 255
     }
 }

@@ -7,7 +7,7 @@ climate:
     name: Ventilador Habitacion 01
     heater: switch.alias_antimosquitos
     target_sensor: sensor.cfg_sensacion_termica_habitacion_1
-    target_temp: 24
+    target_temp: 22
     min_temp: 18
     max_temp: 35
     ac_mode: true

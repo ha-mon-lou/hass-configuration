@@ -17,27 +17,44 @@ else:
         {"condition": cond, "datetime": first.get("datetime")}
     )
 
-    # ---- 2. Temperatura máxima próximas 24h ----
+    next6  = forecast[:6]
+    next12 = forecast[:12]
     next24 = forecast[:24]
-    max_temp = max([f.get("temperature") for f in next24 if f.get("temperature") is not None], default=None)
+    # ---- 2.1 Temperatura máxima próximas 12h ----
+    max_temp12 = max([f.get("temperature") for f in next12 if f.get("temperature") is not None], default=None)
+    hass.states.set(
+        "sensor.forecast_home_max_temp_12h",
+        max_temp12,
+        {"hours_analyzed": 12}
+    )
+    # ---- 2.2 Temperatura máxima próximas 24h ----
+    max_temp24 = max([f.get("temperature") for f in next24 if f.get("temperature") is not None], default=None)
     hass.states.set(
         "sensor.forecast_home_max_temp_24h",
-        max_temp,
+        max_temp24,
         {"hours_analyzed": 24}
     )
 
-    # ---- 3. Lluvia prevista próximas 24h ----
+
     rain_conditions = ['rainy','pouring','hail','lightning','lightning-rainy','snowy-rainy']
-    rain_fc = [f for f in next24 if f.get("condition") in rain_conditions]
-    lluvia = "yes" if rain_fc else "no"
+    # ---- 3.1 Lluvia prevista próximas 12h ----
+    rain_fc12 = [f for f in next12 if f.get("condition") in rain_conditions]
+    lluvia = "yes" if rain_fc12 else "no"
+    hass.states.set(
+        "sensor.forecast_home_rain_next_12h",
+        lluvia,
+        {"matches": len(rain_fc12)}
+    )
+    # ---- 3.2 Lluvia prevista próximas 24h ----
+    rain_fc24 = [f for f in next24 if f.get("condition") in rain_conditions]
+    lluvia = "yes" if rain_fc24 else "no"
     hass.states.set(
         "sensor.forecast_home_rain_next_24h",
         lluvia,
-        {"matches": len(rain_fc)}
+        {"matches": len(rain_fc24)}
     )
 
     # ---- 4. Condición dominante próximas 6h ----
-    next6 = forecast[:6]
     conds = [f.get("condition") for f in next6 if f.get("condition")]
     if conds:
         from collections import Counter  # ⚠️ no permitido en python_scripts

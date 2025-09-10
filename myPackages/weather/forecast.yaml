@@ -9,9 +9,14 @@ automation:
         to: "on"
       - trigger: tag
         tag_id: !secret nfc_tag_ha_despacho
+      - trigger: tag
+        tag_id: !secret nfc_tag_ha_piano
       - platform: state
         entity_id: binary_sensor.ramon_en_habitacion_02
         to: "off"
+      - platform: state
+        entity_id: sensor.forecast_home_rain_next_12h
+        to: "yes" # el python_script devuelve "yes"/"no"
     action:
       - action: weather.get_forecasts
         target:
@@ -19,6 +24,9 @@ automation:
         data:
           type: hourly
         response_variable: pronostico
+      - service: python_script.forecast_processor
+        data:
+          forecast: "{{ pronostico['weather.forecast_home_2']['forecast'] }}"
 
       - choose:
           - conditions:

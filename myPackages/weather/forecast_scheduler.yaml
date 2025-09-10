@@ -12,6 +12,6 @@ automation:
           type: hourly
         response_variable: pronostico
 
-      - service: python_script.forecast_process
+      - service: python_script.forecast_processor
         data:
           forecast: "{{ pronostico['weather.forecast_home_2']['forecast'] }}"

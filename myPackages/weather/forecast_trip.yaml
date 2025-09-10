@@ -1,0 +1,40 @@
+automation:
+  - alias: "Resumen trayecto moto al desenchufar móvil"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.salida_casa_detectada
+        to: "on"
+      - trigger: tag
+        tag_id: !secret nfc_tag_ha_despacho
+      - trigger: tag
+        tag_id: !secret nfc_tag_ha_piano
+      - platform: state
+        entity_id: binary_sensor.ramon_en_habitacion_02
+        to: "off"
+      - platform: state
+        entity_id: sensor.multi_forecast_home_rain_next_12h
+        to: "yes" # el python_script devuelve "yes"/"no"
+    action:
+      - action: weather.get_forecasts
+        target:
+          entity_id: weather.forecast_home
+        data:
+          type: hourly
+        response_variable: pronostico_home
+
+      - action: weather.get_forecasts
+        target:
+          entity_id: weather.forecast_work
+        data:
+          type: hourly
+        response_variable: pronostico_work
+
+      - service: python_script.forecast_trip
+        data:
+          forecast_home: "{{ pronostico_home['weather.forecast_home']['forecast'] }}"
+          forecast_work: "{{ pronostico_work['weather.forecast_work']['forecast'] }}"
+          departure_hour: "{{ now().hour }}"
+          trip_duration: 8
+          current_hour: "{{ now().strftime('%H:%M') }}"
+          temperature: "{{ states('sensor.temperatura_exterior') }}"
+          humidity: "{{ states('sensor.humedad_exterior') }}"

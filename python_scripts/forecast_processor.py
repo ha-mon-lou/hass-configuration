@@ -1,14 +1,22 @@
 # forecast_process.py
-# Procesa el forecast horario y crea sensores personalizados en Home Assistant.
+# Procesa el forecast horario y crea sensores dinámicos en Home Assistant con unique_id.
+# IMPORTANTE: estos sensores solo existen mientras HA está arrancado.
 
 forecast = data.get("forecast", [])
+location = data.get("location", "home")  # permite distinguir forecast_home o forecast_work
+
+def state_attributes(attrs, unique_id):    
+    """Añade unique_id a los atributos"""
+    attrs = attrs.copy()
+    attrs["unique_id"] = unique_id
+    return attrs
 
 if not forecast:
-    logger.warning("No se recibió forecast")
+    logger.warning(f"[{location}] No se recibió forecast")
 else:
-    logger.warning("Si se recibió forecast")
+    logger.info(f"[{location}] Forecast recibido con {len(forecast)} entradas")
 
-    # Subconjuntos de datos
+    # Subconjuntos
     next1  = forecast[:1]
     next6  = forecast[:6]
     next12 = forecast[:12]
@@ -18,12 +26,24 @@ else:
     if next1:
         f = next1[0]
         hass.states.set(
-            "sensor.forecast_home_next_hour",
+            f"sensor.multi_forecast_{location}_next_hour_temperature",
             f.get("temperature"),
-            {
+            state_attributes({
                 "condition": f.get("condition"),
-                "datetime": f.get("datetime")
-            }
+                "datetime": f.get("datetime"),
+                "unit_of_measurement": "°C",
+                "device_class": "temperature",
+            }, f"multi_forecast_{location}_next_hour_temperature")
+        )
+        hass.states.set(
+            f"sensor.multi_forecast_{location}_next_hour_humidity",
+            f.get("humidity"),
+            state_attributes({
+                "condition": f.get("condition"),
+                "datetime": f.get("datetime"),
+                "unit_of_measurement": "%",
+                "device_class": "humidity",
+            }, f"multi_forecast_{location}_next_hour_humidity")
         )
 
     # ---- 2. Temperaturas máximas y mínimas ----
@@ -36,37 +56,73 @@ else:
         return min(temps) if temps else None
 
     for subset, hours in [(next12, 12), (next24, 24)]:
-        max_temp_val = max_temp(subset)
-        min_temp_val = min_temp(subset)
-
         hass.states.set(
-            f"sensor.forecast_home_max_temp_{hours}h",
-            max_temp_val,
-            {"hours_analyzed": hours}
+            f"sensor.multi_forecast_{location}_max_temp_{hours}h",
+            max_temp(subset),
+            state_attributes({
+                "hours_analyzed": hours,
+                "unit_of_measurement": "°C",
+                "device_class": "temperature",
+            }, f"multi_forecast_{location}_max_temp_{hours}h")
+        )
+        hass.states.set(
+            f"sensor.multi_forecast_{location}_min_temp_{hours}h",
+            min_temp(subset),
+            state_attributes({
+                "hours_analyzed": hours,
+                "unit_of_measurement": "°C",
+                "device_class": "temperature",
+            }, f"multi_forecast_{location}_min_temp_{hours}h")
         )
 
+    # ---- 3. Humedad máxima y mínima ----
+    def max_hum(entries):
+        hums = [f.get("humidity") for f in entries if f.get("humidity") is not None]
+        return max(hums) if hums else None
+
+    def min_hum(entries):
+        hums = [f.get("humidity") for f in entries if f.get("humidity") is not None]
+        return min(hums) if hums else None
+
+    for subset, hours in [(next12, 12), (next24, 24)]:
         hass.states.set(
-            f"sensor.forecast_home_min_temp_{hours}h",
-            min_temp_val,
-            {"hours_analyzed": hours}
+            f"sensor.multi_forecast_{location}_max_humidity_{hours}h",
+            max_hum(subset),
+            state_attributes({
+                "hours_analyzed": hours,
+                "unit_of_measurement": "%",
+                "device_class": "humidity",
+            }, f"multi_forecast_{location}_max_humidity_{hours}h")
+        )
+        hass.states.set(
+            f"sensor.multi_forecast_{location}_min_humidity_{hours}h",
+            min_hum(subset),
+            state_attributes({
+                "hours_analyzed": hours,
+                "unit_of_measurement": "%",
+                "device_class": "humidity",
+            }, f"multi_forecast_{location}_min_humidity_{hours}h")
         )
 
-    # ---- 3. Lluvia prevista ----
+    # ---- 4. Lluvia prevista ----
     rain_conditions = ['rainy', 'pouring', 'hail', 'lightning', 'lightning-rainy', 'snowy-rainy']
 
     def rain_check(entries, hours):
         matches = [f for f in entries if f.get("condition") in rain_conditions]
         lluvia = "yes" if matches else "no"
         hass.states.set(
-            f"sensor.forecast_home_rain_next_{hours}h",
+            f"sensor.multi_forecast_{location}_rain_next_{hours}h",
             lluvia,
-            {"matches": len(matches)}
+            state_attributes({
+                "matches": len(matches),
+                "hours_analyzed": hours,
+            }, f"multi_forecast_{location}_rain_next_{hours}h")
         )
 
     rain_check(next12, 12)
     rain_check(next24, 24)
 
-    # ---- 4. Condición dominante próximas 6h ----
+    # ---- 5. Condición dominante próximas 6h ----
     conds = [f.get("condition") for f in next6 if f.get("condition")]
     if conds:
         counts = {}
@@ -77,9 +133,11 @@ else:
         dominant = "unknown"
 
     hass.states.set(
-        "sensor.forecast_home_dominant_condition_6h",
+        f"sensor.multi_forecast_{location}_dominant_condition_6h",
         dominant,
-        {"hours_analyzed": 6}
+        state_attributes({
+            "hours_analyzed": 6,
+        }, f"multi_forecast_{location}_dominant_condition_6h")
     )
 
-    logger.info("Forecast procesado y sensores creados")
+    logger.info(f"[{location}] Forecast procesado y sensores creados con unique_id")

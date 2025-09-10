@@ -15,25 +15,26 @@ automation:
         entity_id: binary_sensor.ramon_en_habitacion_02
         to: "off"
       - platform: state
-        entity_id: sensor.forecast_home_rain_next_12h
+        entity_id: sensor.multi_forecast_home_rain_next_12h
         to: "yes" # el python_script devuelve "yes"/"no"
     action:
       - action: weather.get_forecasts
         target:
-          entity_id: weather.forecast_home_2
+          entity_id: weather.forecast_home
         data:
           type: hourly
         response_variable: pronostico
       - service: python_script.forecast_processor
         data:
-          forecast: "{{ pronostico['weather.forecast_home_2']['forecast'] }}"
+          location: "home"
+          forecast: "{{ pronostico['weather.forecast_home']['forecast'] }}"
 
       - choose:
           - conditions:
               - condition: template
                 value_template: >
                   {% set condiciones = ['rainy','pouring','hail','lightning','lightning-rainy','snowy-rainy'] %}
-                  {% set fc = pronostico['weather.forecast_home_2']['forecast'] | default([]) %}
+                  {% set fc = pronostico['weather.forecast_home']['forecast'] | default([]) %}
                   {{ fc[:24] | selectattr('condition','defined') | selectattr('condition','in',condiciones) | list | count > 0 }}
             sequence:
               - service: script.notifica_telegram
@@ -43,7 +44,7 @@ automation:
 
                     🔹 Pronóstico completo (próximas 24h):
 
-                    {% for f in pronostico['weather.forecast_home_2']['forecast'][:24] %}
+                    {% for f in pronostico['weather.forecast_home']['forecast'][:24] %}
                     - {{ as_datetime(f.datetime).strftime('%H:%M') }}: {{ f.condition }}, T: {{ f.temperature }}°C
                     {% endfor %}
 
@@ -55,6 +56,6 @@ automation:
 
                 🔹 Pronóstico completo (próximas 24h):
                   
-                {% for f in pronostico['weather.forecast_home_2']['forecast'][:24] %}
+                {% for f in pronostico['weather.forecast_home']['forecast'][:24] %}
                 - {{ as_datetime(f.datetime).strftime('%H:%M') }}: {{ f.condition }}, T: {{ f.temperature }}°C
                 {% endfor %}

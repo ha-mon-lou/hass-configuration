@@ -3,15 +3,28 @@ automation:
     id: forecast_scheduler
     trigger:
       - platform: time_pattern
-        minutes: "/15"
+        minutes: "/30"
     action:
       - action: weather.get_forecasts
         target:
-          entity_id: weather.forecast_home_2
+          entity_id: weather.forecast_home
         data:
           type: hourly
-        response_variable: pronostico
+        response_variable: pronostico_home
 
       - service: python_script.forecast_processor
         data:
-          forecast: "{{ pronostico['weather.forecast_home_2']['forecast'] }}"
+          location: "home"
+          forecast: "{{ pronostico_home['weather.forecast_home']['forecast'] }}"
+
+      - action: weather.get_forecasts
+        target:
+          entity_id: weather.forecast_work
+        data:
+          type: hourly
+        response_variable: pronostico_work
+
+      - service: python_script.forecast_processor
+        data:
+          location: "work"
+          forecast: "{{ pronostico_work['weather.forecast_work']['forecast'] }}"

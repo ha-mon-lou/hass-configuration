@@ -1,5 +1,6 @@
 # forecast_trip.py
 # Script Python para resumir el forecast del trayecto casa->trabajo y vuelta
+# llamado desde /config/myPackages/weather/forecast_trip.yaml
 # Sin usar offset manual, ajustando automáticamente según hora local
 
 home_forecast = data.get("forecast_home", [])

@@ -1,0 +1,112 @@
+input_button:
+  reset_luces_alerta:
+
+input_boolean:
+  forecast_alert_active:
+    name: Alerta meteorológica activa
+    initial: off
+
+input_number:
+  forecast_threshold_wind_speed:
+    name: "Umbral velocidad viento (km/h)"
+    initial: 50
+    min: 0
+    max: 200
+    step: 1
+    unit_of_measurement: "km/h"
+
+  forecast_threshold_precipitation:
+    name: "Umbral precipitación (mm/h)"
+    initial: 5
+    min: 0
+    max: 50
+    step: 0.1
+    unit_of_measurement: "mm"
+
+  forecast_threshold_temperature_low:
+    name: "Temperatura baja (°C)"
+    initial: -5
+    min: -10
+    max: 40
+    step: 1
+    unit_of_measurement: "°C"
+
+  forecast_threshold_temperature_high:
+    name: "Temperatura alta (°C)"
+    initial: 35
+    min: -10
+    max: 40
+    step: 1
+    unit_of_measurement: "°C"
+
+  forecast_threshold_humidity_high:
+    name: "Humedad alta (%)"
+    initial: 98
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+automation:
+  - alias: "Reset luces alerta forecast"
+    trigger:
+      - platform: state
+        entity_id: input_button.reset_luces_alerta
+      - platform: state
+        entity_id: input_boolean.forecast_alert_active
+        to: "off"
+    action:
+      - action: script.secuencia_by_label
+        data:
+          my_label: "alerta"
+          my_excludes: "sonoff_trvzb"
+          my_estado: "turn_off"
+
+  - alias: "Reset alerta forecast"
+    trigger:
+      - platform: state
+        entity_id: input_boolean.forecast_alert_active
+        to: "on"
+    action:
+      - delay: "12:00:00"
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.forecast_alert_active
+
+  - alias: "Notificación de alerta meteorológica"
+    id: forecast_alert_notify
+    trigger:
+      - platform: event
+        event_type: forecast_alert
+    action:
+      - variables:
+          loc: "{{ trigger.event.data.location }}"
+          reasons: "{{ trigger.event.data.details }}"
+          msg: >-
+            ⚠️ Alerta meteorológica en {{ loc }}:
+            {{ reasons }}.
+            {% if states('sun.sun') == 'below_horizon' %}
+            🔆 Se han encendido las luces de alerta.
+            {% endif %}
+
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.forecast_alert_active
+
+      - service: script.notifica_telegram
+        data:
+          message: "{{ msg }}"
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: sun.sun
+                state: above_horizon
+            sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: >
+                    {{ expand(states.switch, states.light)
+                       | selectattr('attributes.custom_etiquetas','defined')
+                       | selectattr('attributes.custom_etiquetas','contains','alerta')
+                       | map(attribute='entity_id')
+                       | list }}

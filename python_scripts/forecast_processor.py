@@ -1,15 +1,17 @@
 # forecast_process.py
 # Procesa el forecast horario y crea sensores dinámicos en Home Assistant con unique_id.
-# IMPORTANTE: estos sensores solo existen mientras HA está arrancado.
+# Ahora también crea sensores horarios de viento (speed y bearing) y precipitación para WindRoseCard y gráficos.
 
 forecast = data.get("forecast", [])
 location = data.get("location", "home")  # permite distinguir forecast_home o forecast_work
 
-def state_attributes(attrs, unique_id):    
+def state_attributes(attrs, unique_id):
     """Añade unique_id a los atributos"""
     attrs = attrs.copy()
     attrs["unique_id"] = unique_id
     return attrs
+
+
 
 if not forecast:
     logger.warning(f"[{location}] No se recibió forecast")
@@ -21,6 +23,38 @@ else:
     next6  = forecast[:6]
     next12 = forecast[:12]
     next24 = forecast[:24]
+
+    # ---- 0. Sensores horarios de viento y precipitación ----
+    for i, f in enumerate(next12, start=1):
+        # viento
+        hass.states.set(
+            f"sensor.multi_forecast_{location}_wind_speed_{i}h",
+            f.get("wind_speed"),
+            state_attributes({
+                "datetime": f.get("datetime"),
+                "unit_of_measurement": "km/h",
+                "device_class": "wind_speed",
+            }, f"multi_forecast_{location}_wind_speed_{i}h")
+        )
+        hass.states.set(
+            f"sensor.multi_forecast_{location}_wind_bearing_{i}h",
+            f.get("wind_bearing"),
+            state_attributes({
+                "datetime": f.get("datetime"),
+                "unit_of_measurement": "°",
+                "device_class": "wind_direction",
+            }, f"multi_forecast_{location}_wind_bearing_{i}h")
+        )
+        # precipitación
+        hass.states.set(
+            f"sensor.multi_forecast_{location}_precipitation_{i}h",
+            f.get("precipitation"),
+            state_attributes({
+                "datetime": f.get("datetime"),
+                "unit_of_measurement": "mm",
+                "device_class": "precipitation",
+            }, f"multi_forecast_{location}_precipitation_{i}h")
+        )
 
     # ---- 1. Próxima hora ----
     if next1:
@@ -105,7 +139,7 @@ else:
         )
 
     # ---- 4. Lluvia prevista ----
-    rain_conditions = ['rainy', 'pouring', 'hail', 'lightning', 'lightning-rainy', 'snowy-rainy']
+    rain_conditions = ['rainy','pouring','hail','lightning','lightning-rainy','snowy-rainy']
 
     def rain_check(entries, hours):
         matches = [f for f in entries if f.get("condition") in rain_conditions]
@@ -140,4 +174,15 @@ else:
         }, f"multi_forecast_{location}_dominant_condition_6h")
     )
 
-    logger.info(f"[{location}] Forecast procesado y sensores creados con unique_id")
+
+ # ---- 6. Enviar forecast a forecast_alert.py por si hay condiciones críticas ----
+    if location == "home":
+        if hass.states.get('input_boolean.forecast_alert_active').state != 'on':
+            hass.services.call(
+                "python_script",
+                "forecast_alert",
+                {"forecast": forecast}
+            )
+
+
+    logger.info(f"[{location}] Forecast procesado y sensores creados con unique_id, viento y precipitación")

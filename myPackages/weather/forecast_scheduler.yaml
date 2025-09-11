@@ -1,7 +1,12 @@
+input_button:
+  get_forecasts:
+
 automation:
   - alias: "Forecast scheduler"
     id: forecast_scheduler
     trigger:
+      - platform: state
+        entity_id: input_button.get_forecasts
       - platform: time_pattern
         minutes: "/30"
     action:

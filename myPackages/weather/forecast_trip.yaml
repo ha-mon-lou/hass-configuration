@@ -1,6 +1,11 @@
+input_button:
+  get_trip_forecasts:
+
 automation:
   - alias: "Resumen trayecto moto al desenchufar móvil"
     trigger:
+      - platform: state
+        entity_id: input_button.get_trip_forecasts
       - platform: state
         entity_id: binary_sensor.salida_casa_detectada
         to: "on"
@@ -28,6 +33,16 @@ automation:
         data:
           type: hourly
         response_variable: pronostico_work
+
+      - service: python_script.forecast_processor
+        data:
+          location: "home"
+          forecast: "{{ pronostico_home['weather.forecast_home']['forecast'] }}"
+
+      - service: python_script.forecast_processor
+        data:
+          location: "work"
+          forecast: "{{ pronostico_work['weather.forecast_work']['forecast'] }}"
 
       - service: python_script.forecast_trip
         data:

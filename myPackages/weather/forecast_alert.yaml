@@ -100,7 +100,7 @@ automation:
           - conditions:
               - condition: state
                 entity_id: sun.sun
-                state: above_horizon
+                state: below_horizon
             sequence:
               - service: switch.turn_on
                 target:

@@ -19,6 +19,10 @@ switch.enchufe_doble_socket_1:
     - cortesia
     - alerta
 
+switch.enchufe_habitacion_socket_1:
+  custom_etiquetas:
+    - alerta
+
 switch.regleta_antela_socket_4_2:
   custom_etiquetas:
     - alerta

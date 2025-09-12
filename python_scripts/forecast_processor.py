@@ -24,6 +24,36 @@ else:
     next12 = forecast[:12]
     next24 = forecast[:24]
 
+    # ---- 0b. Sensores actuales (bloque current del weather entity) ----
+    weather_entity = hass.states.get(f"weather.forecast_{location}")
+    if weather_entity:
+        attrs = weather_entity.attributes
+
+        current_map = {
+            "temperature": ("°C", "temperature"),
+            "dew_point": ("°C", "temperature"),
+            "humidity": ("%", "humidity"),
+            "pressure": ("hPa", "pressure"),
+            "wind_speed": ("km/h", "wind_speed"),
+            "wind_bearing": ("°", "wind_direction"),
+            "cloud_coverage": ("%", None),
+            "uv_index": (None, None),
+            "visibility": ("km", None),
+        }
+
+        for key, (unit, device_class) in current_map.items():
+            if key in attrs:
+                hass.states.set(
+                    f"sensor.weather_{location}_{key}",
+                    attrs.get(key),
+                    state_attributes({
+                        "unit_of_measurement": unit,
+                        "device_class": device_class,
+                        "source": f"weather.forecast_{location}",
+                    }, f"multi_forecast_{location}_{key}")
+                )
+
+
     # ---- 0. Sensores horarios de viento y precipitación ----
     for i, f in enumerate(next12, start=1):
         # viento

@@ -21,7 +21,19 @@ automation:
         data:
           location: "home"
           forecast: "{{ pronostico_home['weather.forecast_home']['forecast'] }}"
-
+          current: >
+            {{
+              {
+                'temperature': state_attr('weather.forecast_home', 'temperature'),
+                'dew_point': state_attr('weather.forecast_home', 'dew_point'),
+                'humidity': state_attr('weather.forecast_home', 'humidity'),
+                'cloud_coverage': state_attr('weather.forecast_home', 'cloud_coverage'),
+                'uv_index': state_attr('weather.forecast_home', 'uv_index'),
+                'pressure': state_attr('weather.forecast_home', 'pressure'),
+                'wind_speed': state_attr('weather.forecast_home', 'wind_speed'),
+                'wind_bearing': state_attr('weather.forecast_home', 'wind_bearing')
+              }
+            }}
       - action: weather.get_forecasts
         target:
           entity_id: weather.forecast_work
@@ -33,3 +45,16 @@ automation:
         data:
           location: "work"
           forecast: "{{ pronostico_work['weather.forecast_work']['forecast'] }}"
+          current: >
+            {{
+              {
+                'temperature': state_attr('weather.forecast_work', 'temperature'),
+                'dew_point': state_attr('weather.forecast_work', 'dew_point'),
+                'humidity': state_attr('weather.forecast_work', 'humidity'),
+                'cloud_coverage': state_attr('weather.forecast_work', 'cloud_coverage'),
+                'uv_index': state_attr('weather.forecast_work', 'uv_index'),
+                'pressure': state_attr('weather.forecast_work', 'pressure'),
+                'wind_speed': state_attr('weather.forecast_work', 'wind_speed'),
+                'wind_bearing': state_attr('weather.forecast_work', 'wind_bearing')
+              }
+            }}

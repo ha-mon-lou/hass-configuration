@@ -1,0 +1,38 @@
+# packages/sensacion_bochornosa.yaml
+template:
+  - sensor:
+      - name: "Home. Sensación bochorno"
+        unique_id: home_sensacion_bochorno
+        state: >
+          {% set temp = state_attr('weather.forecast_home', 'temperature') | float(0) %}
+          {% set dew = state_attr('weather.forecast_home', 'dew_point') | float(0) %}
+          {% set diff = temp - dew %}
+          {% if diff > 10 %}
+            seco
+          {% elif diff > 6 %}
+            comodo
+          {% elif diff > 3 %}
+            bochornoso
+          {% else %}
+            muy bochornoso
+          {% endif %}
+        attributes:
+          temperatura: "{{ state_attr('weather.forecast_home', 'temperature') }}"
+          punto_rocio: "{{ state_attr('weather.forecast_home', 'dew_point') }}"
+          diferencia: >
+            {% set temp = state_attr('weather.forecast_home', 'temperature') | float(0) %}
+            {% set dew = state_attr('weather.forecast_home', 'dew_point') | float(0) %}
+            {{ (temp - dew) | round(1) }}
+          icon: >
+            {% set temp = state_attr('weather.forecast_home', 'temperature') | float(0) %}
+            {% set dew = state_attr('weather.forecast_home', 'dew_point') | float(0) %}
+            {% set diff = temp - dew %}
+            {% if diff > 10 %}
+              mdi:weather-sunny
+            {% elif diff > 6 %}
+              mdi:weather-partly-cloudy
+            {% elif diff > 3 %}
+              mdi:weather-cloudy-alert
+            {% else %}
+              mdi:weather-lightning-rainy
+            {% endif %}

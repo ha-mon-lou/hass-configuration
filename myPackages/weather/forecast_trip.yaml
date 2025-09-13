@@ -75,8 +75,8 @@ automation:
 
       - service: python_script.forecast_trip
         data:
-          forecast_home: "{{ pronostico_home['weather.forecast_home']['forecast'] }}"
-          forecast_work: "{{ pronostico_work['weather.forecast_work']['forecast'] }}"
+          forecast_home: "{{ pronostico_home[weather_entity_home]['forecast'] }}"
+          forecast_work: "{{ pronostico_work[weather_entity_work]['forecast'] }}"
           departure_hour: "{{ now().hour }}"
           trip_duration: 8
           current_hour: "{{ now().strftime('%H:%M') }}"

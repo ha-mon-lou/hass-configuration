@@ -1,6 +1,7 @@
 # forecast_trip.py
 # Script Python para resumir el forecast del trayecto casa->trabajo y vuelta
 # Usando thresholds dinámicos desde Home Assistant
+# version 1.0 - 2025/09/13
 
 # ---- Obtener datos de entrada ----
 home_forecast = data.get("forecast_home", [])
@@ -52,7 +53,7 @@ def next_hours(forecast, start_hour, duration):
 def rain_level(f):
     """Clasifica la lluvia según umbral dinámico"""
     cond = f.get("condition", "")
-    precip = f.get("precipitation", 0) or 0
+    precip = float(f.get("precipitation", 0) or 0)
     if cond not in rain_conditions or precip < THRESHOLDS["precipitation"]:
         return None
     if precip < THRESHOLDS["precipitation"]*2:

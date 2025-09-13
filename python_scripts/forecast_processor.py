@@ -1,6 +1,7 @@
 # forecast_process.py
 # Procesa el forecast horario y crea sensores dinámicos en Home Assistant con unique_id.
 # Ahora también crea sensores horarios de viento (speed y bearing) y precipitación para WindRoseCard y gráficos.
+# version 1.0 - 2025/09/13
 
 forecast = data.get("forecast", [])
 location = data.get("location", "home")  # permite distinguir forecast_home o forecast_work

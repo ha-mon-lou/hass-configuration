@@ -135,3 +135,4 @@ for f in vuelta:
 
 # ---- Enviar mensaje a Telegram ----
 hass.services.call("script", "notifica_telegram", {"message": msg})
+logger.info(f"forecat_trip::Telegram notificado")

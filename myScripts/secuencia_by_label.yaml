@@ -20,7 +20,7 @@ secuencia_by_label:
           {{ entidades | map(attribute='entity_id') | list }}
         sequence:
           - delay: 00:00:01
-          - service: "switch.{{ my_estado }}"
+          - service: "homeassistant.{{ my_estado }}"
             target:
               entity_id: "{{ repeat.item }}"
   mode: single

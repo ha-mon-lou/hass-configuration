@@ -172,8 +172,11 @@ automation:
     action:
       - variables:
           dif_temp: >
-            {{ (states('sensor.sensacion_termica_equation') | float + states('input_number.ventilador_margen_calor') | float) -
-               states('input_number.nivel_sensacion_termica_ideal') | float }}
+            {{
+              (states('sensor.sensacion_termica_equation') | float(0) +
+               states('input_number.ventilador_margen_calor') | float(0)) -
+               states('input_number.nivel_sensacion_termica_ideal') | float(0)
+            }}
       - choose:
           - conditions:
               - condition: template

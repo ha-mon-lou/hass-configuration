@@ -56,10 +56,13 @@ else:
 
     # ---- 0. Sensores horarios de viento y precipitación ----
     for i, f in enumerate(next12, start=1):
-        # viento
+        # viento: usa wind_gust_speed si existe, si no wind_speed
+        wind_value = f.get("wind_gust_speed")
+        if wind_value is None:
+            wind_value = f.get("wind_speed")
         hass.states.set(
             f"sensor.multi_forecast_{location}_wind_speed_{i}h",
-            f.get("wind_speed"),
+            wind_value,
             state_attributes({
                 "datetime": f.get("datetime"),
                 "unit_of_measurement": "km/h",
@@ -85,6 +88,18 @@ else:
                 "device_class": "precipitation",
             }, f"multi_forecast_{location}_precipitation_{i}h")
         )
+        # probabilidad de precipitación (solo si existe)
+        precipitation_probability = f.get("precipitation_probability")
+        if precipitation_probability is not None:
+            hass.states.set(
+                f"sensor.multi_forecast_{location}_precipitation_probability_{i}h",
+                precipitation_probability,
+                state_attributes({
+                    "datetime": f.get("datetime"),
+                    "unit_of_measurement": "%",
+                    "device_class": "probability",
+                }, f"multi_forecast_{location}_precipitation_probability_{i}h")
+            )
 
     # ---- 1. Próxima hora ----
     if next1:

@@ -1,5 +1,6 @@
 # forecast_alert.py
 # Evalúa condiciones adversas en el forecast usando thresholds dinámicos y dispara acciones
+# version 1.0 - 2025/09/13
 
 forecast = data.get("forecast", [])
 location = data.get("location", "home")

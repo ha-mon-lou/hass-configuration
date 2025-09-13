@@ -3,6 +3,9 @@ input_button:
 
 automation:
   - alias: "Resumen trayecto moto al desenchufar móvil"
+    variables:
+      weather_entity_home: weather.forecast_home
+      weather_entity_work: weather.forecast_work
     trigger:
       - platform: state
         entity_id: input_button.get_trip_forecasts
@@ -22,14 +25,14 @@ automation:
     action:
       - action: weather.get_forecasts
         target:
-          entity_id: weather.forecast_home
+          entity_id: "{{ weather_entity_home }}"
         data:
           type: hourly
         response_variable: pronostico_home
 
       - action: weather.get_forecasts
         target:
-          entity_id: weather.forecast_work
+          entity_id: "{{ weather_entity_work }}"
         data:
           type: hourly
         response_variable: pronostico_work
@@ -37,36 +40,36 @@ automation:
       - service: python_script.forecast_processor
         data:
           location: "home"
-          forecast: "{{ pronostico_home['weather.forecast_home']['forecast'] }}"
+          forecast: "{{ pronostico_home[weather_entity_home]['forecast'] }}"
           current: >
             {{
               {
-                'temperature': state_attr('weather.forecast_home', 'temperature'),
-                'dew_point': state_attr('weather.forecast_home', 'dew_point'),
-                'humidity': state_attr('weather.forecast_home', 'humidity'),
-                'cloud_coverage': state_attr('weather.forecast_home', 'cloud_coverage'),
-                'uv_index': state_attr('weather.forecast_home', 'uv_index'),
-                'pressure': state_attr('weather.forecast_home', 'pressure'),
-                'wind_speed': state_attr('weather.forecast_home', 'wind_speed'),
-                'wind_bearing': state_attr('weather.forecast_home', 'wind_bearing')
+                'temperature': state_attr(weather_entity_home, 'temperature'),
+                'dew_point': state_attr(weather_entity_home, 'dew_point'),
+                'humidity': state_attr(weather_entity_home, 'humidity'),
+                'cloud_coverage': state_attr(weather_entity_home, 'cloud_coverage'),
+                'uv_index': state_attr(weather_entity_home, 'uv_index'),
+                'pressure': state_attr(weather_entity_home, 'pressure'),
+                'wind_speed': state_attr(weather_entity_home, 'wind_speed'),
+                'wind_bearing': state_attr(weather_entity_home, 'wind_bearing')
               }
             }}
 
       - service: python_script.forecast_processor
         data:
           location: "work"
-          forecast: "{{ pronostico_work['weather.forecast_work']['forecast'] }}"
+          forecast: "{{ pronostico_work[weather_entity_work]['forecast'] }}"
           current: >
             {{
               {
-                'temperature': state_attr('weather.forecast_work', 'temperature'),
-                'dew_point': state_attr('weather.forecast_work', 'dew_point'),
-                'humidity': state_attr('weather.forecast_work', 'humidity'),
-                'cloud_coverage': state_attr('weather.forecast_work', 'cloud_coverage'),
-                'uv_index': state_attr('weather.forecast_work', 'uv_index'),
-                'pressure': state_attr('weather.forecast_work', 'pressure'),
-                'wind_speed': state_attr('weather.forecast_work', 'wind_speed'),
-                'wind_bearing': state_attr('weather.forecast_work', 'wind_bearing')
+                'temperature': state_attr(weather_entity_work, 'temperature'),
+                'dew_point': state_attr(weather_entity_work, 'dew_point'),
+                'humidity': state_attr(weather_entity_work, 'humidity'),
+                'cloud_coverage': state_attr(weather_entity_work, 'cloud_coverage'),
+                'uv_index': state_attr(weather_entity_work, 'uv_index'),
+                'pressure': state_attr(weather_entity_work, 'pressure'),
+                'wind_speed': state_attr(weather_entity_work, 'wind_speed'),
+                'wind_bearing': state_attr(weather_entity_work, 'wind_bearing')
               }
             }}
 

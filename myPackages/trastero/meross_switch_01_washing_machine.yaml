@@ -15,7 +15,7 @@ binary_sensor:
       # Consumo alto → casi seguro en uso
       - platform: numeric_state
         entity_id: sensor.meross_switch_01_power
-        above: 90
+        above: 60
         prob_given_true: 0.95
         prob_given_false: 0.05
 
@@ -31,7 +31,7 @@ binary_sensor:
       - platform: template
         value_template: >
           {% set p = states('sensor.meross_switch_01_power') | float(0) %}
-          {{ p >= 10 and p <= 150 }}
+          {{ p >= 8 and p <= 60 }}
         prob_given_true: 0.7
         prob_given_false: 0.3
 

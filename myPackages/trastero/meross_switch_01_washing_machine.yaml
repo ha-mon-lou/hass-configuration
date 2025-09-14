@@ -9,31 +9,32 @@ binary_sensor:
   - platform: bayesian
     name: "washing_machine_ciclo_en_curso"
     device_class: running
-    prior: 0.5
+    prior: 0.3
     probability_threshold: 0.8
     observations:
-      # Consumo alto → casi seguro en uso
-      - platform: numeric_state
-        entity_id: sensor.meross_switch_01_power
-        above: 60
-        prob_given_true: 0.95
-        prob_given_false: 0.05
+      # Consumo alto sostenido (>60W durante >2min) → casi seguro en uso
+      - platform: template
+        value_template: >
+          {{ states('sensor.meross_switch_01_power') | float(0) > 60
+             and (as_timestamp(now()) - as_timestamp(states.sensor.meross_switch_01_power.last_changed, 0)) > 120 }}
+        prob_given_true: 0.98
+        prob_given_false: 0.02
 
       # Consumo bajo durante >5min → probablemente acabada
       - platform: template
         value_template: >
           {{ states('sensor.meross_switch_01_power') | float(0) < 10
              and (as_timestamp(now()) - as_timestamp(states.sensor.meross_switch_01_power.last_changed, 0)) > 300 }}
-        prob_given_true: 0.1
-        prob_given_false: 0.9
+        prob_given_true: 0.2
+        prob_given_false: 0.8
 
-      # Consumo medio/fluctuante (10–90 W) → sigue trabajando
+      # Consumo medio/fluctuante (10–60 W) → sigue trabajando
       - platform: template
         value_template: >
           {% set p = states('sensor.meross_switch_01_power') | float(0) %}
-          {{ p >= 8 and p <= 60 }}
-        prob_given_true: 0.7
-        prob_given_false: 0.3
+          {{ p >= 10 and p <= 60 }}
+        prob_given_true: 0.8
+        prob_given_false: 0.2
 
 automation:
   # Sincronizar el input_boolean con el bayesiano evitando notificación falsa al reinicio

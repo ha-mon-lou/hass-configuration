@@ -22,7 +22,7 @@ binary_sensor:
       # Consumo bajo durante >5min → probablemente acabada
       - platform: template
         value_template: >
-          {{ states('sensor.meross_switch_01_power') | float(0) < 10
+          {{ states('sensor.meross_switch_01_power') | float(0) < 8
              and (as_timestamp(now()) - as_timestamp(states.sensor.meross_switch_01_power.last_changed, 0)) > 300 }}
         prob_given_true: 0.1
         prob_given_false: 0.9
@@ -69,4 +69,4 @@ automation:
               - service: script.notifica_movil
                 data:
                   title: "WashingMachine terminada"
-                  message: "La WashingMachine ha finalizado su ciclo. Puedes vaciarla."
+                  message: "La WashingMachine ha finalizado su ciclo."

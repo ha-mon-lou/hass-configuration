@@ -1,6 +1,6 @@
 {
     "0xa4c1387fe2e7effc": {
-        "voltage": 230,
+        "voltage": 229,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -17,7 +17,7 @@
         }
     },
     "0xa4c13819d046464f": {
-        "voltage": 231,
+        "voltage": 230,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -25,11 +25,11 @@
         "child_lock": "UNLOCK",
         "linkquality": 72,
         "power": 0,
-        "energy": 217.11,
+        "energy": 217.4,
         "current": 0.02
     },
     "0xa4c138b8caa59009": {
-        "voltage": 231,
+        "voltage": 229,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -43,20 +43,20 @@
     "0x00124b002a565fae": {
         "voltage": 3000,
         "battery": 100,
-        "temperature": 24.88,
-        "humidity": 73.82,
+        "temperature": 25.53,
+        "humidity": 77.79,
         "linkquality": 248
     },
     "0xa4c138b7c1781a47": {
-        "voltage": 227,
-        "state": "ON",
+        "voltage": 229,
+        "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "power": 37,
-        "energy": 22.09,
-        "current": 0.17,
+        "power": 0,
+        "energy": 22.15,
+        "current": 0,
         "linkquality": 232,
         "update": {
             "state": "idle",
@@ -110,7 +110,7 @@
         "valve_opening_limit_voltage": 1578,
         "valve_closing_limit_voltage": 2985,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 23.7,
+        "local_temperature": 24.2,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
@@ -171,9 +171,9 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 24.1,
-        "humidity": 73.29,
-        "co2": 1225,
+        "temperature": 25.02,
+        "humidity": 82.57,
+        "co2": 692,
         "linkquality": 244
     },
     "0xe406bffffe34f94b": {
@@ -185,7 +185,7 @@
         "power_on_behavior": "previous",
         "power_on_behavior_left": "previous",
         "state_left": "OFF",
-        "state_right": "OFF",
+        "state_right": "ON",
         "backlight_mode": "normal",
         "linkquality": 244
     }

@@ -64,15 +64,15 @@ binary_sensor:
   - platform: bayesian
     name: "ramon_en_habitacion_02"
     device_class: occupancy
-    prior: 0.3
-    probability_threshold: 0.8
+    prior: 0.5
+    probability_threshold: 0.7
     observations:
       # El móvil cargando → muy probable que esté en la habitacion
       - platform: state
         entity_id: sensor.sm_a155f_charger_type
         to_state: "ac"
-        prob_given_true: 0.9
-        prob_given_false: 0.1
+        prob_given_true: 0.98
+        prob_given_false: 0.02
 
       # Hora de la noche → más probable que esté en la cama
       - platform: template
@@ -81,6 +81,13 @@ binary_sensor:
           {{ h >= 21 or h <= 8 }}
         prob_given_true: 0.7
         prob_given_false: 0.3
+
+      # SOLO si Ramón está en home
+      - platform: state
+        entity_id: person.ramon
+        to_state: "home"
+        prob_given_true: 0.99
+        prob_given_false: 0.01
 
 automation:
   - alias: "[Presencia] Ramon - Actualizar ubicación habitacion 02"

@@ -1,21 +1,23 @@
 - alias: "WD Watchdog Zigbee Devices Offline"
   trigger:
     - platform: state
-      entity_id: all
-      to: "offline"
+      entity_id:
+        - sensor.zigbee_heiman_hs3aq_01_co2
+        - sensor.zigbee_sonoff_snzb02_01_temperature
+        - sensor.zigbee_sonoff_trvzb_01_temperature
+        - sensor.zigbee_nous_enchufe_01_power
+        - sensor.zigbee_nous_enchufe_02_power
+        - sensor.zigbee_nous_enchufe_03_power
+        - sensor.zigbee_nous_enchufe_04_power
+      to: "unavailable"
       for:
         minutes: 1
-  condition:
-    - condition: template
-      value_template: >
-        {{ trigger.entity_id.startswith('binary_sensor.zigbee_') and
-           trigger.entity_id.endswith('_connection_state') }}
   action:
     - service: script.notifica_telegram
       data:
         message: >
-          "Dispositivo Zigbee offline: {{ trigger.entity_id }}"
+          "Dispositivo Zigbee unavailable: {{ trigger.entity_id }}"
     - service: system_log.write
       data:
-        message: "Dispositivo Zigbee offline detectado: {{ trigger.entity_id }}"
+        message: "Dispositivo Zigbee unavailable detectado: {{ trigger.entity_id }}"
         level: warning

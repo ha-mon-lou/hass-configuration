@@ -1,18 +1,21 @@
-- alias: "WD Watchdog Zigbee2MQTT"
+- alias: "WD Watchdog Zigbee Devices Offline"
   trigger:
     - platform: state
-      entity_id: binary_sensor.zigbee2mqtt_bridge_connection_state
+      entity_id: all
       to: "offline"
       for:
-        minutes: 2
+        minutes: 1
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.entity_id.startswith('binary_sensor.zigbee_') and
+           trigger.entity_id.endswith('_connection_state') }}
   action:
     - service: script.notifica_telegram
       data:
-        message: "<b>Alerta addon_restart</b>: {{ states('binary_sensor.zigbee2mqtt_bridge_connection_state') }} "
-    - service: hassio.addon_restart
-      data:
-        addon: 45df7312_zigbee2mqtt
+        message: >
+          "Dispositivo Zigbee offline: {{ trigger.entity_id }}"
     - service: system_log.write
       data:
-        message: "Zigbee2MQTT reiniciado automáticamente por sensores caídos."
+        message: "Dispositivo Zigbee offline detectado: {{ trigger.entity_id }}"
         level: warning

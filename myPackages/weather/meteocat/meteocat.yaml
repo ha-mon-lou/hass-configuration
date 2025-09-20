@@ -1,0 +1,108 @@
+########################################
+# meteocat package
+########################################
+
+input_button:
+  meteocat_update:
+    name: "Actualizar Meteocat"
+
+input_text:
+  meteocat_home_municipi:
+    name: "Código municipio Home"
+    initial: "082384"
+  meteocat_work_municipi:
+    name: "Código municipio Work"
+    initial: "082385"
+
+input_number:
+  meteocat_call_counter:
+    name: "Contador llamadas Meteocat"
+    initial: 0
+    min: 0
+    max: 100
+    step: 1
+
+rest:
+  - resource_template: "https://api.meteo.cat/pronostic/v1/municipalHoraria/{{ states('input_text.meteocat_home_municipi') }}"
+    method: GET
+    scan_interval: 86400 # 1 llamada al día automática
+    headers:
+      Accept: "application/json"
+      x-api-key: !secret meteocat_api_key
+    sensor:
+      - name: "meteocat_home_raw"
+        value_template: "{{ now() }}"
+        json_attributes:
+          - codiMunicipi
+          - dies
+
+  - resource_template: "https://webhook.site/e96cf82b-395d-47b4-989b-fd86b391222c"
+    method: GET
+    scan_interval: 60 # 1 llamada al día automática
+    headers:
+      Accept: "application/json"
+      x-api-key: !secret meteocat_api_key
+    sensor:
+      - name: "meteocat_home_raw"
+        value_template: "{{ now() }}"
+        json_attributes:
+          - codiMunicipi
+          - dies
+
+automation:
+  # Forzar actualización manual desde botón
+  - alias: "Meteocat forzar update manual"
+    trigger:
+      - platform: event
+        event_type: call_service
+        event_data:
+          domain: input_button
+          service: press
+          service_data:
+            entity_id: input_button.meteocat_update
+    action:
+      - service: homeassistant.update_entity
+        target:
+          entity_id: sensor.meteocat_home_raw
+
+  # Incrementa contador y procesa forecast solo si <10
+  - alias: "Meteocat incrementar contador y procesar home"
+    trigger:
+      - platform: state
+        entity_id: sensor.meteocat_home_raw
+    action:
+      - choose:
+          - conditions:
+              - condition: numeric_state
+                entity_id: input_number.meteocat_call_counter
+                below: 10
+            sequence:
+              - service: input_number.increment
+                target:
+                  entity_id: input_number.meteocat_call_counter
+              - service: python_script.meteocat_processor
+                data:
+                  entity_id: sensor.meteocat_home_raw
+                  name_prefix: "meteocat_home"
+          - conditions:
+              - condition: numeric_state
+                entity_id: input_number.meteocat_call_counter
+                above: 9
+            sequence:
+              - service: notify.telegram
+                data:
+                  message: "⚠️ Se ha superado el límite de 10 llamadas al mes de Meteocat."
+
+  # Reset automático día 1 de cada mes
+  - alias: "Reset contador Meteocat mensual"
+    trigger:
+      - platform: time
+        at: "00:00:00"
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 }}"
+    action:
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.meteocat_call_counter
+          value: 0

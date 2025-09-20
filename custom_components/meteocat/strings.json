@@ -1,0 +1,822 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Enter your Meteocat API Key to validate it.",
+        "title": "API Key"
+      },
+      "select_municipi": {
+        "description": "Select a municipality from the list.",
+        "title": "Municipality Selection",
+        "data": {
+          "municipi": "Municipality"
+        }
+      },
+      "select_station": {
+        "description": "Select a station.",
+        "title": "Station Selection",
+        "data": {
+          "station": "Stations"
+        }
+      },
+      "set_api_limits": {
+        "description": "Set the API limits.",
+        "title": "API limits"
+      }
+    },
+    "error": {
+      "bad_request": "Invalid request. Please check your API Key.",
+      "forbidden": "Access denied. Check your API Key permissions.",
+      "rate_limit_exceeded": "Rate limit exceeded. Please try again later.",
+      "server_error": "Server error. Please try again later.",
+      "connection_error": "Connection error. Please check your network.",
+      "unknown_error": "An unknown error occurred."
+    }
+  },
+  "options": {
+    "step":{
+      "init": {
+        "description": "Setup the API Key, the API limits and regenerate 'assets' files.",
+        "title": "Setup options",
+        "data": {
+          "option": "Options"
+        }
+      },
+      "update_api_and_limits": {
+        "description": "Setup the API Key and the API limits.",
+        "title": "API Key and limits"
+      },
+      "update_limits_only": {
+        "description": "Setup the API limits.",
+        "title": "API limits"
+      },
+      "confirm_regenerate_assets": {
+        "description": "Regenerate missing assets files.",
+        "title": "Regenerate assets",
+        "data": {
+          "confirm": "Confirm"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect. Error when checking the new API Key.",
+      "unknown": "Unknown error when checking the new API Key.",
+      "invalid_limit": "Invalid limit. The limit must be a positive number."
+    }
+  },
+  "selector": {
+    "option": {
+      "options": {
+        "update_api_and_limits": "Update API Key and limits.",
+        "update_limits_only": "Update API limits.",
+        "regenerate_assets": "Regenerate 'assets' files."
+      }
+    }
+  },
+  "entity": {
+    "sensor": {      
+      "wind_speed": {
+        "name": "Wind Speed"
+      },
+      "wind_direction": {
+        "name": "Wind Direction"
+      },
+      "wind_direction_cardinal": {
+        "name": "Wind Direction Cardinal",
+        "state": {
+          "north": "N",
+          "north_northeast": "NNE",
+          "northeast": "NE",
+          "east_northeast": "ENE",
+          "east": "E",
+          "east_southeast": "ESE",
+          "southeast": "SE",
+          "south_southeast": "SSE",
+          "south": "S",
+          "south_southwest": "SSW",
+          "southwest": "SW",
+          "west_southwest": "WSW",
+          "west": "W",
+          "west_northwest": "WNW",
+          "northwest": "NW",
+          "north_northwest": "NNW",
+          "unknown": "Unknown"
+        }
+      },
+      "temperature": {
+        "name": "Temperature"
+      },
+      "humidity": {
+        "name": "Humidity"
+      },
+      "pressure": {
+        "name": "Pressure"
+      },
+      "precipitation": {
+        "name": "Precipitation"
+      },
+      "precipitation_accumulated": {
+        "name": "Precipitation Accumulated"
+      },
+      "precipitation_probability": {
+        "name": "Precipitation Probability"
+      },
+      "solar_global_irradiance": {
+        "name": "Solar Global Irradiance"
+      },
+      "uv_index": {
+        "name": "UV Index",
+        "state_attributes": {
+          "hour": {
+            "name": "Hour"
+          }
+        }
+      },
+      "max_temperature": {
+        "name": "Max Temperature"
+      },
+      "min_temperature": {
+        "name": "Min Temperature"
+      },
+      "feels_like": {
+        "name": "Feels Like"
+      },
+      "wind_gust": {
+        "name": "Wind Gust"
+      },
+      "town_name": {
+        "name": "Town Name"
+      },
+      "town_id": {
+        "name": "Town ID"
+      },
+      "station_name": {
+        "name": "Station Name"
+      },
+      "station_id": {
+        "name": "Station ID"
+      },
+      "station_timestamp": {
+        "name": "Station Timestamp"
+      },
+      "region_name": {
+        "name": "Region Name"
+      },
+      "region_id": {
+        "name": "Region ID"
+      },
+      "condition": {
+        "name": "Condition",
+        "state": {
+          "sunny": "Sunny",
+          "clear-night": "Clear Night",
+          "partlycloudy": "Partly Cloudy",
+          "cloudy": "Cloudy",
+          "rainy": "Rainy",
+          "pouring": "Pouring",
+          "lightning-rainy": "Lightning Rainy",
+          "hail": "Hail",
+          "snowy": "Snowy",
+          "snow-rainy": "Snow Rainy"
+        },
+        "state_attributes": {
+          "hour": {
+            "name": "Hour"
+          }
+        }
+      },
+      "max_temperature_forecast": {
+        "name": "Max Temperature Today"
+      },
+      "min_temperature_forecast": {
+        "name": "Min Temperature Today"
+      },
+      "hourly_forecast_file_status": {
+        "name": "Hourly File",
+        "state": {
+          "updated": "Updated",
+          "obsolete": "Obsolete"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Date"
+          }
+        }
+      },
+      "daily_forecast_file_status": {
+        "name": "Daily File",
+        "state": {
+          "updated": "Updated",
+          "obsolete": "Obsolete"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Date"
+          }
+        }
+      },
+      "uvi_file_status": {
+        "name": "Uvi File",
+        "state": {
+          "updated": "Updated",
+          "obsolete": "Obsolete"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Date"
+          }
+        }
+      },
+      "alert_file_status": {
+        "name": "Alert File",
+        "state": {
+          "updated": "Updated",
+          "obsolete": "Obsolete"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Date"
+          }
+        }
+      },
+      "quota_file_status": {
+        "name": "Quota File",
+        "state": {
+          "updated": "Updated",
+          "obsolete": "Obsolete"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Date"
+          }
+        }
+      },
+      "lightning_file_status": {
+        "name": "Lightning File",
+        "state": {
+          "updated": "Updated",
+          "obsolete": "Obsolete"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Date"
+          }
+        }
+      },
+      "lightning_region": {
+        "name": "Lightning Region",
+        "state_attributes": {
+          "cloud_cloud": {
+            "name": "Cloud-Cloud"
+          },
+          "cloud_ground_neg":{
+            "name": "Cloud-Ground Negative"
+          },
+          "cloud_ground_pos": {
+            "name": "Cloud-Ground Positive"
+          }
+        }
+      },
+      "lightning_town": {
+        "name": "Lightning Town",
+        "state_attributes": {
+          "cloud_cloud": {
+            "name": "Cloud-Cloud"
+          },
+          "cloud_ground_neg":{
+            "name": "Cloud-Ground Negative"
+          },
+          "cloud_ground_pos": {
+            "name": "Cloud-Ground Positive"
+          }
+        }
+      },
+      "quota_xdde": {
+        "name": "Quota XDDE",
+        "state": {
+          "ok": "Ok",
+          "exceeded": "Exceeded",
+          "unknown": "Unknown"      
+        },
+        "state_attributes": {
+          "period": {
+            "name": "Period",
+            "state": {
+              "weekly": "Weekly",
+              "monthly": "Monthly",
+              "annual": "Annual"
+            }
+          },
+          "max_queries": {
+            "name": "Max Queries"
+          },
+          "remain_queries": {
+            "name": "Remaining"
+          },
+          "made_queries": {
+            "name": "Made"
+          }
+        }
+      },
+      "quota_prediccio": {
+        "name": "Quota Prediction",
+        "state": {
+          "ok": "Ok",
+          "exceeded": "Exceeded",
+          "unknown": "Unknown"      
+        },
+        "state_attributes": {
+          "period": {
+            "name": "Period",
+            "state": {
+              "weekly": "Weekly",
+              "monthly": "Monthly",
+              "annual": "Annual"
+            }
+          },
+          "max_queries": {
+            "name": "Max Queries"
+          },
+          "remain_queries": {
+            "name": "Remaining"
+          },
+          "made_queries": {
+            "name": "Made"
+          }
+        }
+      },
+      "quota_basic": {
+        "name": "Quota Basic",
+        "state": {
+          "ok": "Ok",
+          "exceeded": "Exceeded",
+          "unknown": "Unknown"      
+        },
+        "state_attributes": {
+          "period": {
+            "name": "Period",
+            "state": {
+              "weekly": "Weekly",
+              "monthly": "Monthly",
+              "annual": "Annual"
+            }
+          },
+          "max_queries": {
+            "name": "Max Queries"
+          },
+          "remain_queries": {
+            "name": "Remaining"
+          },
+          "made_queries": {
+            "name": "Made"
+          }
+        }
+      },
+      "quota_xema": {
+        "name": "Quota XEMA",
+        "state": {
+          "ok": "Ok",
+          "exceeded": "Exceeded",
+          "unknown": "Unknown"      
+        },
+        "state_attributes": {
+          "period": {
+            "name": "Period",
+            "state": {
+              "weekly": "Weekly",
+              "monthly": "Monthly",
+              "annual": "Annual"
+            }
+          },
+          "max_queries": {
+            "name": "Max Queries"
+          },
+          "remain_queries": {
+            "name": "Remaining"
+          },
+          "made_queries": {
+            "name": "Made"
+          }
+        }
+      },
+      "quota_queries": {
+        "name": "Quota Queries",
+        "state": {
+          "ok": "Ok",
+          "exceeded": "Exceeded",
+          "unknown": "Unknown"      
+        },
+        "state_attributes": {
+          "period": {
+            "name": "Period",
+            "state": {
+              "weekly": "Weekly",
+              "monthly": "Monthly",
+              "annual": "Annual"
+            }
+          },
+          "max_queries": {
+            "name": "Max Queries"
+          },
+          "remain_queries": {
+            "name": "Remaining"
+          },
+          "made_queries": {
+            "name": "Made"
+          }
+        }
+      },
+      "alerts": {
+        "name": "Alerts",
+        "state_attributes": {
+          "alert_1": {
+            "name": "Alert 1",
+            "state": {
+              "violent_weather": "Violent weather",
+              "rain_intensity": "Rain intensity",
+              "rain_amount": "Rain amount",
+              "snow_amount_24": "Snow amount in 24 hours",
+              "wind": "Wind",
+              "sea_state": "Sea state",
+              "cold": "Cold",
+              "heat": "Heat",
+              "night_heat": "Night heat"
+            }
+          },
+          "alert_2": {
+            "name": "Alert 2",
+            "state": {
+              "violent_weather": "Violent weather",
+              "rain_intensity": "Rain intensity",
+              "rain_amount": "Rain amount",
+              "snow_amount_24": "Snow amount in 24 hours",
+              "wind": "Wind",
+              "sea_state": "Sea state",
+              "cold": "Cold",
+              "heat": "Heat",
+              "night_heat": "Night heat"
+            }
+          },
+          "alert_3": {
+            "name": "Alert 3",
+            "state": {
+              "violent_weather": "Violent weather",
+              "rain_intensity": "Rain intensity",
+              "rain_amount": "Rain amount",
+              "snow_amount_24": "Snow amount in 24 hours",
+              "wind": "Wind",
+              "sea_state": "Sea state",
+              "cold": "Cold",
+              "heat": "Heat",
+              "night_heat": "Night heat"
+            }
+          },
+          "alert_4": {
+            "name": "Alert 4",
+            "state": {
+              "violent_weather": "Violent weather",
+              "rain_intensity": "Rain intensity",
+              "rain_amount": "Rain amount",
+              "snow_amount_24": "Snow amount in 24 hours",
+              "wind": "Wind",
+              "sea_state": "Sea state",
+              "cold": "Cold",
+              "heat": "Heat",
+              "night_heat": "Night heat"
+            }
+          },
+          "alert_5": {
+            "name": "Alert 5",
+            "state": {
+              "violent_weather": "Violent weather",
+              "rain_intensity": "Rain intensity",
+              "rain_amount": "Rain amount",
+              "snow_amount_24": "Snow amount in 24 hours",
+              "wind": "Wind",
+              "sea_state": "Sea state",
+              "cold": "Cold",
+              "heat": "Heat",
+              "night_heat": "Night heat"
+            }
+          }
+        }
+      },
+      "alert_wind": {
+        "name": "Alert Wind",
+        "state": {
+          "opened": "Opened",
+          "closed": "Closed"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Starts"
+          },
+          "fin": {
+            "name": "Ends"
+          },
+          "fecha": {
+            "name": "Date"
+          },
+          "periodo": {
+            "name": "Period"
+          },
+          "comentario": {
+            "name": "Comment"
+          },
+          "umbral": {
+            "name": "Threshold",
+            "state": {
+              "wind_gusts_25": "Wind gusts > 25 m/s",
+              "microburst": "Microburst",
+              "tornadoes": "Tornadoes or waterspouts",
+              "wind_40": "Max. wind speed > 40 m/s",
+              "wind_35": "Max. wind speed > 35 m/s",
+              "wind_30": "Max. wind speed > 30 m/s",
+              "wind_25": "Max. wind speed > 25 m/s",
+              "wind_20": "Max. wind speed > 20 m/s"
+            }
+          },
+          "peligro": {
+            "name": "Danger"
+          },
+          "nivel": {
+            "name": "Level"
+          }
+        }
+      },
+      "alert_rain_intensity": {
+        "name": "Alert Rain Intensity",
+        "state": {
+          "opened": "Opened",
+          "closed": "Closed"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Starts"
+          },
+          "fin": {
+            "name": "Ends"
+          },
+          "fecha": {
+            "name": "Date"
+          },
+          "periodo": {
+            "name": "Period"
+          },
+          "comentario": {
+            "name": "Comment"
+          },
+          "umbral": {
+            "name": "Threshold",
+            "state": {
+              "hail_2_cm": "Hail with diameter > 2 cm",
+              "microburst": "Microburst",
+              "intensity_40_30": "Intensity > 40 mm / 30 minutes",
+              "intensity_20_30": "Intensity > 20 mm / 30 minutes"
+            }
+          },
+          "peligro": {
+            "name": "Danger"
+          },
+          "nivel": {
+            "name": "Level"
+          }
+        }
+      },
+      "alert_rain": {
+        "name": "Alert Rain",
+        "state": {
+          "opened": "Opened",
+          "closed": "Closed"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Starts"
+          },
+          "fin": {
+            "name": "Ends"
+          },
+          "fecha": {
+            "name": "Date"
+          },
+          "periodo": {
+            "name": "Period"
+          },
+          "comentario": {
+            "name": "Comment"
+          },
+          "umbral": {
+            "name": "Threshold",
+            "state": {
+              "microburst": "Microburst",
+              "rain_200_24": "Amount > 200 mm /24 hours",
+              "rain_100_24": "Amount > 100 mm /24 hours"
+            }
+          },
+          "peligro": {
+            "name": "Danger"
+          },
+          "nivel": {
+            "name": "Level"
+          }
+        }
+      },
+      "alert_sea": {
+        "name": "Alert Sea",
+        "state": {
+          "opened": "Opened",
+          "closed": "Closed"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Starts"
+          },
+          "fin": {
+            "name": "Ends"
+          },
+          "fecha": {
+            "name": "Date"
+          },
+          "periodo": {
+            "name": "Period"
+          },
+          "comentario": {
+            "name": "Comment"
+          },
+          "umbral": {
+            "name": "Threshold",
+            "state": {
+              "microburst": "Microburst",
+              "tornadoes": "Tornadoes or waterspouts",
+              "waves_4": "Waves > 4.00 meters (rough sea)",
+              "waves_2_50": "Waves > 2.50 meters (tidal)"
+            }
+          },
+          "peligro": {
+            "name": "Danger"
+          },
+          "nivel": {
+            "name": "Level"
+          }
+        }
+      },
+      "alert_cold": {
+        "name": "Alert Cold",
+        "state": {
+          "opened": "Opened",
+          "closed": "Closed"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Starts"
+          },
+          "fin": {
+            "name": "Ends"
+          },
+          "fecha": {
+            "name": "Date"
+          },
+          "periodo": {
+            "name": "Period"
+          },
+          "comentario": {
+            "name": "Comment"
+          },
+          "umbral": {
+            "name": "Threshold",
+            "state": {
+              "cold_very_intense": "Very intense cold",
+              "cold_intense": "Intense cold"
+            }
+          },
+          "peligro": {
+            "name": "Danger"
+          },
+          "nivel": {
+            "name": "Level"
+          }
+        }
+      },
+      "alert_warm": {
+        "name": "Alert Warm",
+        "state": {
+          "opened": "Opened",
+          "closed": "Closed"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Starts"
+          },
+          "fin": {
+            "name": "Ends"
+          },
+          "fecha": {
+            "name": "Date"
+          },
+          "periodo": {
+            "name": "Period"
+          },
+          "comentario": {
+            "name": "Comment"
+          },
+          "umbral": {
+            "name": "Threshold",
+            "state": {
+              "heat_very_intense": "Very intense hot",
+              "heat_intense": "Intense heat"
+            }
+          },
+          "peligro": {
+            "name": "Danger"
+          },
+          "nivel": {
+            "name": "Level"
+          }
+        }
+      },
+      "alert_warm_night": {
+        "name": "Alert Warm Night",
+        "state": {
+          "opened": "Opened",
+          "closed": "Closed"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Starts"
+          },
+          "fin": {
+            "name": "Ends"
+          },
+          "fecha": {
+            "name": "Date"
+          },
+          "periodo": {
+            "name": "Period"
+          },
+          "comentario": {
+            "name": "Comment"
+          },
+          "umbral": {
+            "name": "Threshold",
+            "state": {
+              "heat_night_very_intense": "Very intense night heat",
+              "heat_night_intense": "Intense night heat"
+            }
+          },
+          "peligro": {
+            "name": "Danger"
+          },
+          "nivel": {
+            "name": "Level"
+          }
+        }
+      },
+      "alert_snow": {
+        "name": "Alert Snow",
+        "state": {
+          "opened": "Opened",
+          "closed": "Closed"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Starts"
+          },
+          "fin": {
+            "name": "Ends"
+          },
+          "fecha": {
+            "name": "Date"
+          },
+          "periodo": {
+            "name": "Period"
+          },
+          "comentario": {
+            "name": "Comment"
+          },
+          "umbral": {
+            "name": "Threshold",
+            "state": {
+              "hail_2_cm": "Hail with diameter > 2 cm",
+              "thickness_50_at_1000": "thickness > 50 cm at altitudes above 1000 meters up to 1500 meters",
+              "thickness_30_at_800": "thickness > 30 cm at altitudes above 800 meters up to 1000 meters",
+              "thickness_20_at_600": "thickness > 20 cm at altitudes above 600 meters up to 800 meters",
+              "thickness_20_at_1000": "thickness > 20 cm at altitudes above 1000 meters up to 1500 meters",
+              "thickness_15_at_300": "thickness > 15 cm at altitudes above 300 meters up to 600 meters",
+              "thickness_10_at_800": "thickness > 10 cm at altitudes above 800 meters up to 1000 meters",
+              "thickness_5_at_300": "thickness > 5 cm at altitudes below 300 meters",
+              "thickness_5_at_600": "thickness > 5 cm at altitudes above 600 meters up to 800 meters",
+              "thickness_2_at_300": "thickness > 2 cm at altitudes above 300 meters up to 600 meters",
+              "thickness_0_at_300": "thickness ≥ 0 cm at altitudes below 300 meters"
+            }
+          },
+          "peligro": {
+            "name": "Danger"
+          },
+          "nivel": {
+            "name": "Level"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+    "town_stations": [
+        {
+            "codi": "082384",
+            "variables": [
+                {
+                    "codi": 32,
+                    "estacions": [
+                        {
+                            "codi": "XF",
+                            "ordre": 1,
+                            "nom": "Sabadell - Parc Agrari"
+                        },
+                        {
+                            "codi": "XV",
+                            "ordre": 2,
+                            "nom": "Sant Cugat del Vallès - CAR"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

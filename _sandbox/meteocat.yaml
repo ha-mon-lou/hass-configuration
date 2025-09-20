@@ -23,9 +23,8 @@ input_number:
     step: 1
 
 rest:
-  - resource_template: "https://api.meteo.cat/pronostic/v1/municipalHoraria/{{ states('input_text.meteocat_home_municipi') }}"
-    method: GET
-    scan_interval: 86400 # 1 llamada al día automática
+  - resource: "https://api.meteo.cat/pronostic/v1/municipalHoraria/{{ states('input_text.meteocat_home_municipi') }}"
+    scan_interval: 86400
     headers:
       Accept: "application/json"
       x-api-key: !secret meteocat_api_key
@@ -36,14 +35,13 @@ rest:
           - codiMunicipi
           - dies
 
-  - resource_template: "https://webhook.site/e96cf82b-395d-47b4-989b-fd86b391222c"
-    method: GET
-    scan_interval: 60 # 1 llamada al día automática
+  - resource: "https://webhook.site/e96cf82b-395d-47b4-989b-fd86b391222c"
+    scan_interval: 60
     headers:
       Accept: "application/json"
       x-api-key: !secret meteocat_api_key
     sensor:
-      - name: "meteocat_home_raw"
+      - name: "meteocat_home_raw_test"
         value_template: "{{ now() }}"
         json_attributes:
           - codiMunicipi

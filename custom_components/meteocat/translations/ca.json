@@ -1,0 +1,823 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Introduïu l'API Key subministrada per Meteocat per poder iniciar el procés de validació.",
+        "title": "API Key"
+      },
+      "select_municipi": {
+        "description": "Seleccioneu el municipi de la llista.",
+        "title": "Selecció de municipi",
+        "data": {
+          "municipi": "Municipi"
+        }
+      },
+      "select_station": {
+        "description": "Seleccioneu l'estació de la llista.",
+        "title": "Selecció d'estació",
+        "data": {
+          "station": "Estacions"
+        }
+      },
+      "set_api_limits": {
+        "description": "Defineix els límits del pla de l'API.",
+        "title": "Límits de l'API"
+      }
+    },
+    "error": {
+      "bad_request": "Petició invàlida. Reviseu la vostra API Key.",
+      "forbidden": "Accés denegat. Reviseu els permisos de la vostra API Key.",
+      "rate_limit_exceeded": "Excés del límit de peticions. Si us plau, torneu-ho a provar més tard.",
+      "server_error": "Error del servidor. Torneu-ho a provar més tard.",
+      "connection_error": "Error de connexió. Reviseu la vostra connexió de xarxa.",
+      "unknown_error": "Error desconegut."
+    }
+  },
+  "options": {
+    "step":{
+      "init": {
+        "description": "Configura l'API Key, els límits de l'API i regenera els arxius a 'assets'.",
+        "title": "Opcions de configuració",
+        "data": {
+          "option": "Opcions"
+        }
+      },
+      "update_api_and_limits": {
+        "description": "Configura l'API Key i els límits de l'API.",
+        "title": "API Key i límits"
+      },
+      "update_limits_only": {
+        "description": "Configura els límits de l'API.",
+        "title": "Límits de l'API"
+      },
+      "confirm_regenerate_assets": {
+        "description": "Regenera els arxius a 'assets'.",
+        "title": "Regenera 'assets'",
+        "data": {
+          "confirm": "Confirmar"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Error de conexió. Error al comprovar la nova API Key.",
+      "unknown": "Error desconegut al comprovar la nova API Key.",
+      "invalid_limit": "Límit no vàlid. El límit ha de ser un nombre positiu."
+    }
+  },
+  "selector": {
+    "option": {
+      "options": {
+        "update_api_and_limits": "Actualitzar API Key i límits.",
+        "update_limits_only": "Actualitzar API límits.",
+        "regenerate_assets": "Regenera arxius a 'assets'."
+      }
+    }
+  },
+  "entity": {
+    "sensor": {      
+      "wind_speed": {
+        "name": "Vent Velocitat"
+      },
+      "wind_direction": {
+        "name": "Vent Direcció"
+      },
+      "wind_direction_cardinal": {
+        "name": "Vent Direcció Cardinal",
+        "state": {
+          "north": "N",
+          "north_northeast": "NNE",
+          "northeast": "NE",
+          "east_northeast": "ENE",
+          "east": "E",
+          "east_southeast": "ESE",
+          "southeast": "SE",
+          "south_southeast": "SSE",
+          "south": "S",
+          "south_southwest": "SSO",
+          "southwest": "SO",
+          "west_southwest": "OSO",
+          "west": "O",
+          "west_northwest": "ONO",
+          "northwest": "NO",
+          "north_northwest": "NNO",
+          "unknown": "Desconegut"
+        }
+      },
+      "temperature": {
+        "name": "Temperatura"
+      },
+      "humidity": {
+        "name": "Humitat"
+      },
+      "pressure": {
+        "name": "Pressió"
+      },
+      "precipitation": {
+        "name": "Precipitació"
+      },
+      "precipitation_accumulated": {
+        "name": "Precipitació Acumulada"
+      },
+      "precipitation_probability": {
+        "name": "Precipitació Probabilitat"
+      },
+      "solar_global_irradiance": {
+        "name": "Irradiació Solar Global"
+      },
+      "uv_index": {
+        "name": "UV Índex",
+        "state_attributes": {
+          "hour": {
+            "name": "Hora"
+          }
+        }
+      },
+      "max_temperature": {
+        "name": "Temperatura Max"
+      },
+      "min_temperature": {
+        "name": "Temperatura Min"
+      },
+      "feels_like": {
+        "name": "Sensació Tèrmica"
+      },
+      "wind_gust": {
+        "name": "Vent Ratxa"
+      },
+      "town_name": {
+        "name": "Municipi Nom"
+      },
+      "town_id": {
+        "name": "Municipi ID"
+      },
+      "station_name": {
+        "name": "Estació Nom"
+      },
+      "station_id": {
+        "name": "Estació ID"
+      },
+      "station_timestamp": {
+        "name": "Estació Timestamp"
+      },
+      "region_name": {
+        "name": "Comarca Nom"
+      },
+      "region_id": {
+        "name": "Comarca ID"
+      },
+      "condition": {
+        "name": "Estat del Cel",
+        "state": {
+          "sunny": "Assolellat",
+          "clear-night": "Nit serena",
+          "partlycloudy": "Parcialment ennuvolat",
+          "cloudy": "Ennuvolat",
+          "rainy": "Plovent",
+          "pouring": "Tempesta",
+          "lightning-rainy": "Tempesta amb llamps",
+          "hail": "Calamarsa",
+          "snowy": "Nevant",
+          "snow-rainy": "Aiguaneu"
+        },
+        "state_attributes": {
+          "hour": {
+            "name": "Hora"
+          }
+        }
+      },
+      "max_temperature_forecast": {
+        "name": "Temperatura Max Avui"
+      },
+      "min_temperature_forecast": {
+        "name": "Temperatura Min Avui"
+      },
+      "hourly_forecast_file_status": {
+        "name": "Arxiu Horari",
+        "state": {
+          "updated": "Actualitzat",
+          "obsolete": "Obsolet"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Data"
+          }
+        }
+      },
+      "daily_forecast_file_status": {
+        "name": "Arxiu Diari",
+        "state": {
+          "updated": "Actualitzat",
+          "obsolete": "Obsolet"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Data"
+          }
+        }
+      },
+      "uvi_file_status": {
+        "name": "Arxiu UVI",
+        "state": {
+          "updated": "Actualitzat",
+          "obsolete": "Obsolet"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Data"
+          }
+        }
+      },
+      "alert_file_status": {
+        "name": "Arxiu Alerta",
+        "state": {
+          "updated": "Actualitzat",
+          "obsolete": "Obsolet"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Data"
+          }
+        }
+      },
+      "quota_file_status": {
+        "name": "Arxiu Quota",
+        "state": {
+          "updated": "Actualitzat",
+          "obsolete": "Obsolet"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Data"
+          }
+        }
+      },
+      "lightning_file_status": {
+        "name": "Arxiu Llamps",
+        "state": {
+          "updated": "Actualitzat",
+          "obsolete": "Obsolet"      
+        },
+        "state_attributes": {
+          "update_date": {
+            "name": "Data"
+          }
+        }
+      },
+      "lightning_region": {
+        "name": "Llamps Comarca",
+        "state_attributes": {
+          "cloud_cloud": {
+            "name": "Núvol-Núvol"
+          },
+          "cloud_ground_neg":{
+            "name": "Núvol-Terra Negatiu"
+          },
+          "cloud_ground_pos": {
+            "name": "Núvol-Terra Positiu"
+          }
+        }
+      },
+      "lightning_town": {
+        "name": "Llamps Municipi",
+        "state_attributes": {
+          "cloud_cloud": {
+            "name": "Núvol-Núvol"
+          },
+          "cloud_ground_neg":{
+            "name": "Núvol-Terra Negatiu"
+          },
+          "cloud_ground_pos": {
+            "name": "Núvol-Terra Positiu"
+          }
+        }
+      },
+      "quota_xdde": {
+        "name": "Quota XDDE",
+        "state": {
+          "ok": "Ok",
+          "exceeded": "Superada",
+          "unknown": "Desconegut"      
+        },
+        "state_attributes": {
+          "period": {
+            "name": "Periode",
+            "state": {
+              "weekly": "Setmanal",
+              "monthly": "Mensual",
+              "annual": "Anual"
+            }
+          },
+          "max_queries": {
+            "name": "Màxim"
+          },
+          "remain_queries": {
+            "name": "Restants"
+          },
+          "made_queries": {
+            "name": "Realitzades"
+          }
+        }
+      },
+      "quota_prediccio": {
+        "name": "Quota Predicció",
+        "state": {
+          "ok": "Ok",
+          "exceeded": "Superada",
+          "unknown": "Desconegut"      
+        },
+        "state_attributes": {
+          "period": {
+            "name": "Periode",
+            "state": {
+              "weekly": "Setmanal",
+              "monthly": "Mensual",
+              "annual": "Anual"
+            }
+          },
+          "max_queries": {
+            "name": "Màxim"
+          },
+          "remain_queries": {
+            "name": "Restants"
+          },
+          "made_queries": {
+            "name": "Realitzades"
+          }
+        }
+      },
+      "quota_basic": {
+        "name": "Quota Bàsica",
+        "state": {
+          "ok": "Ok",
+          "exceeded": "Superada",
+          "unknown": "Desconegut"      
+        },
+        "state_attributes": {
+          "period": {
+            "name": "Periode",
+            "state": {
+              "weekly": "Setmanal",
+              "monthly": "Mensual",
+              "annual": "Anual"
+            }
+          },
+          "max_queries": {
+            "name": "Màxim"
+          },
+          "remain_queries": {
+            "name": "Restants"
+          },
+          "made_queries": {
+            "name": "Realitzades"
+          }
+        }
+      },
+      "quota_xema": {
+        "name": "Quota XEMA",
+        "state": {
+          "ok": "Ok",
+          "exceeded": "Superada",
+          "unknown": "Desconegut"      
+        },
+        "state_attributes": {
+          "period": {
+            "name": "Periode",
+            "state": {
+              "weekly": "Setmanal",
+              "monthly": "Mensual",
+              "annual": "Anual"
+            }
+          },
+          "max_queries": {
+            "name": "Màxim"
+          },
+          "remain_queries": {
+            "name": "Restants"
+          },
+          "made_queries": {
+            "name": "Realitzades"
+          }
+        }
+      },
+      "quota_queries": {
+        "name": "Quota Consultes",
+        "state": {
+          "ok": "Ok",
+          "exceeded": "Superada",
+          "unknown": "Desconegut"      
+        },
+        "state_attributes": {
+          "period": {
+            "name": "Periode",
+            "state": {
+              "weekly": "Setmanal",
+              "monthly": "Mensual",
+              "annual": "Anual"
+            }
+          },
+          "max_queries": {
+            "name": "Màxim"
+          },
+          "remain_queries": {
+            "name": "Restants"
+          },
+          "made_queries": {
+            "name": "Realitzades"
+          }
+        }
+      },
+      "alerts": {
+        "name": "Alertes",
+        "state_attributes": {
+          "alert_1": {
+            "name": "Alerta 1",
+            "state": {
+              "violent_weather": "Temps violent",
+              "rain_intensity": "Intensitat de pluja",
+              "rain_amount": "Acumulació de pluja",
+              "snow_amount_24": "Neu acumulada en 24 hores",
+              "wind": "Vent",
+              "sea_state": "Estat de la mar",
+              "cold": "Fred",
+              "heat": "Calor",
+              "night_heat": "Calor nocturna"
+            }
+          },
+          "alert_2": {
+            "name": "Alerta 2",
+            "state": {
+              "violent_weather": "Temps violent",
+              "rain_intensity": "Intensitat de pluja",
+              "rain_amount": "Acumulació de pluja",
+              "snow_amount_24": "Neu acumulada en 24 hores",
+              "wind": "Vent",
+              "sea_state": "Estat de la mar",
+              "cold": "Fred",
+              "heat": "Calor",
+              "night_heat": "Calor nocturna"
+            }
+          },
+          "alert_3": {
+            "name": "Alerta 3",
+            "state": {
+              "violent_weather": "Temps violent",
+              "rain_intensity": "Intensitat de pluja",
+              "rain_amount": "Acumulació de pluja",
+              "snow_amount_24": "Neu acumulada en 24 hores",
+              "wind": "Vent",
+              "sea_state": "Estat de la mar",
+              "cold": "Fred",
+              "heat": "Calor",
+              "night_heat": "Calor nocturna"
+            }
+          },
+          "alert_4": {
+            "name": "Alerta 4",
+            "state": {
+              "violent_weather": "Temps violent",
+              "rain_intensity": "Intensitat de pluja",
+              "rain_amount": "Acumulació de pluja",
+              "snow_amount_24": "Neu acumulada en 24 hores",
+              "wind": "Vent",
+              "sea_state": "Estat de la mar",
+              "cold": "Fred",
+              "heat": "Calor",
+              "night_heat": "Calor nocturna"
+            }
+          },
+          "alert_5": {
+            "name": "Alerta 5",
+            "state": {
+              "violent_weather": "Temps violent",
+              "rain_intensity": "Intensitat de pluja",
+              "rain_amount": "Acumulació de pluja",
+              "snow_amount_24": "Neu acumulada en 24 hores",
+              "wind": "Vent",
+              "sea_state": "Estat de la mar",
+              "cold": "Fred",
+              "heat": "Calor",
+              "night_heat": "Calor nocturna"
+            }
+          }
+        }
+      },
+      "alert_wind": {
+        "name": "Alerta Vent",
+        "state": {
+          "opened": "Obert",
+          "closed": "Tancat"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Inici"
+          },
+          "fin": {
+            "name": "Final"
+          },
+          "fecha": {
+            "name": "Data"
+          },
+          "periodo": {
+            "name": "Període"
+          },
+          "comentario": {
+            "name": "Comentari"
+          },
+          "umbral": {
+            "name": "Llindar",
+            "state": {
+              "wind_gusts_25": "Ratxes de vent > 25 m/s",
+              "microburst": "Esclafits",
+              "tornadoes": "Tornados o mànegues",
+              "wind_40": "Ratxa màxima > 40 m/s",
+              "wind_35": "Ratxa màxima > 35 m/s",
+              "wind_30": "Ratxa màxima > 30 m/s",
+              "wind_25": "Ratxa màxima > 25 m/s",
+              "wind_20": "Ratxa màxima > 20 m/s"
+            }
+          },
+          "peligro": {
+            "name": "Perill"
+          },
+          "nivel": {
+            "name": "Nivell"
+          }
+        }
+      },
+      "alert_rain_intensity": {
+        "name": "Alerta Intensitat de Pluja",
+        "state": {
+          "opened": "Obert",
+          "closed": "Tancat"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Inici"
+          },
+          "fin": {
+            "name": "Final"
+          },
+          "fecha": {
+            "name": "Data"
+          },
+          "periodo": {
+            "name": "Període"
+          },
+          "comentario": {
+            "name": "Comentari"
+          },
+          "umbral": {
+            "name": "Llindar",
+            "state": {
+              "hail_2_cm": "Pedra de diàmetre > 2 cm",
+              "microburst": "Esclafits",
+              "intensity_40_30": "Intensitat > 40 mm / 30 minuts",
+              "intensity_20_30": "Intensitat > 20 mm / 30 minuts"
+            }
+          },
+          "peligro": {
+            "name": "Perill"
+          },
+          "nivel": {
+            "name": "Nivell"
+          }
+        }
+      },
+      "alert_rain": {
+        "name": "Alerta Pluja",
+        "state": {
+          "opened": "Obert",
+          "closed": "Tancat"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Inici"
+          },
+          "fin": {
+            "name": "Final"
+          },
+          "fecha": {
+            "name": "Data"
+          },
+          "periodo": {
+            "name": "Període"
+          },
+          "comentario": {
+            "name": "Comentari"
+          },
+          "umbral": {
+            "name": "Llindar",
+            "state": {
+              "microburst": "Esclafits",
+              "rain_200_24": "Acumulada > 200 mm /24 hores",
+              "rain_100_24": "Acumulada > 100 mm /24 hores"
+            }
+          },
+          "peligro": {
+            "name": "Perill"
+          },
+          "nivel": {
+            "name": "Nivell"
+          }
+        }
+      },
+      "alert_sea": {
+        "name": "Alerta Mar",
+        "state": {
+          "opened": "Obert",
+          "closed": "Tancat"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Inici"
+          },
+          "fin": {
+            "name": "Final"
+          },
+          "fecha": {
+            "name": "Data"
+          },
+          "periodo": {
+            "name": "Període"
+          },
+          "comentario": {
+            "name": "Comentari"
+          },
+          "umbral": {
+            "name": "Llindar",
+            "state": {
+              "microburst": "Esclafits",
+              "tornadoes": "Tornados o mànegues",
+              "waves_4": "Onades > 4.00 metres (mar brava)",
+              "waves_2_50": "Onades > 2.50 metres (maregassa)"
+            }
+          },
+          "peligro": {
+            "name": "Perill"
+          },
+          "nivel": {
+            "name": "Nivell"
+          }
+        }
+      },
+      "alert_cold": {
+        "name": "Alerta Fred",
+        "state": {
+          "opened": "Obert",
+          "closed": "Tancat"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Inici"
+          },
+          "fin": {
+            "name": "Final"
+          },
+          "fecha": {
+            "name": "Data"
+          },
+          "periodo": {
+            "name": "Període"
+          },
+          "comentario": {
+            "name": "Comentari"
+          },
+          "umbral": {
+            "name": "Llindar",
+            "state": {
+              "cold_very_intense": "Fred molt intens",
+              "cold_intense": "Fred intens"
+            }
+          },
+          "peligro": {
+            "name": "Perill"
+          },
+          "nivel": {
+            "name": "Nivell"
+          }
+        }
+      },
+      "alert_warm": {
+        "name": "Alerta Calor",
+        "state": {
+          "opened": "Obert",
+          "closed": "Tancat"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Inici"
+          },
+          "fin": {
+            "name": "Final"
+          },
+          "fecha": {
+            "name": "Data"
+          },
+          "periodo": {
+            "name": "Període"
+          },
+          "comentario": {
+            "name": "Comentari"
+          },
+          "umbral": {
+            "name": "Llindar",
+            "state": {
+              "heat_very_intense": "Calor molt intensa",
+              "heat_intense": "Calor intensa"
+            }
+          },
+          "peligro": {
+            "name": "Perill"
+          },
+          "nivel": {
+            "name": "Nivell"
+          }
+        }
+      },
+      "alert_warm_night": {
+        "name": "Alerta Calor Nocturna",
+        "state": {
+          "opened": "Obert",
+          "closed": "Tancat"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Inici"
+          },
+          "fin": {
+            "name": "Final"
+          },
+          "fecha": {
+            "name": "Data"
+          },
+          "periodo": {
+            "name": "Període"
+          },
+          "comentario": {
+            "name": "Comentari"
+          },
+          "umbral": {
+            "name": "Llindar",
+            "state": {
+              "heat_night_very_intense": "Calor nocturna molt intensa",
+              "heat_night_intense": "Calor nocturna intensa"
+            }
+          },
+          "peligro": {
+            "name": "Perill"
+          },
+          "nivel": {
+            "name": "Nivell"
+          }
+        }
+      },
+      "alert_snow": {
+        "name": "Alerta Neu",
+        "state": {
+          "opened": "Obert",
+          "closed": "Tancat"      
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Inici"
+          },
+          "fin": {
+            "name": "Final"
+          },
+          "fecha": {
+            "name": "Data"
+          },
+          "periodo": {
+            "name": "Període"
+          },
+          "comentario": {
+            "name": "Comentari"
+          },
+          "umbral": {
+            "name": "Llindar",
+            "state": {
+              "hail_2_cm": "Pedra de diàmetre > 2 cm",
+              "thickness_50_at_1000": "gruix > 50 cm a cotes superiors a 1000 metres fins a 1500 metres",
+              "thickness_30_at_800": "gruix > 30 cm a cotes superiors a 800 metres fins a 1000 metres",
+              "thickness_20_at_600": "gruix > 20 cm a cotes superiors a 600 metres fins a 800 metres",
+              "thickness_20_at_1000": "gruix > 20 cm a cotes superiors a 1000 metres fins a 1500 metres",
+              "thickness_15_at_300": "gruix > 15 cm a cotes superiors a 300 metres fins a 600 metres",
+              "thickness_10_at_800": "gruix > 10 cm a cotes superiors a 800 metres fins a 1000 metres",
+              "thickness_5_at_300": "gruix > 5 cm a cotes inferiors a 300 metres",
+              "thickness_5_at_600": "gruix > 5 cm a cotes superiors a 600 metres fins a 800 metres",
+              "thickness_2_at_300": "gruix > 2 cm a cotes superiors a 300 metres fins a 600 metres",
+              "thickness_0_at_300": "gruix ≥ 0 cm a cotes inferiors a 300 metres"
+            }
+          },
+          "peligro": {
+            "name": "Perill"
+          },
+          "nivel": {
+            "name": "Nivell"
+          }
+        }
+      }
+    }
+  }
+}
+ 

@@ -54,12 +54,9 @@ automation:
   - alias: "Meteocat forzar update manual"
     trigger:
       - platform: event
-        event_type: call_service
+        event_type: input_button.press
         event_data:
-          domain: input_button
-          service: press
-          service_data:
-            entity_id: input_button.meteocat_update
+          entity_id: input_button.meteocat_update
     action:
       - service: homeassistant.update_entity
         target:

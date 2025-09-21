@@ -1,0 +1,105 @@
+[
+  {
+    "codiMunicipi": "082384",
+    "dies": [
+      {
+        "data": "2025-09-19Z",
+        "variables": {
+          "temp": {
+            "unitat": "°C",
+            "valors": [
+              {
+                "valor": "20.1",
+                "data": "2025-09-19T00:00Z"
+              },
+              {
+                "valor": "19.4",
+                "data": "2025-09-19T01:00Z"
+              },
+              {
+                "valor": "19.2",
+                "data": "2025-09-19T23:00Z"
+              }
+            ]
+          },
+          "tempXafogor": {
+            "unitat": "°C",
+            "valors": [
+              {
+                "valor": "20.8",
+                "data": "2025-09-19T00:00Z"
+              },
+              {
+                "valor": "20.2",
+                "data": "2025-09-19T23:00Z"
+              }
+            ]
+          },
+          "precipitacio": {
+            "unitat": "mm",
+            "valor": [
+              {
+                "valor": "0.0",
+                "data": "2025-09-19T00:00Z"
+              },
+              {
+                "valor": "0.0",
+                "data": "2025-09-19T23:00Z"
+              }
+            ]
+          },
+          "estatCel": {
+            "valors": [
+              {
+                "valor": 3,
+                "data": "2025-09-19T00:00Z"
+              },
+              {
+                "valor": 21,
+                "data": "2025-09-19T23:00Z"
+              }
+            ]
+          },
+          "velVent": {
+            "unitat": "km/h",
+            "valors": [
+              {
+                "valor": "2.4",
+                "data": "2025-09-19T00:00Z"
+              },
+              {
+                "valor": "3.1",
+                "data": "2025-09-19T23:00Z"
+              }
+            ]
+          },
+          "dirVent": {
+            "valors": [
+              {
+                "valor": "345.4",
+                "data": "2025-09-19T00:00Z"
+              },
+              {
+                "valor": "351.0",
+                "data": "2025-09-19T23:00Z"
+              }
+            ]
+          },
+          "humitat": {
+            "unitat": "%",
+            "valors": [
+              {
+                "valor": "98.1",
+                "data": "2025-09-19T00:00Z"
+              },
+              {
+                "valor": "94.6",
+                "data": "2025-09-19T23:00Z"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,130 @@
+views:
+  - type: sections
+    max_columns: 4
+    icon: mdi:toggle-switch
+    path: ""
+    sections:
+      - type: grid
+        cards:
+          - type: entities
+            title: studioBricks
+            state_color: true
+            show_header_toggle: true
+            entities:
+              - entity: switch.alias_ventilador_living_1
+                icon: mdi:fan
+                name: Ventilador
+                secondary_info: last-changed
+              - entity: switch.enchufe_habitacion_socket_1
+                name: Luz & Audio piano y PC
+                secondary_info: last-changed
+              - entity: switch.regleta_antela_socket_3
+                icon: mdi:lightbulb
+                secondary_info: last-changed
+              - entity: switch.enchufe_doble_socket_1
+                name: Comedor Socket 1
+                icon: mdi:lightbulb
+                icon_color: blue
+                tap_action:
+                  action: toggle
+              - entity: switch.enchufe_doble_socket_2
+                name: Comedor Socket 2
+                icon: mdi:lightbulb
+                icon_color: blue
+                tap_action:
+                  action: toggle
+          - type: entities
+            title: Habitacion 1
+            state_color: true
+            show_header_toggle: true
+            entities:
+              - entity: switch.shelly1minig3_34b7dac6f3e4_switch_0
+                icon: mdi:lightbulb
+                secondary_info: last-changed
+                tap_action:
+                  action: toggle
+              - entity: switch.alias_ventilador_habitacion_01
+                icon: mdi:fan
+                secondary_info: last-changed
+                tap_action:
+                  action: toggle
+  - title: Salud
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: lock.puerta_principal_2
+                    state: locked
+                card:
+                  type: custom:button-card
+                  icon: mdi:lock
+                  tap_action:
+                    action: call-service
+                    service: lock.unlock
+                    service_data:
+                      entity_id: lock.puerta_principal_2
+                  styles:
+                    card:
+                      - width: 60px
+                      - height: 60px
+                      - border-radius: 10px
+                    icon:
+                      - color: green
+              - type: conditional
+                conditions:
+                  - entity: lock.puerta_principal_2
+                    state: unlocked
+                card:
+                  type: custom:button-card
+                  icon: mdi:lock-open
+                  tap_action:
+                    action: call-service
+                    service: lock.lock
+                    service_data:
+                      entity_id: lock.puerta_principal_2
+                  styles:
+                    card:
+                      - width: 60px
+                      - height: 60px
+                      - border-radius: 10px
+                    icon:
+                      - color: orange
+              - type: custom:button-card
+                icon: mdi:door-open
+                tap_action:
+                  action: call-service
+                  service: script.abrir_puerta_principal
+                styles:
+                  card:
+                    - width: 60px
+                    - height: 60px
+                    - border-radius: 10px
+                  icon:
+                    - color: blue
+      - type: custom:body-miscale-card
+        entity: bodymiscale.bms_pau
+        model: true
+        unit: false
+        show_always_details: true
+        show_body: true
+        show_buttons: true
+      - type: custom:body-miscale-card
+        entity: bodymiscale.bms_javier
+        model: true
+        unit: false
+        show_always_details: true
+        show_body: true
+        show_buttons: true
+    type: masonry
+  - type: sections
+    max_columns: 4
+    icon: mdi:clock-time-eight-outline
+    path: ""
+    sections:
+      - type: grid
+        cards:
+          - type: custom:clock-weather-card
+            entity: weather.st_quirze_del_v_vallsuau_barcelona

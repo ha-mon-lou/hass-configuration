@@ -221,6 +221,27 @@
                         "valor": 982,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "dataExtrem": "2025-09-21T15:46Z",
+                        "valor": 982.2,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "dataExtrem": "2025-09-21T16:06Z",
+                        "valor": 983.5,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "dataExtrem": "2025-09-21T16:40Z",
+                        "valor": 982.2,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -441,6 +462,27 @@
                         "data": "2025-09-21T15:00Z",
                         "dataExtrem": "2025-09-21T15:28Z",
                         "valor": 981,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "dataExtrem": "2025-09-21T15:31Z",
+                        "valor": 981.1,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "dataExtrem": "2025-09-21T16:29Z",
+                        "valor": 981.8,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "dataExtrem": "2025-09-21T16:59Z",
+                        "valor": 981.2,
                         "estat": " ",
                         "baseHoraria": "SH"
                     }
@@ -665,6 +707,27 @@
                         "valor": 100,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "dataExtrem": "2025-09-21T15:30Z",
+                        "valor": 100,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "dataExtrem": "2025-09-21T16:00Z",
+                        "valor": 100,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "dataExtrem": "2025-09-21T16:30Z",
+                        "valor": 100,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -854,6 +917,24 @@
                     {
                         "data": "2025-09-21T15:00Z",
                         "valor": 1.6,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 4.7,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 2.6,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 1.2,
                         "estat": " ",
                         "baseHoraria": "SH"
                     }
@@ -1047,6 +1128,24 @@
                         "valor": 38,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 291,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 253,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 50,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -1236,6 +1335,24 @@
                     {
                         "data": "2025-09-21T15:00Z",
                         "valor": 41.7,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 29.9,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 71.2,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 61.5,
                         "estat": " ",
                         "baseHoraria": "SH"
                     }
@@ -1429,6 +1546,24 @@
                         "valor": 2.1,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 5.1,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 4.8,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 2,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -1618,6 +1753,24 @@
                     {
                         "data": "2025-09-21T15:00Z",
                         "valor": 46,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 292,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 212,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 30,
                         "estat": " ",
                         "baseHoraria": "SH"
                     }
@@ -1811,6 +1964,24 @@
                         "valor": 18,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 17.4,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 16.6,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 16.8,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -1999,6 +2170,24 @@
                     },
                     {
                         "data": "2025-09-21T15:00Z",
+                        "valor": 100,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 100,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 100,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
                         "valor": 100,
                         "estat": " ",
                         "baseHoraria": "SH"
@@ -2193,6 +2382,24 @@
                         "valor": 981.6,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 981.7,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 982.5,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 981.8,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -2382,6 +2589,24 @@
                     {
                         "data": "2025-09-21T15:00Z",
                         "valor": 7.5,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 25.5,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 37.4,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 0.3,
                         "estat": " ",
                         "baseHoraria": "SH"
                     }
@@ -2575,6 +2800,24 @@
                         "valor": 24,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 7,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 2,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 3,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -2764,6 +3007,24 @@
                     {
                         "data": "2025-09-21T15:00Z",
                         "valor": 9,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 3,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 2,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 0,
                         "estat": " ",
                         "baseHoraria": "SH"
                     }
@@ -2988,6 +3249,27 @@
                         "valor": 18.3,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "dataExtrem": "2025-09-21T15:40Z",
+                        "valor": 17.8,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "dataExtrem": "2025-09-21T16:00Z",
+                        "valor": 17.1,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "dataExtrem": "2025-09-21T16:30Z",
+                        "valor": 16.8,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -3210,6 +3492,27 @@
                         "valor": 17.8,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "dataExtrem": "2025-09-21T15:55Z",
+                        "valor": 16.5,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "dataExtrem": "2025-09-21T16:09Z",
+                        "valor": 15.4,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "dataExtrem": "2025-09-21T16:38Z",
+                        "valor": 16.6,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -3429,6 +3732,27 @@
                     {
                         "data": "2025-09-21T15:00Z",
                         "dataExtrem": "2025-09-21T15:00Z",
+                        "valor": 100,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "dataExtrem": "2025-09-21T15:30Z",
+                        "valor": 100,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "dataExtrem": "2025-09-21T16:00Z",
+                        "valor": 100,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "dataExtrem": "2025-09-21T16:30Z",
                         "valor": 100,
                         "estat": " ",
                         "baseHoraria": "SH"
@@ -3654,6 +3978,27 @@
                         "valor": 5.1,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "dataExtrem": "2025-09-21T15:54Z",
+                        "valor": 10.6,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "dataExtrem": "2025-09-21T16:05Z",
+                        "valor": 15,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "dataExtrem": "2025-09-21T16:30Z",
+                        "valor": 5.7,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -3845,6 +4190,24 @@
                         "valor": 1,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 291,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 259,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 111,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -4033,6 +4396,24 @@
                     },
                     {
                         "data": "2025-09-21T15:00Z",
+                        "valor": 1,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 1,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 1,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
                         "valor": 1,
                         "estat": " ",
                         "baseHoraria": "SH"
@@ -4227,6 +4608,24 @@
                         "valor": 0,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 0,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 0,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 0,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -4418,6 +4817,24 @@
                         "valor": 8,
                         "estat": " ",
                         "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 30,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 29,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 7,
+                        "estat": " ",
+                        "baseHoraria": "SH"
                     }
                 ]
             },
@@ -4607,6 +5024,24 @@
                     {
                         "data": "2025-09-21T15:00Z",
                         "valor": 13.2,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "valor": 13,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "valor": 12.9,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "valor": 12.9,
                         "estat": " ",
                         "baseHoraria": "SH"
                     }
@@ -4829,6 +5264,27 @@
                         "data": "2025-09-21T15:00Z",
                         "dataExtrem": "2025-09-21T15:22Z",
                         "valor": 0.9,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T15:30Z",
+                        "dataExtrem": "2025-09-21T15:46Z",
+                        "valor": 1.8,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:00Z",
+                        "dataExtrem": "2025-09-21T16:06Z",
+                        "valor": 2.8,
+                        "estat": " ",
+                        "baseHoraria": "SH"
+                    },
+                    {
+                        "data": "2025-09-21T16:30Z",
+                        "dataExtrem": "2025-09-21T16:30Z",
+                        "valor": 0.1,
                         "estat": " ",
                         "baseHoraria": "SH"
                     }

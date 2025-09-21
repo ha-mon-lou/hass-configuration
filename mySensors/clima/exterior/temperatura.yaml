@@ -11,6 +11,13 @@
       unique_id: "temperatura_localidad"
       value_template: " {{states('sensor.st_quirze_del_v_vallsuau_barcelona_temperature')}} "
       icon_template: mdi:thermometer
+    temperatura_localidad_meteocat:
+      friendly_name: "Temperatura Local XF"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      unique_id: "temperatura_localidad_meteocat"
+      value_template: " {{states('sensor.meteocat_xf_sant_quirze_del_valles_temperature')}} "
+      icon_template: mdi:thermometer
 
     temperatura_exterior:
       friendly_name: "T. exterior"
@@ -19,7 +26,7 @@
       unique_id: "temperatura_exterior"
       value_template: >
         {% from '1oo2.jinja' import macro_1oo2 %}
-        {{ macro_1oo2('sensor.aemet_temperature','sensor.temperatura_localidad') }}
+        {{ macro_1oo2('sensor.temperatura_localidad_meteocat','sensor.temperatura_localidad') }}
       icon_template: mdi:thermometer
 
 - platform: statistics

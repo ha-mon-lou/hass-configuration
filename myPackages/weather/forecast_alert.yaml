@@ -9,7 +9,6 @@ input_boolean:
 input_number:
   forecast_threshold_wind_speed:
     name: "Umbral velocidad viento (km/h)"
-    initial: 50
     min: 0
     max: 200
     step: 1
@@ -17,7 +16,6 @@ input_number:
 
   forecast_threshold_precipitation:
     name: "Umbral precipitación (mm/h)"
-    initial: 5
     min: 0
     max: 50
     step: 0.1
@@ -25,7 +23,6 @@ input_number:
 
   forecast_threshold_temperature_low:
     name: "Temperatura baja (°C)"
-    initial: -5
     min: -10
     max: 40
     step: 1
@@ -33,7 +30,6 @@ input_number:
 
   forecast_threshold_temperature_high:
     name: "Temperatura alta (°C)"
-    initial: 35
     min: -10
     max: 40
     step: 1
@@ -41,7 +37,6 @@ input_number:
 
   forecast_threshold_humidity_high:
     name: "Humedad alta (%)"
-    initial: 98
     min: 0
     max: 100
     step: 1

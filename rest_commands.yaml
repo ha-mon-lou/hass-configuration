@@ -5,8 +5,3 @@ send_to_influxdb:
     Authorization: !secret influxdb_write_token
     Content-Type: "text/plain"
   payload: "{{ 'confort,location=casa confort=' ~ value }}"
-
-webhook:
-  url: https://webhook.site/5161d91d-5344-4924-9642-14a5c6f93bda
-  payload: "{{ value }}"
-  method: GET

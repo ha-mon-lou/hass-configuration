@@ -10,7 +10,7 @@ binary_sensor:
     name: "washing_machine_en_uso"
     device_class: running
     state: >
-      {{ states('sensor.meross_switch_01_power') | float(0) > 100 }}
+      {{ states('sensor.meross_switch_01_power') | float(0) > 10 }}
 
 automation:
   - alias: "Actualizar estado WashingMachine"
@@ -45,4 +45,4 @@ automation:
               - service: script.notifica_movil
                 data:
                   title: "WashingMachine terminada"
-                  message: "La WashingMachine ha finalizado su ciclo. Puedes vaciarla."
+                  message: "La WashingMachine ha finalizado su ciclo. Puedes vaciarla?"

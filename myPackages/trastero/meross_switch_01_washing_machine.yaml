@@ -6,6 +6,11 @@ input_boolean:
     icon: mdi:tumble-dryer
 
 binary_sensor:
+  - platform: template
+    name: "washing_machine_consumo_alto"
+    device_class: running
+    state: >
+      {{ states('sensor.meross_switch_01_power') | float(0) > 100 }}
   - platform: bayesian
     name: "washing_machine_ciclo_en_curso"
     device_class: running
@@ -42,23 +47,33 @@ automation:
     id: wm_actualizar_estado
     trigger:
       - platform: state
-        entity_id: binary_sensor.washing_machine_ciclo_en_curso
+        entity_id: 
+          - binary_sensor.washing_machine_ciclo_en_curso
+          - binary_sensor.washing_machine_consumo_alto
     action:
       - choose:
-          # Si el bayesiano pasa a ON → activamos el boolean
+          # Si cualquiera de los sensores pasa a ON → activamos el boolean
           - conditions:
-              - condition: state
-                entity_id: binary_sensor.washing_machine_ciclo_en_curso
-                state: "on"
+              - condition: or
+                conditions:
+                  - condition: state
+                    entity_id: binary_sensor.washing_machine_ciclo_en_curso
+                    state: "on"
+                  - condition: state
+                    entity_id: binary_sensor.washing_machine_consumo_alto
+                    state: "on"
             sequence:
               - service: input_boolean.turn_on
                 target:
                   entity_id: input_boolean.washingmachine_en_uso
 
-          # Si el bayesiano pasa a OFF y el boolean estaba activo → notificar
+          # Si ambos sensores están OFF y el boolean estaba activo → notificar
           - conditions:
               - condition: state
                 entity_id: binary_sensor.washing_machine_ciclo_en_curso
+                state: "off"
+              - condition: state
+                entity_id: binary_sensor.washing_machine_consumo_alto
                 state: "off"
               - condition: state
                 entity_id: input_boolean.washingmachine_en_uso
@@ -70,4 +85,4 @@ automation:
               - service: script.notifica_movil
                 data:
                   title: "WashingMachine terminada"
-                  message: "La WashingMachine ha finalizado su ciclo. Puedes vaciarla."
+                  message: "La WashingMachine ha finalizado. Puedes vaciarla?"

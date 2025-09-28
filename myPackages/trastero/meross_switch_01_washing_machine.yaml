@@ -12,7 +12,7 @@ binary_sensor:
         friendly_name: "WashingMachine consumo alto"
         device_class: running
         value_template: >
-          {{ states('sensor.meross_switch_01_power') | float(0) > 100 }}
+          {{ states('sensor.meross_switch_01_power') | float(0) > 60 }}
   - platform: bayesian
     name: "washing_machine_ciclo_en_curso"
     device_class: running

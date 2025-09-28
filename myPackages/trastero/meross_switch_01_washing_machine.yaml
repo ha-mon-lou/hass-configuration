@@ -16,7 +16,7 @@ binary_sensor:
       - platform: template
         value_template: >
           {{ states('sensor.meross_switch_01_power') | float(0) > 60
-             and (as_timestamp(now()) - as_timestamp(states.sensor.meross_switch_01_power.last_changed, 0)) > 120 }}
+             and (as_timestamp(now()) - as_timestamp(states.sensor.meross_switch_01_power.last_changed, 0)) < 120 }}
         prob_given_true: 0.98
         prob_given_false: 0.02
 

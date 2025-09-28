@@ -1,54 +1,8 @@
 {
     "actualitzat": {
-        "dataUpdate": "2025-09-21T16:32:20.475745+02:00"
+        "dataUpdate": "2025-09-28T17:00:07.617288+02:00"
     },
     "dades": [
-        {
-            "estat": {
-                "nom": "Obert",
-                "data": null
-            },
-            "meteor": {
-                "nom": "Acumulació de Pluja"
-            },
-            "avisos": [
-                {
-                    "tipus": "Avís d'Observació",
-                    "comentari": "S'observa una banda de tempestes al prelitoral central que està descarregant amb intensitat forta i torrencial. Donada la seva persistència, i amb les eines de teledetecció que disposem, és molt probable que s'hagin superat els 100 mm en 24 hores a les comarques del Baix Llobregat, del Vallès Occidental i del Bages entorn del massís de Montserrat i de Sant Llorenç del Munt i Serra de l'Obac.",
-                    "representatiu": "1",
-                    "llindar1": "Acumulada > 100 mm /24 hores",
-                    "llindar2": "Acumulada > 200 mm /24 hores",
-                    "perill": 3,
-                    "dataInici": "2025-09-21T13:41Z",
-                    "dataFi": "2025-09-21T14:41Z",
-                    "dataEmisio": "2025-09-21T13:54Z",
-                    "afectacions": [
-                        {
-                            "llindar": "Acumulada > 100 mm /24 hores",
-                            "auxiliar": false,
-                            "perill": 3,
-                            "idComarca": 40,
-                            "nivell": 1
-                        },
-                        {
-                            "llindar": "Acumulada > 100 mm /24 hores",
-                            "auxiliar": false,
-                            "perill": 3,
-                            "idComarca": 7,
-                            "nivell": 1
-                        },
-                        {
-                            "llindar": "Acumulada > 100 mm /24 hores",
-                            "auxiliar": false,
-                            "perill": 3,
-                            "idComarca": 11,
-                            "nivell": 1
-                        }
-                    ],
-                    "estat": "Vigent"
-                }
-            ]
-        },
         {
             "estat": {
                 "nom": "Obert",
@@ -64,58 +18,197 @@
                     "representatiu": "1",
                     "llindar1": "Pedra de diàmetre > 2 cm, ratxes de vent > 25 m/s, esclafits i/o tornados o mànegues",
                     "perill": 6,
-                    "dataInici": "2025-09-21T12:42Z",
-                    "dataFi": "2025-09-21T14:42Z",
-                    "dataEmisio": "2025-09-21T12:43Z",
+                    "dataInici": "2025-09-28T14:43Z",
+                    "dataFi": "2025-09-28T16:43Z",
+                    "dataEmisio": "2025-09-28T14:44Z",
                     "afectacions": [
                         {
                             "llindar": "Pedra de diàmetre > 2 cm, ratxes de vent > 25 m/s, esclafits i/o tornados o mànegues",
                             "auxiliar": false,
-                            "perill": 3,
-                            "idComarca": 40,
-                            "nivell": 1
-                        },
-                        {
-                            "llindar": "Pedra de diàmetre > 2 cm, ratxes de vent > 25 m/s, esclafits i/o tornados o mànegues",
-                            "auxiliar": false,
-                            "perill": 3,
-                            "idComarca": 3,
-                            "nivell": 1
-                        },
-                        {
-                            "llindar": "Pedra de diàmetre > 2 cm, ratxes de vent > 25 m/s, esclafits i/o tornados o mànegues",
-                            "auxiliar": false,
                             "perill": 6,
-                            "idComarca": 16,
+                            "idComarca": 9,
                             "nivell": 2
                         },
                         {
                             "llindar": "Pedra de diàmetre > 2 cm, ratxes de vent > 25 m/s, esclafits i/o tornados o mànegues",
                             "auxiliar": false,
-                            "perill": 3,
-                            "idComarca": 7,
-                            "nivell": 1
-                        },
-                        {
-                            "llindar": "Pedra de diàmetre > 2 cm, ratxes de vent > 25 m/s, esclafits i/o tornados o mànegues",
-                            "auxiliar": false,
                             "perill": 6,
-                            "idComarca": 6,
+                            "idComarca": 22,
                             "nivell": 2
+                        }
+                    ],
+                    "estat": "Vigent"
+                }
+            ]
+        },
+        {
+            "estat": {
+                "nom": "Obert",
+                "data": null
+            },
+            "meteor": {
+                "nom": "Acumulació de Pluja"
+            },
+            "avisos": [
+                {
+                    "tipus": "Avís",
+                    "dataEmisio": "2025-09-28T08:29Z",
+                    "dataInici": "2025-09-28T12:00Z",
+                    "dataFi": "2025-09-29T11:59Z",
+                    "evolucions": [
+                        {
+                            "dia": "2025-09-28T00:00Z",
+                            "comentari": "",
+                            "representatiu": 2,
+                            "llindar1": "Acumulada > 100 mm /24 hores",
+                            "llindar2": "Acumulada > 200 mm /24 hores",
+                            "distribucioGeografica": "LOCAL",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Acumulada > 200 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 9,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Acumulada > 200 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 22,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Acumulada > 100 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 37,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Acumulada > 200 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 9,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Acumulada > 200 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 22,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Acumulada > 100 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 37,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valorMaxim": null
                         },
                         {
-                            "llindar": "Pedra de diàmetre > 2 cm, ratxes de vent > 25 m/s, esclafits i/o tornados o mànegues",
-                            "auxiliar": false,
-                            "perill": 3,
-                            "idComarca": 42,
-                            "nivell": 1
-                        },
-                        {
-                            "llindar": "Pedra de diàmetre > 2 cm, ratxes de vent > 25 m/s, esclafits i/o tornados o mànegues",
-                            "auxiliar": false,
-                            "perill": 3,
-                            "idComarca": 11,
-                            "nivell": 1
+                            "dia": "2025-09-29T00:00Z",
+                            "comentari": "",
+                            "representatiu": 2,
+                            "llindar1": "Acumulada > 100 mm /24 hores",
+                            "llindar2": "Acumulada > 200 mm /24 hores",
+                            "distribucioGeografica": "LOCAL",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Acumulada > 200 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 9,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Acumulada > 200 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 22,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Acumulada > 100 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 37,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Acumulada > 200 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 9,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Acumulada > 200 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 22,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Acumulada > 100 mm /24 hores",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 37,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": null
+                                }
+                            ],
+                            "valorMaxim": null
                         }
                     ],
                     "estat": "Vigent"
@@ -132,63 +225,14 @@
             },
             "avisos": [
                 {
-                    "tipus": "Avís d'Observació",
-                    "comentari": "",
-                    "representatiu": "2",
-                    "llindar1": "Intensitat > 20 mm / 30 minuts",
-                    "llindar2": "Intensitat > 40 mm / 30 minuts",
-                    "perill": 6,
-                    "dataInici": "2025-09-21T13:07Z",
-                    "dataFi": "2025-09-21T14:07Z",
-                    "dataEmisio": "2025-09-21T13:12Z",
-                    "afectacions": [
-                        {
-                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                            "auxiliar": false,
-                            "perill": 4,
-                            "idComarca": 41,
-                            "nivell": 2
-                        },
-                        {
-                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                            "auxiliar": false,
-                            "perill": 4,
-                            "idComarca": 7,
-                            "nivell": 2
-                        },
-                        {
-                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                            "auxiliar": false,
-                            "perill": 4,
-                            "idComarca": 11,
-                            "nivell": 2
-                        },
-                        {
-                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                            "auxiliar": false,
-                            "perill": 4,
-                            "idComarca": 42,
-                            "nivell": 2
-                        },
-                        {
-                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                            "auxiliar": false,
-                            "perill": 6,
-                            "idComarca": 40,
-                            "nivell": 2
-                        }
-                    ],
-                    "estat": "Vigent"
-                },
-                {
                     "tipus": "Avís",
-                    "dataEmisio": "2025-09-21T07:42Z",
-                    "dataInici": "2025-09-21T06:00Z",
-                    "dataFi": "2025-09-22T23:59Z",
+                    "dataEmisio": "2025-09-28T08:24Z",
+                    "dataInici": "2025-09-28T06:00Z",
+                    "dataFi": "2025-09-29T23:59Z",
                     "evolucions": [
                         {
-                            "dia": "2025-09-21T00:00Z",
-                            "comentari": "Els xàfecs sovint aniran acompanyats de tempesta i localment de calamarsa o pedra petita, així com de ratxes fortes de vent.\nDe forma local es podran acumular més de 50 mm.",
+                            "dia": "2025-09-28T00:00Z",
+                            "comentari": "Els xàfecs sovint aniran acompanyats de tempesta i calamarsa o pedra petita.",
                             "representatiu": 2,
                             "llindar1": "Intensitat > 20 mm / 30 minuts",
                             "llindar2": "Intensitat > 40 mm / 30 minuts",
@@ -202,63 +246,7 @@
                                     "nom": "06-12",
                                     "afectacions": [
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 1,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 2,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 3,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 4,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 5,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 6,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 7,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 1,
@@ -266,23 +254,15 @@
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 1,
-                                            "idComarca": 10,
+                                            "idComarca": 9,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 11,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 1,
@@ -290,195 +270,19 @@
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 1,
-                                            "idComarca": 13,
+                                            "idComarca": 22,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 14,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 15,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 16,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 17,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 19,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 20,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 21,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 23,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 24,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 25,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 26,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 28,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 31,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 32,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 34,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 35,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 1,
                                             "idComarca": 36,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 38,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 39,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 40,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 41,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 42,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 43,
                                             "nivell": 1
                                         }
                                     ]
@@ -487,7 +291,7 @@
                                     "nom": "12-18",
                                     "afectacions": [
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 2,
@@ -495,63 +299,31 @@
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
-                                            "idComarca": 2,
-                                            "nivell": 2
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 2,
+                                            "perill": 1,
                                             "idComarca": 3,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 2,
+                                            "perill": 1,
                                             "idComarca": 4,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 2,
-                                            "idComarca": 5,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 3,
-                                            "idComarca": 6,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 3,
-                                            "idComarca": 7,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
                                             "idComarca": 8,
-                                            "nivell": 2
+                                            "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 40 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 4,
@@ -559,23 +331,7 @@
                                             "nivell": 2
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
-                                            "idComarca": 10,
-                                            "nivell": 2
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 11,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 2,
@@ -583,47 +339,31 @@
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 13,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
+                                            "perill": 1,
                                             "idComarca": 14,
-                                            "nivell": 2
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 15,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 3,
+                                            "perill": 1,
                                             "idComarca": 16,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 2,
+                                            "perill": 1,
                                             "idComarca": 17,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 2,
@@ -631,31 +371,7 @@
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
-                                            "idComarca": 19,
-                                            "nivell": 2
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
-                                            "idComarca": 20,
-                                            "nivell": 2
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 3,
-                                            "idComarca": 21,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 40 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 4,
@@ -663,111 +379,79 @@
                                             "nivell": 2
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 1,
+                                            "perill": 3,
                                             "idComarca": 23,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
-                                            "idComarca": 24,
-                                            "nivell": 2
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 2,
+                                            "perill": 1,
                                             "idComarca": 25,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 2,
-                                            "idComarca": 26,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
                                             "idComarca": 27,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
-                                            "idComarca": 28,
-                                            "nivell": 2
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 3,
+                                            "perill": 2,
                                             "idComarca": 29,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
-                                            "idComarca": 30,
-                                            "nivell": 2
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
-                                            "idComarca": 31,
-                                            "nivell": 2
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 3,
+                                            "perill": 2,
+                                            "idComarca": 30,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 31,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 1,
                                             "idComarca": 32,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 1,
+                                            "perill": 3,
                                             "idComarca": 33,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
-                                            "idComarca": 34,
-                                            "nivell": 2
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 3,
+                                            "perill": 1,
                                             "idComarca": 35,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 2,
@@ -775,60 +459,20 @@
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 2,
+                                            "perill": 3,
                                             "idComarca": 37,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 2,
+                                            "perill": 1,
                                             "idComarca": 38,
                                             "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 39,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 3,
-                                            "idComarca": 40,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 3,
-                                            "idComarca": 41,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 3,
-                                            "idComarca": 42,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 40 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 4,
-                                            "idComarca": 43,
-                                            "nivell": 2
                                         }
                                     ]
                                 },
@@ -836,71 +480,39 @@
                                     "nom": "18-00",
                                     "afectacions": [
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 2,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 1,
-                                            "idComarca": 3,
+                                            "idComarca": 1,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 1,
-                                            "idComarca": 6,
+                                            "idComarca": 4,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 7,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 10,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 11,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 12,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 3,
-                                            "idComarca": 13,
+                                            "idComarca": 8,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Intensitat > 40 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 9,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 1,
@@ -908,71 +520,95 @@
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 17,
+                                            "perill": 1,
+                                            "idComarca": 16,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 2,
-                                            "idComarca": 19,
+                                            "idComarca": 18,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Intensitat > 40 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 22,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 2,
-                                            "idComarca": 20,
+                                            "idComarca": 23,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 25,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 27,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 29,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 3,
-                                            "idComarca": 21,
+                                            "idComarca": 30,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 24,
+                                            "perill": 1,
+                                            "idComarca": 32,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 28,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 31,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 3,
-                                            "idComarca": 34,
+                                            "idComarca": 33,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 35,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
                                             "perill": 1,
@@ -980,35 +616,19 @@
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "dia": "2025-09-28T00:00Z",
+                                            "llindar": "Intensitat > 40 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 3,
-                                            "idComarca": 40,
-                                            "nivell": 1
+                                            "perill": 4,
+                                            "idComarca": 37,
+                                            "nivell": 2
                                         },
                                         {
-                                            "dia": "2025-09-21T00:00Z",
+                                            "dia": "2025-09-28T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 3,
-                                            "idComarca": 41,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 42,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-21T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 43,
+                                            "perill": 1,
+                                            "idComarca": 38,
                                             "nivell": 1
                                         }
                                     ]
@@ -1017,58 +637,125 @@
                             "valorMaxim": null
                         },
                         {
-                            "dia": "2025-09-22T00:00Z",
-                            "comentari": "",
+                            "dia": "2025-09-29T00:00Z",
+                            "comentari": "Els xàfecs sovint aniran acompanyats de tempesta i calamarsa o pedra petita.",
                             "representatiu": 1,
                             "llindar1": "Intensitat > 20 mm / 30 minuts",
-                            "llindar2": null,
-                            "distribucioGeografica": "LOCAL",
+                            "llindar2": "Intensitat > 40 mm / 30 minuts",
+                            "distribucioGeografica": "EXTENSA",
                             "periodes": [
                                 {
                                     "nom": "00-06",
-                                    "afectacions": null
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 8,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 9,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Intensitat > 40 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 22,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 29,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 30,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 37,
+                                            "nivell": 1
+                                        }
+                                    ]
                                 },
                                 {
                                     "nom": "06-12",
-                                    "afectacions": null
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 9,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 22,
+                                            "nivell": 1
+                                        }
+                                    ]
                                 },
                                 {
                                     "nom": "12-18",
-                                    "afectacions": null
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 9,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-09-29T00:00Z",
+                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 22,
+                                            "nivell": 1
+                                        }
+                                    ]
                                 },
                                 {
                                     "nom": "18-00",
                                     "afectacions": [
                                         {
-                                            "dia": "2025-09-22T00:00Z",
+                                            "dia": "2025-09-29T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 10,
+                                            "perill": 2,
+                                            "idComarca": 9,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-09-22T00:00Z",
+                                            "dia": "2025-09-29T00:00Z",
                                             "llindar": "Intensitat > 20 mm / 30 minuts",
                                             "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 20,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-22T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 21,
-                                            "nivell": 1
-                                        },
-                                        {
-                                            "dia": "2025-09-22T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 34,
+                                            "perill": 2,
+                                            "idComarca": 22,
                                             "nivell": 1
                                         }
                                     ]

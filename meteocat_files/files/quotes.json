@@ -1,9 +1,9 @@
 {
     "actualitzat": {
-        "dataUpdate": "2025-09-21T18:42:21.582003+02:00"
+        "dataUpdate": "2025-09-28T13:50:07.229264+02:00"
     },
     "client": {
-        "nom": "912 Ramon Loureiro Alonso"
+        "nom": "918 Ramon Loureiro Alonso"
     },
     "plans": [
         {
@@ -17,22 +17,29 @@
             "nom": "XEMA",
             "periode": "Mensual",
             "maxConsultes": 750,
-            "consultesRestants": 694,
-            "consultesRealitzades": 56
+            "consultesRestants": 445,
+            "consultesRealitzades": 305
+        },
+        {
+            "nom": "XDDE",
+            "periode": "Mensual",
+            "maxConsultes": 250,
+            "consultesRestants": 178,
+            "consultesRealitzades": 72
         },
         {
             "nom": "Prediccio",
             "periode": "Mensual",
             "maxConsultes": 100,
-            "consultesRestants": 89,
-            "consultesRealitzades": 11
+            "consultesRestants": 49,
+            "consultesRealitzades": 51
         },
         {
             "nom": "Quota",
             "periode": "Mensual",
             "maxConsultes": 300,
-            "consultesRestants": 292,
-            "consultesRealitzades": 8
+            "consultesRestants": 247,
+            "consultesRealitzades": 53
         }
     ]
 }

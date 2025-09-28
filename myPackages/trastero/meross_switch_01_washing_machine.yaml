@@ -12,10 +12,10 @@ binary_sensor:
     prior: 0.7  # <-- sube el prior
     probability_threshold: 0.8
     observations:
-      # Consumo alto inmediato (>400W)
+      # Consumo alto inmediato (>100W)
       - platform: template
         value_template: >
-          {{ states('sensor.meross_switch_01_power') | float(0) > 400 }}
+          {{ states('sensor.meross_switch_01_power') | float(0) > 100 }}
         prob_given_true: 0.9
         prob_given_false: 0.1
 

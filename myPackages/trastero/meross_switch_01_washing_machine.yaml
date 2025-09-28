@@ -9,7 +9,7 @@ binary_sensor:
   - platform: bayesian
     name: "washing_machine_ciclo_en_curso"
     device_class: running
-    prior: 0.2
+    prior: 0.7  # <-- sube el prior
     probability_threshold: 0.8
     observations:
       # Consumo alto inmediato (>400W)

@@ -12,6 +12,13 @@ binary_sensor:
     prior: 0.2
     probability_threshold: 0.8
     observations:
+      # Consumo alto inmediato (>400W)
+      - platform: template
+        value_template: >
+          {{ states('sensor.meross_switch_01_power') | float(0) > 400 }}
+        prob_given_true: 0.9
+        prob_given_false: 0.1
+
       # Consumo alto sostenido (>400W durante >3min) → seguro en uso
       - platform: template
         value_template: >

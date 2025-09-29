@@ -195,7 +195,12 @@ automation:
         target:
           entity_id: input_select.ventilador_despacho_modo_auto
         data:
-          option: "auto"
+          option: "manual"
+      - delay: "00:00:01"
+      - action: script.selector_ventilador
+        data:
+          dispositivo: ventilador_despacho
+          valor: velocidad 1
 
   - alias: Ramon - Tocando el piano
     trigger:

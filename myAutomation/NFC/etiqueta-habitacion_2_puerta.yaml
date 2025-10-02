@@ -1,0 +1,15 @@
+- id: "nfc_etiqueta_habitacion_2_puerta"
+  alias: NFC etiqueta habitacion 2 puerta
+  mode: single
+  trigger:
+    - platform: conversation
+      command: habitacion dos
+    - platform: tag
+      tag_id: !secret nfc_tag_ha_bedroom_2_door
+
+  action:
+    - action: switch.toggle
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.regleta_antela_socket_4_2

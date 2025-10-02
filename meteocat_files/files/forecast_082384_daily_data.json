@@ -2,91 +2,11 @@
     "codiMunicipi": "082384",
     "dies": [
         {
-            "data": "2025-09-28Z",
-            "variables": {
-                "tmax": {
-                    "unitat": "°C",
-                    "valor": "26.5"
-                },
-                "tmin": {
-                    "unitat": "°C",
-                    "valor": "17.2"
-                },
-                "precipitacio": {
-                    "unitat": "%",
-                    "valor": "47.6"
-                },
-                "estatCel": {
-                    "valor": 24
-                }
-            }
-        },
-        {
-            "data": "2025-09-29Z",
-            "variables": {
-                "tmax": {
-                    "unitat": "°C",
-                    "valor": "25.9"
-                },
-                "tmin": {
-                    "unitat": "°C",
-                    "valor": "16.4"
-                },
-                "precipitacio": {
-                    "unitat": "%",
-                    "valor": "72.7"
-                },
-                "estatCel": {
-                    "valor": 5
-                }
-            }
-        },
-        {
-            "data": "2025-09-30Z",
-            "variables": {
-                "tmax": {
-                    "unitat": "°C",
-                    "valor": "25.3"
-                },
-                "tmin": {
-                    "unitat": "°C",
-                    "valor": "15.9"
-                },
-                "precipitacio": {
-                    "unitat": "%",
-                    "valor": "50.0"
-                },
-                "estatCel": {
-                    "valor": 23
-                }
-            }
-        },
-        {
-            "data": "2025-10-01Z",
-            "variables": {
-                "tmax": {
-                    "unitat": "°C",
-                    "valor": "25.5"
-                },
-                "tmin": {
-                    "unitat": "°C",
-                    "valor": "15.5"
-                },
-                "precipitacio": {
-                    "unitat": "%",
-                    "valor": "18.2"
-                },
-                "estatCel": {
-                    "valor": 3
-                }
-            }
-        },
-        {
             "data": "2025-10-02Z",
             "variables": {
                 "tmax": {
                     "unitat": "°C",
-                    "valor": "24.5"
+                    "valor": "24.2"
                 },
                 "tmin": {
                     "unitat": "°C",
@@ -94,7 +14,7 @@
                 },
                 "precipitacio": {
                     "unitat": "%",
-                    "valor": "4.8"
+                    "valor": "4.5"
                 },
                 "estatCel": {
                     "valor": 1
@@ -106,18 +26,18 @@
             "variables": {
                 "tmax": {
                     "unitat": "°C",
-                    "valor": "24.8"
+                    "valor": "24.1"
                 },
                 "tmin": {
                     "unitat": "°C",
-                    "valor": "14.2"
+                    "valor": "13.5"
                 },
                 "precipitacio": {
                     "unitat": "%",
-                    "valor": "8.3"
+                    "valor": "4.2"
                 },
                 "estatCel": {
-                    "valor": 1
+                    "valor": 3
                 }
             }
         },
@@ -126,15 +46,15 @@
             "variables": {
                 "tmax": {
                     "unitat": "°C",
-                    "valor": "24.2"
+                    "valor": "25.1"
                 },
                 "tmin": {
                     "unitat": "°C",
-                    "valor": "13.1"
+                    "valor": "14.1"
                 },
                 "precipitacio": {
                     "unitat": "%",
-                    "valor": "13.6"
+                    "valor": "4.5"
                 },
                 "estatCel": {
                     "valor": 3
@@ -146,18 +66,98 @@
             "variables": {
                 "tmax": {
                     "unitat": "°C",
-                    "valor": "24.9"
+                    "valor": "25.5"
                 },
                 "tmin": {
                     "unitat": "°C",
-                    "valor": "14.3"
+                    "valor": "16.2"
                 },
                 "precipitacio": {
                     "unitat": "%",
-                    "valor": "17.4"
+                    "valor": "13.6"
                 },
                 "estatCel": {
                     "valor": 3
+                }
+            }
+        },
+        {
+            "data": "2025-10-06Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "25.2"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "15.8"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "13.6"
+                },
+                "estatCel": {
+                    "valor": 3
+                }
+            }
+        },
+        {
+            "data": "2025-10-07Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "25.1"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "15.9"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "16.7"
+                },
+                "estatCel": {
+                    "valor": 3
+                }
+            }
+        },
+        {
+            "data": "2025-10-08Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "25.7"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "16.7"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "33.3"
+                },
+                "estatCel": {
+                    "valor": 3
+                }
+            }
+        },
+        {
+            "data": "2025-10-09Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "24.5"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "15.7"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "47.8"
+                },
+                "estatCel": {
+                    "valor": 23
                 }
             }
         }

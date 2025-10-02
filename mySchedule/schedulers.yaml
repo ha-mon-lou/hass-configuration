@@ -55,10 +55,10 @@ lavavajillas_schedule:
       to: "08:00:00"
   saturday:
     - from: "00:05:00"
-      to: "23:59:00"
+      to: "23:59:59"
   sunday:
-    - from: "00:05:00"
-      to: "23:59:00"
+    - from: "00:00:00"
+      to: "23:59:59"
 
 calefaccion_schedule:
   name: "calefaccion schedule"

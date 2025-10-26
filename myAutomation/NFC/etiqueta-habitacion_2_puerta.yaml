@@ -6,6 +6,8 @@
       command: habitacion dos
     - platform: tag
       tag_id: !secret nfc_tag_ha_bedroom_2_door
+    - platform: tag
+      tag_id: !secret nfc_tag_ha_bedroom_2_inside
 
   action:
     - action: switch.toggle

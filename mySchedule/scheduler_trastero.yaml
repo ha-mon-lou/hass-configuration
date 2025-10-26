@@ -1,0 +1,11 @@
+trastero_schedule:
+  name: "trastero schedule"
+  thursday:
+    - from: "20:15:00"
+      to: "20:20:00"
+  saturday:
+    - from: "00:05:00"
+      to: "23:59:59"
+  sunday:
+    - from: "00:00:00"
+      to: "23:59:59"

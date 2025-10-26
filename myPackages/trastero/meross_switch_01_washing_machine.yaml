@@ -49,7 +49,7 @@ automation:
     id: wm_actualizar_estado
     trigger:
       - platform: state
-        entity_id: 
+        entity_id:
           - binary_sensor.washing_machine_ciclo_en_curso
           - binary_sensor.washing_machine_consumo_alto
     action:
@@ -84,7 +84,3 @@ automation:
               - service: input_boolean.turn_off
                 target:
                   entity_id: input_boolean.washingmachine_en_uso
-              - service: script.notifica_movil
-                data:
-                  title: "WashingMachine terminada"
-                  message: "La WashingMachine ha finalizado. Puedes vaciarla?"

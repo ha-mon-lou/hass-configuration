@@ -22,6 +22,7 @@ switch.enchufe_doble_socket_1:
 switch.regleta_antela_socket_4_2:
   custom_etiquetas:
     - alerta
+    - nocturno
 
 switch.enchufe_doble_socket_2:
   custom_etiquetas:

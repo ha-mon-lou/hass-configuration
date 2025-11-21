@@ -24,7 +24,7 @@ from .const import DOMAIN, PLATFORMS
 _LOGGER = logging.getLogger(__name__)
 
 # Versión
-__version__ = "3.1.0"
+__version__ = "4.0.0"
 
 # Definir el esquema de configuración CONFIG_SCHEMA
 CONFIG_SCHEMA = vol.Schema(
@@ -44,6 +44,7 @@ CONFIG_SCHEMA = vol.Schema(
                 vol.Optional("region_id"): cv.string,
                 vol.Required("latitude"): cv.latitude,
                 vol.Required("longitude"): cv.longitude,
+                vol.Required("altitude"): vol.Coerce(float),
             }
         )
     },
@@ -120,7 +121,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     required_fields = [
         "api_key", "town_name", "town_id", "variable_name",
         "variable_id", "station_name", "station_id", "province_name",
-        "province_id", "region_name", "region_id", "latitude", "longitude"
+        "province_id", "region_name", "region_id", "latitude", "longitude", "altitude"
     ]
     missing_fields = [field for field in required_fields if field not in entry_data]
     if missing_fields:
@@ -156,6 +157,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         f"Provincia '{entry_data['province_name']}' (ID: {entry_data['province_id']}), "
         f"Comarca '{entry_data['region_name']}' (ID: {entry_data['region_id']}), "
         f"Coordenadas: ({entry_data['latitude']}, {entry_data['longitude']})."
+        f"Altitud: ({entry_data['altitude']})."
     )
 
     # Lista de coordinadores con sus clases
@@ -177,6 +179,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         ("lightning_file_coordinator", "MeteocatLightningFileCoordinator"),
         ("sun_coordinator", "MeteocatSunCoordinator"),
         ("sun_file_coordinator", "MeteocatSunFileCoordinator"),
+        ("moon_coordinator", "MeteocatMoonCoordinator"),
+        ("moon_file_coordinator", "MeteocatMoonFileCoordinator"),
     ]
 
     hass.data.setdefault(DOMAIN, {})
@@ -261,6 +265,7 @@ async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
                 files_folder / f"forecast_{town_id.lower()}_hourly_data.json",
                 files_folder / f"forecast_{town_id.lower()}_daily_data.json",
                 files_folder / f"sun_{town_id.lower()}_data.json",
+                files_folder / f"moon_{town_id.lower()}_data.json",
             ])
 
     # 3. Archivos de comarca (region_id)

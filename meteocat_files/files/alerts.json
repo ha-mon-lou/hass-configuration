@@ -1,6 +1,160 @@
 {
     "actualitzat": {
-        "dataUpdate": "2025-10-19T18:37:15.043425+02:00"
+        "dataUpdate": "2025-11-20T22:36:56.512673+01:00"
     },
-    "dades": []
+    "dades": [
+        {
+            "estat": {
+                "nom": "Obert",
+                "data": null
+            },
+            "meteor": {
+                "nom": "Neu"
+            },
+            "avisos": [
+                {
+                    "tipus": "Avís",
+                    "dataEmisio": "2025-11-20T16:43Z",
+                    "dataInici": "2025-11-20T18:00Z",
+                    "dataFi": "2025-11-21T23:59Z",
+                    "evolucions": [
+                        {
+                            "dia": "2025-11-20T00:00Z",
+                            "comentari": "La cota de neu se situarà al voltant de 300 o 400 metres, si bé es podrà veure nevar localment fins als 200 metres.",
+                            "representatiu": 1,
+                            "llindar1": "gruix >= 0 cm a cotes > 200 metres",
+                            "llindar2": null,
+                            "distribucioGeografica": "LOCAL",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-11-20T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 2,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-11-20T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 10,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valorMaxim": null
+                        },
+                        {
+                            "dia": "2025-11-21T00:00Z",
+                            "comentari": "Nevarà a totes les cotes de la zona avisada. A causa del vent hi haurà borrufa (neu transportada) a altres punts del Pirineu. A més, a les cotes més altes es podrà produir el fenomen del torb.\nDe matinada a l'Empordà, la cota de neu se situarà al voltant de 300 o 400 metres, si bé es podrà veure nevar localment fins als 200 metres.",
+                            "representatiu": 1,
+                            "llindar1": "gruix > 5 cm a cotes > 700 metres",
+                            "llindar2": null,
+                            "distribucioGeografica": "LOCAL",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-11-21T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 2,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-11-21T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 10,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2025-11-21T00:00Z",
+                                            "llindar": "gruix > 5 cm a cotes > 700 metres",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 39,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-11-21T00:00Z",
+                                            "llindar": "gruix > 5 cm a cotes > 700 metres",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 39,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-11-21T00:00Z",
+                                            "llindar": "gruix > 5 cm a cotes > 700 metres",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 39,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2025-11-21T00:00Z",
+                                            "llindar": "gruix > 5 cm a cotes > 700 metres",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 39,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valorMaxim": null
+                        }
+                    ],
+                    "estat": "Vigent"
+                }
+            ]
+        },
+        {
+            "estat": {
+                "nom": "Obert",
+                "data": null
+            },
+            "meteor": {
+                "nom": "Estat de la mar"
+            },
+            "avisos": []
+        }
+    ]
 }

@@ -1,5 +1,5 @@
 DOMAIN = "octopus_energy"
-INTEGRATION_VERSION = "17.0.3"
+INTEGRATION_VERSION = "17.1.1"
 
 REFRESH_RATE_IN_MINUTES_ACCOUNT = 360 # 6 hours
 REFRESH_RATE_IN_MINUTES_INTELLIGENT = 3
@@ -216,6 +216,7 @@ REPAIR_INTELLIGENT_DEVICE_REMOVED = "intelligent_device_removed_{}"
 REPAIR_TARIFF_RATES_EMPTY = "tariff_rates_empty_{}_{}"
 REPAIR_SAVING_SESSION_BINARY_SENSOR_DEPRECATED = "saving_session_binary_sensor_deprecated"
 REPAIR_FREE_ELECTRICITY_SESSION_BINARY_SENSOR_DEPRECATED = "free_electricity_session_binary_sensor_deprecated"
+REPAIR_GREENNESS_FORECAST_BINARY_SENSOR_DEPRECATED = "greenness_forecast_session_binary_sensor_deprecated"
 
 # During BST, two records are returned before the rest of the data is available
 MINIMUM_CONSUMPTION_DATA_LENGTH = 3

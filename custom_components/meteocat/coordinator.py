@@ -4,18 +4,30 @@ import json
 import aiofiles
 import logging
 import asyncio
+import random
 import unicodedata
 from pathlib import Path
-from astral.sun import sun
-from astral import LocationInfo
 from datetime import date, datetime, timedelta, timezone, time
 from zoneinfo import ZoneInfo
-from typing import Dict, Any
+from typing import List, Dict, Any, Optional
 
 from homeassistant.core import HomeAssistant, EVENT_HOMEASSISTANT_START
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.components.weather import Forecast
+
+from solarmoonpy.moon import (
+    moon_phase,
+    moon_day,
+    moon_rise_set,
+    illuminated_percentage,
+    moon_distance,
+    moon_angular_diameter,
+    lunation_number,
+    get_moon_phase_name,
+    get_lunation_duration
+)
+from solarmoonpy.location import Location, LocationInfo
 
 from meteocatpy.data import MeteocatStationData
 from meteocatpy.uvi import MeteocatUviData
@@ -40,6 +52,10 @@ from .const import (
     DEFAULT_VALIDITY_DAYS,
     DEFAULT_VALIDITY_HOURS,
     DEFAULT_VALIDITY_MINUTES,
+    DEFAULT_UVI_LOW_VALIDITY_HOURS,
+    DEFAULT_UVI_LOW_VALIDITY_MINUTES,
+    DEFAULT_UVI_HIGH_VALIDITY_HOURS,
+    DEFAULT_UVI_HIGH_VALIDITY_MINUTES,
     DEFAULT_ALERT_VALIDITY_TIME,
     DEFAULT_QUOTES_VALIDITY_TIME,
     ALERT_VALIDITY_MULTIPLIER_100,
@@ -48,7 +64,8 @@ from .const import (
     ALERT_VALIDITY_MULTIPLIER_DEFAULT,
     DEFAULT_LIGHTNING_VALIDITY_TIME,
     DEFAULT_LIGHTNING_VALIDITY_HOURS,
-    DEFAULT_LIGHTNING_VALIDITY_MINUTES
+    DEFAULT_LIGHTNING_VALIDITY_MINUTES,
+    PREDICCIO_HIGH_QUOTA_LIMIT
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -71,6 +88,8 @@ DEFAULT_LIGHTNING_UPDATE_INTERVAL = timedelta(minutes=10)
 DEFAULT_LIGHTNING_FILE_UPDATE_INTERVAL = timedelta(minutes=5)
 DEFAULT_SUN_UPDATE_INTERVAL = timedelta(minutes=1)
 DEFAULT_SUN_FILE_UPDATE_INTERVAL = timedelta(seconds=30)
+DEFAULT_MOON_UPDATE_INTERVAL = timedelta(minutes=1)
+DEFAULT_MOON_FILE_UPDATE_INTERVAL = timedelta(seconds=30)
 
 # Definir la zona horaria local
 TIMEZONE = ZoneInfo("Europe/Madrid")
@@ -140,6 +159,50 @@ async def _update_quotes(hass: HomeAssistant, plan_name: str) -> None:
             _LOGGER.error("Error al decodificar quotes.json, posiblemente el archivo está corrupto.")
         except Exception as e:
             _LOGGER.exception("Error inesperado al actualizar las cuotas en quotes.json: %s", str(e))
+
+class BaseFileCoordinator(DataUpdateCoordinator):
+    """
+    Coordinador base para leer datos desde archivos JSON.
+
+    Proporciona un pequeño desfase aleatorio antes de cada actualización
+    para evitar colisión entre el coordinador que crea el JSON y el que lo lee.
+
+    Cada coordinador que herede de esta clase debe implementar su propio
+    método `_async_update_data()` para definir la lógica de lectura y validación. 
+    """
+
+    def __init__(self, hass, name: str, update_interval: timedelta, min_delay: float = 1.0, max_delay: float = 2.0):
+        """
+        Inicializa el coordinador base.
+
+        Args:
+            hass (HomeAssistant): Instancia de Home Assistant.
+            name (str): Nombre identificativo del coordinador.
+            update_interval (timedelta): Intervalo de actualización.
+            min_delay (float): Límite inferior del desfase aleatorio en segundos (default: 1.0).
+            max_delay (float): Límite superior del desfase aleatorio en segundos (default: 2.0).
+        """
+        super().__init__(hass, _LOGGER, name=name, update_interval=update_interval)
+        self._min_delay = min_delay
+        self._max_delay = max_delay
+        self._first_delay = random.uniform(min_delay, max_delay)
+        self._initialized = False
+
+    async def _apply_random_delay(self):
+        """
+        Aplica un desfase aleatorio leve antes de la lectura.
+
+        - En la primera ejecución: usa un desfase fijo (_first_delay)
+        - En las siguientes: aplica un desfase aleatorio entre 1 y 2 segundos
+        """
+        if not self._initialized:
+            delay = self._first_delay
+            self._initialized = True
+        else:
+            delay = random.uniform(self._min_delay, self._max_delay)
+
+        _LOGGER.debug("%s aplicando desfase aleatorio de %.2fs", self.name, delay)
+        await asyncio.sleep(delay)
 
 class MeteocatSensorCoordinator(DataUpdateCoordinator):
     """Coordinator para manejar la actualización de datos de los sensores."""
@@ -301,6 +364,7 @@ class MeteocatUviCoordinator(DataUpdateCoordinator):
     ):
         self.api_key = entry_data["api_key"]
         self.town_id = entry_data["town_id"]
+        self.limit_prediccio = entry_data["limit_prediccio"]
         self.meteocat_uvi_data = MeteocatUviData(self.api_key)
 
         # Ruta persistente en /config/meteocat_files/files
@@ -314,56 +378,83 @@ class MeteocatUviCoordinator(DataUpdateCoordinator):
             update_interval=DEFAULT_UVI_UPDATE_INTERVAL,
         )
 
-    async def is_uvi_data_valid(self) -> dict | None:
-        """Comprueba si el archivo JSON contiene datos válidos para el día actual y devuelve los datos si son válidos."""
-        try:
-            if not self.uvi_file.exists():
-                _LOGGER.info("El archivo %s no existe. Se considerará inválido.", self.uvi_file)
-                return None
+    async def is_uvi_data_valid(self) -> Optional[dict]:
+        """Valida datos UVI: misma lógica que predicción, basada en limit_prediccio.
 
-            async with aiofiles.open(self.uvi_file, "r", encoding="utf-8") as file:
-                content = await file.read()
+        - Si `limit_prediccio >= 550` → actualiza **el día siguiente** después de las DEFAULT_VALIDITY_HOURS:DEFAULT_VALIDITY_MINUTES.
+        - Si `limit_prediccio < 550`  → actualiza **dos días después** después de las DEFAULT_VALIDITY_HOURS:DEFAULT_VALIDITY_MINUTES.
+        """
+        if not self.uvi_file.exists():
+            _LOGGER.debug("Archivo UVI no existe: %s", self.uvi_file)
+            return None
+
+        try:
+            async with aiofiles.open(self.uvi_file, "r", encoding="utf-8") as f:
+                content = await f.read()
                 data = json.loads(content)
 
-            # Validaciones de estructura
+            # Validar estructura básica
             if not isinstance(data, dict) or "uvi" not in data or not isinstance(data["uvi"], list) or not data["uvi"]:
-                _LOGGER.warning("Estructura inválida o sin datos en %s: %s", self.uvi_file, data)
+                _LOGGER.warning("Estructura UVI inválida en %s", self.uvi_file)
                 return None
 
-            # Obtener la fecha del primer elemento con protección
+            # Fecha del primer día
             try:
-                first_date = datetime.strptime(data["uvi"][0].get("date"), "%Y-%m-%d").date()
+                first_date_str = data["uvi"][0].get("date")
+                first_date = datetime.strptime(first_date_str, "%Y-%m-%d").date()
             except Exception as exc:
-                _LOGGER.warning("Fecha inválida en %s: %s", self.uvi_file, exc)
+                _LOGGER.warning("Fecha UVI inválida en %s: %s", self.uvi_file, exc)
                 return None
 
-            today = datetime.now(timezone.utc).date()
-            current_time = datetime.now(timezone.utc).time()
+            # Fecha y hora actual en zona local (Europe/Madrid)
+            now_local = datetime.now(TIMEZONE)
+            today = now_local.date()
+            current_time_local = now_local.time()
+            # Horas para actualización según límite de cuota
+            min_update_time_high = time(DEFAULT_UVI_HIGH_VALIDITY_HOURS, DEFAULT_UVI_HIGH_VALIDITY_MINUTES)  # Hora para cuota alta
+            min_update_time_low = time(DEFAULT_UVI_LOW_VALIDITY_HOURS, DEFAULT_UVI_LOW_VALIDITY_MINUTES)  # Hora para cuota baja
+            # Diferencia en días
+            days_diff = (today - first_date).days
+
+            # === LÓGICA DINÁMICA SEGÚN CUOTA ===
+            if self.limit_prediccio >= PREDICCIO_HIGH_QUOTA_LIMIT:
+                should_update = days_diff >= DEFAULT_VALIDITY_DAYS and current_time_local >= min_update_time_high
+            else:
+                should_update = days_diff > DEFAULT_VALIDITY_DAYS and current_time_local >= min_update_time_low
 
             _LOGGER.debug(
-                "Validando datos UVI en %s: Fecha de hoy: %s, Fecha del primer elemento: %s, Hora actual: %s",
-                self.uvi_file,
-                today,
+                "[UVI %s] Validación: primer_día=%s, hoy=%s → días=%d, "
+                "cuota=%d (%s), hora=%s ≥ %s → actualizar=%s",
+                self.town_id,
                 first_date,
-                current_time,
+                today,
+                days_diff,
+                self.limit_prediccio,
+                "ALTA" if self.limit_prediccio >= 550 else "BAJA",
+                current_time_local.strftime("%H:%M"),
+                min_update_time_high.strftime("%H:%M") if self.limit_prediccio >= 550 else min_update_time_low.strftime("%H:%M"),
+                should_update,
             )
 
-            if (today - first_date).days > DEFAULT_VALIDITY_DAYS and current_time >= time(DEFAULT_VALIDITY_HOURS, DEFAULT_VALIDITY_MINUTES):
-                _LOGGER.info("Los datos en %s son antiguos. Se procederá a llamar a la API.", self.uvi_file)
+            if should_update:
+                _LOGGER.info(
+                    "Datos UVI obsoletos → llamando API (town=%s, cuota=%d)",
+                    self.town_id, self.limit_prediccio
+                )
                 return None
 
-            _LOGGER.info("Los datos en %s son válidos. Se usarán sin llamar a la API.", self.uvi_file)
+            _LOGGER.debug("Datos UVI válidos → usando caché")
             return data
 
         except json.JSONDecodeError:
-            _LOGGER.error("El archivo %s contiene JSON inválido o está corrupto.", self.uvi_file)
+            _LOGGER.error("JSON corrupto en %s", self.uvi_file)
             return None
         except Exception as e:
-            _LOGGER.error("Error al validar el archivo JSON del índice UV: %s", e)
+            _LOGGER.error("Error validando UVI: %s", e)
             return None
 
-    async def _async_update_data(self) -> Dict:
-        """Actualiza los datos de UVI desde la API de Meteocat."""
+    async def _async_update_data(self) -> List[Dict]:
+        """Actualiza los datos de UVI desde la API de Meteocat o caché."""
         try:
             valid_data = await self.is_uvi_data_valid()
             if valid_data:
@@ -406,10 +497,9 @@ class MeteocatUviCoordinator(DataUpdateCoordinator):
             _LOGGER.warning("Usando datos en caché para la ciudad %s.", self.town_id)
             return cached_data.get("uvi", [])
         _LOGGER.error("No se pudo obtener datos UVI ni cargar caché.")
-        return None
+        return []
 
-
-class MeteocatUviFileCoordinator(DataUpdateCoordinator):
+class MeteocatUviFileCoordinator(BaseFileCoordinator):
     """Coordinator to read and process UV data from a file."""
 
     def __init__(
@@ -421,9 +511,10 @@ class MeteocatUviFileCoordinator(DataUpdateCoordinator):
 
         super().__init__(
             hass,
-            _LOGGER,
             name=f"{DOMAIN} Uvi File Coordinator",
             update_interval=DEFAULT_UVI_SENSOR_UPDATE_INTERVAL,
+            min_delay=1.0,  # Rango predeterminado
+            max_delay=2.0,  # Rango predeterminado
         )
 
         # Ruta persistente en /config/meteocat_files/files
@@ -432,6 +523,9 @@ class MeteocatUviFileCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self):
         """Read and process UV data for the current hour from the file asynchronously."""
+        # 🔸 Añadimos un pequeño desfase aleatorio (1 a 2 segundos) basados en el BaseFileCoordinator
+        await self._apply_random_delay()
+
         try:
             async with aiofiles.open(self._file_path, "r", encoding="utf-8") as file:
                 raw = await file.read()
@@ -494,6 +588,7 @@ class MeteocatEntityCoordinator(DataUpdateCoordinator):
         self.station_id = entry_data["station_id"]
         self.variable_name = entry_data["variable_name"]
         self.variable_id = entry_data["variable_id"]
+        self.limit_prediccio = entry_data["limit_prediccio"]  # Límite de llamada a la API para PREDICCIONES
         self.meteocat_forecast = MeteocatForecast(self.api_key)
 
         # Ruta persistente en /config/meteocat_files/files
@@ -507,52 +602,85 @@ class MeteocatEntityCoordinator(DataUpdateCoordinator):
             name=f"{DOMAIN} Entity Coordinator",
             update_interval=DEFAULT_ENTITY_UPDATE_INTERVAL,
         )
-
+    
+    # --------------------------------------------------------------------- #
+    #  VALIDACIÓN DINÁMICA DE DATOS DE PREDICCIÓN
+    # --------------------------------------------------------------------- #
     async def validate_forecast_data(self, file_path: Path) -> dict:
-        """Valida y retorna datos de predicción si son válidos."""
+        """Valida y retorna datos de predicción si son válidos.
+        
+        - Si `limit_prediccio >= 550` → actualiza **el día siguiente** después de las DEFAULT_VALIDITY_HOURS:DEFAULT_VALIDITY_MINUTES.
+        - Si `limit_prediccio < 550`  → actualiza **dos días después** después de las DEFAULT_VALIDITY_HOURS:DEFAULT_VALIDITY_MINUTES.
+        """
         if not file_path.exists():
-            _LOGGER.info("El archivo %s no existe. Se considerará inválido.", file_path)
+            _LOGGER.warning("El archivo %s no existe. Se considerará inválido.", file_path)
             return None
         try:
             async with aiofiles.open(file_path, "r", encoding="utf-8") as f:
                 content = await f.read()
                 data = json.loads(content)
 
-            # Obtener la fecha del primer día
-            first_date = datetime.fromisoformat(data["dies"][0]["data"].rstrip("Z")).date()
+            # Fecha del primer día de predicción (solo fecha)
+            first_date_str = data["dies"][0]["data"].rstrip("Z")
+            first_date = datetime.fromisoformat(first_date_str).date()
             today = datetime.now(timezone.utc).date()
-            current_time = datetime.now(timezone.utc).time()
 
-            # Log detallado
-            _LOGGER.info(
-                "Validando datos en %s: Fecha de hoy: %s, Fecha del primer elemento: %s",
-                file_path,
-                today,
+            # Hora actual en zona local (Europe/Madrid)
+            current_time_local = datetime.now(TIMEZONE).time()
+            min_update_time = time(DEFAULT_VALIDITY_HOURS, DEFAULT_VALIDITY_MINUTES)
+
+            days_diff = (today - first_date).days
+
+            # -----------------------------------------------------------------
+            #  Lógica según cuota
+            # -----------------------------------------------------------------
+            if self.limit_prediccio >= PREDICCIO_HIGH_QUOTA_LIMIT:
+                # Cuota alta → actualiza cuando los datos son de ayer (o antes) + hora OK
+                should_update = days_diff >= DEFAULT_VALIDITY_DAYS and current_time_local >= min_update_time
+            else:
+                # Cuota baja → actualiza solo cuando los datos son de anteayer + hora OK
+                should_update = days_diff > DEFAULT_VALIDITY_DAYS and current_time_local >= min_update_time
+
+            # -----------------------------------------------------------------
+            #  Logs detallados
+            # -----------------------------------------------------------------
+            _LOGGER.debug(
+                "[%s] Validación: primer_día=%s, hoy=%s → días=%d, "
+                "cuota=%d (%s), hora_local=%s ≥ %s → actualizar=%s",
+                file_path.name,
                 first_date,
-                current_time,
+                today,
+                days_diff,
+                self.limit_prediccio,
+                "ALTA" if self.limit_prediccio >= 550 else "BAJA",
+                current_time_local.strftime("%H:%M"),
+                min_update_time.strftime("%H:%M"),
+                should_update,
             )
 
-            # Verificar si la antigüedad es mayor a un día
-            if (today - first_date).days > DEFAULT_VALIDITY_DAYS and current_time >= time(
-                DEFAULT_VALIDITY_HOURS, DEFAULT_VALIDITY_MINUTES
-            ):
-                _LOGGER.info(
-                    "Los datos en %s son antiguos. Se procederá a llamar a la API.",
-                    file_path,
+            if should_update:
+                _LOGGER.debug(
+                    "Datos obsoletos o actualizables → llamando API (%s, cuota=%d)",
+                    file_path.name, self.limit_prediccio
                 )
-                return None
-            _LOGGER.info("Los datos en %s son válidos. Se usarán sin llamar a la API.", file_path)
+                return None  # → forzar actualización
+
+            _LOGGER.debug("Datos válidos en %s → usando caché", file_path.name)
             return data
+
         except Exception as e:
-            _LOGGER.warning("Error validando datos en %s: %s", file_path, e)
+            _LOGGER.warning("Error validando %s: %s", file_path, e)
             return None
 
+    # --------------------------------------------------------------------- #
+    #  OBTENCIÓN Y GUARDADO DE DATOS DESDE LA API
+    # --------------------------------------------------------------------- #
     async def _fetch_and_save_data(self, api_method, file_path: Path) -> dict:
         """Obtiene datos de la API y los guarda en un archivo JSON."""
         try:
             data = await asyncio.wait_for(api_method(self.town_id), timeout=30)
 
-            # Procesar los datos antes de guardarlos
+            # Procesar precipitación negativa antes de guardar los datos
             for day in data.get("dies", []):
                 for var, details in day.get("variables", {}).items():
                     if (
@@ -564,26 +692,30 @@ class MeteocatEntityCoordinator(DataUpdateCoordinator):
 
             await save_json_to_file(data, file_path)
 
-            # Actualizar cuotas dependiendo del tipo de predicción
+            # Actualizar cuotas (dependiendo del tipo de predicción horaria/diaria)
             if api_method.__name__ in ("get_prediccion_horaria", "get_prediccion_diaria"):
                 await _update_quotes(self.hass, "Prediccio")
 
             return data
+
         except Exception as err:
             _LOGGER.error(f"Error al obtener datos de la API para {file_path}: {err}")
             raise
 
-    async def _async_update_data(self) -> dict:
+    # --------------------------------------------------------------------- #
+    #  ACTUALIZACIÓN PRINCIPAL
+    # --------------------------------------------------------------------- #
+    async def _async_update_data(self) -> Dict[str, Any]:
         """Actualiza los datos de predicción horaria y diaria."""
         try:
-            # Validar o actualizar datos horarios
+            # ---  Validar o actualizar datos horarios ---
             hourly_data = await self.validate_forecast_data(self.hourly_file)
             if not hourly_data:
                 hourly_data = await self._fetch_and_save_data(
                     self.meteocat_forecast.get_prediccion_horaria, self.hourly_file
                 )
 
-            # Validar o actualizar datos diarios
+            # ---  Validar o actualizar datos diarios ---
             daily_data = await self.validate_forecast_data(self.daily_file)
             if not daily_data:
                 daily_data = await self._fetch_and_save_data(
@@ -592,6 +724,9 @@ class MeteocatEntityCoordinator(DataUpdateCoordinator):
 
             return {"hourly": hourly_data, "daily": daily_data}
 
+        # -----------------------------------------------------------------
+        #  Manejo de errores de API
+        # -----------------------------------------------------------------
         except asyncio.TimeoutError as err:
             _LOGGER.warning("Tiempo de espera agotado al obtener datos de predicción.")
             raise ConfigEntryNotReady from err
@@ -619,7 +754,9 @@ class MeteocatEntityCoordinator(DataUpdateCoordinator):
         except Exception as err:
             _LOGGER.exception("Error inesperado al obtener datos de predicción: %s", err)
 
-        # Si ocurre un error, intentar cargar datos desde los archivos locales
+        # -----------------------------------------------------------------
+        #  Fallback: usar caché local si todo falla
+        # -----------------------------------------------------------------
         hourly_cache = await load_json_from_file(self.hourly_file) or {}
         daily_cache = await load_json_from_file(self.daily_file) or {}
 
@@ -649,6 +786,23 @@ class HourlyForecastCoordinator(DataUpdateCoordinator):
         self.town_id = entry_data["town_id"]
         self.station_name = entry_data["station_name"]
         self.station_id = entry_data["station_id"]
+
+        # === NUEVO: ubicación solar usando solarmoonpy ===
+        latitude = entry_data.get("latitude", hass.config.latitude)
+        longitude = entry_data.get("longitude", hass.config.longitude)
+        altitude = entry_data.get("altitude", hass.config.elevation or 0.0)
+        timezone_str = hass.config.time_zone or "Europe/Madrid"
+
+        self.location = Location(
+            LocationInfo(
+                name=self.town_name,
+                region="Spain",
+                timezone=timezone_str,
+                latitude=latitude,
+                longitude=longitude,
+                elevation=altitude,
+            )
+        )
 
         # Ruta persistente en /config/meteocat_files/files
         files_folder = get_storage_dir(hass, "files")
@@ -723,7 +877,7 @@ class HourlyForecastCoordinator(DataUpdateCoordinator):
         condition_data = get_condition_from_statcel(
             codi_estatcel=condition_code,
             current_time=forecast_time_local,
-            hass=self.hass,
+            location=self.location,
             is_hourly=True
         )
         condition = condition_data["condition"]
@@ -780,7 +934,7 @@ class HourlyForecastCoordinator(DataUpdateCoordinator):
                 _LOGGER.warning("Error procesando '%s' para %s: %s", variable_name, valor, e)
                 continue
 
-        _LOGGER.info("No se encontró un valor válido para '%s' en %s.", variable_name, target_time)
+        _LOGGER.warning("No se encontró un valor válido para '%s' en %s.", variable_name, target_time)
         return None
     
 class DailyForecastCoordinator(DataUpdateCoordinator):
@@ -926,8 +1080,26 @@ class MeteocatConditionCoordinator(DataUpdateCoordinator):
             hass (HomeAssistant): Instance of Home Assistant.
             entry_data (dict): Configuration data from core.config_entries.
         """
+        self.town_name = entry_data["town_name"]
         self.town_id = entry_data["town_id"]  # Municipality ID
         self.hass = hass
+
+        # === NUEVO: ubicación solar usando solarmoonpy ===
+        latitude = entry_data.get("latitude", hass.config.latitude)
+        longitude = entry_data.get("longitude", hass.config.longitude)
+        altitude = entry_data.get("altitude", hass.config.elevation or 0.0)
+        timezone_str = hass.config.time_zone or "Europe/Madrid"
+
+        self.location = Location(
+            LocationInfo(
+                name=self.town_name,
+                region="Spain",
+                timezone=timezone_str,
+                latitude=latitude,
+                longitude=longitude,
+                elevation=altitude,
+            )
+        )
 
         super().__init__(
             hass,
@@ -970,7 +1142,7 @@ class MeteocatConditionCoordinator(DataUpdateCoordinator):
                         condition = get_condition_from_statcel(
                             codi_estatcel,
                             current_datetime,
-                            self.hass,
+                            location=self.location,
                             is_hourly=True,
                         )
                         condition.update({
@@ -1415,7 +1587,7 @@ class MeteocatAlertsRegionCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> Dict[str, Any]:
         """Carga y procesa los datos de alertas desde el archivo JSON."""
         data = await load_json_from_file(self._file_path)
-        _LOGGER.info("Datos cargados desde %s: %s", self._file_path, data)  # Log de la carga de datos
+        _LOGGER.debug("Datos cargados desde %s: %s", self._file_path, data)  # Log de la carga de datos
 
         if not data:
             _LOGGER.error("No se pudo cargar el archivo JSON de alertas en %s.", self._file_path)
@@ -1426,7 +1598,7 @@ class MeteocatAlertsRegionCoordinator(DataUpdateCoordinator):
     def _process_alerts_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Procesa los datos de alertas y devuelve un diccionario filtrado por región."""
         if not data.get("dades"):
-            _LOGGER.info("No hay alertas activas para la región %s.", self.region_id)
+            _LOGGER.debug("No hay alertas activas para la región %s.", self.region_id)
             return {
                 "estado": "Tancat",
                 "actualizado": data.get("actualitzat", {}).get("dataUpdate", ""),
@@ -1661,7 +1833,7 @@ class MeteocatQuotesCoordinator(DataUpdateCoordinator):
         _LOGGER.error("No se pudo obtener datos actualizados ni cargar datos en caché.")
         return None
     
-class MeteocatQuotesFileCoordinator(DataUpdateCoordinator):
+class MeteocatQuotesFileCoordinator(BaseFileCoordinator):
     """Coordinator para manejar la actualización de las cuotas desde quotes.json."""
 
     def __init__(
@@ -1681,9 +1853,10 @@ class MeteocatQuotesFileCoordinator(DataUpdateCoordinator):
 
         super().__init__(
             hass,
-            _LOGGER,
-            name="Meteocat Quotes File Coordinator",
+            name=f"{DOMAIN} Quotes File Coordinator",
             update_interval=DEFAULT_QUOTES_FILE_UPDATE_INTERVAL,
+            min_delay=1.0,  # Rango predeterminado
+            max_delay=2.0,  # Rango predeterminado
         )
         # Ruta persistente en /config/meteocat_files/files
         files_folder = get_storage_dir(hass, "files")
@@ -1691,6 +1864,9 @@ class MeteocatQuotesFileCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self) -> Dict[str, Any]:
         """Carga los datos de quotes.json y devuelve el estado de las cuotas."""
+        # 🔸 Añadimos un pequeño desfase aleatorio (1 a 2 segundos) basados en el BaseFileCoordinator
+        await self._apply_random_delay()
+
         existing_data = await load_json_from_file(self.quotes_file)
 
         if not existing_data:
@@ -1828,14 +2004,10 @@ class MeteocatLightningCoordinator(DataUpdateCoordinator):
         _LOGGER.error("No se pudo obtener datos actualizados ni cargar datos en caché.")
         return None
 
-class MeteocatLightningFileCoordinator(DataUpdateCoordinator):
+class MeteocatLightningFileCoordinator(BaseFileCoordinator):
     """Coordinator para manejar la actualización de los datos de rayos desde lightning_{region_id}.json."""
 
-    def __init__(
-        self,
-        hass: HomeAssistant,
-        entry_data: dict,
-    ):
+    def __init__(self, hass: HomeAssistant, entry_data: dict):
         """
         Inicializa el coordinador de rayos desde archivo.
 
@@ -1850,64 +2022,89 @@ class MeteocatLightningFileCoordinator(DataUpdateCoordinator):
         files_folder = get_storage_dir(hass, "files")
         self.lightning_file = files_folder / f"lightning_{self.region_id}.json"
 
+        # ✅ Marca interna para recordar si ya se hizo reset con una fecha concreta
+        self._last_reset_date: Optional[date] = None
+
         super().__init__(
             hass,
-            _LOGGER,
-            name="Meteocat Lightning File Coordinator",
+            name=f"{DOMAIN} Lightning File Coordinator",
             update_interval=DEFAULT_LIGHTNING_FILE_UPDATE_INTERVAL,
+            min_delay=1.0,  # Rango predeterminado
+            max_delay=2.0,  # Rango predeterminado
         )
 
     async def _async_update_data(self) -> Dict[str, Any]:
         """Carga los datos de rayos desde el archivo JSON y procesa la información."""
+       # 🔸 Añadimos un pequeño desfase aleatorio (1 a 2 segundos) basados en el BaseFileCoordinator
+        await self._apply_random_delay()
+        
         existing_data = await load_json_from_file(self.lightning_file)
 
         if not existing_data:
             _LOGGER.warning("No se encontraron datos en %s.", self.lightning_file)
-            return {
-                "actualizado": datetime.now(TIMEZONE).isoformat(),
-                "region": self._reset_data(),
-                "town": self._reset_data()
-            }
+            return self._empty_state()
 
-        # Convertir la cadena de fecha a un objeto datetime y ajustar a la zona horaria local
-        update_date = datetime.fromisoformat(existing_data.get("actualitzat", {}).get("dataUpdate", ""))
-        update_date = update_date.astimezone(TIMEZONE)
+        # Obtener fecha de actualización del JSON
+        update_date_str = existing_data.get("actualitzat", {}).get("dataUpdate", "")
+        if not update_date_str:
+            _LOGGER.warning("El archivo %s no contiene campo 'dataUpdate'.", self.lightning_file)
+            return self._empty_state()
+
+        try:
+            update_date = datetime.fromisoformat(update_date_str).astimezone(TIMEZONE)
+        except ValueError:
+            _LOGGER.warning("Formato de fecha inválido en %s: %s", self.lightning_file, update_date_str)
+            return self._empty_state()
+
         now = datetime.now(TIMEZONE)
 
-        if update_date.date() != now.date():  # Si la fecha no es la de hoy
-            _LOGGER.info("Los datos de rayos son de un día diferente. Reiniciando valores a cero.")
-            region_data = town_data = self._reset_data()
-            update_date = datetime.now(TIMEZONE).isoformat()  # Usar la fecha actual
-        else:
-            region_data = self._process_region_data(existing_data.get("dades", []))
-            town_data = self._process_town_data(existing_data.get("dades", []))
+        # 📆 Si los datos son de otro día:
+        if update_date.date() != now.date():
+            # Si ya hicimos reset para esta fecha, no volver a procesar el JSON
+            if self._last_reset_date == update_date.date():
+                _LOGGER.debug(
+                    "Archivo de rayos aún sin actualizar (última: %s, hoy: %s). Manteniendo datos a cero.",
+                    update_date.date(),
+                    now.date(),
+                )
+                return self._empty_state()
+
+            # Primer reset detectado para esta fecha
+            _LOGGER.debug("Los datos de rayos son de un día diferente. Reiniciando valores a cero.")
+            self._last_reset_date = update_date.date()
+            return self._empty_state()
+
+        # 📅 Si los datos son actuales:
+        self._last_reset_date = None  # borrar marca de reset
+        region_data = self._process_region_data(existing_data.get("dades", []))
+        town_data = self._process_town_data(existing_data.get("dades", []))
 
         return {
             "actualizado": update_date,
             "region": region_data,
-            "town": town_data
+            "town": town_data,
         }
 
     def _process_region_data(self, data_list):
         """Suma los tipos de descargas para toda la región."""
         region_counts = {
-            "cc": 0, 
-            "cg-": 0, 
+            "cc": 0,
+            "cg-": 0,
             "cg+": 0
         }
         for town in data_list:
             for discharge in town.get("descarregues", []):
                 if discharge["tipus"] in region_counts:
                     region_counts[discharge["tipus"]] += discharge["recompte"]
-        
+
         region_counts["total"] = sum(region_counts.values())
         return region_counts
 
     def _process_town_data(self, data_list):
         """Encuentra y suma los tipos de descargas para un municipio específico."""
         town_counts = {
-            "cc": 0, 
-            "cg-": 0, 
+            "cc": 0,
+            "cg-": 0,
             "cg+": 0
         }
         for town in data_list:
@@ -1916,7 +2113,7 @@ class MeteocatLightningFileCoordinator(DataUpdateCoordinator):
                     if discharge["tipus"] in town_counts:
                         town_counts[discharge["tipus"]] += discharge["recompte"]
                 break  # Solo necesitamos datos de un municipio
-        
+
         town_counts["total"] = sum(town_counts.values())
         return town_counts
 
@@ -1926,38 +2123,40 @@ class MeteocatLightningFileCoordinator(DataUpdateCoordinator):
             "cc": 0,
             "cg-": 0,
             "cg+": 0,
-            "total": 0
+            "total": 0,
+        }
+
+    def _empty_state(self) -> Dict[str, Any]:
+        """Devuelve un estado vacío (valores a cero) para los sensores."""
+        now_iso = datetime.now(TIMEZONE).isoformat()
+        empty = self._reset_data()
+        return {
+            "actualizado": now_iso,
+            "region": empty,
+            "town": empty,
         }
 
 class MeteocatSunCoordinator(DataUpdateCoordinator):
-    """Coordinator para manejar la actualización de los datos de sol calculados con Astral."""
+    """Coordinator para manejar la actualización de los datos de sol calculados con sun.py."""
 
-    def __init__(
-        self,
-        hass: HomeAssistant,
-        entry_data: dict,
-    ):
-        """
-        Inicializa el coordinador de sol de Meteocat.
-        
-        Args:
-            hass (HomeAssistant): Instancia de Home Assistant.
-            entry_data (dict): Datos de configuración obtenidos de core.config_entries.
-        """
+    def __init__(self, hass: HomeAssistant, entry_data: dict):
+        """Inicializa el coordinador de sol de Meteocat."""
         self.latitude = entry_data.get("latitude")
         self.longitude = entry_data.get("longitude")
+        self.elevation = entry_data.get("altitude", 0.0)
         self.timezone_str = hass.config.time_zone or "Europe/Madrid"
         self.town_id = entry_data.get("town_id")
-        
-        self.location = LocationInfo(
+
+        # Crear ubicación para cálculos solares
+        self.location = Location(LocationInfo(
             name=entry_data.get("town_name", "Municipio"),
             region="Spain",
             timezone=self.timezone_str,
             latitude=self.latitude,
             longitude=self.longitude,
-        )
+            elevation=self.elevation,
+        ))
 
-        # Ruta persistente en /config/meteocat_files/files
         files_folder = get_storage_dir(hass, "files")
         self.sun_file = files_folder / f"sun_{self.town_id.lower()}_data.json"
 
@@ -1965,90 +2164,289 @@ class MeteocatSunCoordinator(DataUpdateCoordinator):
             hass,
             _LOGGER,
             name=f"{DOMAIN} Sun Coordinator",
-            update_interval=DEFAULT_SUN_UPDATE_INTERVAL,  # Ej. timedelta(minutes=1)
+            update_interval=DEFAULT_SUN_UPDATE_INTERVAL,
         )
 
-    async def _async_update_data(self) -> Dict:
-        """Actualiza los datos de sol calculados o usa datos en caché según si los eventos han pasado."""
-        existing_data = await load_json_from_file(self.sun_file) or {}
-
+    async def _async_update_data(self) -> dict:
+        """Comprueba si es necesario actualizar los datos solares (evitando escrituras innecesarias)."""
+        _LOGGER.debug("☀️ Comprobando si es necesario actualizar los datos solares...")
         now = datetime.now(tz=ZoneInfo(self.timezone_str))
+        today = now.date()
+        tomorrow = today + timedelta(days=1)
 
+        # === 1️⃣ Calcular eventos solares esperados ===
+        events_today = self.location.sun_events(date=today, local=True)
+        events_tomorrow = self.location.sun_events(date=tomorrow, local=True)
+
+        def get_expected_sun_data():
+            """Selecciona si usar los eventos de hoy o mañana según la hora actual."""
+            expected = {}
+            events = [
+                "dawn_astronomical", "dawn_nautical", "dawn_civil",
+                "sunrise", "noon", "sunset",
+                "dusk_civil", "dusk_nautical", "dusk_astronomical",
+                "midnight"
+            ]
+            for event in events:
+                event_time = events_today.get(event)
+                if event_time and now >= event_time:
+                    expected[event] = events_tomorrow.get(event)
+                    _LOGGER.debug("☀️ %s ya pasó (%s), usando valor de mañana: %s",
+                                event, event_time, expected[event])
+                else:
+                    expected[event] = event_time
+            expected["daylight_duration"] = (
+                events_tomorrow["daylight_duration"]
+                if expected["sunset"] == events_tomorrow["sunset"]
+                else events_today["daylight_duration"]
+            )
+            return expected
+
+        expected = get_expected_sun_data()
+
+        # === 2️⃣ Cargar datos existentes del archivo ===
+        existing_data = await load_json_from_file(self.sun_file) or {}
         if not existing_data or "dades" not in existing_data or not existing_data["dades"]:
-            return await self._calculate_and_save_new_data()
-
-        last_update_str = existing_data.get('actualitzat', {}).get('dataUpdate')
-        if not last_update_str:
-            return await self._calculate_and_save_new_data()
-
-        last_update = datetime.fromisoformat(last_update_str)
+            _LOGGER.debug("☀️ No hay datos solares previos. Generando nuevos datos.")
+            return await self._calculate_and_save_new_data(**expected)
 
         dades = existing_data["dades"][0]
-        saved_sunrise = datetime.fromisoformat(dades["sunrise"])
-        saved_sunset = datetime.fromisoformat(dades["sunset"])
 
-        # Verificar si los datos necesitan actualización
-        if now > saved_sunrise or now > saved_sunset:
-            return await self._calculate_and_save_new_data()
+        try:
+            saved = {k: (datetime.fromisoformat(v) if k != "daylight_duration" else v)
+                    for k, v in dades.items() if k in expected}
+        except Exception as e:
+            _LOGGER.warning("☀️ Error al leer el archivo solar: %s", e)
+            return await self._calculate_and_save_new_data(**expected)
+
+        # === 3️⃣ Detectar cambios en eventos solares ===
+        changed_events = {
+            key: expected[key] for key in expected
+            if saved.get(key) != expected[key]
+        }
+
+        # === 4️⃣ Calcular posición solar actual y futura (una sola vez) ===
+        current_pos = self.location.sun_position(dt=now, local=True)
+        future_time = now + timedelta(minutes=10)
+        future_pos = self.location.sun_position(dt=future_time, local=True)
+
+        # === 5️⃣ Función auxiliar: umbral dinámico de elevación ===
+        def get_dynamic_elevation_threshold() -> float:
+            sunrise = saved.get("sunrise")
+            sunset = saved.get("sunset")
+            noon = saved.get("noon")
+            if sunrise and sunset and noon:
+                sunrise_window = (sunrise - timedelta(hours=1), sunrise + timedelta(hours=1))
+                sunset_window = (sunset - timedelta(hours=1), sunset + timedelta(hours=1))
+                noon_window = (noon - timedelta(hours=2), noon + timedelta(hours=2))
+                if sunrise_window[0] <= now <= sunrise_window[1] or sunset_window[0] <= now <= sunset_window[1]:
+                    return 0.3  # Mayor sensibilidad cerca del horizonte
+                elif noon_window[0] <= now <= noon_window[1]:
+                    return 1.0  # Menor sensibilidad cerca del mediodía
+            return 0.5  # Valor base para el resto del día
+
+        # === 6️⃣ Función auxiliar: validez dinámica con límites ===
+        def get_dynamic_validity_interval(current_elev: float, future_elev: float) -> timedelta:
+            elevation_change = abs(future_elev - current_elev)
+            rate_of_change = elevation_change / 10  # °/min
+            _LOGGER.debug("☀️ Tasa de cambio de elevación: %.4f°/min", rate_of_change)
+
+            if rate_of_change > 0.05:   # Amanecer/atardecer: cambio rápido
+                validity = timedelta(minutes=30)
+            elif rate_of_change > 0.02:  # Cambio moderado
+                validity = timedelta(minutes=60)
+            else:                        # Noche o mediodía: cambio lento
+                validity = timedelta(minutes=120)
+
+            # Limitar entre 15 y 180 minutos
+            return max(timedelta(minutes=15), min(validity, timedelta(minutes=180)))
+
+        SUN_POSITION_VALIDITY = get_dynamic_validity_interval(
+            current_pos["elevation"], future_pos["elevation"]
+        )
+
+        # === 7️⃣ Evaluar necesidad de actualización ===
+        position_needs_update = False
+        last_pos_update_str = dades.get("sun_position_updated")
+
+        if last_pos_update_str:
+            try:
+                last_pos_update = datetime.fromisoformat(last_pos_update_str)
+                if last_pos_update.tzinfo is None:
+                    last_pos_update = last_pos_update.replace(tzinfo=ZoneInfo(self.timezone_str))
+
+                time_expired = (now - last_pos_update) > SUN_POSITION_VALIDITY
+                elevation_threshold = get_dynamic_elevation_threshold()
+
+                last_elev = dades.get("sun_elevation")
+                if last_elev is not None:
+                    elev_changed = abs(current_pos["elevation"] - float(last_elev)) > elevation_threshold
+                else:
+                    elev_changed = True
+
+                # ✅ Ambas condiciones deben cumplirse
+                position_needs_update = time_expired and elev_changed or bool(changed_events)
+
+                _LOGGER.debug(
+                    "☀️ Verificación solar -> expirado=%s (validez=%s), elevación_cambió=%s (umbral=%.2f°), eventos_cambiados=%s, actualizar=%s",
+                    time_expired, SUN_POSITION_VALIDITY, elev_changed, elevation_threshold, bool(changed_events), position_needs_update
+                )
+            except Exception as e:
+                _LOGGER.warning("☀️ Error al verificar posición solar previa: %s", e)
+                position_needs_update = True
         else:
-            _LOGGER.debug("Usando datos existentes de sol: %s", existing_data)
-            return {"actualizado": existing_data['actualitzat']['dataUpdate']}
+            position_needs_update = True
 
-    async def _calculate_and_save_new_data(self):
-        """Calcula nuevos datos de sol y los guarda en el archivo JSON."""
+        # === 8️⃣ Si nada cambió, no se actualiza ===
+        if not changed_events and not position_needs_update:
+            _LOGGER.debug("☀️ Datos solares actuales coinciden con lo esperado. No se actualiza.")
+            return existing_data
+
+        # === 9️⃣ Actualizar si es necesario ===
+        sun_pos = current_pos if position_needs_update else None
+        if sun_pos:
+            _LOGGER.debug("Posición solar actualizada: elev=%.2f°, azim=%.2f°, rising=%s",
+                        sun_pos["elevation"], sun_pos["azimuth"], sun_pos["rising"])
+
+        updated_data = saved.copy()
+        updated_data.update(changed_events)
+
+        # 🟡 Si hay eventos solares nuevos (por ejemplo, cambio de sunset → mañana),
+        # forzar cálculo inmediato de la posición solar para evitar huecos.
+        if changed_events and sun_pos is None:
+            sun_pos = self.location.sun_position(dt=now, local=True)
+            _LOGGER.debug("☀️ Posición solar recalculada tras cambio de eventos: elev=%.2f°, azim=%.2f°, rising=%s",
+                        sun_pos["elevation"], sun_pos["azimuth"], sun_pos["rising"])
+
+        _LOGGER.debug("☀️ Datos solares han cambiado. Actualizando: %s", changed_events)
+        return await self._calculate_and_save_new_data(
+            **updated_data,
+            sun_pos=sun_pos,
+            now=now
+        )
+   
+    async def _calculate_and_save_new_data(
+        self,
+        dawn_civil: Optional[datetime] = None,
+        dawn_nautical: Optional[datetime] = None,
+        dawn_astronomical: Optional[datetime] = None,
+        sunrise: Optional[datetime] = None,
+        noon: Optional[datetime] = None,
+        sunset: Optional[datetime] = None,
+        dusk_civil: Optional[datetime] = None,
+        dusk_nautical: Optional[datetime] = None,
+        dusk_astronomical: Optional[datetime] = None,
+        midnight: Optional[datetime] = None,
+        daylight_duration: Optional[float] = None,
+        sun_pos: Optional[dict] = None,
+        now: Optional[datetime] = None,
+    ) -> dict:
+        """Guarda los datos solares pasados, usando valores existentes si no se proporcionan."""
         try:
             now = datetime.now(tz=ZoneInfo(self.timezone_str))
             today = now.date()
-            
-            sun_data_today = sun(self.location.observer, date=today, tzinfo=ZoneInfo(self.timezone_str))
-            sunrise = sun_data_today["sunrise"]
-            sunset = sun_data_today["sunset"]
-            
-            if now > sunset:
-                next_day = today + timedelta(days=1)
-                sun_data_next = sun(self.location.observer, date=next_day, tzinfo=ZoneInfo(self.timezone_str))
-                sunrise = sun_data_next["sunrise"]
-                sunset = sun_data_next["sunset"]
-            elif now > sunrise:
-                next_day = today + timedelta(days=1)
-                sun_data_next = sun(self.location.observer, date=next_day, tzinfo=ZoneInfo(self.timezone_str))
-                sunrise = sun_data_next["sunrise"]
-                # sunset permanece como el de hoy
-            
-            # Estructurar los datos en el formato correcto
-            current_time = now.isoformat()
-            data_with_timestamp = {
-                "actualitzat": {
-                    "dataUpdate": current_time
-                },
-                "dades": [
-                    {
-                        "sunrise": sunrise.isoformat(),
-                        "sunset": sunset.isoformat()
-                    }
-                ]
+
+            # Cargar datos existentes para preservar valores no cambiados
+            existing_data = await load_json_from_file(self.sun_file) or {}
+            existing_dades = existing_data.get("dades", [{}])[0] if existing_data else {}
+
+            # Convertir valores existentes a tipos adecuados
+            try:
+                saved = {
+                    "dawn_civil": datetime.fromisoformat(existing_dades["dawn_civil"]) if existing_dades.get("dawn_civil") else None,
+                    "dawn_nautical": datetime.fromisoformat(existing_dades["dawn_nautical"]) if existing_dades.get("dawn_nautical") else None,
+                    "dawn_astronomical": datetime.fromisoformat(existing_dades["dawn_astronomical"]) if existing_dades.get("dawn_astronomical") else None,
+                    "sunrise": datetime.fromisoformat(existing_dades["sunrise"]) if existing_dades.get("sunrise") else None,
+                    "noon": datetime.fromisoformat(existing_dades["noon"]) if existing_dades.get("noon") else None,
+                    "sunset": datetime.fromisoformat(existing_dades["sunset"]) if existing_dades.get("sunset") else None,
+                    "dusk_civil": datetime.fromisoformat(existing_dades["dusk_civil"]) if existing_dades.get("dusk_civil") else None,
+                    "dusk_nautical": datetime.fromisoformat(existing_dades["dusk_nautical"]) if existing_dades.get("dusk_nautical") else None,
+                    "dusk_astronomical": datetime.fromisoformat(existing_dades["dusk_astronomical"]) if existing_dades.get("dusk_astronomical") else None,
+                    "midnight": datetime.fromisoformat(existing_dades["midnight"]) if existing_dades.get("midnight") else None,
+                    "daylight_duration": existing_dades.get("daylight_duration"),
+                }
+            except Exception as e:
+                _LOGGER.warning("☀️ Error al leer datos existentes, recalculando todo: %s", e)
+                saved = {}
+
+            # Si no se proporcionan valores, usar los existentes o calcularlos
+            if not any([dawn_civil, dawn_nautical, dawn_astronomical, sunrise, noon, sunset, dusk_civil, dusk_nautical, dusk_astronomical, midnight]):
+                events = self.location.sun_events(date=today, local=True)
+                dawn_civil = events["dawn_civil"]
+                dawn_nautical = events["dawn_nautical"]
+                dawn_astronomical = events["dawn_astronomical"]
+                sunrise = events["sunrise"]
+                noon = events["noon"]
+                sunset = events["sunset"]
+                dusk_civil = events["dusk_civil"]
+                dusk_nautical = events["dusk_nautical"]
+                dusk_astronomical = events["dusk_astronomical"]
+                midnight = events["midnight"]
+                daylight_duration = events["daylight_duration"]
+            else:
+                # Usar valores proporcionados, o los existentes si no se proporcionan
+                dawn_civil = dawn_civil if dawn_civil is not None else saved.get("dawn_civil")
+                dawn_nautical = dawn_nautical if dawn_nautical is not None else saved.get("dawn_nautical")
+                dawn_astronomical = dawn_astronomical if dawn_astronomical is not None else saved.get("dawn_astronomical")
+                sunrise = sunrise if sunrise is not None else saved.get("sunrise")
+                noon = noon if noon is not None else saved.get("noon")
+                sunset = sunset if sunset is not None else saved.get("sunset")
+                dusk_civil = dusk_civil if dusk_civil is not None else saved.get("dusk_civil")
+                dusk_nautical = dusk_nautical if dusk_nautical is not None else saved.get("dusk_nautical")
+                dusk_astronomical = dusk_astronomical if dusk_astronomical is not None else saved.get("dusk_astronomical")
+                midnight = midnight if midnight is not None else saved.get("midnight")
+                daylight_duration = daylight_duration if daylight_duration is not None else saved.get("daylight_duration")
+
+                # Recalcular daylight_duration si sunrise o sunset han cambiado
+                if sunrise and sunset and (sunrise != saved.get("sunrise") or sunset != saved.get("sunset")):
+                    daylight_duration = (sunset - sunrise).total_seconds() / 3600 if sunrise and sunset else None
+
+            # CONSTRUIR DADES
+            dades_dict = {
+                "dawn_civil": dawn_civil.isoformat() if dawn_civil else None,
+                "dawn_nautical": dawn_nautical.isoformat() if dawn_nautical else None,
+                "dawn_astronomical": dawn_astronomical.isoformat() if dawn_astronomical else None,
+                "sunrise": sunrise.isoformat() if sunrise else None,
+                "noon": noon.isoformat() if noon else None,
+                "sunset": sunset.isoformat() if sunset else None,
+                "dusk_civil": dusk_civil.isoformat() if dusk_civil else None,
+                "dusk_nautical": dusk_nautical.isoformat() if dusk_nautical else None,
+                "dusk_astronomical": dusk_astronomical.isoformat() if dusk_astronomical else None,
+                "midnight": midnight.isoformat() if midnight else None,
+                "daylight_duration": daylight_duration,
             }
 
-            # Guardar los datos en un archivo JSON
+            # AÑADIR POSICIÓN SOLAR
+            if sun_pos:
+                dades_dict.update({
+                    "sun_elevation": round(sun_pos["elevation"], 2),
+                    "sun_azimuth": round(sun_pos["azimuth"], 2),
+                    "sun_horizon_position": sun_pos["horizon_position"],
+                    "sun_rising": sun_pos["rising"],
+                    "sun_position_updated": now.isoformat()
+                })
+
+            # GUARDAR
+            data_with_timestamp = {
+                "actualitzat": {"dataUpdate": now.isoformat()},
+                "dades": [dades_dict],
+            }
+
             await save_json_to_file(data_with_timestamp, self.sun_file)
+            _LOGGER.info("Archivo solar actualizado (eventos: %s, posición: %s)",
+                         bool(dawn_civil is not None), bool(sun_pos))
 
-            _LOGGER.debug("Datos de sol actualizados exitosamente: %s", data_with_timestamp)
-
-            return {"actualizado": data_with_timestamp['actualitzat']['dataUpdate']}
+            return data_with_timestamp
 
         except Exception as err:
-            _LOGGER.exception("Error inesperado al calcular los datos de sol: %s", err)
+            _LOGGER.exception("Error al calcular/guardar los datos solares: %s", err)
+            cached = await load_json_from_file(self.sun_file)
+            if cached:
+                _LOGGER.warning("Usando datos solares en caché por error.")
+                return cached
+            return None
 
-        # Intentar cargar datos en caché si falla el cálculo (aunque es improbable)
-        cached_data = await load_json_from_file(self.sun_file)
-        if cached_data:
-            _LOGGER.warning("Usando datos en caché para los datos de sol.")
-            return {"actualizado": cached_data['actualitzat']['dataUpdate']}
-
-        _LOGGER.error("No se pudo calcular datos actualizados ni cargar datos en caché.")
-        return None
-
-class MeteocatSunFileCoordinator(DataUpdateCoordinator):
+class MeteocatSunFileCoordinator(BaseFileCoordinator):
     """Coordinator para manejar la actualización de los datos de sol desde sun_{town_id}.json."""
 
     def __init__(
@@ -2072,41 +2470,478 @@ class MeteocatSunFileCoordinator(DataUpdateCoordinator):
 
         super().__init__(
             hass,
-            _LOGGER,
-            name="Meteocat Sun File Coordinator",
-            update_interval=DEFAULT_SUN_FILE_UPDATE_INTERVAL,  # Ej. timedelta(seconds=30)
+            name=f"{DOMAIN} Sun File Coordinator",
+            update_interval=DEFAULT_SUN_FILE_UPDATE_INTERVAL,
+            min_delay=1.0,  # Rango predeterminado
+            max_delay=2.0,  # Rango predeterminado
         )
 
-    async def _async_update_data(self) -> Dict[str, Any]:
-        """Carga los datos de sol desde el archivo JSON y procesa la información."""
-        existing_data = await load_json_from_file(self.sun_file)
+    async def _async_update_data(self) -> dict[str, Any]:
+        """Lee el archivo y resetea si el primer evento (dawn_astronomical) es de ayer."""
+        # 🔸 Añadimos un pequeño desfase aleatorio (1 a 2 segundos) basados en el BaseFileCoordinator
+        await self._apply_random_delay()
 
-        if not existing_data or "dades" not in existing_data or not existing_data["dades"]:
-            _LOGGER.warning("No se encontraron datos en %s.", self.sun_file)
-            return self._reset_data()
+        try:
+            data = await load_json_from_file(self.sun_file)
+            if not data or "dades" not in data or not data["dades"]:
+                _LOGGER.warning("Archivo solar vacío: %s", self.sun_file)
+                return self._reset_data()
 
-        update_date_str = existing_data.get("actualitzat", {}).get("dataUpdate", "")
-        update_date = datetime.fromisoformat(update_date_str) if update_date_str else None
-        now = datetime.now(ZoneInfo(self.timezone_str))
+            dades = data["dades"][0]
+            update_str = data.get("actualitzat", {}).get("dataUpdate")
+            update_dt = datetime.fromisoformat(update_str) if update_str else None
+            now = datetime.now(ZoneInfo(self.timezone_str))
+            today = now.date()
 
-        dades = existing_data["dades"][0]
-        saved_sunrise = datetime.fromisoformat(dades["sunrise"])
-        saved_sunset = datetime.fromisoformat(dades["sunset"])
+            # === PRIMER EVENTO: dawn_astronomical ===
+            dawn_astro_str = dades.get("dawn_astronomical")
+            if not dawn_astro_str:
+                _LOGGER.debug("No hay 'dawn_astronomical'. Forzando reset.")
+                return self._reset_data()
 
-        if saved_sunrise < now and saved_sunset < now:
-            _LOGGER.info("Los datos de sol están caducados. Reiniciando valores.")
-            return self._reset_data()
-        else:
-            return {
-                "actualizado": update_date.isoformat() if update_date else now.isoformat(),
+            try:
+                dawn_astro_dt = datetime.fromisoformat(dawn_astro_str)
+                event_date = dawn_astro_dt.date()
+            except ValueError as e:
+                _LOGGER.warning("Formato inválido en dawn_astronomical: %s → %s", dawn_astro_str, e)
+                return self._reset_data()
+
+            # === ¿Es de un día anterior a ayer? ===
+            if event_date < (today - timedelta(days=1)):
+                _LOGGER.info(
+                    "Datos solares muy antiguos: dawn_astronomical es del %s (hoy es %s). Reiniciando.",
+                    event_date, today
+                )
+                return self._reset_data()
+
+            # 🟢 Si el evento es de mañana, mantener datos actuales (no resetear)
+            if event_date > today:
+                _LOGGER.debug(
+                    "Datos solares son de mañana (%s). Manteniendo valores actuales hasta próxima actualización.",
+                    event_date
+                )
+
+            # === DATOS VÁLIDOS DEL DÍA ACTUAL ===
+            result = {
+                "actualizado": update_dt.isoformat() if update_dt else now.isoformat(),
+                "dawn_civil": dades.get("dawn_civil"),
+                "dawn_nautical": dades.get("dawn_nautical"),
+                "dawn_astronomical": dawn_astro_str,
                 "sunrise": dades.get("sunrise"),
-                "sunset": dades.get("sunset")
+                "noon": dades.get("noon"),
+                "sunset": dades.get("sunset"),
+                "dusk_civil": dades.get("dusk_civil"),
+                "dusk_nautical": dades.get("dusk_nautical"),
+                "dusk_astronomical": dades.get("dusk_astronomical"),
+                "midnight": dades.get("midnight"),
+                "daylight_duration": dades.get("daylight_duration"),
+                "sun_elevation": dades.get("sun_elevation"),
+                "sun_azimuth": dades.get("sun_azimuth"),
+                "sun_horizon_position": dades.get("sun_horizon_position"),
+                "sun_rising": dades.get("sun_rising"),
+                "sun_position_updated": dades.get("sun_position_updated"),
             }
+
+            _LOGGER.debug("Datos solares válidos para hoy (%s)", today)
+            return result
+
+        except Exception as e:
+            _LOGGER.error("Error crítico en SunFileCoordinator: %s", e)
+            return self._reset_data()
 
     def _reset_data(self):
         """Resetea los datos a valores nulos."""
+        now = datetime.now(ZoneInfo(self.timezone_str)).isoformat()
         return {
-            "actualizado": datetime.now(ZoneInfo(self.timezone_str)).isoformat(),
+            "actualizado": now,
             "sunrise": None,
-            "sunset": None
+            "sunset": None,
+            "noon": None,
+            "dawn_civil": None,
+            "dusk_civil": None,
+            "dawn_nautical": None,
+            "dusk_nautical": None,
+            "dawn_astronomical": None,
+            "dusk_astronomical": None,
+            "midnight": None,
+            "daylight_duration": None,
+            "sun_elevation": None,
+            "sun_azimuth": None,
+            "sun_horizon_position": None,
+            "sun_rising": None,
+            "sun_position_updated": now,
+        }
+
+class MeteocatMoonCoordinator(DataUpdateCoordinator):
+    """Coordinator para manejar la actualización de los datos de la luna desde moon.py."""
+
+    def __init__(self, hass: HomeAssistant, entry_data: dict):
+        self.latitude = entry_data.get("latitude")
+        self.longitude = entry_data.get("longitude")
+        self.timezone_str = hass.config.time_zone or "Europe/Madrid"
+        self.town_id = entry_data.get("town_id")
+
+        self.location = LocationInfo(
+            name=entry_data.get("town_name", "Municipio"),
+            region="Spain",
+            timezone=self.timezone_str,
+            latitude=self.latitude,
+            longitude=self.longitude,
+        )
+
+        files_folder = get_storage_dir(hass, "files")
+        self.moon_file = files_folder / f"moon_{self.town_id.lower()}_data.json"
+
+        super().__init__(
+            hass,
+            _LOGGER,
+            name=f"{DOMAIN} Moon Coordinator",
+            update_interval=DEFAULT_MOON_UPDATE_INTERVAL,
+        )
+
+    async def _async_update_data(self) -> dict:
+        """Determina si los datos de la luna son válidos o requieren actualización."""
+        _LOGGER.debug("🌙 Iniciando actualización de datos de la luna...")
+        now = datetime.now(tz=ZoneInfo(self.timezone_str))
+        existing_data = await load_json_from_file(self.moon_file) or {}
+
+        # 🟡 Si no hay datos previos o JSON incompleto → calcular todo para hoy
+        if (
+            not existing_data
+            or "dades" not in existing_data
+            or not existing_data["dades"]
+            or "actualitzat" not in existing_data
+            or "dataUpdate" not in existing_data["actualitzat"]
+        ):
+            _LOGGER.warning("🌙 Datos previos incompletos o ausentes: calculando todos los datos para hoy.")
+            return await self._calculate_and_save_new_data(today_only=True, existing_data=existing_data)
+
+        dades = existing_data["dades"][0]
+        last_lunar_update_date_str = existing_data["actualitzat"].get("last_lunar_update_date")
+        last_lunar_update_date = (
+            datetime.fromisoformat(f"{last_lunar_update_date_str}T00:00:00").date()
+            if last_lunar_update_date_str
+            else now.date() - timedelta(days=1)  # Fallback
+        )
+
+        # 🟢 Comprobar si los datos son obsoletos (last_lunar_update_date y eventos antiguos)
+        try:
+            moonrise_str = dades.get("moonrise")
+            moonset_str = dades.get("moonset")
+            moonrise = datetime.fromisoformat(moonrise_str) if moonrise_str else None
+            moonset = datetime.fromisoformat(moonset_str) if moonset_str else None
+
+            # Si last_lunar_update_date es de un día anterior y los eventos (si existen) también lo son
+            events_are_old = (
+                (moonrise is None or moonrise.date() < now.date())
+                and (moonset is None or moonset.date() < now.date())
+            )
+            if last_lunar_update_date < now.date() and events_are_old:
+                _LOGGER.debug(
+                    "🌙 Datos obsoletos: last_lunar_update_date=%s, moonrise=%s, moonset=%s. Calculando para hoy.",
+                    last_lunar_update_date, moonrise, moonset
+                )
+                return await self._calculate_and_save_new_data(today_only=True, existing_data=existing_data)
+        except Exception as e:
+            _LOGGER.warning("🌙 Error interpretando fechas previas: %s", e)
+            return await self._calculate_and_save_new_data(today_only=True, existing_data=existing_data)
+
+        # 🟢 Comprobar si los datos lunares necesitan actualización
+        if now.date() > last_lunar_update_date:
+            _LOGGER.debug("🌙 Fecha actual superior a last_lunar_update_date: actualizando datos lunares.")
+            return await self._calculate_and_save_new_data(
+                update_type="update_lunar_data",
+                existing_data=existing_data
+            )
+
+        _LOGGER.debug(
+            "🌙 Estado actual → now=%s | moonrise=%s | moonset=%s",
+            now.isoformat(), moonrise, moonset
+        )
+
+        # Lógica para eventos moonrise y moonset
+        if moonrise is None and moonset is None:
+            _LOGGER.debug("🌙 Ambos eventos None: verificando si datos son actuales.")
+            if last_lunar_update_date == now.date():
+                _LOGGER.debug("🌙 Datos de hoy sin eventos: no se actualiza.")
+                return {"actualizado": existing_data["actualitzat"]["dataUpdate"]}
+            return await self._calculate_and_save_new_data(today_only=True, existing_data=existing_data)
+
+        elif moonrise is None:
+            _LOGGER.debug("🌙 No moonrise: tratando moonset como único evento.")
+            if now < moonset:
+                _LOGGER.debug("🌙 Antes del moonset: no se actualiza.")
+                return {"actualizado": existing_data["actualitzat"]["dataUpdate"]}
+            else:
+                _LOGGER.debug("🌙 Después del moonset: actualizar moonset para mañana.")
+                return await self._calculate_and_save_new_data(update_type="update_set_tomorrow", existing_data=existing_data)
+
+        elif moonset is None:
+            _LOGGER.debug("🌙 No moonset: tratando moonrise como único evento.")
+            if now < moonrise:
+                _LOGGER.debug("🌙 Antes del moonrise: no se actualiza.")
+                return {"actualizado": existing_data["actualitzat"]["dataUpdate"]}
+            else:
+                _LOGGER.debug("🌙 Después del moonrise: actualizar moonrise para mañana.")
+                return await self._calculate_and_save_new_data(update_type="update_rise_tomorrow", existing_data=existing_data)
+
+        else:
+            min_event = min(moonrise, moonset)
+            max_event = max(moonrise, moonset)
+            first_is_rise = (min_event == moonrise)
+
+            if now < min_event:
+                _LOGGER.debug("🌙 Momento actual antes del primer evento → no se actualiza nada.")
+                return {"actualizado": existing_data["actualitzat"]["dataUpdate"]}
+
+            elif now < max_event:
+                if first_is_rise:
+                    _LOGGER.debug("🌙 Después del moonrise pero antes del moonset → actualizar solo moonrise para mañana.")
+                    return await self._calculate_and_save_new_data(update_type="update_rise_tomorrow", existing_data=existing_data)
+                else:
+                    _LOGGER.debug("🌙 Después del moonset pero antes del moonrise → actualizar solo moonset para mañana.")
+                    return await self._calculate_and_save_new_data(update_type="update_set_tomorrow", existing_data=existing_data)
+
+            else:
+                _LOGGER.debug("🌙 Después de ambos eventos → actualizar moonrise y moonset para mañana.")
+                return await self._calculate_and_save_new_data(update_type="update_both_tomorrow", existing_data=existing_data)
+
+    async def _calculate_and_save_new_data(self, today_only: bool = False, update_type: str = None, existing_data: dict = None):
+        """Calcula y guarda nuevos datos de la luna según el tipo de actualización."""
+        try:
+            now = datetime.now(tz=ZoneInfo(self.timezone_str))
+            tz = ZoneInfo(self.timezone_str)
+            today = now.date()
+            next_day = today + timedelta(days=1)
+            next_next_day = today + timedelta(days=2)
+
+            _LOGGER.debug("🌙 Calculando nuevos datos (update_type=%s)...", update_type)
+
+            # 🟣 Calcular fase e iluminación, distancia y diámetro angular
+            moon_phase_value = moon_phase(today)
+            moon_day_today = moon_day(today)
+            lunation = lunation_number(today)
+            illum_percentage = round(illuminated_percentage(today), 2)
+            distance = round(moon_distance(today), 0)
+            angular_diameter = round(moon_angular_diameter(today), 2)
+            moon_phase_name = get_moon_phase_name(today)
+            lunation_duration = get_lunation_duration(today)
+
+            # Inicializar moonrise_final y moonset_final
+            moonrise_final = None
+            moonset_final = None
+
+            # 🟢 Caso: actualizar solo datos lunares
+            if update_type == "update_lunar_data":
+                dades = existing_data.get("dades", [{}])[0]
+                moonrise_str = dades.get("moonrise")
+                moonset_str = dades.get("moonset")
+                moonrise_final = datetime.fromisoformat(moonrise_str) if moonrise_str else None
+                moonset_final = datetime.fromisoformat(moonset_str) if moonset_str else None
+
+                # Si faltan moonrise o moonset, calcular de fallback
+                if moonrise_final is None or moonset_final is None:
+                    _LOGGER.debug("🌙 Falta algún evento lunar, calculando de fallback.")
+                    moonrise_today, moonset_today = moon_rise_set(self.latitude, self.longitude, today)
+                    moonrise_tomorrow, moonset_tomorrow = moon_rise_set(self.latitude, self.longitude, next_day)
+                    moonrise_next_tomorrow, moonset_next_tomorrow = moon_rise_set(self.latitude, self.longitude, next_next_day)
+
+                    # Convertir a zona local
+                    events = {
+                        "moonrise_today": moonrise_today,
+                        "moonset_today": moonset_today,
+                        "moonrise_tomorrow": moonrise_tomorrow,
+                        "moonset_tomorrow": moonset_tomorrow,
+                        "moonrise_next_tomorrow": moonrise_next_tomorrow,
+                        "moonset_next_tomorrow": moonset_next_tomorrow,
+                    }
+                    for key, val in events.items():
+                        if val:
+                            events[key] = val.astimezone(tz)
+                    moonrise_today, moonset_today, moonrise_tomorrow, moonset_tomorrow, moonrise_next_tomorrow, moonset_next_tomorrow = (
+                        events["moonrise_today"],
+                        events["moonset_today"],
+                        events["moonrise_tomorrow"],
+                        events["moonset_tomorrow"],
+                        events["moonrise_next_tomorrow"],
+                        events["moonset_next_tomorrow"],
+                    )
+
+                    # Seleccionar los eventos más próximos disponibles
+                    moonrise_final = moonrise_final or (moonrise_today if moonrise_today else (moonrise_tomorrow if moonrise_tomorrow else moonrise_next_tomorrow))
+                    moonset_final = moonset_final or (moonset_today if moonset_today else (moonset_tomorrow if moonset_tomorrow else moonset_next_tomorrow))
+                    _LOGGER.debug("🌙 Fallback: usando moonrise=%s y moonset=%s", moonrise_final, moonset_final)
+
+            else:
+                # Calcular eventos lunares
+                moonrise_today, moonset_today = moon_rise_set(self.latitude, self.longitude, today)
+                moonrise_tomorrow, moonset_tomorrow = moon_rise_set(self.latitude, self.longitude, next_day)
+                moonrise_next_tomorrow, moonset_next_tomorrow = moon_rise_set(self.latitude, self.longitude, next_next_day)
+
+                # Convertir a zona local
+                events = {
+                    "moonrise_today": moonrise_today,
+                    "moonset_today": moonset_today,
+                    "moonrise_tomorrow": moonrise_tomorrow,
+                    "moonset_tomorrow": moonset_tomorrow,
+                    "moonrise_next_tomorrow": moonrise_next_tomorrow,
+                    "moonset_next_tomorrow": moonset_next_tomorrow,
+                }
+                for key, val in events.items():
+                    if val:
+                        events[key] = val.astimezone(tz)
+                moonrise_today, moonset_today, moonrise_tomorrow, moonset_tomorrow, moonrise_next_tomorrow, moonset_next_tomorrow = (
+                    events["moonrise_today"],
+                    events["moonset_today"],
+                    events["moonrise_tomorrow"],
+                    events["moonset_tomorrow"],
+                    events["moonrise_next_tomorrow"],
+                    events["moonset_next_tomorrow"],
+                )
+
+                # 🧭 Determinar valores finales según el contexto
+                if today_only:
+                    moonrise_final = moonrise_today
+                    moonset_final = moonset_today
+                elif update_type == "update_set_tomorrow":
+                    if existing_data and "dades" in existing_data and existing_data["dades"] and "moonrise" in existing_data["dades"][0]:
+                        moonrise_str = existing_data["dades"][0]["moonrise"]
+                        moonrise_final = datetime.fromisoformat(moonrise_str) if moonrise_str else None
+                    else:
+                        moonrise_final = moonrise_today
+                    moonset_final = moonset_tomorrow if moonset_tomorrow else moonset_next_tomorrow
+                    _LOGGER.debug("🌙 Actualizado moonset para mañana: %s (manteniendo moonrise: %s)", moonset_final, moonrise_final)
+                elif update_type == "update_rise_tomorrow":
+                    if existing_data and "dades" in existing_data and existing_data["dades"] and "moonset" in existing_data["dades"][0]:
+                        moonset_str = existing_data["dades"][0]["moonset"]
+                        moonset_final = datetime.fromisoformat(moonset_str) if moonset_str else None
+                    else:
+                        moonset_final = moonset_today
+                    moonrise_final = moonrise_tomorrow if moonrise_tomorrow else moonrise_next_tomorrow
+                    _LOGGER.debug("🌙 Actualizado moonrise para mañana: %s (manteniendo moonset: %s)", moonrise_final, moonset_final)
+                elif update_type == "update_both_tomorrow":
+                    moonrise_final = moonrise_tomorrow if moonrise_tomorrow else moonrise_next_tomorrow
+                    moonset_final = moonset_tomorrow if moonset_tomorrow else moonset_next_tomorrow
+                    _LOGGER.debug("🌙 Actualizados moonrise y moonset para mañana: %s / %s", moonrise_final, moonset_final)
+                else:
+                    moonrise_final = moonrise_today
+                    moonset_final = moonset_today
+
+                # Si algún evento final es None, intentar con el del día siguiente o el posterior
+                if moonrise_final is None:
+                    moonrise_final = moonrise_tomorrow if moonrise_tomorrow else moonrise_next_tomorrow
+                    if moonrise_final:
+                        _LOGGER.debug("🌙 Moonrise era None: usando el del día siguiente o posterior: %s", moonrise_final)
+                if moonset_final is None:
+                    moonset_final = moonset_tomorrow if moonset_tomorrow else moonset_next_tomorrow
+                    if moonset_final:
+                        _LOGGER.debug("🌙 Moonset era None: usando el del día siguiente o posterior: %s", moonset_final)
+
+            data_with_timestamp = {
+                "actualitzat": {
+                    "dataUpdate": now.isoformat(),
+                    # 🟢 Determinar last_lunar_update_date de forma legible
+                    "last_lunar_update_date": (
+                        today.isoformat()
+                        if update_type in ("update_lunar_data", None) or today_only
+                        else existing_data.get("actualitzat", {}).get("last_lunar_update_date", today.isoformat())
+                    ),
+                },
+                "dades": [
+                    {
+                        "moon_day": moon_day_today,
+                        "moon_phase": round(moon_phase_value, 2),
+                        "moon_phase_name": moon_phase_name,
+                        "illuminated_percentage": illum_percentage,
+                        "moon_distance": distance,
+                        "moon_angular_diameter": angular_diameter,
+                        "lunation": lunation,
+                        "lunation_duration": lunation_duration,
+                        "moonrise": moonrise_final.isoformat() if moonrise_final else None,
+                        "moonset": moonset_final.isoformat() if moonset_final else None,
+                    }
+                ],
+            }
+
+            await save_json_to_file(data_with_timestamp, self.moon_file)
+            _LOGGER.debug("🌙 Datos de luna guardados correctamente → %s", data_with_timestamp)
+            return {"actualizado": data_with_timestamp["actualitzat"]["dataUpdate"]}
+
+        except Exception as err:
+            _LOGGER.exception("🌙 Error al calcular datos de la luna: %s", err)
+            cached_data = await load_json_from_file(self.moon_file)
+            if cached_data:
+                _LOGGER.warning("🌙 Se usaron datos en caché por error de cálculo.")
+                return {"actualizado": cached_data["actualitzat"]["dataUpdate"]}
+            _LOGGER.error("🌙 No se pudo calcular ni cargar datos en caché de luna.")
+            return None
+
+class MeteocatMoonFileCoordinator(BaseFileCoordinator):
+    """Coordinator para manejar la actualización de los datos de la luna desde moon_{town_id}.json."""
+
+    def __init__(self, hass: HomeAssistant, entry_data: dict):
+        self.town_id = entry_data["town_id"]
+        self.timezone_str = hass.config.time_zone or "Europe/Madrid"
+
+        files_folder = get_storage_dir(hass, "files")
+        self.moon_file = files_folder / f"moon_{self.town_id.lower()}_data.json"
+
+        super().__init__(
+            hass,
+            name=f"{DOMAIN} Moon File Coordinator",
+            update_interval=DEFAULT_MOON_FILE_UPDATE_INTERVAL,
+            min_delay=1.0,  # Rango predeterminado
+            max_delay=2.0,  # Rango predeterminado
+        )
+
+    async def _async_update_data(self) -> Dict[str, Any]:
+        """Carga los datos de la luna desde el archivo JSON y verifica si siguen siendo válidos."""
+        # 🔸 Añadimos un pequeño desfase aleatorio (1 a 2 segundos) basados en el BaseFileCoordinator
+        await self._apply_random_delay()
+        
+        existing_data = await load_json_from_file(self.moon_file)
+
+        if not existing_data or "dades" not in existing_data or not existing_data["dades"]:
+            _LOGGER.warning("No se encontraron datos en %s.", self.moon_file)
+            return {
+                "actualizado": datetime.now(ZoneInfo(self.timezone_str)).isoformat(),
+                "last_lunar_update_date": None,
+                "moon_day": None,
+                "moon_phase": None,
+                "moon_phase_name": None,
+                "illuminated_percentage": None,
+                "moon_distance": None,
+                "moon_angular_diameter": None,
+                "lunation": None,
+                "lunation_duration": None,
+                "moonrise": None,
+                "moonset": None,
+            }
+
+        dades = existing_data["dades"][0]
+        moonrise_str = dades.get("moonrise")
+        moonset_str = dades.get("moonset")
+        update_date_str = existing_data.get("actualitzat", {}).get("dataUpdate", "")
+        last_lunar_update_date_str = existing_data.get("actualitzat", {}).get("last_lunar_update_date", "")
+
+        update_date = (
+            datetime.fromisoformat(update_date_str)
+            if update_date_str
+            else datetime.now(ZoneInfo(self.timezone_str))
+        )
+
+        # Simplemente devolvemos los datos cargados, aunque estén desfasados
+        return {
+            "actualizado": update_date.isoformat(),
+            "last_lunar_update_date": last_lunar_update_date_str,
+            "moon_day": dades.get("moon_day"),
+            "moon_phase": dades.get("moon_phase"),
+            "moon_phase_name": dades.get("moon_phase_name"),
+            "illuminated_percentage": dades.get("illuminated_percentage"),
+            "moon_distance": dades.get("moon_distance"),
+            "moon_angular_diameter": dades.get("moon_angular_diameter"),
+            "lunation": dades.get("lunation"),
+            "lunation_duration": dades.get("lunation_duration"),
+            "moonrise": moonrise_str,
+            "moonset": moonset_str,
         }

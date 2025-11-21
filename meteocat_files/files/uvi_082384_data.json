@@ -5,7 +5,7 @@
     "capital": false,
     "uvi": [
         {
-            "date": "2025-10-18",
+            "date": "2025-11-19",
             "hours": [
                 {
                     "hour": 0,
@@ -49,42 +49,42 @@
                 },
                 {
                     "hour": 8,
-                    "uvi": 1,
+                    "uvi": 0,
                     "uvi_clouds": 0
                 },
                 {
                     "hour": 9,
                     "uvi": 1,
-                    "uvi_clouds": 0
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 10,
-                    "uvi": 2,
+                    "uvi": 1,
                     "uvi_clouds": 1
                 },
                 {
                     "hour": 11,
-                    "uvi": 3,
-                    "uvi_clouds": 1
+                    "uvi": 2,
+                    "uvi_clouds": 2
                 },
                 {
                     "hour": 12,
-                    "uvi": 3,
-                    "uvi_clouds": 1
+                    "uvi": 2,
+                    "uvi_clouds": 2
                 },
                 {
                     "hour": 13,
-                    "uvi": 2,
+                    "uvi": 1,
                     "uvi_clouds": 1
                 },
                 {
                     "hour": 14,
-                    "uvi": 2,
-                    "uvi_clouds": 0
+                    "uvi": 1,
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 15,
-                    "uvi": 1,
+                    "uvi": 0,
                     "uvi_clouds": 0
                 },
                 {
@@ -130,7 +130,7 @@
             ]
         },
         {
-            "date": "2025-10-19",
+            "date": "2025-11-20",
             "hours": [
                 {
                     "hour": 0,
@@ -174,42 +174,42 @@
                 },
                 {
                     "hour": 8,
-                    "uvi": 1,
+                    "uvi": 0,
                     "uvi_clouds": 0
                 },
                 {
                     "hour": 9,
-                    "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi": 0,
+                    "uvi_clouds": 0
                 },
                 {
                     "hour": 10,
-                    "uvi": 2,
-                    "uvi_clouds": 1
+                    "uvi": 1,
+                    "uvi_clouds": 0
                 },
                 {
                     "hour": 11,
-                    "uvi": 3,
+                    "uvi": 1,
                     "uvi_clouds": 1
                 },
                 {
                     "hour": 12,
-                    "uvi": 3,
+                    "uvi": 1,
                     "uvi_clouds": 1
                 },
                 {
                     "hour": 13,
-                    "uvi": 3,
+                    "uvi": 1,
                     "uvi_clouds": 1
                 },
                 {
                     "hour": 14,
-                    "uvi": 2,
+                    "uvi": 1,
                     "uvi_clouds": 0
                 },
                 {
                     "hour": 15,
-                    "uvi": 1,
+                    "uvi": 0,
                     "uvi_clouds": 0
                 },
                 {
@@ -255,7 +255,7 @@
             ]
         },
         {
-            "date": "2025-10-20",
+            "date": "2025-11-21",
             "hours": [
                 {
                     "hour": 0,
@@ -299,43 +299,43 @@
                 },
                 {
                     "hour": 8,
-                    "uvi": 1,
+                    "uvi": 0,
                     "uvi_clouds": 0
                 },
                 {
                     "hour": 9,
-                    "uvi": 1,
+                    "uvi": 0,
                     "uvi_clouds": 0
                 },
                 {
                     "hour": 10,
-                    "uvi": 2,
+                    "uvi": 1,
                     "uvi_clouds": 1
                 },
                 {
                     "hour": 11,
-                    "uvi": 3,
-                    "uvi_clouds": 2
+                    "uvi": 1,
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 12,
-                    "uvi": 3,
-                    "uvi_clouds": 3
+                    "uvi": 1,
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 13,
-                    "uvi": 2,
-                    "uvi_clouds": 2
+                    "uvi": 1,
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 14,
-                    "uvi": 2,
-                    "uvi_clouds": 2
+                    "uvi": 1,
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 15,
-                    "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi": 0,
+                    "uvi_clouds": 0
                 },
                 {
                     "hour": 16,

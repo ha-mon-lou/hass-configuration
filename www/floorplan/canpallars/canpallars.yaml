@@ -11,7 +11,7 @@ views:
               - type: custom:floorplan-card
                 full_height: true
                 config:
-                  image: /local/floorplan/canpallars/canpallars-J04.svg
+                  image: /local/floorplan/canpallars/canpallars-N21.svg
                   stylesheet: /local/floorplan/assets/canpallars-02.css
                   console_log_level: info
                   defaults:
@@ -25,6 +25,36 @@ views:
                         service: floorplan.image_set
                         service_data: >-
                           /local/floorplan/assets/socket/socket_${entity.attributes.hvac_action}.svg
+                    - entity: climate.termostato_virtual
+                      elements:
+                        - radiador_habitacion_2
+                        - radiador_bathroom_1
+                        - radiador_bathroom_2
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: |
+                              > const hvac = entity.attributes.hvac_action;
+                              if (hvac === "heating") {
+                                return `
+                                  fill: orange;
+                                  filter: drop-shadow(0 0 8px orange);
+                                  transition: fill 0.5s ease, filter 0.5s ease;
+                                `;
+                              } else if (hvac === "idle") {
+                                return `
+                                  fill: lightgray;
+                                  filter: none;
+                                  transition: fill 0.5s ease;
+                                `;
+                              } else {
+                                return `
+                                  fill: gray;
+                                  filter: none;
+                                  transition: fill 0.5s ease;
+                                `;
+                              }
                     - entity: input_number.nivel_sensacion_termica_ideal
                       element: puerta-test
                       state_action:
@@ -216,14 +246,13 @@ views:
                                 fill-opacity: 0.3;
                                 transition: fill 1s ease;
                               `;
-                    - entity: switch.alias_antimosquitos
-                      element: switch.alias_antimosquitos
+                    - entity: climate.ventilador_habitacion_01
+                      element: climate.ventilador_habitacion_01
                       state_action:
                         action: call-service
                         service: floorplan.image_set
                         service_data: >-
-                          /local/floorplan/assets/socket/socket_${entity.state}.svg
-                      tap_action: toggle
+                          /local/floorplan/assets/socket/socket_${entity.attributes.hvac_action}.svg
                     - entity: switch.shelly1minig3_34b7dac6f3e4_switch_0
                       element: switch.shelly1minig3_34b7dac6f3e4_switch_0
                       state_action:
@@ -407,7 +436,7 @@ views:
                             };
 
                             transition: ${ entity.state === "locked" ? "fill 5s
-                            ease" : "" };
+                            ease" : "" };                      
                           tap_action: toggle
                     - entity: media_player.my_box_2
                       element: media_player.my_box
@@ -416,10 +445,11 @@ views:
                         service: floorplan.style_set
                         service_data:
                           style: >
-                            fill: ${ entity.state === "on" ? "green" : "red" };
+                            fill: ${ entity.state === "on" ? "green" : "black"
+                            };
 
                             transition: ${ entity.state === "off" ? "fill 5s
-                            ease" : "" };
+                            ease" : "" };                      
                       tap_action: toggle
                     - entity: climate.zigbee_sonoff_trvzb_01
                       element: climate.zigbee_sonoff_trvzb_01
@@ -437,16 +467,8 @@ views:
                                     transition: fill 1s ease;
                                   `;
                                 }
-                                const temp = entity.attributes.current_temperature;
-                                const min = 16, max = 30;
-                                const clamped = Math.min(Math.max(temp, min), max);
-                                const ratio = (clamped - min) / (max - min);
-                                const r = Math.round(255 * ratio);
-                                const g = 0;
-                                const b = Math.round(255 * (1 - ratio));
-                                const alpha = 0.8;
                                 return `
-                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  fill: ${ entity.state === "heat" ? "red" :"blue" };
                                   transition: fill 1s ease;
                                 `;
                     - entity: climate.zigbee_sonoff_trvzb_02
@@ -465,16 +487,8 @@ views:
                                     transition: fill 1s ease;
                                   `;
                                 }
-                                const temp = entity.attributes.current_temperature;
-                                const min = 16, max = 30;
-                                const clamped = Math.min(Math.max(temp, min), max);
-                                const ratio = (clamped - min) / (max - min);
-                                const r = Math.round(255 * ratio);
-                                const g = 0;
-                                const b = Math.round(255 * (1 - ratio));
-                                const alpha = 0.8;
                                 return `
-                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  fill: ${ entity.state === "heat" ? "red" :"blue" };
                                   transition: fill 1s ease;
                                 `;
                     - entity: climate.zigbee_sonoff_trvzb_03
@@ -493,16 +507,8 @@ views:
                                     transition: fill 1s ease;
                                   `;
                                 }
-                                const temp = entity.attributes.current_temperature;
-                                const min = 16, max = 30;
-                                const clamped = Math.min(Math.max(temp, min), max);
-                                const ratio = (clamped - min) / (max - min);
-                                const r = Math.round(255 * ratio);
-                                const g = 0;
-                                const b = Math.round(255 * (1 - ratio));
-                                const alpha = 0.8;
                                 return `
-                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  fill: ${ entity.state === "heat" ? "red" :"blue" };
                                   transition: fill 1s ease;
                                 `;
                     - entity: climate.zigbee_sonoff_trvzb_04
@@ -521,16 +527,8 @@ views:
                                     transition: fill 1s ease;
                                   `;
                                 }
-                                const temp = entity.attributes.current_temperature;
-                                const min = 16, max = 30;
-                                const clamped = Math.min(Math.max(temp, min), max);
-                                const ratio = (clamped - min) / (max - min);
-                                const r = Math.round(255 * ratio);
-                                const g = 0;
-                                const b = Math.round(255 * (1 - ratio));
-                                const alpha = 0.8;
                                 return `
-                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  fill: ${ entity.state === "heat" ? "red" :"blue" };
                                   transition: fill 1s ease;
                                 `;
                     - entity: climate.aire_acondicionado_virtual
@@ -544,7 +542,7 @@ views:
                               "green" };
 
                               transition: ${ entity.state === "cool" ? "fill 5s
-                              ease" : "" };
+                              ease" : "" };                      
                     - entity: sensor.puerta_principal_battery_2
                       element: sensor.puerta_principal_battery_2
                       state_action:
@@ -665,7 +663,7 @@ views:
                             Math.min(100, Math.max(0, Math.round(raw / 10) *
                             10)); return
                             `/local/floorplan/assets/battery/battery-level-${level}.svg`;
-
+                                                
                     - entity: switch.zigbee_tuya_ts0012_01_left
                       element: zigbee_tuya_ts0012_01_left
                       state_action:

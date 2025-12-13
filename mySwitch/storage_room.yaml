@@ -1,31 +1,25 @@
 template:
-- switch:
-  - unique_id: alias_storage_washing_machines
-    turn_on:
-    - target:
-        entity_id:
-        - switch.meross_switch_01_outlet
-      action: switch.turn_on
-    turn_off:
-    - target:
-        entity_id:
-        - switch.meross_switch_01_outlet
-      action: switch.turn_off
-    default_entity_id: switch.alias_storage_washing_machines
-    name: STRG Washing machines
-    state: '{{ is_state(''switch.meross_switch_01_outlet'', ''on'') }}'          
+  - switch:
+      - unique_id: alias_storage_washing_machines
+        name: STRG Washing machines
+        turn_on:
+          - service: switch.turn_on
+            target:
+              entity_id: switch.meross_switch_01_outlet
+        turn_off:
+          - service: switch.turn_off
+            target:
+              entity_id: switch.meross_switch_01_outlet
+        state: "{{ is_state('switch.meross_switch_01_outlet','on') }}"
+      - unique_id: alias_storage_ac_panasonic
+        name: STRG AC
+        turn_on:
+          - service: switch.turn_on
+            target:
+              entity_id: switch.meross_switch_02_outlet
+        turn_off:
+          - service: switch.turn_off
+            target:
+              entity_id: switch.meross_switch_02_outlet
+        state: "{{ is_state('switch.meross_switch_02_outlet','on') }}"
 
-  - unique_id: alias_storage_ac_panasonic
-    turn_on:
-    - target:
-        entity_id:
-        - switch.meross_switch_02_outlet
-      action: switch.turn_on
-    turn_off:
-    - target:
-        entity_id:
-        - switch.meross_switch_02_outlet
-      action: switch.turn_off
-    default_entity_id: switch.alias_storage_ac_panasonic
-    name: STRG AC
-    state: '{{ is_state(''switch.meross_switch_02_outlet'', ''on'') }}'          

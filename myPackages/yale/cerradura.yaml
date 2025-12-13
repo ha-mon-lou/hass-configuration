@@ -63,6 +63,19 @@ script:
         target:
           entity_id: lock.puerta_principal_2
 
+  desbloquear_puerta_principal:
+    alias: Abrir puerta principal
+    sequence:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: lock.puerta_principal_2
+                state: "locked"
+            sequence:
+              - service: lock.unlock
+                target:
+                  entity_id: lock.puerta_principal_2
+
   cerrar_puerta_principal:
     alias: Cerrar puerta principal
     sequence:

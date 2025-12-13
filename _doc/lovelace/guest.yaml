@@ -4,14 +4,14 @@ decluttering_templates:
       type: vertical-stack
       cards:
         - type: custom:mushroom-template-card
-          primary: '[[device_name]]'
+          primary: "[[device_name]]"
           secondary: >
             {{ states('sensor.[[device_name]]_temperature') }} °C | {{
             states('sensor.[[device_name]]_humidity') }} %
           icon: mdi:thermometer
         - type: custom:plotly-graph
           entities:
-            - entity: ''
+            - entity: ""
               x: |
                 $fn ({}) => {
                   const xc = 24, yc = 50;
@@ -20,7 +20,7 @@ decluttering_templates:
                   const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
                   return t.map(tt => xc + a*Math.cos(tt)*Math.cos(theta) - b*Math.sin(tt)*Math.sin(theta));
                 }
-              'y': |
+              "y": |
                 $fn ({}) => {
                   const xc = 24, yc = 50;
                   const a = 8, b = 12;
@@ -35,7 +35,7 @@ decluttering_templates:
                 color: rgba(255,255,0,0)
               name: zona aceptable
               type: scatter
-            - entity: ''
+            - entity: ""
               x: |
                 $fn ({}) => {
                   const xc = 24, yc = 50;
@@ -44,7 +44,7 @@ decluttering_templates:
                   const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
                   return t.map(tt => xc + a*Math.cos(tt)*Math.cos(theta) - b*Math.sin(tt)*Math.sin(theta));
                 }
-              'y': |
+              "y": |
                 $fn ({}) => {
                   const xc = 24, yc = 50;
                   const a = 5, b = 12;
@@ -59,7 +59,7 @@ decluttering_templates:
                 color: rgba(0,255,0,0)
               name: zona confort
               type: scatter
-            - entity: ''
+            - entity: ""
               x: |
                 $fn ({}) => {
                   const xc = 30, yc = 70;
@@ -68,7 +68,7 @@ decluttering_templates:
                   const t = Array.from({length:100}, (_,i) => i*2*Math.PI/99);
                   return t.map(tt => xc + a*Math.cos(tt)*Math.cos(theta) - b*Math.sin(tt)*Math.sin(theta));
                 }
-              'y': |
+              "y": |
                 $fn ({}) => {
                   const xc = 30, yc = 70;
                   const a = 5, b = 12;
@@ -107,9 +107,9 @@ decluttering_templates:
               period: hour
               internal: true
               fn: $fn ({ ys, vars }) => vars.humidity = ys
-            - entity: ''
+            - entity: ""
               x: $fn ({ vars }) => vars.temperature
-              'y': $fn ({ vars }) => vars.humidity
+              "y": $fn ({ vars }) => vars.humidity
               mode: markers
               name: points
               marker:
@@ -117,9 +117,9 @@ decluttering_templates:
                 size: 2
                 opacity: 0.4
               type: scatter
-            - entity: ''
+            - entity: ""
               x: $fn ({ vars }) => vars.temperature
-              'y': $fn ({ vars }) => vars.humidity
+              "y": $fn ({ vars }) => vars.humidity
               name: density
               ncontours: 20
               colorscale: Hot
@@ -128,7 +128,7 @@ decluttering_templates:
               line:
                 color: null
               type: histogram2dcontour
-          hours_to_show: '[[hours_to_show]]'
+          hours_to_show: "[[hours_to_show]]"
           raw_plotly_config: true
           layout:
             plot_bgcolor: white
@@ -181,7 +181,7 @@ decluttering_templates:
       type: vertical-stack
       cards:
         - type: entities
-          title: '[[switch_prefix]] - Sensors'
+          title: "[[switch_prefix]] - Sensors"
           entities:
             - entity: sensor.[[switch_prefix]]_consumption
               name: Energy Consumption (Wh)
@@ -195,16 +195,16 @@ decluttering_templates:
           cards:
             - type: custom:button-card
               entity: switch.[[switch_prefix]]_config_overtemp_enable
-              name: '[[switch_name_overtemp]]'
+              name: "[[switch_name_overtemp]]"
               show_name: true
               show_state: false
               icon: mdi:power
               size: 20px
               color_type: icon
               state:
-                - value: 'on'
+                - value: "on"
                   color: green
-                - value: 'off'
+                - value: "off"
                   color: red
               tap_action:
                 action: none
@@ -222,16 +222,16 @@ decluttering_templates:
                   - height: 18px
             - type: custom:button-card
               entity: switch.[[switch_prefix]]_outlet
-              name: '[[switch_name_outlet]]'
+              name: "[[switch_name_outlet]]"
               show_name: true
               show_state: false
               icon: mdi:power
               size: 20px
               color_type: icon
               state:
-                - value: 'on'
+                - value: "on"
                   color: green
-                - value: 'off'
+                - value: "off"
                   color: red
               tap_action:
                 action: toggle
@@ -268,11 +268,11 @@ decluttering_templates:
           name: 🌡 Temperatura [[nombre]]
           icon: mdi:thermometer
           entities:
-            - entity: '[[sensor_temp]]'
-              name: '[[nombre]]'
+            - entity: "[[sensor_temp]]"
+              name: "[[nombre]]"
             - entity: sensor.temperatura_interior
               name: Interior
-            - entity: '[[sensor_sensacion]]'
+            - entity: "[[sensor_sensacion]]"
               name: Sensación
           hours_to_show: 48
           points_per_hour: 1
@@ -285,8 +285,8 @@ decluttering_templates:
           name: 💧 Humedad [[nombre]]
           icon: mdi:water-percent
           entities:
-            - entity: '[[sensor_hum]]'
-              name: '[[nombre]]'
+            - entity: "[[sensor_hum]]"
+              name: "[[nombre]]"
             - entity: sensor.humedad_interior
               name: Interior
           hours_to_show: 48
@@ -303,7 +303,7 @@ decluttering_templates:
       type: horizontal-stack
       cards:
         - type: custom:mushroom-template-card
-          primary: '[[id]]'
+          primary: "[[id]]"
           secondary: |
             Temp {{ states('sensor.sensacion_termica_[[id]]') | float(2) }}ºC
           icon: mdi:fan
@@ -353,7 +353,7 @@ decluttering_templates:
               {% endif %}
         - type: custom:mushroom-template-card
           primary: Modo
-          secondary: '{{ states(''input_select.ventilador_[[id]]_modo_auto'') | title }}'
+          secondary: "{{ states('input_select.ventilador_[[id]]_modo_auto') | title }}"
           icon: >
             {% if is_state('input_select.ventilador_[[id]]_modo_auto', 'manual')
             %}
@@ -385,7 +385,7 @@ decluttering_templates:
       - id: null
     card:
       type: custom:mushroom-template-card
-      primary: '[[id]]'
+      primary: "[[id]]"
       secondary: |
         Temp {{ states('sensor.sensacion_termica_[[id]]') | float(2) }}ºC
       icon: mdi:fan
@@ -437,18 +437,18 @@ decluttering_templates:
       - sensor: null
     card:
       type: custom:bar-card
-      name: '[[nombre]]'
+      name: "[[nombre]]"
       min: 0
       max: 40
       unit_of_measurement: °C
       height: 20px
       decimal: 1
       positions:
-        icon: 'off'
+        icon: "off"
         name: inside
         value: inside
       entities:
-        - entity: '[[sensor]]'
+        - entity: "[[sensor]]"
       card_mod:
         style: |
           ha-card {
@@ -487,14 +487,14 @@ decluttering_templates:
         service: input_select.select_option
         data:
           entity_id: input_select.ventilador_[[id]]_temporizador
-          option: '[[valor]]'
+          option: "[[valor]]"
       state:
-        - value: '[[valor]]'
+        - value: "[[valor]]"
           styles:
             card:
-              - background-color: '#2e2e2e'
+              - background-color: "#2e2e2e"
             icon:
-              - color: '#f44336'
+              - color: "#f44336"
   grupo_temporizador:
     variables:
       - id
@@ -516,22 +516,22 @@ decluttering_templates:
         - type: custom:decluttering-card
           template: elemento_temporizador
           variables:
-            - id: '[[id]]'
+            - id: "[[id]]"
             - valor: 1
         - type: custom:decluttering-card
           template: elemento_temporizador
           variables:
-            - id: '[[id]]'
+            - id: "[[id]]"
             - valor: 2
         - type: custom:decluttering-card
           template: elemento_temporizador
           variables:
-            - id: '[[id]]'
+            - id: "[[id]]"
             - valor: 3
         - type: custom:decluttering-card
           template: elemento_temporizador
           variables:
-            - id: '[[id]]'
+            - id: "[[id]]"
             - valor: 4
   grupo_ventilador:
     variables:
@@ -542,43 +542,43 @@ decluttering_templates:
         - type: custom:decluttering-card
           template: boton_ventilador_opcion
           variables:
-            - id: '[[id]]'
+            - id: "[[id]]"
             - valor: Apagar
             - icono: mdi:power
-            - color_background: '#b71c1c'
-            - color_icon: '#ef9a9a'
+            - color_background: "#b71c1c"
+            - color_icon: "#ef9a9a"
         - type: custom:decluttering-card
           template: boton_ventilador_opcion
           variables:
-            - id: '[[id]]'
+            - id: "[[id]]"
             - valor: velocidad 1
             - icono: mdi:fan-speed-1
-            - color_background: '#01579b'
-            - color_icon: '#4fc3f7'
+            - color_background: "#01579b"
+            - color_icon: "#4fc3f7"
         - type: custom:decluttering-card
           template: boton_ventilador_opcion
           variables:
-            - id: '[[id]]'
+            - id: "[[id]]"
             - valor: velocidad 2
             - icono: mdi:fan-speed-2
-            - color_background: '#01579b'
-            - color_icon: '#4fc3f7'
+            - color_background: "#01579b"
+            - color_icon: "#4fc3f7"
         - type: custom:decluttering-card
           template: boton_ventilador_opcion
           variables:
-            - id: '[[id]]'
+            - id: "[[id]]"
             - valor: velocidad 3
             - icono: mdi:fan-speed-3
-            - color_background: '#01579b'
-            - color_icon: '#4fc3f7'
+            - color_background: "#01579b"
+            - color_icon: "#4fc3f7"
         - type: custom:decluttering-card
           template: boton_ventilador_opcion
           variables:
-            - id: '[[id]]'
+            - id: "[[id]]"
             - valor: brisa
             - icono: mdi:weather-windy
-            - color_background: '#33691e'
-            - color_icon: '#aed581'
+            - color_background: "#33691e"
+            - color_icon: "#aed581"
   boton_ventilador_opcion:
     variables:
       - id
@@ -589,7 +589,7 @@ decluttering_templates:
     card:
       type: custom:button-card
       entity: input_select.ventilador_[[id]]_botonera
-      icon: '[[icono]]'
+      icon: "[[icono]]"
       show_name: false
       tap_action:
         action: call-service
@@ -598,7 +598,7 @@ decluttering_templates:
           dispositivo: ventilador_[[id]]
           desde: boton-off
           modo: manual
-          valor: '[[valor]]'
+          valor: "[[valor]]"
       styles:
         card:
           - display: |
@@ -607,12 +607,12 @@ decluttering_templates:
                 return opts && opts.includes('[[valor]]') ? "block" : "none";
               ]]]
         icon:
-          - color: '[[color_icon]]'
+          - color: "[[color_icon]]"
       state:
-        - value: '[[valor]]'
+        - value: "[[valor]]"
           styles:
             card:
-              - background-color: '[[color_background]]'
+              - background-color: "[[color_background]]"
   ventilador_control:
     variables:
       - nombre
@@ -620,7 +620,7 @@ decluttering_templates:
       - powerful
       - umbral
       - opciones: input_select.ventilador_[[id]]_botonera
-      - fondo: '#1e1e2f'
+      - fondo: "#1e1e2f"
     card:
       type: custom:mod-card
       style:
@@ -636,7 +636,7 @@ decluttering_templates:
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-template-card
-                primary: '[[nombre]]'
+                primary: "[[nombre]]"
                 secondary: |
                   Temp {{ states(sensor.sensacion_termica_[[id]]') | int }}ºC
                 icon: mdi:fan
@@ -684,7 +684,7 @@ decluttering_templates:
               - type: custom:decluttering-card
                 template: grupo_ventilador
                 variables:
-                  - id: '[[id]]'
+                  - id: "[[id]]"
           - type: horizontal-stack
             cards:
               - type: button
@@ -700,7 +700,7 @@ decluttering_templates:
                     comando: reverse
               - type: custom:button-card
                 entity: input_select.ventilador_[[id]]_modo_auto
-                name: ' '
+                name: " "
                 show-name: false
                 icon: mdi:fan-auto
                 tap_action:
@@ -713,12 +713,12 @@ decluttering_templates:
                   - value: auto
                     styles:
                       card:
-                        - background-color: '#2b5e90'
+                        - background-color: "#2b5e90"
                       icon:
-                        - color: '#FFFFFF'
+                        - color: "#FFFFFF"
               - type: custom:button-card
                 entity: input_select.ventilador_[[id]]_botonera
-                name: ' '
+                name: " "
                 show-name: false
                 icon: mdi:wind-power
                 tap_action:
@@ -727,20 +727,20 @@ decluttering_templates:
                   data:
                     dispositivo: ventilador_[[id]]
                     modo: manual
-                    valor: '[[powerful]]'
+                    valor: "[[powerful]]"
                 state:
-                  - value: '[[powerful]]'
+                  - value: "[[powerful]]"
                     styles:
                       card:
-                        - background-color: '#1b5e20'
+                        - background-color: "#1b5e20"
                       icon:
-                        - color: '#81c784'
+                        - color: "#81c784"
           - type: horizontal-stack
             cards:
               - type: custom:decluttering-card
                 template: grupo_temporizador
                 variables:
-                  - id: '[[id]]'
+                  - id: "[[id]]"
 views:
   - title: Termostato
     sections:
@@ -753,7 +753,7 @@ views:
               - type: conditional
                 conditions:
                   - entity: input_boolean.invierno
-                    state: 'on'
+                    state: "on"
                 card:
                   type: custom:mushroom-climate-card
                   entity: climate.zigbee_sonoff_trvzb_02
@@ -761,7 +761,7 @@ views:
                   hvac_modes:
                     - auto
                     - heat
-                    - 'off'
+                    - "off"
                   collapsible_controls: false
                   tap_action:
                     action: more-info
@@ -773,7 +773,7 @@ views:
               - type: conditional
                 conditions:
                   - entity: input_boolean.invierno
-                    state: 'on'
+                    state: "on"
                 card:
                   type: custom:mushroom-climate-card
                   entity: climate.zigbee_sonoff_trvzb_03
@@ -781,7 +781,7 @@ views:
                   hvac_modes:
                     - auto
                     - heat
-                    - 'off'
+                    - "off"
                   collapsible_controls: false
                   tap_action:
                     action: more-info
@@ -797,7 +797,7 @@ views:
               - type: conditional
                 conditions:
                   - entity: input_boolean.invierno
-                    state: 'on'
+                    state: "on"
                 card:
                   type: custom:mushroom-climate-card
                   entity: climate.zigbee_sonoff_trvzb_01
@@ -805,7 +805,7 @@ views:
                   hvac_modes:
                     - auto
                     - heat
-                    - 'off'
+                    - "off"
                   collapsible_controls: false
                   tap_action:
                     action: more-info
@@ -817,7 +817,7 @@ views:
               - type: conditional
                 conditions:
                   - entity: input_boolean.invierno
-                    state: 'on'
+                    state: "on"
                 card:
                   type: custom:mushroom-climate-card
                   entity: climate.zigbee_sonoff_trvzb_04
@@ -825,7 +825,7 @@ views:
                   hvac_modes:
                     - auto
                     - heat
-                    - 'off'
+                    - "off"
                   collapsible_controls: false
                   tap_action:
                     action: more-info
@@ -840,7 +840,7 @@ views:
             hvac_modes:
               - auto
               - heat
-              - 'off'
+              - "off"
             collapsible_controls: false
             tap_action:
               action: more-info
@@ -854,7 +854,7 @@ views:
             show_temperature_control: true
             hvac_modes:
               - auto
-              - 'off'
+              - "off"
               - cool
             collapsible_controls: false
             tap_action:
@@ -1102,7 +1102,7 @@ views:
                       hvac_modes:
                         - auto
                         - heat
-                        - 'off'
+                        - "off"
                       collapsible_controls: true
                       tap_action:
                         action: more-info
@@ -1162,7 +1162,7 @@ views:
                       hvac_modes:
                         - auto
                         - heat
-                        - 'off'
+                        - "off"
                       collapsible_controls: true
                       tap_action:
                         action: more-info
@@ -1196,7 +1196,7 @@ views:
                       hvac_modes:
                         - auto
                         - heat
-                        - 'off'
+                        - "off"
                       collapsible_controls: true
                       tap_action:
                         action: more-info
@@ -1211,7 +1211,7 @@ views:
                       hvac_modes:
                         - auto
                         - heat
-                        - 'off'
+                        - "off"
                       collapsible_controls: true
                       tap_action:
                         action: more-info
@@ -1226,7 +1226,7 @@ views:
                       hvac_modes:
                         - auto
                         - cool
-                        - 'off'
+                        - "off"
                       collapsible_controls: true
                       tap_action:
                         action: more-info
@@ -1329,7 +1329,7 @@ views:
               - id: habitacion
               - umbral: input_number.pkg_ind_umbral_maximo
               - powerful: brisa
-              - fondo: '#001e00'
+              - fondo: "#001e00"
           - type: custom:decluttering-card
             template: ventilador_control
             variables:
@@ -1466,7 +1466,7 @@ views:
                     chips:
                       - type: template
                         icon: mdi:fan-minus
-                        content: ''
+                        content: ""
                         tap_action:
                           action: call-service
                           service: remote.send_command
@@ -1482,7 +1482,7 @@ views:
                             }
                       - type: template
                         icon: mdi:fan-plus
-                        content: ''
+                        content: ""
                         tap_action:
                           action: call-service
                           service: script.aire_acondicionado_power
@@ -1498,7 +1498,7 @@ views:
                           %}
                             white
                           {% endif %}
-                        content: ''
+                        content: ""
                         tap_action:
                           action: call-service
                           service: script.aire_acondicionado_temporizador
@@ -1522,7 +1522,7 @@ views:
                           'on') %}
                             white
                           {% endif %}
-                        content: ''
+                        content: ""
                         tap_action:
                           action: call-service
                           service: script.aire_acondicionado_modo_temperatura
@@ -1541,8 +1541,8 @@ views:
                   type: custom:timer-bar-card
                   entity: timer.aire_acondicionado
                   layout: full_row
-                  bar_background: '#1e4343'
-                  bar_foreground: '#008080'
+                  bar_background: "#1e4343"
+                  bar_foreground: "#008080"
                   bar_height: 38px
                   text_width: 0px
                   sync_issues: ignore
@@ -1634,7 +1634,7 @@ views:
               - type: conditional
                 conditions:
                   - entity: input_boolean.aire_acondicionado_modo_temperatura
-                    state: 'on'
+                    state: "on"
                 card:
                   type: custom:bar-card
                   card_mod:
@@ -1661,13 +1661,13 @@ views:
                       height: 38px
                       max: 5
                       positions:
-                        icon: 'off'
-                        name: 'off'
-                        value: 'off'
+                        icon: "off"
+                        name: "off"
+                        value: "off"
               - type: conditional
                 conditions:
                   - entity: input_boolean.aire_acondicionado_modo_temperatura
-                    state: 'on'
+                    state: "on"
                 card:
                   type: custom:mushroom-chips-card
                   card_mod:
@@ -1695,7 +1695,7 @@ views:
               - type: conditional
                 conditions:
                   - entity: input_boolean.aire_acondicionado_modo_temperatura
-                    state: 'on'
+                    state: "on"
                 card:
                   type: custom:mushroom-chips-card
                   alignment: end
@@ -1750,14 +1750,14 @@ views:
                 name: Umbral dinámico apagado
               - entity: sensor.cfg_humedad_bathroom_1
                 name: Humedad baño
-                unit: '%'
+                unit: "%"
               - entity: sensor.umbral_dinamico_extractor_bathroom_01
                 name: Umbral dinámico encendido
               - entity: sensor.cfg_humedad_habitacion_1
-                unit: '%'
+                unit: "%"
               - entity: sensor.humedad_interior
                 name: Humedad interior
-                unit: '%'
+                unit: "%"
               - entity: input_number.margen_humedad_apagado_extractor_bathroom_01
                 name: Margen apagado humedad
               - entity: input_number.margen_humedad_encendido_extractor_bathroom_01
@@ -1778,7 +1778,7 @@ views:
   - type: sections
     max_columns: 4
     icon: mdi:fan-plus
-    path: ''
+    path: ""
     sections:
       - type: grid
         cards:
@@ -1853,17 +1853,17 @@ views:
                 unit_of_measurement: fallos
                 height: 20px
                 positions:
-                  icon: 'off'
+                  icon: "off"
                   name: left
                   value: right
                 severity:
-                  - color: '#43a047'
+                  - color: "#43a047"
                     from: 0
                     to: 1
-                  - color: '#fdd835'
+                  - color: "#fdd835"
                     from: 2
                     to: 4
-                  - color: '#e53935'
+                  - color: "#e53935"
                     from: 5
                     to: 100
               - type: custom:mushroom-template-card
@@ -1954,38 +1954,19 @@ views:
               - switch_prefix: meross_switch_01
               - switch_name_overtemp: Protection
               - switch_name_outlet: Outlet
-          - type: custom:decluttering-card
-            template: meross_switch_full_card
-            variables:
-              - switch_prefix: meross_switch_02
-              - switch_name_overtemp: Protection
-              - switch_name_outlet: Outlet
           - type: vertical-stack
             cards:
               - type: entities
                 title: WashingMachine Estado
                 entities:
                   - entity: input_boolean.washingmachine_en_uso
-                    name: Maquina en uso
-                  - entity: timer.washingmachine_temporizador
-                    name: Temporizador
-              - type: horizontal-stack
-                cards:
-                  - type: button
-                    entity: input_boolean.washingmachine_en_uso
-                    name: Activar/Desactivar
-                    show_icon: true
-                    show_name: true
-                  - type: button
-                    entity: timer.washingmachine_temporizador
-                    name: Reiniciar temporizador
-                    show_icon: true
-                    show_name: true
-                    tap_action:
-                      action: call-service
-                      service: timer.start
-                      service_data:
-                        entity_id: washingmachine_temporizador
+                  - entity: binary_sensor.washing_machine_ciclo_en_curso
+          - type: custom:decluttering-card
+            template: meross_switch_full_card
+            variables:
+              - switch_prefix: meross_switch_02
+              - switch_name_overtemp: Protection
+              - switch_name_outlet: Outlet
   - type: sections
     max_columns: 4
     title: temporizador
@@ -1995,7 +1976,7 @@ views:
       - type: grid
         cards:
           - type: custom:clock-weather-card
-            entity: weather.st_quirze_del_v_vallsuau_barcelona
+            entity: weather.meteocat_xf_weather_sant_quirze_del_valles
           - type: entities
             entities:
               - entity: timer.custom_temporizador1
@@ -2113,7 +2094,7 @@ views:
         show_name: false
         show_state: true
         show_icon: true
-        color: ''
+        color: ""
         entity: climate.termostato_virtual
   - type: sections
     path: omie
@@ -2146,7 +2127,7 @@ views:
                   return Object.keys(data).map((key) => {
                     return [new Date(key).getTime(), data[key]];
                   });
-                color: '#008FFB'
+                color: "#008FFB"
               - entity: sensor.omie_spot_price_es
                 name: Precio Mañana
                 type: column
@@ -2155,7 +2136,7 @@ views:
                   return Object.keys(data).map((key) => {
                     return [new Date(key).getTime(), data[key]];
                   });
-                color: '#00E396'
+                color: "#00E396"
           - type: statistics-graph
             title: Consumo mensual - Ventiladores
             entities:
@@ -2592,7 +2573,7 @@ views:
               - type: conditional
                 conditions:
                   - entity: binary_sensor.puerta_principal_door_2
-                    state: 'off'
+                    state: "off"
                 card:
                   type: horizontal-stack
                   cards:
@@ -2673,26 +2654,26 @@ views:
                 name: Temperatura
                 icon: mdi:thermometer
                 severity:
-                  - color: '#d32f2f'
+                  - color: "#d32f2f"
                     from: 0
                     to: 0.3
-                  - color: '#fbc02d'
+                  - color: "#fbc02d"
                     from: 0.3
                     to: 0.6
-                  - color: '#388e3c'
+                  - color: "#388e3c"
                     from: 0.6
                     to: 1
               - entity: input_number.n8n_correlacion_humedad
                 name: Humedad
                 icon: mdi:water-percent
                 severity:
-                  - color: '#d32f2f'
+                  - color: "#d32f2f"
                     from: 0
                     to: 0.3
-                  - color: '#fbc02d'
+                  - color: "#fbc02d"
                     from: 0.3
                     to: 0.6
-                  - color: '#388e3c'
+                  - color: "#388e3c"
                     from: 0.6
                     to: 1
           - type: entities
@@ -2722,17 +2703,17 @@ views:
             cards:
               - type: custom:bar-card
                 name: Factor f
-                unit: '%'
+                unit: "%"
                 min: 0
                 max: 1
                 severity:
-                  - color: '#00FF00'
+                  - color: "#00FF00"
                     from: 0
                     to: 0.33
-                  - color: '#FFFF00'
+                  - color: "#FFFF00"
                     from: 0.33
                     to: 0.66
-                  - color: '#FF0000'
+                  - color: "#FF0000"
                     from: 0.66
                     to: 1
                 show_icon: true
@@ -2746,13 +2727,13 @@ views:
                 min: 0
                 max: 24
                 severity:
-                  - color: '#00FF00'
+                  - color: "#00FF00"
                     from: 0
                     to: 8
-                  - color: '#FFFF00'
+                  - color: "#FFFF00"
                     from: 8
                     to: 16
-                  - color: '#FF0000'
+                  - color: "#FF0000"
                     from: 16
                     to: 24
                 show_icon: true
@@ -2764,13 +2745,13 @@ views:
                 min: 0
                 max: 50
                 severity:
-                  - color: '#00FF00'
+                  - color: "#00FF00"
                     from: 0
                     to: 15
-                  - color: '#FFFF00'
+                  - color: "#FFFF00"
                     from: 15
                     to: 30
-                  - color: '#FF0000'
+                  - color: "#FF0000"
                     from: 30
                     to: 50
                 show_icon: true

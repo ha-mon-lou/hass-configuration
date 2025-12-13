@@ -3,8 +3,21 @@
   mode: single
   trigger:
     - platform: tag
-      tag_id: !secret nfc_tag_ha_door
+      tag_id: !secret nfc_tag_ha_yale
   action:
-    - service: script.secuencia_of_switches
+    - action: script.secuencia_by_area
       data:
-        my_estado: "off"
+        my_area: "habitacion_1"
+        my_estado: "turn_off"
+    - action: script.secuencia_by_area
+      data:
+        my_area: "habitacion_2"
+        my_estado: "turn_off"
+    - action: script.secuencia_by_area
+      data:
+        my_area: "despacho"
+        my_estado: "turn_off"
+    - action: script.secuencia_by_area
+      data:
+        my_area: "studio bricks"
+        my_estado: "turn_off"

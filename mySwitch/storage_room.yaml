@@ -12,7 +12,7 @@ template:
         - switch.meross_switch_01_outlet
       action: switch.turn_off
     default_entity_id: switch.alias_storage_washing_machines
-    name: STRG AC
+    name: STRG Washing machines
     state: '{{ is_state(''switch.meross_switch_01_outlet'', ''on'') }}'          
 
   - unique_id: alias_storage_ac_panasonic

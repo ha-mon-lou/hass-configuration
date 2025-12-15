@@ -56,13 +56,11 @@ template:
         state: >
           {{ states('sensor.smart_switch_24100932947880512003c4e7ae0d110b_voltage') | float | round(2) }}
 
-switch:
-  - platform: template
-    switches:
-      meross_switch_02_config_overtemp_enable:
-        unique_id: meross_switch_02_config_overtemp_enable
-        friendly_name: "Meross Switch 02 Config Overtemp Enable"
-        value_template: "{{ is_state('switch.smart_switch_24100932947880512003c4e7ae0d110b_config_overtemp_enable', 'on') }}"
+
+  - switch:
+      - unique_id: meross_switch_02_config_overtemp_enable
+        name: "Meross Switch 02 Config Overtemp Enable"
+        state: "{{ is_state('switch.smart_switch_24100932947880512003c4e7ae0d110b_config_overtemp_enable', 'on') }}"
         turn_on:
           service: switch.turn_on
           target:
@@ -72,10 +70,9 @@ switch:
           target:
             entity_id: switch.smart_switch_24100932947880512003c4e7ae0d110b_config_overtemp_enable
 
-      meross_switch_02_outlet:
-        unique_id: meross_switch_02_outlet
-        friendly_name: "Meross Switch 02 Outlet"
-        value_template: "{{ is_state('switch.smart_switch_24100932947880512003c4e7ae0d110b_outlet', 'on') }}"
+      - unique_id: meross_switch_02_outlet
+        name: "Meross Switch 02 Outlet"
+        state: "{{ is_state('switch.smart_switch_24100932947880512003c4e7ae0d110b_outlet', 'on') }}"
         turn_on:
           service: switch.turn_on
           target:

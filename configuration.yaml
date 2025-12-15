@@ -24,6 +24,8 @@ script: !include_dir_merge_named myScripts
 recorder: !include recorder.yaml
 influxdb: !include influxdb.yaml
 rest_command: !include rest_commands.yaml
+template: !include_dir_merge_list myTemplates
+
 
 input_boolean: !include myInput/input_booleans.yaml
 input_text: !include myInput/input_texts.yaml

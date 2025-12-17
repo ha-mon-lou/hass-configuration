@@ -1,0 +1,25 @@
+- switch:
+    unique_id: alias_storage_washing_machines
+    name: "STRG Washing Machines"
+    state: "{{ is_state('switch.meross_switch_01_outlet', 'on') }}"
+    turn_on:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.meross_switch_01_outlet
+    turn_off:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.meross_switch_01_outlet
+
+- switch:
+    unique_id: alias_storage_ac_panasonic
+    name: "STRG AC"
+    state: "{{ is_state('switch.meross_switch_02_outlet', 'on') }}"
+    turn_on:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.meross_switch_02_outlet
+    turn_off:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.meross_switch_02_outlet

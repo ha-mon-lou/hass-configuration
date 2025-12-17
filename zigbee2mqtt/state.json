@@ -1,6 +1,6 @@
 {
     "0xa4c1387fe2e7effc": {
-        "voltage": 230,
+        "voltage": 227,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -17,45 +17,45 @@
         }
     },
     "0xa4c13819d046464f": {
-        "voltage": 230,
+        "voltage": 227,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "linkquality": 112,
-        "power": 0,
-        "energy": 292.06,
-        "current": 0.02
+        "linkquality": 124,
+        "power": 83,
+        "energy": 295.02,
+        "current": 0.55
     },
     "0xa4c138b8caa59009": {
-        "voltage": 230,
-        "state": "ON",
-        "countdown": 0,
-        "power_outage_memory": "restore",
-        "indicator_mode": "off/on",
-        "child_lock": "UNLOCK",
-        "power": 0,
-        "energy": 64.94,
-        "current": 0,
-        "linkquality": 92
-    },
-    "0x00124b002a565fae": {
-        "voltage": 2900,
-        "battery": 99,
-        "temperature": 18.39,
-        "humidity": 66.06,
-        "linkquality": 220
-    },
-    "0xa4c138b7c1781a47": {
-        "voltage": 230,
+        "voltage": 227,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
         "power": 0,
-        "energy": 39.07,
+        "energy": 65.94,
+        "current": 0,
+        "linkquality": 120
+    },
+    "0x00124b002a565fae": {
+        "voltage": 2900,
+        "battery": 99.5,
+        "temperature": 19.12,
+        "humidity": 72.3,
+        "linkquality": 255
+    },
+    "0xa4c138b7c1781a47": {
+        "voltage": 227,
+        "state": "OFF",
+        "countdown": 0,
+        "power_outage_memory": "restore",
+        "indicator_mode": "off/on",
+        "child_lock": "UNLOCK",
+        "power": 0,
+        "energy": 40.85,
         "current": 0,
         "linkquality": 255,
         "update": {
@@ -73,12 +73,12 @@
         "closing_steps": 371,
         "valve_opening_limit_voltage": 1810,
         "valve_closing_limit_voltage": 2761,
-        "valve_motor_running_voltage": 1462,
-        "local_temperature": 19,
-        "occupied_heating_setpoint": 19,
-        "system_mode": "auto",
+        "valve_motor_running_voltage": 1744,
+        "local_temperature": 19.6,
+        "occupied_heating_setpoint": 6,
+        "system_mode": "off",
         "running_state": "idle",
-        "battery": 58,
+        "battery": 57,
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
         "weekly_schedule": {
@@ -95,13 +95,13 @@
             "installed_version": 5120,
             "latest_version": 5121
         },
-        "linkquality": 204,
-        "temperature_sensor_select": "internal",
-        "external_temperature_input": 18.7,
+        "linkquality": 255,
+        "temperature_sensor_select": "external",
+        "external_temperature_input": 19.6,
         "temperature_accuracy": -1
     },
     "0x0cae5ffffed9e20e": {
-        "local_temperature_calibration": 0.6,
+        "local_temperature_calibration": -1.2,
         "child_lock": "UNLOCK",
         "open_window": "OFF",
         "frost_protection_temperature": 7,
@@ -109,14 +109,14 @@
         "closing_steps": 411,
         "valve_opening_limit_voltage": 1705,
         "valve_closing_limit_voltage": 2759,
-        "valve_motor_running_voltage": 1097,
-        "local_temperature": 18.4,
-        "occupied_heating_setpoint": 20.5,
-        "system_mode": "heat",
-        "running_state": "heat",
+        "valve_motor_running_voltage": 1718,
+        "local_temperature": 18.7,
+        "occupied_heating_setpoint": 7,
+        "system_mode": "off",
+        "running_state": "idle",
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
-        "battery": 55,
+        "battery": 48,
         "weekly_schedule": {
             "monday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
             "tuesday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
@@ -131,9 +131,9 @@
             "installed_version": 5120,
             "latest_version": 5121
         },
-        "linkquality": 220,
-        "temperature_sensor_select": "internal",
-        "external_temperature_input": 19.4,
+        "linkquality": 255,
+        "temperature_sensor_select": "external",
+        "external_temperature_input": 18.7,
         "temperature_accuracy": -1
     },
     "0x8c65a3fffee60ccd": {
@@ -146,11 +146,11 @@
         "valve_opening_limit_voltage": 1906,
         "valve_closing_limit_voltage": 2937,
         "valve_motor_running_voltage": 1851,
-        "local_temperature": 18.4,
-        "occupied_heating_setpoint": 19,
-        "system_mode": "auto",
+        "local_temperature": 18.8,
+        "occupied_heating_setpoint": 7,
+        "system_mode": "off",
         "running_state": "idle",
-        "battery": 55,
+        "battery": 54,
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
         "weekly_schedule": {
@@ -167,22 +167,22 @@
             "installed_version": 5120,
             "latest_version": 5121
         },
-        "linkquality": 220,
-        "temperature_sensor_select": "internal",
-        "external_temperature_input": 8.8,
+        "linkquality": 255,
+        "temperature_sensor_select": "external",
+        "external_temperature_input": 18.8,
         "temperature_accuracy": -1
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 17.3,
-        "humidity": 64.09,
-        "co2": 900,
-        "linkquality": 220
+        "temperature": 18.93,
+        "humidity": 70.5,
+        "co2": 720,
+        "linkquality": 255
     },
     "0xe406bffffe34f94b": {
         "battery": 100,
         "voltage": 3000,
-        "linkquality": 244
+        "linkquality": 255
     },
     "0xa4c138b8c5468a38": {
         "power_on_behavior": "previous",
@@ -190,33 +190,33 @@
         "state_left": "OFF",
         "state_right": "OFF",
         "backlight_mode": "normal",
-        "linkquality": 220
+        "linkquality": 244
     },
     "0x44e2f8fffe0ffdb2": {
-        "local_temperature_calibration": 0.4,
+        "local_temperature_calibration": 0.8,
         "child_lock": "UNLOCK",
         "open_window": "OFF",
         "frost_protection_temperature": 7,
-        "temperature_sensor_select": "internal",
+        "temperature_sensor_select": "external",
         "idle_steps": 27,
         "closing_steps": 300,
         "valve_opening_limit_voltage": 1870,
         "valve_closing_limit_voltage": 2412,
-        "valve_motor_running_voltage": 0,
+        "valve_motor_running_voltage": 1392,
         "update": {
             "state": "available",
             "installed_version": 5120,
             "latest_version": 5121
         },
-        "external_temperature_input": 18.6,
+        "external_temperature_input": 17.8,
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
         "temperature_accuracy": -1,
-        "local_temperature": 19,
-        "occupied_heating_setpoint": 19,
-        "system_mode": "auto",
+        "local_temperature": 17.8,
+        "occupied_heating_setpoint": 7,
+        "system_mode": "off",
         "running_state": "idle",
-        "battery": 79,
+        "battery": 71,
         "weekly_schedule": {
             "monday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
             "tuesday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
@@ -226,6 +226,6 @@
             "saturday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
             "sunday": "00:00/16 07:00/19 10:00/19 10:00/19 10:00/19 23:00/16"
         },
-        "linkquality": 160
+        "linkquality": 152
     }
 }

@@ -1,0 +1,87 @@
+template:
+  - sensor:
+      - name: "Meross Switch 03 Consumption"
+        unique_id: meross_switch_03_consumption
+        unit_of_measurement: "W"
+        device_class: power
+        state: >
+          {{ states('sensor.smart_switch_25021763221791512003c4e7ae139156_consumption') | float | round(2) }}
+
+      - name: "Meross Switch 03 Current"
+        unique_id: meross_switch_03_current
+        unit_of_measurement: "A"
+        device_class: current
+        state: >
+          {{ states('sensor.smart_switch_25021763221791512003c4e7ae139156_current') | float | round(2) }}
+
+      - name: "Meross Switch 03 Energy"
+        unique_id: meross_switch_03_energy
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        state: >
+          {{ states('sensor.smart_switch_25021763221791512003c4e7ae139156_energy') | float | round(2) }}
+
+      - name: "Meross Switch 03 Power"
+        unique_id: meross_switch_03_power
+        unit_of_measurement: "W"
+        device_class: power
+        state: >
+          {{ states('sensor.smart_switch_25021763221791512003c4e7ae139156_power') | float | round(2) }}
+
+      - name: "Meross Switch 03 Power Log"
+        unique_id: meross_switch_03_power_log
+        unit_of_measurement: "log(W)"
+        state: >
+          {% set val = states('sensor.meross_switch_03_power') | float(0) %}
+          {% if val > 0 %}
+            {{ (val | log(10)) | round(2) }}
+          {% else %}
+            0
+          {% endif %}
+        attributes:
+          original: "{{ states('sensor.meross_switch_03_power') }}"
+
+      - name: "Meross Switch 03 Signal Strength"
+        unique_id: meross_switch_03_signal_strength
+        unit_of_measurement: "dBm"
+        device_class: signal_strength
+        state: >
+          {{ states('sensor.smart_switch_25021763221791512003c4e7ae139156_signal_strength') | float | round(2) }}
+
+      - name: "Meross Switch 03 Voltage"
+        unique_id: meross_switch_03_voltage
+        unit_of_measurement: "V"
+        device_class: voltage
+        state: >
+          {{ states('sensor.smart_switch_25021763221791512003c4e7ae139156_voltage') | float | round(2) }}
+
+switch:
+  - platform: template
+    switches:
+      meross_switch_03_config_overtemp_enable:
+        unique_id: meross_switch_03_config_overtemp_enable
+        friendly_name: "Meross Switch 03 Config Overtemp Enable"
+        value_template: "{{ is_state('switch.smart_switch_25021763221791512003c4e7ae139156_config_overtemp_enable', 'on') }}"
+        turn_on:
+          service: switch.turn_on
+          target:
+            entity_id: switch.smart_switch_25021763221791512003c4e7ae139156_config_overtemp_enable
+        turn_off:
+          service: switch.turn_off
+          target:
+            entity_id: switch.smart_switch_25021763221791512003c4e7ae139156_config_overtemp_enable
+
+      meross_switch_03_outlet:
+        unique_id: meross_switch_03_outlet
+        friendly_name: "Meross Switch 03 Outlet"
+        value_template: "{{ is_state('switch.smart_switch_25021763221791512003c4e7ae139156_outlet', 'on') }}"
+        turn_on:
+          service: switch.turn_on
+          target:
+            entity_id: switch.smart_switch_25021763221791512003c4e7ae139156_outlet
+        turn_off:
+          service: switch.turn_off
+          target:
+            entity_id: switch.smart_switch_25021763221791512003c4e7ae139156_outlet
+

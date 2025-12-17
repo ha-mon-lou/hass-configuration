@@ -1,0 +1,15 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+#
+binary_sensor:
+  - platform: template
+    name: "Demanda de calefacción"
+    unique_id: demanda_calefaccion
+    device_class: heat
+    state: >
+      {% set trvs = state_attr('group.lista_trvs', 'entity_id') %}
+      {{ trvs
+         | map('state_attr', 'hvac_action')
+         | select('equalto', 'heating')
+         | list
+         | count > 0 }}

@@ -1,0 +1,51 @@
+- switch:
+    unique_id: alias_pinguino
+    name: Alias Pinguino
+    state: "{{ is_state('switch.zigbee_nous_enchufe_04', 'on') }}"
+    turn_on:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.zigbee_nous_enchufe_04
+    turn_off:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.zigbee_nous_enchufe_04
+
+- switch:
+    unique_id: alias_antimosquitos
+    name: Alias Antimosquitos
+    state: "{{ is_state('switch.zigbee_nous_enchufe_01', 'on') }}"
+    turn_on:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.zigbee_nous_enchufe_01
+    turn_off:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.zigbee_nous_enchufe_01
+
+- switch:
+    unique_id: alias_ventilador_habitacion_01
+    name: Ventilador habitacion 01
+    state: "{{ is_state('switch.zigbee_nous_enchufe_01', 'on') }}"
+    turn_on:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.zigbee_nous_enchufe_01
+    turn_off:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.zigbee_nous_enchufe_01
+
+- switch:
+    unique_id: alias_ventilador_living_1
+    name: Ventilador living 1
+    state: "{{ is_state('switch.enchufe_habitacion_socket_2', 'on') }}"
+    turn_on:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.enchufe_habitacion_socket_2
+    turn_off:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.enchufe_habitacion_socket_2

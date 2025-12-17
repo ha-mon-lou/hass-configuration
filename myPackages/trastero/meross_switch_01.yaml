@@ -84,4 +84,3 @@ switch:
           service: switch.turn_off
           target:
             entity_id: switch.smart_switch_24100980527555512003c4e7ae0d10f5_outlet
-

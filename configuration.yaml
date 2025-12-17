@@ -29,6 +29,9 @@ input_boolean: !include myInput/input_booleans.yaml
 input_text: !include myInput/input_texts.yaml
 input_number: !include myInput/input_numbers.yaml
 shell_command: !include myShellCommands/shell_commands.yaml
+
+template: !include_dir_merge_list myTemplate
+
 # timer: !include_dir_merge_named myTimers
 python_script:
 

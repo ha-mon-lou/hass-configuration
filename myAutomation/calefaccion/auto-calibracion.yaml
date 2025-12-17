@@ -1,59 +1,87 @@
-- id: "auto_calibrador_03"
-  alias: TRV Calibrator Despacho
-  description: ""
-  use_blueprint:
-    path: rotilho/trv_calibrator.yaml
-    input:
-      trv: climate.zigbee_sonoff_trvzb_03
-      temperature_sensor: sensor.tuya_termometro_wifi_temperature
-      trv_calibration_number: number.zigbee_sonoff_trvzb_03_local_temperature_calibration
-      delay_in_minutes: 2
+- id: "trv_despacho_external_temperature"
+  alias: TRV Despacho - Temperatura externa
+  description: "Envia la temperatura externa al TRV 03 en Z2M"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: sensor.cfg_sensacion_termica_despacho
+    - platform: time_pattern
+      minutes: "/3"
   condition:
     - condition: state
       entity_id: input_boolean.invierno
       state: "on"
+  action:
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/zigbee_sonoff_trvzb_03/set
+        payload: >
+          {
+            "external_temperature_input": {{ states('sensor.cfg_sensacion_termica_despacho') | float }}
+          }
 
-- id: "auto_calibrador_01"
-  alias: TRV Calibrator Living 1
-  description: ""
-  use_blueprint:
-    path: rotilho/trv_calibrator.yaml
-    input:
-      trv: climate.zigbee_sonoff_trvzb_01
-      temperature_sensor: sensor.shelly_blu_5480_temperature
-      trv_calibration_number: number.zigbee_sonoff_trvzb_01_local_temperature_calibration
-      delay_in_minutes: 2
+- id: "trv_living1_external_temperature"
+  alias: TRV Living 1 - Temperatura externa
+  description: "Envia la temperatura externa al TRV 01 en Z2M"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: sensor.cfg_sensacion_termica_living_1
+    - platform: time_pattern
+      minutes: "/3"
   condition:
     - condition: state
       entity_id: input_boolean.invierno
       state: "on"
+  action:
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/zigbee_sonoff_trvzb_01/set
+        payload: >
+          {
+            "external_temperature_input": {{ states('sensor.cfg_sensacion_termica_living_1') | float }}
+          }
 
-- id: "auto_calibrador_04"
-  alias: TRV Calibrator Living 2 (4)
-  description: ""
-  use_blueprint:
-    path: rotilho/trv_calibrator.yaml
-    input:
-      trv: climate.zigbee_sonoff_trvzb_04
-      temperature_sensor: sensor.shelly_blu_5480_temperature
-      trv_calibration_number: number.zigbee_sonoff_trvzb_04_local_temperature_calibration
-      delay_in_minutes: 2
+- id: "trv_living2_external_temperature"
+  alias: TRV Living 2 - Temperatura externa
+  description: "Envia la temperatura externa al TRV 04 en Z2M"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: sensor.cfg_sensacion_termica_living_2
+    - platform: time_pattern
+      minutes: "/3"
   condition:
     - condition: state
       entity_id: input_boolean.invierno
       state: "on"
+  action:
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/zigbee_sonoff_trvzb_04/set
+        payload: >
+          {
+            "external_temperature_input": {{ states('sensor.cfg_sensacion_termica_living_2') | float }}
+          }
 
-- id: "auto_calibrador_02"
-  alias: TRV Calibrator Habitacion 1
-  description: ""
-  use_blueprint:
-    path: rotilho/trv_calibrator.yaml
-    input:
-      trv: climate.zigbee_sonoff_trvzb_02
-      temperature_sensor: sensor.zigbee_sonoff_snzb02_01_temperature
-      trv_calibration_number: number.zigbee_sonoff_trvzb_02_local_temperature_calibration
-      delay_in_minutes: 2
+- id: "trv_habitacion1_external_temperature"
+  alias: TRV Habitacion 1 - Temperatura externa
+  description: "Envia la temperatura externa al TRV 02 en Z2M"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: sensor.cfg_sensacion_termica_habitacion_1
+    - platform: time_pattern
+      minutes: "/3"
   condition:
     - condition: state
       entity_id: input_boolean.invierno
       state: "on"
+  action:
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/zigbee_sonoff_trvzb_02/set
+        payload: >
+          {
+            "external_temperature_input": {{ states('sensor.cfg_sensacion_termica_habitacion_1') | float }}
+          }

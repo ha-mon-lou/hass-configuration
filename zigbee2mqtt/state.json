@@ -1,6 +1,6 @@
 {
     "0xa4c1387fe2e7effc": {
-        "voltage": 227,
+        "voltage": 230,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -17,19 +17,19 @@
         }
     },
     "0xa4c13819d046464f": {
-        "voltage": 227,
+        "voltage": 229,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
         "linkquality": 124,
-        "power": 83,
-        "energy": 295.02,
-        "current": 0.55
+        "power": 0,
+        "energy": 295.08,
+        "current": 0.02
     },
     "0xa4c138b8caa59009": {
-        "voltage": 227,
+        "voltage": 229,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -41,14 +41,14 @@
         "linkquality": 120
     },
     "0x00124b002a565fae": {
-        "voltage": 2900,
-        "battery": 99.5,
-        "temperature": 19.12,
-        "humidity": 72.3,
+        "voltage": 3000,
+        "battery": 100,
+        "temperature": 19.08,
+        "humidity": 72.1,
         "linkquality": 255
     },
     "0xa4c138b7c1781a47": {
-        "voltage": 227,
+        "voltage": 229,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -110,7 +110,7 @@
         "valve_opening_limit_voltage": 1705,
         "valve_closing_limit_voltage": 2759,
         "valve_motor_running_voltage": 1718,
-        "local_temperature": 18.7,
+        "local_temperature": 18.4,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
@@ -133,7 +133,7 @@
         },
         "linkquality": 255,
         "temperature_sensor_select": "external",
-        "external_temperature_input": 18.7,
+        "external_temperature_input": 18.4,
         "temperature_accuracy": -1
     },
     "0x8c65a3fffee60ccd": {
@@ -174,9 +174,9 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 18.93,
-        "humidity": 70.5,
-        "co2": 720,
+        "temperature": 18.72,
+        "humidity": 68.45,
+        "co2": 759,
         "linkquality": 255
     },
     "0xe406bffffe34f94b": {
@@ -208,11 +208,11 @@
             "installed_version": 5120,
             "latest_version": 5121
         },
-        "external_temperature_input": 17.8,
+        "external_temperature_input": 18.2,
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
         "temperature_accuracy": -1,
-        "local_temperature": 17.8,
+        "local_temperature": 18.2,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",

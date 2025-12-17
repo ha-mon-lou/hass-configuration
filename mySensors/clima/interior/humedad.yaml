@@ -2,49 +2,36 @@
 # https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
 # https://www.pacienciadigital.com/redundancia-sensores-home-assistant/
 #
-# -------------------------------
-# Humedad interior (template sensor)
-# -------------------------------
-- sensor:
-    name: H. Interior
-    unique_id: humedad_interior
-    device_class: humidity
-    unit_of_measurement: "%"
-    state: >
-      {% from 'mediana_grupo.jinja' import mediana_grupo %}
-      {{ mediana_grupo('group.grupo_humedad_interior') }}
-    icon: mdi:water-percent-alert
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+# https://www.pacienciadigital.com/redundancia-sensores-home-assistant/
+#
+- platform: template
+  sensors:
+    humedad_interior:
+      friendly_name: "H. interior"
+      device_class: humidity
+      unit_of_measurement: "%"
+      unique_id: "humedad_interior"
+      value_template: >
+        {% from 'mediana_grupo.jinja' import mediana_grupo %}
+        {{ mediana_grupo('group.grupo_humedad_interior') }}
+      icon_template: mdi:water-percent-alert
 
-# -------------------------------
-# Humedad interior máxima en 24h (template sensor)
-# -------------------------------
-- sensor:
-    name: Humedad interior máxima 24h
-    unique_id: humedad_interior_max_24h
-    device_class: humidity
-    unit_of_measurement: "%"
-    state: >
-      {% set ahora = now() %}
-      {% set desde = ahora - timedelta(hours=24) %}
-      {% set estados = states.sensor.humedad_interior.history()
-         | selectattr('last_updated','>=', desde)
-         | map(attribute='state') | map('float') | list %}
-      {{ estados | max if estados|length > 0 else 0 }}
-    icon: mdi:water-percent
+- platform: statistics
+  name: "Humedad interior máxima en 24h"
+  entity_id: sensor.humedad_interior
+  state_characteristic: value_max
+  max_age:
+    hours: 24
+  sampling_size: 200
+  unique_id: humedad_interior_maxima_24h
 
-# -------------------------------
-# Humedad interior mínima en 24h (template sensor)
-# -------------------------------
-- sensor:
-    name: Humedad interior mínima 24h
-    unique_id: humedad_interior_min_24h
-    device_class: humidity
-    unit_of_measurement: "%"
-    state: >
-      {% set ahora = now() %}
-      {% set desde = ahora - timedelta(hours=24) %}
-      {% set estados = states.sensor.humedad_interior.history()
-         | selectattr('last_updated','>=', desde)
-         | map(attribute='state') | map('float') | list %}
-      {{ estados | min if estados|length > 0 else 0 }}
-    icon: mdi:water-percent
+- platform: statistics
+  name: "Humedad interior mínima en 24h"
+  entity_id: sensor.humedad_interior
+  state_characteristic: value_min
+  max_age:
+    hours: 24
+  sampling_size: 200
+  unique_id: humedad_interior_minima_24h

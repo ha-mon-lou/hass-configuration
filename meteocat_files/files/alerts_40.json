@@ -1,6 +1,90 @@
 {
     "actualitzat": {
-        "dataUpdate": "2025-12-17T20:47:33.549390+01:00"
+        "dataUpdate": "2026-01-04T01:27:52.439857+01:00"
     },
-    "dades": []
+    "dades": [
+        {
+            "estat": {
+                "nom": "Obert",
+                "data": null
+            },
+            "meteor": {
+                "nom": "Neu"
+            },
+            "avisos": [
+                {
+                    "tipus": "Avís",
+                    "dataEmisio": "2026-01-03T16:40Z",
+                    "dataInici": "2026-01-05T00:00Z",
+                    "dataFi": "2026-01-05T23:59Z",
+                    "evolucions": [
+                        {
+                            "dia": "2026-01-05T00:00Z",
+                            "comentari": "La cota de neu se situarà al voltant dels 200 metres a l'oest de la depressió Central i al terç sud, tot i que localment podrà veure's nevar a qualsevol cota en aquests sectors. A la resta, se situarà al voltant dels 400 metres, on per sobre dels 600 metres, es podran acumular al voltant de 5 cm.",
+                            "representatiu": 1,
+                            "llindar1": "gruix > 2 cm a cotes > 400 metres",
+                            "llindar2": null,
+                            "distribucioGeografica": "EXTENSA",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valorMaxim": null
+                        }
+                    ],
+                    "estat": "Vigent"
+                }
+            ]
+        }
+    ]
 }

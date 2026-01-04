@@ -1,6 +1,6 @@
 {
     "actualitzat": {
-        "dataUpdate": "2025-12-17T20:47:33.633375+01:00"
+        "dataUpdate": "2026-01-04T01:27:52.469125+01:00"
     },
     "dades": [
         {
@@ -9,30 +9,20 @@
                 "data": null
             },
             "meteor": {
-                "nom": "Acumulació de Pluja"
-            },
-            "avisos": []
-        },
-        {
-            "estat": {
-                "nom": "Obert",
-                "data": null
-            },
-            "meteor": {
-                "nom": "Intensitat de pluja"
+                "nom": "Neu"
             },
             "avisos": [
                 {
                     "tipus": "Avís",
-                    "dataEmisio": "2025-12-17T18:07Z",
-                    "dataInici": "2025-12-17T18:00Z",
-                    "dataFi": "2025-12-17T23:59Z",
+                    "dataEmisio": "2026-01-03T16:40Z",
+                    "dataInici": "2026-01-04T18:00Z",
+                    "dataFi": "2026-01-05T23:59Z",
                     "evolucions": [
                         {
-                            "dia": "2025-12-17T00:00Z",
-                            "comentari": "",
+                            "dia": "2026-01-04T00:00Z",
+                            "comentari": "La cota de neu se situarà al voltant dels 200 metres, tot i que localment podrà veure's nevar a qualsevol cota.",
                             "representatiu": 1,
-                            "llindar1": "Intensitat > 20 mm / 30 minuts",
+                            "llindar1": "gruix >= 0 cm a cotes > 200 metres",
                             "llindar2": null,
                             "distribucioGeografica": "LOCAL",
                             "periodes": [
@@ -52,19 +42,770 @@
                                     "nom": "18-00",
                                     "afectacions": [
                                         {
-                                            "dia": "2025-12-17T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "dia": "2026-01-04T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
                                             "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 18,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-04T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 23,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-04T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 27,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-04T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 29,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-04T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 30,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-04T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 33,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-04T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 37,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valorMaxim": null
+                        },
+                        {
+                            "dia": "2026-01-05T00:00Z",
+                            "comentari": "La cota de neu se situarà al voltant dels 200 metres a l'oest de la depressió Central i al terç sud, tot i que localment podrà veure's nevar a qualsevol cota en aquests sectors. A la resta, se situarà al voltant dels 400 metres, on per sobre dels 600 metres, es podran acumular al voltant de 5 cm.",
+                            "representatiu": 1,
+                            "llindar1": "gruix > 2 cm a cotes > 400 metres",
+                            "llindar2": null,
+                            "distribucioGeografica": "EXTENSA",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 1,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 3,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 4,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 6,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 7,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 8,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
                                             "perill": 1,
                                             "idComarca": 9,
                                             "nivell": 1
                                         },
                                         {
-                                            "dia": "2025-12-17T00:00Z",
-                                            "llindar": "Intensitat > 20 mm / 30 minuts",
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 11,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 14,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 16,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 2,
+                                            "idComarca": 18,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 22,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
                                             "auxiliar": false,
                                             "perill": 2,
+                                            "idComarca": 23,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 24,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 25,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 2,
+                                            "idComarca": 27,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 2,
+                                            "idComarca": 29,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 2,
+                                            "idComarca": 30,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 32,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 2,
+                                            "idComarca": 33,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 34,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 35,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 2,
+                                            "idComarca": 37,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 2,
+                                            "idComarca": 38,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 41,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 42,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 43,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 1,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 3,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 6,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 7,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 8,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 9,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 11,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 12,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 14,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 16,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 18,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
                                             "idComarca": 22,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 23,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 24,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 2,
+                                            "idComarca": 27,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 29,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 30,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 32,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 33,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 34,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 35,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 36,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 37,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 38,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 41,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 42,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 43,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 1,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 3,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 6,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 7,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 8,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 11,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 12,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 13,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 16,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 17,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 21,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 24,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 29,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 34,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix >= 0 cm a cotes > 200 metres",
+                                            "auxiliar": true,
+                                            "perill": 1,
+                                            "idComarca": 36,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 41,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 42,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 43,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 3,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 11,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 13,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 17,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 21,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 24,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 34,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 41,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-01-05T00:00Z",
+                                            "llindar": "gruix > 2 cm a cotes > 400 metres",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 42,
                                             "nivell": 1
                                         }
                                     ]

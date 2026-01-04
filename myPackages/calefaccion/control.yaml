@@ -111,7 +111,7 @@ automation:
             sequence:
               - service: switch.turn_on
                 target:
-                  entity_id: switch.caldera
+                  entity_id: switch.alias_caldera
           # Ninguna TRV demanda → apagar caldera
           - conditions:
               - condition: state
@@ -120,7 +120,7 @@ automation:
             sequence:
               - service: switch.turn_off
                 target:
-                  entity_id: switch.caldera
+                  entity_id: switch.alias_caldera
     mode: single
 
   ############################################################

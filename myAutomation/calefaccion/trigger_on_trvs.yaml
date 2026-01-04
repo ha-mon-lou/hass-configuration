@@ -21,7 +21,7 @@
             - condition: template
               value_template: >
                 {% set trvs = state_attr('group.lista_trvs', 'entity_id') %}
-                {{ trvs | map('states') | select('in', ['heat', 'auto']) | list | count > 0 }}
+                {{ trvs | map('states') | select('in', ['heat', 'heating', 'auto']) | list | count > 0 }}
           sequence:
             - delay: 00:00:05
             - action: climate.set_hvac_mode
@@ -35,7 +35,7 @@
             - condition: template
               value_template: >
                 {% set trvs = state_attr('group.lista_trvs', 'entity_id') %}
-                {{ trvs | map('states') | select('in', ['heat', 'auto']) | list | count == 0 }}
+                {{ trvs | map('states') | select('in', ['heat', 'heating', 'auto']) | list | count == 0 }}
           sequence:
             - delay: 00:00:05
             - action: climate.set_hvac_mode

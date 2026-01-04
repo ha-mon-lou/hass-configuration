@@ -53,3 +53,15 @@ lovelace:
     - url: /hacsfiles/lovelace-body-miscale-card/body-miscale-card.js
       type: module
 #bodymiscale: !include bodymiscale.yaml
+
+# Added By Homeway to enable Alexa support.
+alexa:
+  smart_home:
+
+# Added By Homeway to enable Google Assistant support.
+google_assistant:
+  project_id: homewayio
+  service_account:
+    private_key: "nokey"
+    client_email: "support@homeway.io"
+

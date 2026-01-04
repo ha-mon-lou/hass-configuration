@@ -6,7 +6,7 @@
   min_temp: 0
   max_temp: 35
   ac_mode: false
-  cold_tolerance: 0.3
-  hot_tolerance: 0.3
+  cold_tolerance: 0.2
+  hot_tolerance: 0.2
   precision: 0.1
   target_temp_step: 0.1

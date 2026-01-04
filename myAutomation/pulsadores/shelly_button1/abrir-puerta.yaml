@@ -4,8 +4,26 @@
     - platform: state
       entity_id: event.shelly_blu_button1_908f_button
   condition:
+    - condition: state
+      entity_id: lock.puerta_principal_2
+      state: "locked"
     - condition: template
       value_template: >
         {{ trigger.to_state.attributes.event_type == 'press' }}
   action:
     - service: script.abrir_puerta_principal
+
+- alias: Cerrar puerta con botón Shelly BLU 908F
+  id: shelly_blu_908f_cerrar_puerta
+  trigger:
+    - platform: state
+      entity_id: event.shelly_blu_button1_908f_button
+  condition:
+    - condition: state
+      entity_id: lock.puerta_principal_2
+      state: "unlocked"
+    - condition: template
+      value_template: >
+        {{ trigger.to_state.attributes.event_type == 'press' }}
+  action:
+    - service: script.cerrar_puerta_principal

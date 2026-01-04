@@ -64,7 +64,7 @@ script:
           entity_id: lock.puerta_principal_2
 
   desbloquear_puerta_principal:
-    alias: Abrir puerta principal
+    alias: Desbloquear puerta principal
     sequence:
       - choose:
           - conditions:

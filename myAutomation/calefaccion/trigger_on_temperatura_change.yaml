@@ -14,7 +14,7 @@
       entity_id: input_boolean.invierno
       state: "on"
     - condition: state
-      entity_id: sensor.demanda_calefaccion
+      entity_id: binary_sensor.demanda_calefaccion
       state: "on"
   actions:
     - sequence:

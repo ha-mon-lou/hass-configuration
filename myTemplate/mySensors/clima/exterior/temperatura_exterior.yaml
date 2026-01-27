@@ -9,7 +9,7 @@
       unit_of_measurement: "°C"
       state: >
         {% set temp = states('sensor.st_quirze_del_v_vallsuau_barcelona_temperature') %}
-        {{ temp | float if temp not in ['unknown', 'unavailable'] else none }}
+        {{ temp | float(none) if temp not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer
 
     - name: "Temperatura Local XF"
@@ -18,7 +18,7 @@
       unit_of_measurement: "°C"
       state: >
         {% set temp = states('sensor.meteocat_xf_sant_quirze_del_valles_temperature') %}
-        {{ temp | float if temp not in ['unknown', 'unavailable'] else none }}
+        {{ temp | float(none) if temp not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer
 
     - name: "T. exterior"

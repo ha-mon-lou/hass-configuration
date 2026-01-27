@@ -5,7 +5,7 @@
       unit_of_measurement: "°C"
       state: >
         {% set temp = states('sensor.zigbee_sonoff_snzb02_01_temperature') %}
-        {{ temp | float if temp not in ['unknown', 'unavailable'] else none }}
+        {{ temp | float(none) if temp not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer
 
     - name: "CFG Humedad Habitacion 2"
@@ -14,7 +14,7 @@
       unit_of_measurement: "%"
       state: >
         {% set hum = states('sensor.zigbee_sonoff_snzb02_01_humidity') %}
-        {{ hum | float | round(2) if hum not in ['unknown', 'unavailable'] else none }}
+        {{ hum | float(none) | round(2) if hum not in ['unknown', 'unavailable'] else none }}
       icon: mdi:water-percent
 
     - name: "CFG Sensacion Termica Habitacion 2"
@@ -23,5 +23,5 @@
       unit_of_measurement: "°C"
       state: >
         {% set sens = states('sensor.sensacion_termica_zigbee_sonoff_snzb02_01') %}
-        {{ sens | float | round(2) if sens not in ['unknown', 'unavailable'] else none }}
+        {{ sens | float(none) | round(2) if sens not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer

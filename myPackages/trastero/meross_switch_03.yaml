@@ -6,7 +6,7 @@ template:
         device_class: power
         state: >
           {% set power = states('sensor.smart_switch_25021763221791512003c4e7ae139156_consumption') %}
-          {{ power | float | round(2) if power not in ['unknown', 'unavailable'] else none }}
+          {{ power | float(none) | round(2) if power not in ['unknown', 'unavailable'] else none }}
         icon: mdi:flash
 
       - name: "Meross Switch 03 Current"

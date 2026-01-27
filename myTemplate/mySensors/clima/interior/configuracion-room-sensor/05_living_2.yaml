@@ -5,7 +5,7 @@
       unit_of_measurement: "°C"
       state: >
         {% set temp = states('sensor.tuya_termometro_wifi_2_temperature') %}
-        {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else none }}
+        {{ temp | float(none) | round(2) if temp not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer
 
     - name: "CFG Humedad living_2"
@@ -14,7 +14,7 @@
       unit_of_measurement: "%"
       state: >
         {% set hum = states('sensor.tuya_termometro_wifi_2_humidity') %}
-        {{ hum | float | round(2) if hum not in ['unknown', 'unavailable'] else none }}
+        {{ hum | float(none) | round(2) if hum not in ['unknown', 'unavailable'] else none }}
       icon: mdi:water-percent
 
     - name: "CFG Sensacion Termica living_2"

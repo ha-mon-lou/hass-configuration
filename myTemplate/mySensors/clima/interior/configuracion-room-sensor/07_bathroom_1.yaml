@@ -5,7 +5,7 @@
       unit_of_measurement: "°C"
       state: >
         {% set temp = states('sensor.indoor_outdoor_meter_5427_temperature') %}
-        {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else none }}
+        {{ temp | float(none) | round(2) if temp not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer
 
     - name: "CFG Humedad bathroom_1"
@@ -23,5 +23,5 @@
       unit_of_measurement: "°C"
       state: >
         {% set temp = states('sensor.sensacion_termica_switchbot_ioth_01') %}
-        {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else none }}
+        {{ temp | float(none) | round(2) if temp not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer

@@ -1,0 +1,12 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+#
+- sensor:
+    - name: "T. target min"
+      unique_id: "temperatura_objetivo_minima"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'trvs.jinja' import trvs %}
+        {{ trvs('temperature','min') }}
+      icon: mdi:thermometer

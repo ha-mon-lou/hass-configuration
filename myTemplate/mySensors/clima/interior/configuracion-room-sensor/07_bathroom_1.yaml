@@ -4,7 +4,8 @@
       device_class: temperature
       unit_of_measurement: "°C"
       state: >
-        {{ states('sensor.indoor_outdoor_meter_5427_temperature') | float | round(2) }}
+        {% set temp = states('sensor.indoor_outdoor_meter_5427_temperature') %}
+        {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer
 
     - name: "CFG Humedad bathroom_1"
@@ -12,7 +13,8 @@
       device_class: humidity
       unit_of_measurement: "%"
       state: >
-        {{ states('sensor.indoor_outdoor_meter_5427_humidity') | float | round(2) }}
+        {% set hum = states('sensor.indoor_outdoor_meter_5427_humidity') %}
+        {{ hum | float | round(2) if hum not in ['unknown', 'unavailable'] else none }}
       icon: mdi:water-percent
 
     - name: "CFG Sensacion Termica bathroom_1"

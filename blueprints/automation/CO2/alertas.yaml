@@ -48,7 +48,8 @@ trigger:
 
 action:
   - variables:
-      co2_actual: "{{ states(trigger.entity_id) }}"
+      co2_sensor_entity: !input co2_sensor
+      co2_actual: "{{ states(co2_sensor_entity) }}"
 
   - choose:
       - conditions:

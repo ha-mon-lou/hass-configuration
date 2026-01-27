@@ -1,0 +1,47 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+# https://www.pacienciadigital.com/redundancia-sensores-home-assistant/
+#
+- sensor:
+    - name: "Temperatura Local"
+      unique_id: "temperatura_localidad"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: " {{states('sensor.st_quirze_del_v_vallsuau_barcelona_temperature')}} "
+      icon: mdi:thermometer
+
+    - name: "Temperatura Local XF"
+      unique_id: "temperatura_localidad_meteocat"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: " {{states('sensor.meteocat_xf_sant_quirze_del_valles_temperature')}} "
+      icon: mdi:thermometer
+
+    - name: "T. exterior"
+      unique_id: "temperatura_exterior"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: >
+        {% from '1oo2.jinja' import macro_1oo2 %}
+        {{ macro_1oo2('sensor.temperatura_localidad_meteocat','sensor.temperatura_localidad') }}
+      icon: mdi:thermometer
+
+- sensor:
+    - name: "Temperatura exterior máxima en 24h"
+      unique_id: "temperatura_exterior_maxima_24h"
+      platform: statistics
+      entity_id: sensor.temperatura_exterior
+      state_characteristic: value_max
+      max_age:
+        hours: 24
+      sampling_size: 200
+
+- sensor:
+    - name: "Temperatura exterior mínima en 24h"
+      unique_id: "temperatura_exterior_minima_24h"
+      platform: statistics
+      entity_id: sensor.temperatura_exterior
+      state_characteristic: value_min
+      max_age:
+        hours: 24
+      sampling_size: 200

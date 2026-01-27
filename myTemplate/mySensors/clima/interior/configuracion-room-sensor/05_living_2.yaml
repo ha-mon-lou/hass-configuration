@@ -23,5 +23,5 @@
       unit_of_measurement: "°C"
       state: >
         {% set temp = states('sensor.sensacion_termica_tuya_wifi_2') %}
-        {{ temp | float | round(2) if temp not in ['unknown', 'unavailable'] else none }}
+        {{ temp | float(none) | round(2) if temp not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer

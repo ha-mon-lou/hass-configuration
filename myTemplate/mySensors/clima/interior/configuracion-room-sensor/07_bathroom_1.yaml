@@ -14,7 +14,7 @@
       unit_of_measurement: "%"
       state: >
         {% set hum = states('sensor.indoor_outdoor_meter_5427_humidity') %}
-        {{ hum | float | round(2) if hum not in ['unknown', 'unavailable'] else none }}
+        {{ hum | float(none) | round(2) if hum not in ['unknown', 'unavailable'] else none }}
       icon: mdi:water-percent
 
     - name: "CFG Sensacion Termica bathroom_1"

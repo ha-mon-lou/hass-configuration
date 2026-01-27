@@ -4,7 +4,7 @@ automation:
     description: Envía una notificación si la puerta está abierta 10 minutos
     trigger:
       - platform: state
-        entity_id: binary_sensor.puerta_principal_door_2
+        entity_id: binary_sensor.puerta_principal_door
         to: "on"
         for: "00:10:00"
     condition:
@@ -36,7 +36,7 @@ automation:
         entity_id: lock.puerta_principal_2
         state: "unlocked"
       - condition: state
-        entity_id: binary_sensor.puerta_principal_door_2
+        entity_id: binary_sensor.puerta_principal_door
         state: "on"
     action:
       - service: script.cerrar_puerta_principal

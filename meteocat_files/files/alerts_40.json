@@ -1,6 +1,6 @@
 {
     "actualitzat": {
-        "dataUpdate": "2026-01-08T01:39:20.783013+01:00"
+        "dataUpdate": "2026-01-25T12:17:15.706768+01:00"
     },
     "dades": [
         {
@@ -14,13 +14,13 @@
             "avisos": [
                 {
                     "tipus": "Avís",
-                    "dataEmisio": "2026-01-07T17:14Z",
-                    "dataInici": "2026-01-08T18:00Z",
-                    "dataFi": "2026-01-10T18:00Z",
+                    "dataEmisio": "2026-01-25T09:40Z",
+                    "dataInici": "2026-01-25T18:00Z",
+                    "dataFi": "2026-01-26T12:00Z",
                     "evolucions": [
                         {
-                            "dia": "2026-01-08T00:00Z",
-                            "comentari": "El vent bufarà de component oest. Al Pirineu, el llindar és possible que se superi a cotes altes.",
+                            "dia": "2026-01-25T00:00Z",
+                            "comentari": "El vent bufarà de component oest.",
                             "representatiu": 1,
                             "llindar1": "Ratxa màxima > 20m/s",
                             "llindar2": null,
@@ -42,70 +42,7 @@
                                     "nom": "18-00",
                                     "afectacions": [
                                         {
-                                            "dia": "2026-01-08T00:00Z",
-                                            "llindar": "Ratxa màxima > 20m/s",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 40,
-                                            "nivell": 1
-                                        }
-                                    ]
-                                }
-                            ],
-                            "valorMaxim": null
-                        },
-                        {
-                            "dia": "2026-01-09T00:00Z",
-                            "comentari": "El vent bufarà de component oest. Al Pirineu, el llindar és possible que se superi a cotes altes on, a més, hi haurà torb.",
-                            "representatiu": 1,
-                            "llindar1": "Ratxa màxima > 20m/s",
-                            "llindar2": null,
-                            "distribucioGeografica": "GENERAL",
-                            "periodes": [
-                                {
-                                    "nom": "00-06",
-                                    "afectacions": [
-                                        {
-                                            "dia": "2026-01-09T00:00Z",
-                                            "llindar": "Ratxa màxima > 20m/s",
-                                            "auxiliar": false,
-                                            "perill": 3,
-                                            "idComarca": 40,
-                                            "nivell": 1
-                                        }
-                                    ]
-                                },
-                                {
-                                    "nom": "06-12",
-                                    "afectacions": [
-                                        {
-                                            "dia": "2026-01-09T00:00Z",
-                                            "llindar": "Ratxa màxima > 20m/s",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 40,
-                                            "nivell": 1
-                                        }
-                                    ]
-                                },
-                                {
-                                    "nom": "12-18",
-                                    "afectacions": [
-                                        {
-                                            "dia": "2026-01-09T00:00Z",
-                                            "llindar": "Ratxa màxima > 20m/s",
-                                            "auxiliar": false,
-                                            "perill": 2,
-                                            "idComarca": 40,
-                                            "nivell": 1
-                                        }
-                                    ]
-                                },
-                                {
-                                    "nom": "18-00",
-                                    "afectacions": [
-                                        {
-                                            "dia": "2026-01-09T00:00Z",
+                                            "dia": "2026-01-25T00:00Z",
                                             "llindar": "Ratxa màxima > 20m/s",
                                             "auxiliar": false,
                                             "perill": 1,
@@ -118,21 +55,21 @@
                             "valorMaxim": null
                         },
                         {
-                            "dia": "2026-01-10T00:00Z",
-                            "comentari": "El vent bufarà de component oest. Al Pirineu, el llindar és possible que se superi a cotes altes on, a més, hi haurà torb.",
+                            "dia": "2026-01-26T00:00Z",
+                            "comentari": "El vent bufarà de component oest. Al Pirineu el llindar és probable que se superi a les cotes altes.",
                             "representatiu": 1,
                             "llindar1": "Ratxa màxima > 20m/s",
                             "llindar2": null,
-                            "distribucioGeografica": "GENERAL",
+                            "distribucioGeografica": "EXTENSA",
                             "periodes": [
                                 {
                                     "nom": "00-06",
                                     "afectacions": [
                                         {
-                                            "dia": "2026-01-10T00:00Z",
+                                            "dia": "2026-01-26T00:00Z",
                                             "llindar": "Ratxa màxima > 20m/s",
                                             "auxiliar": false,
-                                            "perill": 1,
+                                            "perill": 2,
                                             "idComarca": 40,
                                             "nivell": 1
                                         }
@@ -142,10 +79,10 @@
                                     "nom": "06-12",
                                     "afectacions": [
                                         {
-                                            "dia": "2026-01-10T00:00Z",
+                                            "dia": "2026-01-26T00:00Z",
                                             "llindar": "Ratxa màxima > 20m/s",
                                             "auxiliar": false,
-                                            "perill": 1,
+                                            "perill": 2,
                                             "idComarca": 40,
                                             "nivell": 1
                                         }
@@ -153,16 +90,7 @@
                                 },
                                 {
                                     "nom": "12-18",
-                                    "afectacions": [
-                                        {
-                                            "dia": "2026-01-10T00:00Z",
-                                            "llindar": "Ratxa màxima > 20m/s",
-                                            "auxiliar": false,
-                                            "perill": 1,
-                                            "idComarca": 40,
-                                            "nivell": 1
-                                        }
-                                    ]
+                                    "afectacions": null
                                 },
                                 {
                                     "nom": "18-00",

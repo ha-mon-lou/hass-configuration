@@ -1,0 +1,88 @@
+blueprint:
+  name: Control de ventilación por CO2 (por estancia)
+  description: >
+    Control de ventilación por CO2 con alerta y notificación.
+    Replica el comportamiento original.
+  domain: automation
+  input:
+    co2_sensor:
+      name: Sensor de CO2
+      selector:
+        entity:
+          domain: sensor
+          device_class: carbon_dioxide
+
+    alerta_boolean:
+      name: Booleano de alerta CO2
+      selector:
+        entity:
+          domain: input_boolean
+
+    ventilador:
+      name: Ventilador / Switch
+      selector:
+        entity:
+          domain: switch
+
+    notificacion_script:
+      name: Script de notificación
+      selector:
+        entity:
+          domain: script
+
+trigger:
+  - platform: numeric_state
+    entity_id: !input co2_sensor
+    above: 1000
+    for:
+      minutes: 2
+
+  - platform: numeric_state
+    entity_id: !input co2_sensor
+    below: 750
+    for:
+      minutes: 5
+
+  - platform: time_pattern
+    minutes: "/4"
+
+action:
+  - variables:
+      co2_actual: "{{ states(trigger.entity_id) }}"
+
+  - choose:
+      - conditions:
+          - condition: numeric_state
+            entity_id: !input co2_sensor
+            above: 1000
+        sequence:
+          - service: input_boolean.turn_on
+            target:
+              entity_id: !input alerta_boolean
+
+          - service: switch.turn_on
+            target:
+              entity_id: !input ventilador
+
+          - service: script.turn_on
+            target:
+              entity_id: !input notificacion_script
+            data:
+              message: >
+                <b>Alerta CO2</b>:
+                {{ co2_actual }} ppm
+
+      - conditions:
+          - condition: numeric_state
+            entity_id: !input co2_sensor
+            below: 750
+        sequence:
+          - service: input_boolean.turn_off
+            target:
+              entity_id: !input alerta_boolean
+
+          - service: switch.turn_off
+            target:
+              entity_id: !input ventilador
+
+mode: single

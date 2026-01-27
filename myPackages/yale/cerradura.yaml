@@ -1,6 +1,6 @@
 timer:
   bloqueo_puerta_principal:
-    duration: "00:00:10"
+    duration: "00:00:20"
 
 automation:
   # Inicia el temporizador cuando la puerta se cierra
@@ -9,7 +9,7 @@ automation:
     mode: restart
     trigger:
       - platform: state
-        entity_id: binary_sensor.puerta_principal_door_2
+        entity_id: binary_sensor.puerta_principal_door
         to: "off"
     action:
       - service: timer.start
@@ -34,7 +34,7 @@ automation:
         entity_id: lock.puerta_principal_2
         state: "unlocked"
       - condition: state
-        entity_id: binary_sensor.puerta_principal_door_2
+        entity_id: binary_sensor.puerta_principal_door
         state: "off" # puerta cerrada
     action:
       - service: lock.lock

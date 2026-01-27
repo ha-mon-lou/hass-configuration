@@ -1,11 +1,14 @@
 {
+    "actualitzat": {
+        "dataUpdate": "2026-01-27T05:04:28.146580+01:00"
+    },
     "ine": "082384",
     "nom": "Sant Quirze del Vallès",
     "comarca": 40,
     "capital": false,
     "uvi": [
         {
-            "date": "2026-01-07",
+            "date": "2026-01-26",
             "hours": [
                 {
                     "hour": 0,
@@ -60,7 +63,7 @@
                 {
                     "hour": 10,
                     "uvi": 1,
-                    "uvi_clouds": 0
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 11,
@@ -130,7 +133,7 @@
             ]
         },
         {
-            "date": "2026-01-08",
+            "date": "2026-01-27",
             "hours": [
                 {
                     "hour": 0,
@@ -190,17 +193,17 @@
                 {
                     "hour": 11,
                     "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi_clouds": 0
                 },
                 {
                     "hour": 12,
-                    "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi": 2,
+                    "uvi_clouds": 0
                 },
                 {
                     "hour": 13,
                     "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi_clouds": 0
                 },
                 {
                     "hour": 14,
@@ -209,7 +212,7 @@
                 },
                 {
                     "hour": 15,
-                    "uvi": 0,
+                    "uvi": 1,
                     "uvi_clouds": 0
                 },
                 {
@@ -255,7 +258,7 @@
             ]
         },
         {
-            "date": "2026-01-09",
+            "date": "2026-01-28",
             "hours": [
                 {
                     "hour": 0,
@@ -315,22 +318,22 @@
                 {
                     "hour": 11,
                     "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi_clouds": 0
                 },
                 {
                     "hour": 12,
                     "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi_clouds": 0
                 },
                 {
                     "hour": 13,
                     "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi_clouds": 0
                 },
                 {
                     "hour": 14,
                     "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi_clouds": 0
                 },
                 {
                     "hour": 15,

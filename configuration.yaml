@@ -65,3 +65,29 @@ google_assistant:
     private_key: "nokey"
     client_email: "support@homeway.io"
 
+
+# Added By Homeway to enable proper HTTP proxy support.
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.32.0/23
+    - 127.0.0.1
+    - ::1
+
+
+# Added by Homeway to enable webrtc video streaming. Prevent Homeway from updating web_rtc by setting following to false: homeway_auto_update:true
+web_rtc:
+  ice_servers:
+    - url:
+        - "stun:stun.cloudflare.com:3478"
+        - "stun:stun.cloudflare.com:53"
+        - "stun:webrtc.homeway.io:443"
+    - url:
+        - "turn:webrtc.homeway.io:443?transport=udp"
+        - "turn:webrtc.homeway.io:3478?transport=udp"
+        - "turn:webrtc.homeway.io:3478?transport=tcp"
+        - "turn:webrtc.homeway.io:80?transport=tcp"
+        - "turns:webrtc.homeway.io:443?transport=tcp"
+        - "turns:webrtc.homeway.io:5349?transport=tcp"
+      username: "YFLTRVE9UJI0VKA7GWY3NZE4V07D62P1H5HPETWSXW81WXX0TST6V59P5AZ2-1"
+      credential: "0A7BF61BE4923DE3E1516C84B7673C9A1C3961E5A011F7F88107F9F6F68406D4"

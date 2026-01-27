@@ -1,0 +1,24 @@
+- sensor:
+    - name: "CFG Temperatura living_2"
+      unique_id: "cfg_temperatura_living_2"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: >
+        {{ states('sensor.tuya_termometro_wifi_2_temperature') | float | round(2) }}
+      icon: mdi:thermometer
+
+    - name: "CFG Humedad living_2"
+      unique_id: "cfg_humedad_living_2"
+      device_class: humidity
+      unit_of_measurement: "%"
+      state: >
+        {{ states('sensor.tuya_termometro_wifi_2_humidity') | float | round(2) }}
+      icon: mdi:water-percent
+
+    - name: "CFG Sensacion Termica living_2"
+      unique_id: "cfg_sensacion_termica_living_2"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: >
+        {{ states('sensor.sensacion_termica_tuya_wifi_2') | float | round(2) }}
+      icon: mdi:thermometer

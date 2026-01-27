@@ -119,7 +119,7 @@ template:
         device_class: occupancy
         state: >
           {{
-            is_state('binary_sensor.puerta_principal_door_2', 'on') or
+            is_state('binary_sensor.puerta_principal_door', 'on') or
             is_state('input_select.ubicacion_pau', 'entrada') or
             is_state('input_select.ubicacion_ramon', 'entrada')
           }}

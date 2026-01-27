@@ -1,0 +1,128 @@
+#
+# https://homeassistant-notes.notion.site/Sensores-1819be0e2c1780b28fadcaf9a0e00213
+#
+############################################
+# Sensores de Sensación y Confort Térmico
+# Formato moderno template:
+# Migración desde platform: template
+############################################
+
+- sensor:
+    ########################################
+    # Interior
+    ########################################
+    - name: Sensación Térmica
+      default_entity_id: sensor.sensacion_termica
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.temperatura_interior','sensor.humedad_interior') }}
+
+    - name: Confort Térmico
+      default_entity_id: sensor.confort_termico
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.temperatura_interior','sensor.humedad_interior') }}
+
+    ########################################
+    # Tuya WiFi 1
+    ########################################
+    - name: Sensación Térmica (Tuya 1)
+      default_entity_id: sensor.sensacion_termica_tuya_wifi_1
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.tuya_termometro_wifi_temperature','sensor.tuya_termometro_wifi_humidity') }}
+
+    - name: Confort Térmico (Tuya 1)
+      default_entity_id: sensor.confort_termico_tuya_wifi_1
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.tuya_termometro_wifi_temperature','sensor.tuya_termometro_wifi_humidity') }}
+
+    ########################################
+    # Tuya WiFi 2
+    ########################################
+    - name: Sensación Térmica (Tuya 2)
+      default_entity_id: sensor.sensacion_termica_tuya_wifi_2
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.tuya_termometro_wifi_2_temperature','sensor.tuya_termometro_wifi_2_humidity') }}
+
+    - name: Confort Térmico (Tuya 2)
+      default_entity_id: sensor.confort_termico_tuya_wifi_2
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.tuya_termometro_wifi_2_temperature','sensor.tuya_termometro_wifi_2_humidity') }}
+
+    ########################################
+    # Zigbee Sonoff SNZB02
+    ########################################
+    - name: Sensación Térmica (zigbee_sonoff_snzb02_01)
+      default_entity_id: sensor.sensacion_termica_zigbee_sonoff_snzb02_01
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.zigbee_sonoff_snzb02_01_temperature','sensor.zigbee_sonoff_snzb02_01_humidity') }}
+
+    - name: Confort Térmico (zigbee_sonoff_snzb02_01)
+      default_entity_id: sensor.confort_termico_zigbee_sonoff_snzb02_01
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.zigbee_sonoff_snzb02_01_temperature','sensor.zigbee_sonoff_snzb02_01_humidity') }}
+
+    ########################################
+    # Shelly BLU
+    ########################################
+    - name: Sensación Térmica (Shelly Blue)
+      default_entity_id: sensor.sensacion_termica_shelly_blu_5480
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.shelly_blu_5480_temperature','sensor.shelly_blu_5480_humidity') }}
+
+    - name: Confort Térmico (Shelly Blue)
+      default_entity_id: sensor.confort_termico_shelly_blu_5480
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.shelly_blu_5480_temperature','sensor.shelly_blu_5480_humidity') }}
+
+    ########################################
+    # Heiman HS3AQ
+    ########################################
+    - name: Sensación Térmica (heiman_hs3aq_01)
+      default_entity_id: sensor.sensacion_termica_heiman_hs3aq_01
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.zigbee_heiman_hs3aq_01_temperature','sensor.zigbee_heiman_hs3aq_01_humidity') }}
+
+    - name: Confort Térmico (heiman_hs3aq_01)
+      default_entity_id: sensor.confort_termico_heiman_hs3aq_01
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.zigbee_heiman_hs3aq_01_temperature','sensor.zigbee_heiman_hs3aq_01_humidity') }}
+
+    ########################################
+    # SwitchBot Indoor/Outdoor Thermo Hygrometer
+    ########################################
+    - name: Sensación Térmica (switchbot ioth 01)
+      default_entity_id: sensor.sensacion_termica_switchbot_ioth_01
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.indoor_outdoor_meter_5427_temperature','sensor.indoor_outdoor_meter_5427_humidity') }}
+
+    - name: Confort Térmico (switchbot ioth 01)
+      default_entity_id: sensor.confort_termico_switchbot_ioth_01
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.indoor_outdoor_meter_5427_temperature','sensor.indoor_outdoor_meter_5427_humidity') }}

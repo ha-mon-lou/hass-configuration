@@ -1,6 +1,12 @@
 alerta_co2:
   name: Alerta CO2
 
+alerta_co2_habitacion_1:
+  name: Alerta CO2 habitacion 1
+
+alerta_co2_habitacion_2:
+  name: Alerta CO2 habitacion 2
+
 scene_switch_01_1:
   name: Scene Switch 01 (1)
 

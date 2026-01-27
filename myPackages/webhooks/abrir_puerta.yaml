@@ -1,0 +1,17 @@
+automation:
+  - id: "WH_Abrir_Puerta"
+    alias: Webhook abrir puerta
+    description: ""
+    triggers:
+      - trigger: webhook
+        allowed_methods:
+          - POST
+          - GET
+        local_only: true
+        webhook_id: "wh_zepp_abrir_puerta"
+    conditions: []
+    actions:
+      - service: lock.unlock
+        target:
+          entity_id: lock.puerta_principal_2
+    mode: single

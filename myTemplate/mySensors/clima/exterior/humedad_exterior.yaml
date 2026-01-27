@@ -7,14 +7,18 @@
       unique_id: "humedad_localidad"
       device_class: humidity
       unit_of_measurement: "%"
-      state: " {{states('sensor.st_quirze_del_v_vallsuau_barcelona_humidity')}} "
+      state: >
+        {% set hum = states('sensor.st_quirze_del_v_vallsuau_barcelona_humidity') %}
+        {{ hum | float if hum not in ['unknown', 'unavailable'] else none }}
       icon: mdi:water-percent-alert
 
     - name: "Humedad Local XF"
       unique_id: "humedad_localidad_meteocat"
       device_class: humidity
       unit_of_measurement: "%"
-      state: " {{states('sensor.sensor.meteocat_xf_sant_quirze_del_valles_humidity')}} "
+      state: >
+        {% set hum = states('sensor.meteocat_xf_sant_quirze_del_valles_humidity') %}
+        {{ hum | float if hum not in ['unknown', 'unavailable'] else none }}
       icon: mdi:water-percent-alert
 
     - name: "H. Exterior"

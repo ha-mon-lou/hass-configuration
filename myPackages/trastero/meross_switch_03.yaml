@@ -1,11 +1,13 @@
 template:
   - sensor:
       - name: "Meross Switch 03 Consumption"
-        unique_id: meross_switch_03_consumption
+        unique_id: "meross_switch_03_consumption"
         unit_of_measurement: "W"
         device_class: power
         state: >
-          {{ states('sensor.smart_switch_25021763221791512003c4e7ae139156_consumption') | float | round(2) }}
+          {% set power = states('sensor.smart_switch_25021763221791512003c4e7ae139156_consumption') %}
+          {{ power | float | round(2) if power not in ['unknown', 'unavailable'] else none }}
+        icon: mdi:flash
 
       - name: "Meross Switch 03 Current"
         unique_id: meross_switch_03_current
@@ -84,4 +86,3 @@ switch:
           service: switch.turn_off
           target:
             entity_id: switch.smart_switch_25021763221791512003c4e7ae139156_outlet
-

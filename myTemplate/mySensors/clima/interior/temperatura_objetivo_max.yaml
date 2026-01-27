@@ -8,5 +8,6 @@
       unit_of_measurement: "°C"
       state: >
         {% from 'trvs.jinja' import trvs %}
-        {{ trvs('temperature','max') }}
+        {% set temp = trvs('temperature','max') %}
+        {{ temp | float if temp not in ['unknown', 'unavailable', None] else none }}
       icon: mdi:thermometer

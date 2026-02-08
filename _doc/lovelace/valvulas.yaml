@@ -1,0 +1,151 @@
+                    - entity: climate.zigbee_sonoff_trvzb_01
+                      element: climate.zigbee_sonoff_trvzb_01
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: |
+                              const hvac = entity.attributes.hvac_action;
+                              if (hvac === "heating" || hvac === "heat") {
+                                return `
+                                  fill: red;
+                                  filter: drop-shadow(0 0 8px orange);
+                                  transition: fill 0.5s ease, filter 0.5s ease;
+                                `;
+                              } else if (entity.state === "auto") {
+                                return `
+                                  fill: yellow;
+                                  filter: drop-shadow(0 0 4px yellow);
+                                  transition: fill 0.5s ease, filter 0.5s ease;
+                                `;
+                              } else if (hvac === "idle") {
+                                return `
+                                  fill: lightgray;
+                                  filter: none;
+                                  transition: fill 0.5s ease;
+                                `;
+                              } else {
+                                return `
+                                  fill: gray;
+                                  filter: none;
+                                  transition: fill 0.5s ease;
+                                `;
+                              }
+                    - entity: climate.zigbee_sonoff_trvzb_02
+                      element: climate.zigbee_sonoff_trvzb_02
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const state = entity.state; 
+                              const hvacAction = entity.attributes.hvac_action; 
+                              if (state ==="heat" && hvacAction === "heating") {
+                                return `
+                                  fill: #ff3d00;
+                                  filter: drop-shadow(0 0 10px #ff6e40);
+                                  transition: fill 0.5s ease, filter 0.5s ease;
+                                `;
+                              } if (state === "heat" && hvacAction === "idle") {
+                                return `
+                                  fill: #e57373;
+                                  filter: drop-shadow(0 0 4px #ef5350);
+                                  transition: fill 0.5s ease, filter 0.5s ease;
+                                `;
+                              } if (state === "auto" && hvacAction ===
+                              "heating") {
+                                return `
+                                  fill: #ff9800;
+                                  filter: drop-shadow(0 0 8px #ffb74d);
+                                  transition: fill 0.5s ease, filter 0.5s ease;
+                                `;
+                              } if (state === "auto" && hvacAction === "idle") {
+                                return `
+                                  fill: #ffeb3b;
+                                  filter: drop-shadow(0 0 4px #fff59d);
+                                  transition: fill 0.5s ease, filter 0.5s ease;
+                                `;
+                              } if (state === "off" && hvacAction === "heating")
+                              {
+                                return `
+                                  fill: #757575;
+                                  filter: drop-shadow(0 0 4px #9e9e9e);
+                                  transition: fill 0.5s ease, filter 0.5s ease;
+                                `;
+                              } if (state === "off" && hvacAction === "idle") {
+                                return `
+                                  fill: #424242;
+                                  filter: none;
+                                  transition: fill 0.5s ease;
+                                `;
+                              } return `
+                                fill: #9e9e9e;
+                                filter: none;
+                                transition: fill 0.5s ease;
+                              `;
+                    - entity: climate.zigbee_sonoff_trvzb_03
+                      element: climate.zigbee_sonoff_trvzb_03
+                      state_action:
+                        action: call-service
+                        service: floorplan.style_set
+                        service_data:
+                          style: |
+                            > const hvac = entity.attributes.hvac_action;
+                            if (hvac === "heating" || hvac === "heat") {
+                              return `
+                                fill: red;
+                                filter: drop-shadow(0 0 8px orange);
+                                transition: fill 0.5s ease, filter 0.5s ease;
+                              `;
+                            } else if (hvac === "auto") {
+                              return `
+                                fill: yellow;
+                                filter: drop-shadow(0 0 4px yellow);
+                                transition: fill 0.5s ease, filter 0.5s ease;
+                              `;
+                            } else if (hvac === "idle") {
+                              return `
+                                fill: lightgray;
+                                filter: none;
+                                transition: fill 0.5s ease;
+                              `;
+                            } else {
+                              return `
+                                fill: gray;
+                                filter: none;
+                                transition: fill 0.5s ease;
+                              `;
+                            }
+                    - entity: climate.zigbee_sonoff_trvzb_04
+                      element: climate.zigbee_sonoff_trvzb_04
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: |
+                              > const hvac = entity.attributes.hvac_action;
+                              if (hvac === "heating" || hvac === "heat") {
+                                return `
+                                  fill: red;
+                                  filter: drop-shadow(0 0 8px orange);
+                                  transition: fill 0.5s ease, filter 0.5s ease;
+                                `;
+                              } else if (hvac === "auto") {
+                                return `
+                                  fill: yellow;
+                                  filter: drop-shadow(0 0 4px yellow);
+                                  transition: fill 0.5s ease, filter 0.5s ease;
+                                `;
+                              } else if (hvac === "idle") {
+                                return `
+                                  fill: lightgray;
+                                  filter: none;
+                                  transition: fill 0.5s ease;
+                                `;
+                              } else {
+                                return `
+                                  fill: gray;
+                                  filter: none;
+                                  transition: fill 0.5s ease;
+                                `;
+                              }

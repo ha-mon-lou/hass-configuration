@@ -1,0 +1,24 @@
+secuencia_by_area:
+  alias: secuencia by friendly name
+  fields:
+    my_area:
+      description: "Nombre del área"
+    my_estado:
+      description: "Acción (turn_on/turn_off/toggle)"
+    my_excludes:
+      description: "Texto a excluir en entity_id (opcional)"
+  sequence:
+    - repeat:
+        for_each: >
+          {% set entidades = expand(area_entities(my_area)) 
+            | selectattr('domain', 'equalto', 'switch') %}
+          {% if my_excludes | length > 0 %}
+            {% set entidades = entidades | rejectattr('entity_id', 'search', my_excludes) %}
+          {% endif %}
+          {{ entidades | map(attribute='entity_id') | list }}
+        sequence:
+          - delay: 00:00:02
+          - action: switch.{{ my_estado }}
+            target:
+              entity_id: "{{ repeat.item }}"
+  mode: single

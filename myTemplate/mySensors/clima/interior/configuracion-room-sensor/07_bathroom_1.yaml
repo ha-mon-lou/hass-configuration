@@ -1,0 +1,27 @@
+- sensor:
+    - name: "CFG Temperatura bathroom_1"
+      unique_id: "cfg_temperatura_bathroom_1"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: >
+        {% set temp = states('sensor.indoor_outdoor_meter_5427_temperature') %}
+        {{ temp | float(none) | round(2) if temp not in ['unknown', 'unavailable'] else none }}
+      icon: mdi:thermometer
+
+    - name: "CFG Humedad bathroom_1"
+      unique_id: "cfg_humedad_bathroom_1"
+      device_class: humidity
+      unit_of_measurement: "%"
+      state: >
+        {% set hum = states('sensor.indoor_outdoor_meter_5427_humidity') %}
+        {{ hum | float(none) | round(2) if hum not in ['unknown', 'unavailable'] else none }}
+      icon: mdi:water-percent
+
+    - name: "CFG Sensacion Termica bathroom_1"
+      unique_id: "cfg_sensacion_termica_bathroom_1"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: >
+        {% set temp = states('sensor.sensacion_termica_switchbot_ioth_01') %}
+        {{ temp | float(none) | round(2) if temp not in ['unknown', 'unavailable'] else none }}
+      icon: mdi:thermometer

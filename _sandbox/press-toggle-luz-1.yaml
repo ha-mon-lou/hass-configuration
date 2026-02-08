@@ -1,0 +1,17 @@
+- id: "boton_shelly_1_press"
+  alias: Boton shelly H&T (press)
+  description: ""
+  triggers:
+    - device_id: 78214af407f022e52036cd35517b0838
+      domain: bthome
+      type: button
+      subtype: press
+      trigger: device
+  conditions: []
+  actions:
+    - action: switch.toggle
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.enchufe_doble_socket_1
+  mode: single

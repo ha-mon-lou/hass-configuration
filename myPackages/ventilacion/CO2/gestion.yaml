@@ -1,0 +1,28 @@
+automation:
+  - alias: alertas CO2 Habitación 2
+    use_blueprint:
+      path: CO2/alertas.yaml
+      input:
+        co2_sensor: sensor.healthy_home_coach_carbon_dioxide_sensor
+        alerta_boolean: input_boolean.alerta_co2_habitacion_2
+        ventilador: switch.regleta_antela_socket_2_2
+        notificacion_script: script.notifica_telegram
+        co2_alto: 1000
+        co2_bajo: 750
+        tiempo_subida: 2
+        tiempo_bajada: 5
+        chequeo_periodico: 5
+
+  - alias: alertas CO2 Habitación 1
+    use_blueprint:
+      path: CO2/alertas.yaml
+      input:
+        co2_sensor: sensor.zigbee_heiman_hs3aq_01_co2
+        alerta_boolean: input_boolean.alerta_co2_habitacion_1
+        ventilador: switch.alias_pinguino
+        notificacion_script: script.notifica_telegram
+        co2_alto: 1000
+        co2_bajo: 800
+        tiempo_subida: 2
+        tiempo_bajada: 5
+        chequeo_periodico: 4

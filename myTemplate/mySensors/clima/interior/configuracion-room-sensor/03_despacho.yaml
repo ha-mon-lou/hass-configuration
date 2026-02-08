@@ -1,0 +1,27 @@
+- sensor:
+    - name: "CFG Temperatura despacho"
+      unique_id: "cfg_temperatura_despacho"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: >
+        {% set temp = states('sensor.tuya_termometro_wifi_temperature') %}
+        {{ temp | float(0) if temp not in ['unknown', 'unavailable'] else 0 }}
+      icon: mdi:thermometer
+
+    - name: "CFG Humedad despacho"
+      unique_id: "cfg_humedad_despacho"
+      device_class: humidity
+      unit_of_measurement: "%"
+      state: >
+        {% set hum = states('sensor.tuya_termometro_wifi_humidity') %}
+        {{ hum | float(none) | round(2) if hum not in ['unknown', 'unavailable'] else none }}
+      icon: mdi:water-percent
+
+    - name: "CFG Sensacion Termica despacho"
+      unique_id: "cfg_sensacion_termica_despacho"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: >
+        {% set temp = states('sensor.sensacion_termica_tuya_wifi_1') %}
+        {{ temp | float(none) | round(2) if temp not in ['unknown', 'unavailable'] else none }}
+      icon: mdi:thermometer

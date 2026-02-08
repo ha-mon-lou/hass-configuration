@@ -1,0 +1,18 @@
+#
+# https://homeassistant-notes.notion.site/Proyecto-climatizaci-n-1819be0e2c17803f8c00e7a4696264e7
+#
+
+- id: "trigger_on_termostato_virtual_off"
+  alias: "Apagar TRVs cuando el termostato virtual se apaga"
+  triggers:
+    - trigger: state
+      entity_id: climate.termostato_virtual
+      to: "off"
+  actions:
+    - sequence:
+        - action: climate.set_hvac_mode
+          target:
+            entity_id: group.lista_trvs
+          data:
+            hvac_mode: "off"
+  mode: single

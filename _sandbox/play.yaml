@@ -1,0 +1,28 @@
+type: vertical-stack
+cards:
+  - type: custom:mushroom-title-card
+    title: Umbrales Ventilador Despacho
+
+  - type: custom:mushroom-number-card
+    entity: input_number.ventilador_umbral_velocidad_1
+    name: Umbral velocidad 1 (⩾)
+    icon: mdi:numeric-1-circle
+    display_mode: slider
+
+  - type: custom:mushroom-number-card
+    entity: input_number.ventilador_umbral_velocidad_2
+    name: Umbral velocidad 2 (⩾)
+    icon: mdi:numeric-2-circle
+    display_mode: slider
+
+  - type: custom:mushroom-number-card
+    entity: input_number.ventilador_umbral_velocidad_3
+    name: Umbral velocidad 3 (⩾)
+    icon: mdi:numeric-3-circle
+    display_mode: slider
+
+  - type: custom:mushroom-number-card
+    entity: input_number.ventilador_umbral_brisa
+    name: Umbral brisa (⩾)
+    icon: mdi:weather-windy
+    display_mode: slider

@@ -1,0 +1,26 @@
+      pkg_salut_pau_peso:
+        friendly_name: "pau Weight"
+        unique_id: "pkg_salut_pau_peso"
+        value_template: >
+          {% if states('sensor.body_composition_scale_71b5_weight') | float >= states('input_number.pkg_salut_threshold') | float %}
+            {{ states('sensor.body_composition_scale_71b5_weight') }}
+          {% else %}
+            states('sensor.pkg_salut_pau_peso')
+          {% endif %}
+        unit_of_measurement: "kg"
+
+      pkg_salut_pau_imc:
+        friendly_name: "pau Body Fat Percentage"
+        unique_id: "pkg_salut_pau_imc"
+        value_template: >
+          {% if states('sensor.body_composition_scale_71b5_weight') | float >= states('input_number.pkg_salut_threshold') | float %}
+            {% set weight = states('sensor.body_composition_scale_71b5_weight') | float %}
+            {% set height = states('input_number.pkg_salut_pau_height') | float / 100 %}
+            {% set age = now().year - states('input_number.pkg_salut_pau_born') | int %}
+            {% from 'body_metrics.jinja' import calculate_fat %}
+            {{ calculate_body_fat(weight, height, age, "male") }}
+          {% else %}
+            states('sensor.pkg_salut_pau_imc')
+          {% endif %}
+        unit_of_measurement: "%"
+

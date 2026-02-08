@@ -1,0 +1,13 @@
+notifica_movil:
+  alias: notifica movil
+  fields:
+    title:
+      description: "The title of the notification"
+    message:
+      description: "The message content"
+  sequence:
+    - device_id: 2e125cc8a76db2210a51672189f23b01
+      domain: mobile_app
+      type: notify
+      message: "{{ message }}"
+      title: "{{ title }}"

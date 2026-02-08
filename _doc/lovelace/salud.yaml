@@ -1,0 +1,227 @@
+views:
+  - title: Home
+    sections:
+      - type: grid
+        cards:
+          - type: custom:body-miscale-card
+            model: true
+            unit: false
+            theme: true
+            show_name: true
+            show_states: true
+            show_attributes: true
+            show_always_details: true
+            show_toolbar: true
+            show_body: true
+            show_buttons: true
+            attributes:
+              impedance:
+                key: impedance
+                impedance_required: true
+            body:
+              basal_metabolism:
+                key: basal_metabolism
+                severity:
+                  - from: 0
+                    to: 1549
+                    color: red
+                    label: objective_not_achieved
+                  - from: 1549
+                    to: 3000
+                    color: green
+                    label: objective_achieved
+                impedance_required: false
+              bmi:
+                key: bmi
+                severity:
+                  - from: 12
+                    to: 18.5
+                    color: blue
+                    label: low
+                  - from: 18.5
+                    to: 25
+                    color: green
+                    label: normal
+                  - from: 25
+                    to: 30
+                    color: orange
+                    label: high
+                  - from: 30
+                    to: 36.5
+                    color: red
+                    label: very_high
+                impedance_required: false
+              bmi_label:
+                key: bmi_label
+                impedance_required: false
+              body_fat:
+                key: body_fat
+                severity:
+                  - from: 5
+                    to: 12
+                    color: royalblue
+                    label: very_low
+                  - from: 12
+                    to: 18
+                    color: blue
+                    label: low
+                  - from: 18
+                    to: 23
+                    color: green
+                    label: normal
+                  - from: 23
+                    to: 28
+                    color: orange
+                    label: increased
+                  - from: 28
+                    to: 35
+                    color: red
+                    label: high
+                impedance_required: true
+              body_type:
+                key: body_type
+                impedance_required: true
+              bone_mass:
+                key: bone_mass
+                severity:
+                  - from: 0
+                    to: 2
+                    color: red
+                    label: insufficient
+                  - from: 2
+                    to: 4.2
+                    color: green
+                    label: normal
+                  - from: 4.2
+                    to: 6.4
+                    color: blue
+                    label: good
+                impedance_required: true
+              ideal:
+                key: ideal
+                severity:
+                  - from: 39.3
+                    to: 57.3
+                    color: blue
+                    label: underweight
+                  - from: 57.3
+                    to: 75.3
+                    color: green
+                    label: balanced
+                  - from: 75.3
+                    to: 93.3
+                    color: orange
+                    label: overweight
+                  - from: 93.3
+                    to: 111.3
+                    color: red
+                    label: obese
+                impedance_required: false
+              metabolic_age:
+                key: metabolic_age
+                impedance_required: true
+              muscle_mass:
+                key: muscle_mass
+                severity:
+                  - from: 39.3
+                    to: 49.4
+                    color: red
+                    label: insufficient
+                  - from: 49.4
+                    to: 59.5
+                    color: green
+                    label: normal
+                  - from: 59.5
+                    to: 69.6
+                    color: blue
+                    label: good
+                impedance_required: true
+              protein:
+                key: protein
+                severity:
+                  - from: 11
+                    to: 16
+                    color: red
+                    label: insufficient
+                  - from: 16
+                    to: 20
+                    color: green
+                    label: normal
+                  - from: 20
+                    to: 24
+                    color: blue
+                    label: good
+                impedance_required: true
+              visceral_fat:
+                key: visceral_fat
+                severity:
+                  - from: 5
+                    to: 10
+                    color: green
+                    label: normal
+                  - from: 10
+                    to: 15
+                    color: orange
+                    label: high
+                  - from: 15
+                    to: 20
+                    color: red
+                    label: very_high
+                impedance_required: false
+              water:
+                key: water
+                severity:
+                  - from: 45
+                    to: 55
+                    color: red
+                    label: insufficient
+                  - from: 55
+                    to: 65.1
+                    color: green
+                    label: normal
+                  - from: 65.1
+                    to: 75
+                    color: blue
+                    label: good
+                impedance_required: true
+              weight:
+                key: weight
+                severity:
+                  - from: 39.3
+                    to: 57.3
+                    color: blue
+                    label: underweight
+                  - from: 57.3
+                    to: 75.3
+                    color: green
+                    label: balanced
+                  - from: 75.3
+                    to: 93.3
+                    color: orange
+                    label: overweight
+                  - from: 93.3
+                    to: 111.3
+                    color: red
+                    label: obese
+                impedance_required: false
+            entity: bodymiscale.bms_javier
+          - type: custom:body-miscale-card
+            entity: bodymiscale.bms_pau
+            model: true
+            unit: false
+            show_always_details: true
+            show_body: true
+            show_buttons: true
+      - type: grid
+        cards:
+          - type: custom:body-miscale-card
+            entity: bodymiscale.bms_ramon
+            model: true
+            unit: false
+            show_always_details: true
+            show_body: true
+            show_buttons: true
+          - type: tile
+            features_position: bottom
+            vertical: false
+            entity: sensor.um_pasitos

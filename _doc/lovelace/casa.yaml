@@ -1,0 +1,697 @@
+views:
+  - title: Floorplan
+    path: floorplan
+    theme: Google Dark Theme
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:floorplan-card
+                full_height: true
+                config:
+                  image: /local/floorplan/canpallars/canpallars-K01.svg
+                  stylesheet: /local/floorplan/assets/canpallars-02.css
+                  console_log_level: info
+                  defaults:
+                    hover_action: hover-info
+                    tap_action: more-info
+                  rules:
+                    - entity: climate.termostato_virtual
+                      element: switch.alias_caldera
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.attributes.hvac_action}.svg
+                    - entity: input_number.nivel_sensacion_termica_ideal
+                      element: puerta-test
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: |
+                              >
+                              var rotation = Math.floor(entity.state) ;
+
+                              return `
+                                transform-box: fill-box;
+                                transform-origin: center;
+                                transform: rotate(${rotation}deg);
+                              `;
+                    - entity: climate.aire_acondicionado_virtual
+                      element: climate.aire_acondicionado_virtual
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/ac/air_conditioner_${entity.state}.svg
+                    - entity: input_boolean.ventilador_despacho
+                      element: input_boolean.ventilador_despacho
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >-
+                            /local/floorplan/assets/ceiling_fan/cf_a01_${entity.state}.svg
+                        - action: call-service
+                          service: floorplan.class_set
+                          service_data:
+                            class: '${(entity.state === "on") ? "spinning" : ""}'
+                      tap_action: toggle
+                    - entity: input_boolean.ventilador_habitacion
+                      element: input_boolean.ventilador_habitacion
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >-
+                            /local/floorplan/assets/ceiling_fan/cf_a01_${entity.state}.svg
+                        - action: call-service
+                          service: floorplan.class_set
+                          service_data:
+                            class: '${(entity.state === "on") ? "spinning" : ""}'
+                      tap_action: toggle
+                    - entity: input_boolean.ventilador_equation
+                      element: input_boolean.ventilador_equation
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >-
+                            /local/floorplan/assets/ventilador/ventilador-a01_${entity.state}.svg
+                        - action: call-service
+                          service: floorplan.class_set
+                          service_data:
+                            class: '${(entity.state === "on") ? "spinning" : ""}'
+                      tap_action: toggle
+                    - entity: switch.alias_pinguino
+                      element: switch.alias_pinguino
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >-
+                            /local/floorplan/assets/ventilador/ventilador-a02_${entity.state}.svg
+                        - action: call-service
+                          service: floorplan.class_set
+                          service_data:
+                            class: '${(entity.state === "on") ? "spinning" : ""}'
+                      tap_action: toggle
+                    - entity: sensor.cfg_temperatura_bathroom_1
+                      element: sensor.cfg_temperatura_bathroom_1
+                      state_action:
+                        - action: call-service
+                          service: floorplan.text_set
+                          service_data: ${entity.state}º
+                    - entity: sensor.temperatura_exterior
+                      element: sensor.temperatura_exterior
+                      state_action:
+                        - action: call-service
+                          service: floorplan.text_set
+                          service_data: ${entity.state}º
+                    - entity: sensor.temperatura_exterior
+                      element: sensor.temperatura_exterior.fondo
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const temp = parseFloat(entity.state);
+
+                              const min = 18, max = 35;
+
+                              const clamped = Math.min(Math.max(temp, min),
+                              max);
+
+                              const ratio = (clamped - min) / (max - min); 
+                              const r = Math.round(255 * ratio);  const g =
+                              Math.round(100 * (1 - ratio));  const b
+                              =Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.2; 
+
+                              return `
+                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                transition: fill 1s ease;
+                              `;
+                      tap_action: false
+                    - entity: sensor.temperatura_interior
+                      element: sensor.temperatura_interior
+                      state_action:
+                        - action: call-service
+                          service: floorplan.text_set
+                          service_data: ${entity.state}º
+                    - entity: sensor.temperatura_interior
+                      element: sensor.temperatura_interior.fondo
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const temp = parseFloat(entity.state);
+
+                              const min = 18, max = 35;
+
+                              const clamped = Math.min(Math.max(temp, min),
+                              max);
+
+                              const ratio = (clamped - min) / (max - min); 
+                              const r = Math.round(255 * ratio);  const g =
+                              Math.round(100 * (1 - ratio));  const b
+                              =Math.round(255 * (1 - ratio));
+
+                              const alpha = 0.2; 
+
+                              return `
+                                fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                transition: fill 1s ease;
+                              `;
+                      tap_action: false
+                    - entity: sensor.bms_pau_weight
+                      element: sensor.bms_pau_weight
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state} kg
+                    - entity: sensor.bms_ramon_weight
+                      element: sensor.bms_ramon_weight
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state} kg
+                    - entity: sensor.um_pasitos
+                      element: sensor.um_pasitos
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}
+                    - entity: sensor.zigbee_heiman_hs3aq_01_co2
+                      element: sensor.zigbee_heiman_hs3aq_01_co2
+                      state_action:
+                        - action: call-service
+                          service: floorplan.text_set
+                          service_data: ${entity.state} ppm
+                    - entity: sensor.zigbee_heiman_hs3aq_01_co2
+                      element: sensor.zigbee_heiman_hs3aq_01_co2.fondo
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              > const ppm = parseFloat(entity.state);   let
+                              color = "#00FF00"; 
+
+                              if (ppm >= 700 && ppm < 1000) {
+                                color = "#CCFF00"; 
+                              } else if (ppm >= 1000 && ppm < 1200) {
+                                color = "#FFCC00"; 
+                              } else if (ppm >= 1200 && ppm < 1500) {
+                                color = "#FF6600"; 
+                              } else if (ppm >= 1500 && ppm <= 1800) {
+                                color = "#FF0000"; 
+                              } else if (ppm > 2000) {
+                                color = "#800080"; 
+                              }
+
+                              return `
+                                fill: ${color};
+                                fill-opacity: 0.3;
+                                transition: fill 1s ease;
+                              `;
+                    - entity: climate.ventilador_habitacion_01
+                      element: climate.ventilador_habitacion_01
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.attributes.hvac_action}.svg
+                    - entity: switch.shelly1minig3_34b7dac6f3e4_switch_0
+                      element: switch.shelly1minig3_34b7dac6f3e4_switch_0
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: sensor.cfg_sensacion_termica_habitacion_1
+                      element: sensor.cfg_sensacion_termica_habitacion_1
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}º
+                    - entity: sensor.cfg_sensacion_termica_habitacion_2
+                      element: sensor.cfg_sensacion_termica_habitacion_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}º
+                    - entity: sensor.cfg_sensacion_termica_despacho
+                      element: sensor.cfg_sensacion_termica_despacho
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}º
+                    - entity: sensor.cfg_sensacion_termica_living_1
+                      element: sensor.cfg_sensacion_termica_living_1
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}º
+                    - entity: sensor.cfg_sensacion_termica_living_2
+                      element: sensor.cfg_sensacion_termica_living_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data: ${entity.state}º
+                    - entity: switch.regleta_antela_socket_1
+                      element: switch.regleta_antela_socket_1
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.regleta_antela_socket_2
+                      element: switch.regleta_antela_socket_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.regleta_antela_socket_3
+                      element: switch.regleta_antela_socket_3
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.regleta_antela_socket_4
+                      element: switch.regleta_antela_socket_4
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: false
+                    - entity: switch.regleta_antela_socket_1_2
+                      element: switch.regleta_antela_socket_1_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.regleta_antela_socket_2_2
+                      element: switch.regleta_antela_socket_2_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.regleta_antela_socket_3_2
+                      element: switch.regleta_antela_socket_3_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.regleta_antela_socket_4_2
+                      element: switch.regleta_antela_socket_4_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.regleta_antela_socket_5_2
+                      element: switch.regleta_antela_socket_5_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: false
+                    - entity: switch.enchufe_habitacion_socket_1
+                      element: switch.enchufe_habitacion_socket_1
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.enchufe_habitacion_socket_2
+                      element: switch.enchufe_habitacion_socket_2
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.enchufe_doble_socket_1
+                      element: switch.enchufe_doble_socket_1
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/light/light_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.enchufe_doble_socket_2
+                      element: switch.enchufe_doble_socket_2
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >-
+                            /local/floorplan/assets/light/light_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.alias_lavavajillas
+                      element: switch.alias_lavavajillas
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.alias_frigorifico
+                      element: switch.alias_frigorifico
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                      tap_action: false
+                    - entity: switch.meross_switch_01_outlet
+                      element: switch.meross_switch_01_outlet
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                    - entity: switch.meross_switch_02_outlet
+                      element: switch.meross_switch_02_outlet
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/socket/socket_${entity.state}.svg
+                    - entity: lock.puerta_principal_2
+                      element: cerrada
+                      state_action:
+                        action: call-service
+                        service: floorplan.style_set
+                        service_data:
+                          style: >
+                            fill: ${ entity.state === "locked" ? "green" : "red"
+                            };
+
+                            transition: ${ entity.state === "locked" ? "fill 5s
+                            ease" : "" };
+                          tap_action: toggle
+                    - entity: media_player.my_box_2
+                      element: media_player.my_box
+                      state_action:
+                        action: call-service
+                        service: floorplan.style_set
+                        service_data:
+                          style: >
+                            fill: ${ entity.state === "on" ? "green" : "red" };
+
+                            transition: ${ entity.state === "off" ? "fill 5s
+                            ease" : "" };
+                      tap_action: toggle
+                    - entity: climate.zigbee_sonoff_trvzb_01
+                      element: climate.zigbee_sonoff_trvzb_01
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: |
+                              > if (entity.state === "unavailable") {
+                                  return `
+                                    fill: #888;
+                                    fill-opacity: 0.5;
+                                    stroke: #444;
+                                    stroke-width: 1;
+                                    transition: fill 1s ease;
+                                  `;
+                                }
+                                const temp = entity.attributes.current_temperature;
+                                const min = 16, max = 30;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min);
+                                const r = Math.round(255 * ratio);
+                                const g = 0;
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.8;
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
+                    - entity: climate.zigbee_sonoff_trvzb_02
+                      element: climate.zigbee_sonoff_trvzb_02
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: |
+                              > if (entity.state === "unavailable") {
+                                  return `
+                                    fill: #888;
+                                    fill-opacity: 0.5;
+                                    stroke: #444;
+                                    stroke-width: 1;
+                                    transition: fill 1s ease;
+                                  `;
+                                }
+                                const temp = entity.attributes.current_temperature;
+                                const min = 16, max = 30;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min);
+                                const r = Math.round(255 * ratio);
+                                const g = 0;
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.8;
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
+                    - entity: climate.zigbee_sonoff_trvzb_03
+                      element: climate.zigbee_sonoff_trvzb_03
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: |
+                              > if (entity.state === "unavailable") {
+                                  return `
+                                    fill: #888;
+                                    fill-opacity: 0.5;
+                                    stroke: #444;
+                                    stroke-width: 1;
+                                    transition: fill 1s ease;
+                                  `;
+                                }
+                                const temp = entity.attributes.current_temperature;
+                                const min = 16, max = 30;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min);
+                                const r = Math.round(255 * ratio);
+                                const g = 0;
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.8;
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
+                    - entity: climate.zigbee_sonoff_trvzb_04
+                      element: climate.zigbee_sonoff_trvzb_04
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: |
+                              > if (entity.state === "unavailable") {
+                                  return `
+                                    fill: #888;
+                                    fill-opacity: 0.5;
+                                    stroke: #444;
+                                    stroke-width: 1;
+                                    transition: fill 1s ease;
+                                  `;
+                                }
+                                const temp = entity.attributes.current_temperature;
+                                const min = 16, max = 30;
+                                const clamped = Math.min(Math.max(temp, min), max);
+                                const ratio = (clamped - min) / (max - min);
+                                const r = Math.round(255 * ratio);
+                                const g = 0;
+                                const b = Math.round(255 * (1 - ratio));
+                                const alpha = 0.8;
+                                return `
+                                  fill: rgba(${r}, ${g}, ${b}, ${alpha});
+                                  transition: fill 1s ease;
+                                `;
+                    - entity: climate.aire_acondicionado_virtual
+                      element: compresor.aire
+                      state_action:
+                        - action: call-service
+                          service: floorplan.style_set
+                          service_data:
+                            style: >
+                              fill: ${ entity.state === "cool" ? "blue" :
+                              "green" };
+
+                              transition: ${ entity.state === "cool" ? "fill 5s
+                              ease" : "" };
+                    - entity: sensor.puerta_principal_battery_2
+                      element: sensor.puerta_principal_battery_2
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.tuya_termometro_wifi_2_battery
+                      element: sensor.tuya_termometro_wifi_2_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.tuya_termometro_wifi_battery
+                      element: sensor.tuya_termometro_wifi_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.shelly_blu_5480_battery
+                      element: sensor.shelly_blu_5480_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.indoor_outdoor_meter_5427_battery
+                      element: sensor.indoor_outdoor_meter_5427_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.zigbee_sonoff_trvzb_01_battery
+                      element: sensor.zigbee_sonoff_trvzb_01_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.zigbee_sonoff_trvzb_02_battery
+                      element: sensor.zigbee_sonoff_trvzb_02_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.zigbee_sonoff_trvzb_03_battery
+                      element: sensor.zigbee_sonoff_trvzb_03_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.zigbee_sonoff_trvzb_04_battery
+                      element: sensor.zigbee_sonoff_trvzb_04_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.zigbee_sonoff_snzb02_01_battery
+                      element: sensor.zigbee_sonoff_snzb02_01_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.zigbee_scene_switch_01_battery
+                      element: sensor.zigbee_scene_switch_01_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+                    - entity: sensor.shelly_blu_button1_908f_battery
+                      element: sensor.shelly_blu_button1_908f_battery
+                      state_action:
+                        - action: call-service
+                          service: floorplan.image_set
+                          service_data: >
+                            > const raw = parseInt(entity.state); const level =
+                            Math.min(100, Math.max(0, Math.round(raw / 10) *
+                            10)); return
+                            `/local/floorplan/assets/battery/battery-level-${level}.svg`;
+
+                    - entity: switch.zigbee_tuya_ts0012_01_left
+                      element: zigbee_tuya_ts0012_01_left
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/switch/switch-circle-${entity.state}.svg
+                      tap_action: toggle
+                    - entity: switch.zigbee_tuya_ts0012_01_right
+                      element: zigbee_tuya_ts0012_01_right
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/switch/switch-circle-${entity.state}.svg
+                      tap_action: toggle
+                    - entity: binary_sensor.human_presence_sensor_occupancy
+                      element: binary_sensor.human_presence_sensor_occupancy
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/occupancy/presence-${entity.state}.svg
+                    - entity: binary_sensor.human_presence_sensor_2_occupancy
+                      element: binary_sensor.human_presence_sensor_2_occupancy
+                      state_action:
+                        action: call-service
+                        service: floorplan.image_set
+                        service_data: >-
+                          /local/floorplan/assets/occupancy/presence-${entity.state}.svg

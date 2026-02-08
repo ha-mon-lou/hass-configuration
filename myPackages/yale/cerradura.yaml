@@ -1,0 +1,90 @@
+timer:
+  bloqueo_puerta_principal:
+    duration: "00:00:20"
+
+automation:
+  # Inicia el temporizador cuando la puerta se cierra
+  - alias: Iniciar o reiniciar temporizador de bloqueo al cerrar puerta
+    id: iniciar_temporizador_bloqueo_puerta
+    mode: restart
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.puerta_principal_door
+        to: "off"
+    action:
+      - service: timer.start
+        target:
+          entity_id: timer.bloqueo_puerta_principal
+      - service: system_log.write
+        data:
+          level: info
+          message: "Temporizador iniciado al cerrarse la puerta principal"
+
+  # Bloquea la puerta tras el temporizador, solo si está cerrada y desbloqueada
+  - alias: Bloquear puerta al terminar temporizador
+    id: bloquear_puerta_tras_temporizador
+    mode: single
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.bloqueo_puerta_principal
+    condition:
+      - condition: state
+        entity_id: lock.puerta_principal_2
+        state: "unlocked"
+      - condition: state
+        entity_id: binary_sensor.puerta_principal_door
+        state: "off" # puerta cerrada
+    action:
+      - service: lock.lock
+        target:
+          entity_id: lock.puerta_principal_2
+      - service: system_log.write
+        data:
+          level: info
+          message: "Puerta principal bloqueada automáticamente tras cierre y temporizador"
+
+script:
+  abrir_puerta_principal:
+    alias: Abrir puerta principal
+    sequence:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: lock.puerta_principal_2
+                state: "locked"
+            sequence:
+              - service: lock.unlock
+                target:
+                  entity_id: lock.puerta_principal_2
+              - delay: "00:00:02"
+      - service: lock.open
+        target:
+          entity_id: lock.puerta_principal_2
+
+  desbloquear_puerta_principal:
+    alias: Desbloquear puerta principal
+    sequence:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: lock.puerta_principal_2
+                state: "locked"
+            sequence:
+              - service: lock.unlock
+                target:
+                  entity_id: lock.puerta_principal_2
+
+  cerrar_puerta_principal:
+    alias: Cerrar puerta principal
+    sequence:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: lock.puerta_principal_2
+                state: "unlocked"
+            sequence:
+              - service: lock.lock
+                target:
+                  entity_id: lock.puerta_principal_2

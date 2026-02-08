@@ -1,0 +1,134 @@
+{
+  "title": "edata",
+  "entity": {
+    "button": {
+      "soft_reset": {
+        "name": "Restablecer"
+      },
+      "import_all_data": {
+        "name": "Importa todos os datos dispoñibles"
+      }
+    },
+    "sensor": {
+      "month_kwh": {
+        "name": "Consumo mensual"
+      },
+      "last_month_kwh": {
+        "name": "Consumo do mes pasado"
+      },
+      "yesterday_kwh": {
+        "name": "Consumo de onte"
+      },
+      "last_registered_day_kwh": {
+        "name": "Último consumo rexistrado"
+      },
+      "month_surplus_kwh": {
+        "name": "Excedente mensual"
+      },
+      "last_month_surplus_kwh": {
+        "name": "Excedente do mes pasado"
+      },
+      "yesterday_surplus_kwh": {
+        "name": "Excedente de onte"
+      },
+      "last_registered_day_surplus_kwh": {
+        "name": "Último excedente rexistrado"
+      },
+      "max_power_kw": {
+        "name": "Potencia máxima rexistrada"
+      },
+      "month_eur": {
+        "name": "Custo mensual"
+      },
+      "last_month_eur": {
+        "name": "Custo do mes pasado"
+      },
+      "info": {
+        "name": "Información do subministración"
+      }
+    }
+  },
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configurar integración",
+        "data": {
+          "username": "Nome do usuario",
+          "password": "Contrasinal",
+          "cups": "CUPS",
+          "authorized_nif": "NIF autorizado"
+        }
+      },
+      "choosecups": {
+        "title": "Seleccione os CUPS",
+        "data": {
+          "cups": "CUPS"
+        }
+      }
+    },
+    "error": {
+      "unknown": "Erro descoñecido",
+      "already_configured": "Este CUPS xa está configurado",
+      "invalid_credentials": "Credenciais incorrectas",
+      "invalid_cups": "CUPS incorrectos",
+      "no_supplies_found": "Non se atoparon subministracións na conta proporcionada"
+    },
+    "abort": {
+      "unknown": "Erro descoñecido",
+      "already_configured": "Este CUPS xa está configurado",
+      "invalid_credentials": "Credenciais incorrectas",
+      "invalid_cups": "CUPS incorrectos",
+      "no_supplies_found": "Non se atoparon subministracións na conta proporcionada"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configuración",
+        "data": {
+          "billing": "Activar facturación",
+          "pvpc": "PVPC"
+        }
+      },
+      "costs": {
+        "title": "Facturación",
+        "data": {
+          "p1_kw_year_eur": "Custo por kW contratado en P1 (€)",
+          "p2_kw_year_eur": "Custo por kW contratado en P2 (€)",
+          "meter_month_eur": "Custo mensual por alquiler de contador (€)",
+          "market_kw_year_eur": "Custo anual por mercado de kW (€)",
+          "electricity_tax": "Imposto de electricidade (e.g., 1.05 para 5%)",
+          "iva_tax": "IVE (e.g., 1.10 para 10%)",
+          "p1_kwh_eur": "Custo por kWh en P1 (€)",
+          "p2_kwh_eur": "Custo por kWh en P2 (€)",
+          "p3_kwh_eur": "Custo por kWh en P3 (€)",
+          "surplus_p1_kwh_eur": "Compensación por kWh xenerado en P1 (€)",
+          "surplus_p2_kwh_eur": "Compensación por kWh xenerado en P2 (€)",
+          "surplus_p3_kwh_eur": "Compensación por kWh xenerado en P3 (€)"
+        }
+      },
+      "formulas": {
+        "title": "Fórmulas",
+        "data": {
+          "energy_formula": "Termo de enerxía (€)",
+          "power_formula": "Termo de potencia (€)",
+          "others_formula": "Outros gastos (p.ex., contador, €)",
+          "surplus_formula": "Retorno por xeración (réstase do custo total, €)"
+        }
+      },
+      "confirm": {
+        "title": "Simulación (con impostos)",
+        "data": {
+          "month": "Mes simulado",
+          "value_eur": "Factura (€)",
+          "energy_term": "Termo de enerxía (€)",
+          "power_term": "Termo de potencia (€)",
+          "others_term": "Outros gastos (p.ex., contador, €)",
+          "surplus_term": "Retorno por xeración (réstase do custo total, €)",
+          "apply_from": "Recalcular facturas desde...",
+          "confirm": "Confirmar cambios"
+        }
+      }
+    }
+  }
+}

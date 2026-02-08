@@ -1,0 +1,23 @@
+- id: "nfc_etiqueta_yale_interior"
+  alias: NFC etiqueta yale interior
+  mode: single
+  trigger:
+    - platform: tag
+      tag_id: !secret nfc_tag_ha_yale
+  action:
+    - action: script.secuencia_by_area
+      data:
+        my_area: "habitacion_1"
+        my_estado: "turn_off"
+    - action: script.secuencia_by_area
+      data:
+        my_area: "habitacion_2"
+        my_estado: "turn_off"
+    - action: script.secuencia_by_area
+      data:
+        my_area: "despacho"
+        my_estado: "turn_off"
+    - action: script.secuencia_by_area
+      data:
+        my_area: "studio bricks"
+        my_estado: "turn_off"

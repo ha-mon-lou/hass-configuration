@@ -1,0 +1,18 @@
+- id: "1735563377877"
+  alias: Atardecer
+  description: ""
+  triggers:
+    - trigger: sun
+      event: sunset
+      offset: 00:05:00
+  conditions:
+    - condition: state
+      entity_id: input_boolean.presencia
+      state: "on"
+  actions:
+    - action: script.secuencia_by_area
+      data:
+        my_area: "habitacion_2"
+        my_excludes: "sonoff_trvzb"
+        my_estado: "turn_on"
+  mode: single

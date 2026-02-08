@@ -1,0 +1,7 @@
+simulador_personas:
+  name: Simulador Personas
+  entities:
+    - input_boolean.persona_1
+    - input_boolean.persona_2
+    - input_boolean.persona_3
+    - input_boolean.persona_4

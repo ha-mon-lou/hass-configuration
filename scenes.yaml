@@ -1,0 +1,25 @@
+- id: '1736032765959'
+  name: Dormir
+  entities:
+    switch.enchufe_habitacion_socket_1:
+      device_class: outlet
+      friendly_name: Enchufe habitación Socket 1
+      state: 'off'
+    switch.enchufe_habitacion_socket_2:
+      device_class: outlet
+      friendly_name: Enchufe habitación Socket 2
+      state: 'off'
+    switch.shelly1minig3_34b7dac6f3e4_switch_0:
+      icon: mdi:light-switch
+      friendly_name: Shelly habitacion F3E4
+      state: 'off'
+    switch.enchufe_doble_socket_1:
+      device_class: outlet
+      friendly_name: enchufe comedor Socket 1
+      state: 'off'
+    switch.enchufe_doble_socket_2:
+      device_class: outlet
+      friendly_name: enchufe comedor Socket 2
+      state: 'off'
+  icon: mdi:chat-sleep
+  metadata: {}

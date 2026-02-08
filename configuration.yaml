@@ -1,0 +1,93 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# https://www.home-assistant.io/integrations/bluetooth
+bluetooth:
+
+device_tracker: !include device_tracker.yaml
+automation manual: !include_dir_merge_list myAutomation
+automation: !include automations.yaml
+group: !include_dir_merge_named myGroup
+scene: !include scenes.yaml
+sensor manual: !include_dir_merge_list mySensors
+sensor: !include sensores.yaml
+climate: !include climate.yaml
+schedule dir: !include_dir_merge_list mySchedule
+schedule: !include mySchedule/schedulers.yaml
+switch: !include_dir_merge_list mySwitch
+script: !include_dir_merge_named myScripts
+#script: !include scripts.yaml
+recorder: !include recorder.yaml
+influxdb: !include influxdb.yaml
+rest_command: !include rest_commands.yaml
+
+input_boolean: !include myInput/input_booleans.yaml
+input_text: !include myInput/input_texts.yaml
+input_number: !include myInput/input_numbers.yaml
+shell_command: !include myShellCommands/shell_commands.yaml
+
+template: !include_dir_merge_list myTemplate
+
+# timer: !include_dir_merge_named myTimers
+python_script:
+
+logger:
+  default: warning
+  logs:
+    custom_components.bodymiscale: debug
+
+homeassistant:
+  packages: !include_dir_named myPackages
+  customize: !include myCustomize/customize_switches.yaml
+
+lovelace:
+  resources:
+    - url: /local/tailwindcss-template-card/dist/tailwindcss-template-card.js
+      type: module
+    - url: /hacsfiles/decluttering-card/decluttering-card.js
+      type: module
+    - url: /hacsfiles/lovelace-body-miscale-card/body-miscale-card.js
+      type: module
+#bodymiscale: !include bodymiscale.yaml
+
+# Added By Homeway to enable Alexa support.
+alexa:
+  smart_home:
+
+# Added By Homeway to enable Google Assistant support.
+google_assistant:
+  project_id: homewayio
+  service_account:
+    private_key: "nokey"
+    client_email: "support@homeway.io"
+
+
+# Added By Homeway to enable proper HTTP proxy support.
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.32.0/23
+    - 127.0.0.1
+    - ::1
+
+
+# Added by Homeway to enable webrtc video streaming. Prevent Homeway from updating web_rtc by setting following to false: homeway_auto_update:true
+web_rtc:
+  ice_servers:
+    - url:
+        - "stun:stun.cloudflare.com:3478"
+        - "stun:stun.cloudflare.com:53"
+        - "stun:webrtc.homeway.io:443"
+    - url:
+        - "turn:webrtc.homeway.io:443?transport=udp"
+        - "turn:webrtc.homeway.io:3478?transport=udp"
+        - "turn:webrtc.homeway.io:3478?transport=tcp"
+        - "turn:webrtc.homeway.io:80?transport=tcp"
+        - "turns:webrtc.homeway.io:443?transport=tcp"
+        - "turns:webrtc.homeway.io:5349?transport=tcp"
+      username: "YFLTRVE9UJI0VKA7GWY3NZE4V07D62P1H5HPETWSXW81WXX0TST6V59P5AZ2-1"
+      credential: "0A7BF61BE4923DE3E1516C84B7673C9A1C3961E5A011F7F88107F9F6F68406D4"

@@ -1,0 +1,10 @@
+- id: "secuencia_switches"
+  alias: Secuencia de apagado
+  mode: single
+  trigger:
+    - platform: tag
+      tag_id: !secret nfc_tag_ha_door
+  action:
+    - service: script.secuencia_of_switches
+      data:
+        my_estado: "off"

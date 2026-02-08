@@ -1,0 +1,114 @@
+version: 4
+homeassistant:
+  enabled: true
+  legacy_action_sensor: true
+advanced:
+  channel: 11
+  transmit_power: 20
+  network_key:
+    - 108
+    - 226
+    - 230
+    - 209
+    - 17
+    - 243
+    - 45
+    - 27
+    - 206
+    - 54
+    - 105
+    - 239
+    - 63
+    - 9
+    - 199
+    - 14
+  pan_id: 29735
+  ext_pan_id:
+    - 56
+    - 244
+    - 107
+    - 107
+    - 246
+    - 77
+    - 19
+    - 156
+  log_level: error
+  log_directory: /config/zigbee2mqtt/log/
+  log_file: log_%TIMESTAMP%.log
+mqtt:
+  server: mqtt://core-mosquitto:1883
+  user: addons
+  password: yahpeeVafoh7keeFa1wee5fah4ahbie7maithoz3cah1bohchahV6aelieb9kio3
+  client_id: z2mha
+  keepalive: 60
+  reject_unauthorized: true
+  version: 4
+frontend:
+  enabled: true
+  port: 8099
+serial:
+  port: tcp://192.168.1.187:6638
+  adapter: ember
+  baudrate: 115200
+devices:
+  "0xa4c1387fe2e7effc":
+    friendly_name: zigbee_nous_enchufe_01
+    description: habitacion por ahora
+    homeassistant:
+      name: zigbee_nous_enchufe_01
+    optimistic: true
+    icon: device_icons/2141502a56370e2461e53497da77a667.png
+  "0xa4c13819d046464f":
+    friendly_name: zigbee_nous_enchufe_02
+    homeassistant:
+      name: zigbee_nous_enchufe_02
+    optimistic: true
+    description: frigorifico
+    icon: device_icons/2141502a56370e2461e53497da77a667.png
+  "0xa4c138b8caa59009":
+    friendly_name: zigbee_nous_enchufe_03
+    description: lavavajillas
+    homeassistant:
+      name: zigbee_nous_enchufe_03
+    optimistic: true
+    icon: device_icons/2141502a56370e2461e53497da77a667.png
+  "0x00124b002a565fae":
+    friendly_name: zigbee_sonoff_snzb02_01
+    homeassistant:
+      name: zigbee_sonoff_snzb02_01
+    optimistic: true
+  "0xa4c138b7c1781a47":
+    friendly_name: zigbee_nous_enchufe_04
+    homeassistant:
+      name: zigbee_nous_enchufe_04
+    optimistic: true
+    description: asignacion pendiente
+  "0x842712fffe173a94":
+    friendly_name: zigbee_sonoff_trvzb_01
+    thermostat_unit: celsius
+    homeassistant:
+      name: zigbee_sonoff_trvzb_01
+    optimistic: true
+  "0x0cae5ffffed9e20e":
+    friendly_name: zigbee_sonoff_trvzb_02
+    homeassistant:
+      name: zigbee_sonoff_trvzb_02
+    optimistic: true
+  "0x8c65a3fffee60ccd":
+    friendly_name: zigbee_sonoff_trvzb_03
+    homeassistant:
+      name: zigbee_sonoff_trvzb_03
+    optimistic: true
+  "0x44e2f8fffe0ffdb2":
+    friendly_name: zigbee_sonoff_trvzb_04
+    homeassistant:
+      name: zigbee_sonoff_trvzb_04
+    optimistic: true
+    thermostat_unit: celsius
+  "0x38398ffffe565011":
+    friendly_name: zigbee_heiman_hs3aq_01
+    homeassistant:
+      name: zigbee_heiman_hs3aq_01
+    optimistic: true
+availability:
+  enabled: true

@@ -1,0 +1,34 @@
+secuencia_of_switches:
+  alias: Secuencia de switches
+  description: Enciende, apaga o alterna switches con retardo
+  fields:
+    my_estado:
+      description: "Acción (on/off/toggle)"
+      example: "off"
+  sequence:
+    - variables:
+        switches: >-
+          {% if my_estado == 'on' %}
+            {{ states.switch
+              | selectattr('state', 'eq', 'off')
+              | map(attribute='entity_id') | list }}
+          {% elif my_estado == 'off' %}
+            {{ states.switch
+              | selectattr('state', 'eq', 'on')
+              | map(attribute='entity_id') | list }}
+          {% else %}
+            {{ states.switch
+              | map(attribute='entity_id') | list }}
+          {% endif %}
+    - repeat:
+        for_each: "{{ switches }}"
+        sequence:
+          - service: >-
+              {% if my_estado in ['on', 'off'] %}
+                switch.turn_{{ my_estado }}
+              {% else %}
+                switch.toggle
+              {% endif %}
+            data:
+              entity_id: "{{ repeat.item }}"
+          - delay: "00:00:01"

@@ -1,0 +1,187 @@
+############################################################
+# BODY METRICS / SALUT RAMON-PAU
+############################################################
+
+input_number:
+  pkg_salut_threshold:
+    name: Umbral de Peso
+    initial: 74
+    min: 70
+    max: 80
+    step: 1
+    unit_of_measurement: "kg"
+
+  pkg_salut_ramon_height:
+    name: Altura de Ramón
+    initial: 165
+    min: 100
+    max: 250
+    step: 1
+    unit_of_measurement: "cm"
+
+  pkg_salut_pau_height:
+    name: Altura de Pau
+    initial: 170
+    min: 100
+    max: 250
+    step: 1
+    unit_of_measurement: "cm"
+
+  pkg_salut_ramon_born:
+    name: Año de Nacimiento de Ramón
+    initial: 1967
+    min: 1900
+    max: 2025
+    step: 1
+
+  pkg_salut_pau_born:
+    name: Año de Nacimiento de Pau
+    initial: 2004
+    min: 1900
+    max: 2025
+    step: 1
+
+  pkg_salut_ramon_peso_last:
+    name: Último peso válido Ramón
+    min: 0
+    max: 200
+    step: 0.1
+    unit_of_measurement: "kg"
+
+  pkg_salut_ramon_imc_last:
+    name: Último IMC Ramón
+    min: 0
+    max: 100
+    step: 0.1
+    unit_of_measurement: "%"
+
+  pkg_salut_pau_peso_last:
+    name: Último peso válido Pau
+    min: 0
+    max: 200
+    step: 0.1
+    unit_of_measurement: "kg"
+
+  pkg_salut_pau_imc_last:
+    name: Último IMC Pau
+    min: 0
+    max: 100
+    step: 0.1
+    unit_of_measurement: "%"
+
+############################################################
+# TEMPLATE SENSORS (SINTAXIS MODERNA)
+############################################################
+
+template:
+  - sensor:
+      - name: "Peso de Ramón"
+        unique_id: "pkg_salut_ramon_peso"
+        unit_of_measurement: "kg"
+        state: >
+          {% set peso = states('sensor.body_composition_scale_71b5_weight') | float(0) %}
+          {% set umbral = states('input_number.pkg_salut_threshold') | float %}
+          {% if peso >= umbral %}
+            {{ peso }}
+          {% else %}
+            {{ states('input_number.pkg_salut_ramon_peso_last') }}
+          {% endif %}
+
+      - name: "IMC Ramón"
+        unique_id: "pkg_salut_ramon_imc"
+        unit_of_measurement: "%"
+        state: >
+          {% set peso = states('sensor.body_composition_scale_71b5_weight') | float(0) %}
+          {% set umbral = states('input_number.pkg_salut_threshold') | float %}
+          {% if peso >= umbral %}
+            {% set height_cm = states('input_number.pkg_salut_ramon_height') | float %}
+            {% set birth_year = states('input_number.pkg_salut_ramon_born') | int %}
+            {% from 'body_metrics.jinja' import calculate_body_fat %}
+            {{ calculate_body_fat(peso, height_cm, birth_year, "male") }}
+          {% else %}
+            {{ states('input_number.pkg_salut_ramon_imc_last') }}
+          {% endif %}
+
+      - name: "Peso de Pau"
+        unique_id: "pkg_salut_pau_peso"
+        unit_of_measurement: "kg"
+        state: >
+          {% set peso = states('sensor.body_composition_scale_71b5_weight') | float(0) %}
+          {% set umbral = states('input_number.pkg_salut_threshold') | float %}
+          {% if peso < umbral %}
+            {{ peso }}
+          {% else %}
+            {{ states('input_number.pkg_salut_pau_peso_last') }}
+          {% endif %}
+
+      - name: "IMC Pau"
+        unique_id: "pkg_salut_pau_imc"
+        unit_of_measurement: "%"
+        state: >
+          {% set peso = states('sensor.body_composition_scale_71b5_weight') | float(0) %}
+          {% set umbral = states('input_number.pkg_salut_threshold') | float %}
+          {% if peso < umbral %}
+            {% set height_cm = states('input_number.pkg_salut_pau_height') | float %}
+            {% set birth_year = states('input_number.pkg_salut_pau_born') | int %}
+            {% from 'body_metrics.jinja' import calculate_body_fat %}
+            {{ calculate_body_fat(peso, height_cm, birth_year, "male") }}
+          {% else %}
+            {{ states('input_number.pkg_salut_pau_imc_last') }}
+          {% endif %}
+
+############################################################
+# AUTOMATIONS
+############################################################
+
+automation:
+  - alias: Guardar peso Ramón
+    trigger:
+      - platform: state
+        entity_id: sensor.pkg_salut_ramon_peso
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state | float(0) > 0 }}"
+    action:
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.pkg_salut_ramon_peso_last
+          value: "{{ trigger.to_state.state | float(0) }}"
+
+  - alias: Guardar IMC Ramón
+    trigger:
+      - platform: state
+        entity_id: sensor.pkg_salut_ramon_imc
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state | float(0) > 0 }}"
+    action:
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.pkg_salut_ramon_imc_last
+          value: "{{ trigger.to_state.state | float(0) }}"
+
+  - alias: Guardar peso Pau
+    trigger:
+      - platform: state
+        entity_id: sensor.pkg_salut_pau_peso
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state | float(0) > 0 }}"
+    action:
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.pkg_salut_pau_peso_last
+          value: "{{ trigger.to_state.state | float(0) }}"
+
+  - alias: Guardar IMC Pau
+    trigger:
+      - platform: state
+        entity_id: sensor.pkg_salut_pau_imc
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state | float(0) > 0 }}"
+    action:
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.pkg_salut_pau_imc_last
+          value: "{{ trigger.to_state.state | float(0) }}"

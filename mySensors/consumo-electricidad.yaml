@@ -1,0 +1,43 @@
+- platform: template
+  sensors:
+    custom_electro_consumo:
+      friendly_name: "Consumo electricidad"
+      unique_id: "custom_electro_consumo"
+      unit_of_measurement: "W" # Cambia esto si la unidad no es watts
+      value_template: >-
+        {% if states('sensor.fj0f_last_registered_consumption') | float(default=0) %}
+          {{ (states('sensor.fj0f_last_registered_consumption') | float * 1) }}
+        {% else %}
+          0
+        {% endif %}
+      icon_template: mdi:flash
+
+- platform: template
+  sensors:
+    electro_consumo_regleta:
+      device_class: power
+      friendly_name: "Consumo electricidad regleta"
+      unique_id: "electro_consumo_regleta"
+      unit_of_measurement: "W"
+      value_template: >-
+        {% if states('sensor.regleta_antela_power') | float(default=0) %}
+          {{ (states('sensor.regleta_antela_power') | float * 1) }}
+        {% else %}
+          0
+        {% endif %}
+      icon_template: mdi:flash
+
+- platform: template
+  sensors:
+    electro_consumo_regleta_02:
+      device_class: power
+      friendly_name: "Consumo electricidad regleta 02"
+      unique_id: "electro_consumo_regleta_02"
+      unit_of_measurement: "W"
+      value_template: >-
+        {% if states('sensor.regleta_antela_power_2') | float(default=0) %}
+          {{ (states('sensor.regleta_antela_power_2') | float * 1) }}
+        {% else %}
+          0
+        {% endif %}
+      icon_template: mdi:flash

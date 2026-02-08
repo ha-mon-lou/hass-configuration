@@ -1,0 +1,43 @@
+#
+# https://homeassistant-notes.notion.site/Proyecto-studioBricks-1819be0e2c178025bfbce68fd774ab8d
+#
+- id: "scheduler_studioBricks_activa_aire"
+  alias: Scheduler studioBricks activa aire
+  description: "Activa el aire de la cabina"
+  triggers:
+    - trigger: state
+      entity_id:
+        - schedule.studiobricks_schedule
+      to: "on"
+  conditions: []
+  actions:
+    - sequence:
+        - action: switch.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_2 # aire
+  mode: single
+
+- id: "scheduler_studioBricks_desactiva_aire"
+  alias: Scheduler studioBricks desactiva aire
+  description: "Si el scheduler cambia a off, desactiva el aire si es que no hay luz (se esta usando la cabina)"
+  triggers:
+    - trigger: state
+      entity_id:
+        - schedule.studiobricks_schedule
+      to: "off"
+  conditions:
+    condition:
+      - condition: state
+        entity_id: switch.regleta_antela_socket_3 # luz
+        state: "off" # La condición será verdadera solo si está apagado
+
+  actions:
+    - sequence:
+        - action: switch.turn_off
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.regleta_antela_socket_2 # aire
+  mode: single

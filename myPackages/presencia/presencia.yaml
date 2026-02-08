@@ -1,0 +1,267 @@
+input_boolean:
+  presencia:
+    name: Presencia en casa
+    icon: mdi:home-account
+
+  control_por_presencia:
+    name: Control por presencia
+    icon: mdi:motion-sensor
+
+input_select:
+  ubicacion_ramon:
+    name: Ubicación de Ramon
+    options:
+      - unknown
+      - not_home
+      - habitacion_1
+      - habitacion_2
+      - despacho
+      - studioBricks
+      - living_1
+      - living_2
+      - cocina
+      - bathroom_1
+      - bathroom_2
+      - trastero
+      - entrada
+      - away
+    initial: not_home
+
+  ubicacion_pau:
+    name: Ubicación de Pau
+    options:
+      - unknown
+      - not_home
+      - habitacion_1
+      - habitacion_2
+      - despacho
+      - studioBricks
+      - living_1
+      - living_2
+      - cocina
+      - bathroom_1
+      - bathroom_2
+      - trastero
+      - entrada
+      - away
+    initial: not_home
+
+group:
+  all_persons:
+    name: Todos
+    entities:
+      - person.ramon
+      - person.pau
+      - person.ha_beelink
+
+  ubicacion_personas:
+    name: UbicacionPersonas
+    entities:
+      - input_select.ubicacion_ramon
+      - input_select.ubicacion_pau
+
+binary_sensor:
+  - platform: bayesian
+    name: "ramon_en_habitacion_02"
+    device_class: occupancy
+    prior: 0.5
+    probability_threshold: 0.7
+    observations:
+      # El móvil cargando → muy probable que esté en la habitacion
+      - platform: state
+        entity_id: sensor.sm_a155f_charger_type
+        to_state: "ac"
+        prob_given_true: 0.98
+        prob_given_false: 0.02
+
+      # Hora de la noche → más probable que esté en la cama
+      - platform: template
+        value_template: >
+          {% set h = now().hour %}
+          {{ h >= 21 or h <= 8 }}
+        prob_given_true: 0.7
+        prob_given_false: 0.3
+
+      # SOLO si Ramón está en home
+      - platform: state
+        entity_id: person.ramon
+        to_state: "home"
+        prob_given_true: 0.99
+        prob_given_false: 0.01
+
+automation:
+  - alias: "[Presencia] Ramon - Actualizar ubicación habitacion 02"
+    id: ramon_actualizar_ubicacion_habitacion_02
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.ramon_en_habitacion_02
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.ramon_en_habitacion_02
+                state: "on"
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.ubicacion_ramon
+                data:
+                  option: "habitacion_2"
+
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.ramon_en_habitacion_02
+                state: "off"
+            sequence:
+              - service: input_select.select_option
+                target:
+                  entity_id: input_select.ubicacion_ramon
+                data:
+                  option: "unknown"
+
+  - alias: "[Presencia] Activar si alguien llega a casa"
+    trigger:
+      - platform: state
+        entity_id: group.all_persons
+        to: "home"
+    action:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.presencia
+
+  - alias: "[Presencia] Desactivar si todos se van (con FOR)"
+    trigger:
+      - platform: state
+        entity_id: group.all_persons
+        to: "not_home"
+        for: "00:01:00"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.presencia
+
+  - alias: "[Presencia] Sincronizar al iniciar Home Assistant"
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: group.all_persons
+                state: "home"
+            sequence:
+              - service: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.presencia
+          - conditions:
+              - condition: state
+                entity_id: group.all_persons
+                state: "not_home"
+            sequence:
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.presencia
+
+  ## Si  hay control por presencia entonces al leer el tag simplemente actualiza que estamos en el despacho
+  - alias: Ramon - Entrada al despacho
+    trigger:
+      - platform: tag
+        tag_id: !secret nfc_tag_ha_despacho
+    condition:
+      - condition: template
+        value_template: "{{ states('input_select.ubicacion_ramon') != 'despacho' }}"
+      - condition: state
+        entity_id: input_boolean.control_por_presencia
+        state: "on"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_ramon
+        data:
+          option: "despacho"
+
+  ## Si no hay control por presencia entonces al leer el tag directamente lo pone en modo auto
+  - alias: Tag despacho
+    trigger:
+      - platform: tag
+        tag_id: !secret nfc_tag_ha_despacho
+    condition:
+      - condition: state
+        entity_id: input_boolean.control_por_presencia
+        state: "off"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ventilador_despacho_modo_auto
+        data:
+          option: "manual"
+      - delay: "00:00:01"
+      - action: script.selector_ventilador
+        data:
+          dispositivo: ventilador_despacho
+          valor: velocidad 1
+
+  - alias: Ramon - Tocando el piano
+    trigger:
+      - platform: tag
+        tag_id: !secret nfc_tag_ha_piano
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_ramon
+        data:
+          option: "living_1"
+
+  - alias: Ramon - En la cama
+    trigger:
+      - platform: tag
+        tag_id: !secret nfc_tag_ha_bedroom_2
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_ramon
+        data:
+          option: "habitacion_2"
+
+  - alias: Pau - En la habitacion
+    trigger:
+      - platform: state
+        entity_id: input_boolean.scene_switch_01_1
+        to: "on"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_pau
+        data:
+          option: "habitacion_1"
+
+  - alias: "[Presencia] Actualizar ubicación Ramón si se va de casa"
+    trigger:
+      - platform: state
+        entity_id: person.ramon
+        to: "not_home"
+        for: "00:05:00"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_ramon
+        data:
+          option: "not_home"
+
+  - alias: Actualizar ubicación Ramon desde Bermuda
+    trigger:
+      - platform: state
+        entity_id: sensor.bermuda_543f666fe64b4cbc93b0895ef6488bfb_100_40004_area
+    condition:
+      - condition: state
+        entity_id: sensor.sm_a155f_charger_type
+        state: "none"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.ubicacion_ramon
+        data:
+          option: "{{ trigger.to_state.state }}"
+
+          

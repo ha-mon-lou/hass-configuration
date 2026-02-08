@@ -1,0 +1,9 @@
+{% macro global_variables() %}
+    {% set movil_bateria_nivel = states("sensor.sm_a155f_battery_level") %}
+    {% set movil_bateria_estado = states("sensor.sm_a155f_battery_state") %}
+    {% set movil_bateria_tipo_cargador = states("sensor.sm_a155f_charger_type") %}
+{% endmacro %}
+
+{% macro format_entity(entity_id) %}
+{{ state_attr(entity_id, 'friendly_name') }} - {{ states(entity_id) }}
+{% endmacro %}

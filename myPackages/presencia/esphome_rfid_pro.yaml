@@ -1,0 +1,111 @@
+# ============================================
+# RFID Tags → Personas (Sistema PRO)
+# ============================================
+
+input_text:
+  rfid_tag_last_pro:
+    name: "Tag RFID último"
+    max: 50
+    icon: mdi:nfc
+
+input_select:
+  rfid_persona:
+    name: "Persona RFID"
+    options:
+      - "Desconocido"
+      - "RFID Pau"
+      - "RFID Ramon"
+      - "RFID Pingu"
+      - "RFID Guest"
+    initial: "Desconocido"
+    icon: mdi:account-group
+
+sensor:
+  - platform: template
+    sensors:
+      rfid_persona_actual:
+        friendly_name: "Persona detectada"
+        unique_id: rfid_persona_actual
+        value_template: "{{ states('input_select.rfid_persona') }}"
+
+# SCRIPT REUTILIZABLE - ¡El corazón del sistema!
+script:
+  lookup_rfid_persona:
+    alias: "🔍 Buscar persona por RFID"
+    description: "Busca persona por UID RFID usando mapeo interno"
+    sequence:
+      - variables:
+          # Mapeo centralizado - AQUÍ cambias los UIDs y nombres
+          rfid_mapping: >
+            {{
+              {
+                '9E-6E-D7-0C': 'RFID Pau',
+                'FE-84-53-25': 'RFID Ramon', 
+                '8A-D1-6B-07': 'RFID Guest',
+                'D7-98-4C-33': 'RFID Pingu'
+              }
+            }}
+          persona: "{{ rfid_mapping.get(tag_id|default(states('input_text.rfid_tag_last_pro')), 'Desconocido') }}"
+
+      # Actualiza el input_select
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.rfid_persona
+        data:
+          option: "{{ persona }}"
+
+    #      # Notificación de debug (opcional)
+    #      - service: persistent_notification.create
+    #        data:
+    #          title: "RFID Detectado"
+    #          message: "Tag: {{ tag_id|default(states('input_text.rfid_tag_last_pro')) }} → {{ persona }}"
+
+    fields:
+      tag_id:
+        description: "UID del tag RFID (opcional)"
+        example: "D7-98-4C-33"
+        required: false
+        selector:
+          text:
+
+# Guarda UID del sensor ESPHome
+automation:
+  - alias: "Guardar UID RFID"
+    trigger:
+      - platform: state
+        entity_id: sensor.esp32_rfid_rfid_tag
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state not in ['unknown', 'unavailable', ''] }}"
+    action:
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.rfid_tag_last_pro
+        data:
+          value: "{{ trigger.to_state.state }}"
+      # Llama al script PRO automáticamente
+      - service: script.lookup_rfid_persona
+
+  # Reset después de 30s de inactividad
+  - alias: "Reset RFID inactivo"
+    trigger:
+      - platform: state
+        entity_id: sensor.esp32_rfid_rfid_tag
+        to: "unknown"
+        for: "00:00:30"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.rfid_persona
+        data:
+          option: "Desconocido"
+
+  # BONUS: Ejemplo de uso manual del script
+  - alias: "Test manual RFID"
+    trigger:
+      - platform: state
+        entity_id: input_boolean.test_rfid # Crea este helper si quieres
+    action:
+      - service: script.lookup_rfid_persona
+        data:
+          tag_id: "{{ states('input_text.test_tag_id') }}"

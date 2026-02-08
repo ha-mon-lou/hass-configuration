@@ -1,0 +1,27 @@
+- id: "1735396993529"
+  alias: Tele on Luces off (v3)
+  triggers:
+    - device_id: f2cf32e97e729a9a14fd3657ed260afe
+      domain: media_player
+      entity_id: 595047351c96be1289eefa62731cda3e
+      type: turned_on
+      trigger: device
+    - type: turned_on
+      device_id: 4212ed74edbdc7e8bd7b75f3ae1a9c4c
+      entity_id: 8c098c4f5799ff0d519ed64b05a880e1
+      domain: remote
+      trigger: device
+  actions:
+    - sequence:
+        - action: switch.turn_off
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.enchufe_doble_socket_1
+        - delay: 00:00:01
+        - action: switch.turn_off
+          metadata: {}
+          data: {}
+          target:
+            entity_id: switch.enchufe_doble_socket_2
+  mode: single

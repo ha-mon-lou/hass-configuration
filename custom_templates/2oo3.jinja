@@ -1,0 +1,32 @@
+{% macro macro_2oo3(sensor1, sensor2, sensor3) %}
+  {# Obtener valores individuales #}
+  {% set s1 = states(sensor1) | float(default=-99) %}
+  {% set s2 = states(sensor2) | float(default=-99) %}
+  {% set s3 = states(sensor3) | float(default=-99) %}
+
+  {# Crear lista manualmente solo con valores válidos #}
+  {% set valid = [] %}
+  {% if s1 != -99 %}
+    {% set valid = valid + [s1] %}
+  {% endif %}
+  {% if s2 != -99 %}
+    {% set valid = valid + [s2] %}
+  {% endif %}
+  {% if s3 != -99 %}
+    {% set valid = valid + [s3] %}
+  {% endif %}
+
+  {% set valid_count = valid | length %}
+
+  {% if valid_count == 3 %}
+    {# mediana #}
+    {% set sorted = valid | sort %}
+    {{ sorted[1] | round(2) }}
+  {% elif valid_count == 2 %}
+    {{ ((valid[0] + valid[1]) / 2) | round(2) }}
+  {% elif valid_count == 1 %}
+    {{ valid[0] | round(2) }}
+  {% else %}
+    {{ none }}
+  {% endif %}
+{% endmacro %}

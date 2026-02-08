@@ -1,0 +1,241 @@
+decluttering_templates:
+  ventilador_control:
+    variables:
+      - nombre
+      - id
+      - fondo: "#1e1e2f" # Color por defecto si no se especifica
+    card:
+      type: vertical-stack
+      cards:
+        - type: horizontal-stack
+          cards:
+            - type: button
+              show_name: true
+              show_icon: false
+              show_state: true
+              entity: input_boolean.ventilador_[[id]]
+              name: "[[nombre]]"
+            - type: custom:mushroom-entity-card
+              entity: sensor.sensacion_termica_[[id]]
+              name: Tuya
+              icon_color: auto
+              fill_container: true
+              secondary_info: last-updated
+              primary_info: state
+              icon_type: icon
+        - type: horizontal-stack
+          cards:
+            - type: custom:button-card
+              entity: input_select.ventilador_[[id]]_botonera
+              show-name: false
+              name: " "
+              icon: mdi:fan-off
+              tap_action:
+                action: call-service
+                service: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_[[id]]
+                  desde: boton-off
+                  modo: manual
+                  valor: Apagar
+              state:
+                - value: Apagar
+                  styles:
+                    card:
+                      - background-color: "#2e2e2e"
+                    icon:
+                      - color: "#f44336"
+            - type: custom:button-card
+              entity: input_select.ventilador_[[id]]_botonera
+              show-name: false
+              name: " "
+              icon: mdi:fan-speed-1
+              tap_action:
+                action: call-service
+                service: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_[[id]]
+                  desde: boton-v1
+                  modo: manual
+                  valor: velocidad 1
+              state:
+                - value: velocidad 1
+                  styles:
+                    card:
+                      - background-color: "#1b5e20"
+                    icon:
+                      - color: "#81c784"
+            - type: custom:button-card
+              entity: input_select.ventilador_[[id]]_botonera
+              show-name: false
+              name: " "
+              icon: mdi:fan-speed-2
+              tap_action:
+                action: call-service
+                service: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_[[id]]
+                  desde: boton-v2
+                  modo: manual
+                  valor: velocidad 2
+              state:
+                - value: velocidad 2
+                  styles:
+                    card:
+                      - background-color: "#1b5e20"
+                    icon:
+                      - color: "#81c784"
+            - type: custom:button-card
+              entity: input_select.ventilador_[[id]]_botonera
+              show-name: false
+              name: " "
+              icon: mdi:fan-speed-3
+              tap_action:
+                action: call-service
+                service: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_[[id]]
+                  desde: boton-v3
+                  modo: manual
+                  valor: velocidad 3
+              state:
+                - value: velocidad 3
+                  styles:
+                    card:
+                      - background-color: "#1b5e20"
+                    icon:
+                      - color: "#81c784"
+        - type: horizontal-stack
+          cards:
+            - type: button
+              show_name: false
+              show_icon: true
+              show_state: true
+              icon: mdi:sun-snowflake
+              tap_action:
+                action: call-service
+                service: script.envia_comando_broadlink
+                data:
+                  dispositivo: ventilador_[[id]]
+                  comando: reverse
+            - type: custom:button-card
+              entity: input_select.ventilador_[[id]]_modo_auto
+              name: " "
+              show-name: false
+              icon: mdi:fan-auto
+              tap_action:
+                action: call-service
+                service: script.modo_ventilador
+                data:
+                  dispositivo: ventilador_[[id]]
+                  valor: auto
+              state:
+                - value: auto
+                  styles:
+                    card:
+                      - background-color: "#2b5e90"
+                    icon:
+                      - color: "#FFFFFF"
+            - type: custom:button-card
+              entity: input_select.ventilador_[[id]]_botonera
+              name: " "
+              show-name: false
+              icon: mdi:wind-power
+              tap_action:
+                action: call-service
+                service: script.selector_ventilador
+                data:
+                  dispositivo: ventilador_[[id]]
+                  modo: manual
+                  valor: brisa
+              state:
+                - value: brisa
+                  styles:
+                    card:
+                      - background-color: "#1b5e20"
+                    icon:
+                      - color: "#81c784"
+        - type: horizontal-stack
+          cards:
+            - type: custom:button-card
+              entity: timer.ventilador_[[id]]_file_timer
+              show_name: false
+              show_icon: false
+              show_state: true
+              styles:
+                card:
+                  - width: 70px
+                  - height: 48px
+                  - text-align: center
+                  - font-size: 14px
+                  - padding: 4px
+            - type: custom:button-card
+              entity_id: input_select.ventilador_[[id]]_temporizador
+              icon: mdi:numeric-1-circle
+              tap_action:
+                action: call-service
+                service: input_select.select_option
+                data:
+                  entity_id: input_select.ventilador_[[id]]_temporizador
+                  option: t1
+              state:
+                - value: t1
+                  styles:
+                    card:
+                      - background-color: "#2e2e2e"
+                    icon:
+                      - color: "#f44336"
+            - type: custom:button-card
+              entity_id: input_select.ventilador_[[id]]_temporizador
+              icon: mdi:numeric-2-circle
+              tap_action:
+                action: call-service
+                service: input_select.select_option
+                data:
+                  entity_id: input_select.ventilador_[[id]]_temporizador
+                  option: t2
+              state:
+                - value: t2
+                  styles:
+                    card:
+                      - background-color: "#1b5e20"
+                    icon:
+                      - color: "#81c784"
+            - type: custom:button-card
+              entity_id: input_select.ventilador_[[id]]_temporizador
+              icon: mdi:numeric-4-circle
+              tap_action:
+                action: call-service
+                service: input_select.select_option
+                data:
+                  entity_id: input_select.ventilador_[[id]]_temporizador
+                  option: t3
+              state:
+                - value: t3
+                  styles:
+                    card:
+                      - background-color: "#1b5e20"
+                    icon:
+                      - color: "#81c784"
+            - type: custom:button-card
+              entity_id: input_select.ventilador_[[id]]_temporizador
+              icon: mdi:numeric-8-circle
+              tap_action:
+                action: call-service
+                service: input_select.select_option
+                data:
+                  entity_id: input_select.ventilador_[[id]]_temporizador
+                  option: t4
+              state:
+                - value: t4
+                  styles:
+                    card:
+                      - background-color: "#1b5e20"
+                    icon:
+                      - color: "#81c784"
+      style: |
+        ha-card {
+          background: [[fondo]];
+          padding: 12px;
+          border-radius: 12px;
+        }

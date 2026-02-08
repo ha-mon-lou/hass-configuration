@@ -1,0 +1,61 @@
+/* SVG elements */
+svg * {
+    vector-effect: non-scaling-stroke !important;
+  }
+  
+  /* Hover over */
+  .floorplan-shape:hover,
+  g.floorplan-hover > :not(text):hover,
+  g.floorplan-click > :not(text):hover,
+  g.floorplan-long-click > :not(text):hover,
+  :not(text).floorplan-hover:hover,
+  :not(text).floorplan-click:hover,
+  :not(text).floorplan-long-click:hover {
+    stroke: #03a9f4 !important;
+    stroke-width: 1px !important;
+    stroke-opacity: 1 !important;
+  }
+  
+  /* Animation */
+  .spinning {
+    animation-name: spin;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    transform-origin: 50% 50%;
+    transform-box: fill-box;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Valores extremos */
+  .trv-unavail  { fill: yellow     !important; opacity: 0.6   !important; }
+  .trv-invalid  { fill: gray       !important; opacity: 0.4   !important; }
+  
+  /* Gradiente por rangos */
+  .trv-level-0   { fill: #0000FF   !important; } /* 16 °C */
+  .trv-level-10  { fill: #0033FF   !important; }
+  .trv-level-20  { fill: #0066FF   !important; }
+  .trv-level-30  { fill: #0099FF   !important; }
+  .trv-level-40  { fill: #00CCFF   !important; }
+  .trv-level-50  { fill: #00FFCC   !important; }
+  .trv-level-60  { fill: #00FF99   !important; }
+  .trv-level-70  { fill: #00FF66   !important; }
+  .trv-level-80  { fill: #66FF00   !important; }
+  .trv-level-90  { fill: #CCFF00   !important; }
+  .trv-level-100 { fill: #FFFF00   !important; } /* 25 °C */
+  
+  /* Transición suave */
+  rect.trv-unavail,
+  rect.trv-invalid,
+  rect[class^="trv-level-"] {
+    transition: fill 1s ease !important;
+  }
+  

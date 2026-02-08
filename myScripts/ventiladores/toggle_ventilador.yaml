@@ -1,0 +1,15 @@
+toggle_ventilador:
+  alias: Toggle ventilador
+  fields:
+    dispositivo:
+      description: "Nombre del ventilador (ej: ventilador_habitacion)"
+      example: ventilador_habitacion
+  sequence:
+    - service: input_boolean.toggle
+      data:
+        entity_id: "{{ 'input_boolean.' ~ dispositivo }}"
+    - service: script.modo_ventilador
+      data:
+        dispositivo: "{{ dispositivo }}"
+        valor: manual
+

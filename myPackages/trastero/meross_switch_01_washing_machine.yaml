@@ -1,0 +1,86 @@
+# myPackages/lavadora_bayesiana.yaml
+
+input_boolean:
+  washingmachine_en_uso:
+    name: WashingMachine en uso
+    icon: mdi:tumble-dryer
+
+binary_sensor:
+  - platform: template
+    sensors:
+      washing_machine_consumo_alto:
+        friendly_name: "WashingMachine consumo alto"
+        device_class: running
+        value_template: >
+          {{ states('sensor.meross_switch_01_power') | float(0) > 60 }}
+  - platform: bayesian
+    name: "washing_machine_ciclo_en_curso"
+    device_class: running
+    prior: 0.7
+    probability_threshold: 0.8
+    observations:
+      # Consumo alto sostenido (>60W durante >2min) → casi seguro en uso
+      - platform: template
+        value_template: >
+          {{ states('sensor.meross_switch_01_power') | float(0) > 60
+             and (as_timestamp(now()) - as_timestamp(states.sensor.meross_switch_01_power.last_changed, 0)) > 120 }}
+        prob_given_true: 0.98
+        prob_given_false: 0.02
+
+      # Consumo bajo durante >5min → probablemente acabada
+      - platform: template
+        value_template: >
+          {{ states('sensor.meross_switch_01_power') | float(0) < 10
+             and (as_timestamp(now()) - as_timestamp(states.sensor.meross_switch_01_power.last_changed, 0)) > 300 }}
+        prob_given_true: 0.2
+        prob_given_false: 0.8
+
+      # Consumo medio/fluctuante (10–60 W) → sigue trabajando
+      - platform: template
+        value_template: >
+          {% set p = states('sensor.meross_switch_01_power') | float(0) %}
+          {{ p >= 10 and p <= 60 }}
+        prob_given_true: 0.7
+        prob_given_false: 0.3
+
+automation:
+  # Sincronizar el input_boolean con el bayesiano evitando notificación falsa al reinicio
+  - alias: "Actualizar estado WashingMachine"
+    id: wm_actualizar_estado
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.washing_machine_ciclo_en_curso
+          - binary_sensor.washing_machine_consumo_alto
+    action:
+      - choose:
+          # Si cualquiera de los sensores pasa a ON → activamos el boolean
+          - conditions:
+              - condition: or
+                conditions:
+                  - condition: state
+                    entity_id: binary_sensor.washing_machine_ciclo_en_curso
+                    state: "on"
+                  - condition: state
+                    entity_id: binary_sensor.washing_machine_consumo_alto
+                    state: "on"
+            sequence:
+              - service: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.washingmachine_en_uso
+
+          # Si ambos sensores están OFF y el boolean estaba activo → notificar
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.washing_machine_ciclo_en_curso
+                state: "off"
+              - condition: state
+                entity_id: binary_sensor.washing_machine_consumo_alto
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.washingmachine_en_uso
+                state: "on"
+            sequence:
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.washingmachine_en_uso

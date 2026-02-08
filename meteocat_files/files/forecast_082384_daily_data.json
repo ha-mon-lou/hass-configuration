@@ -1,0 +1,168 @@
+{
+    "actualitzat": {
+        "dataUpdate": "2026-02-07T06:56:02.596618+01:00"
+    },
+    "codiMunicipi": "082384",
+    "dies": [
+        {
+            "data": "2026-02-07Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "14.6"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "5.3"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "40.9"
+                },
+                "estatCel": {
+                    "valor": 3
+                }
+            }
+        },
+        {
+            "data": "2026-02-08Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "12.5"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "4.6"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "65.2"
+                },
+                "estatCel": {
+                    "valor": 23
+                }
+            }
+        },
+        {
+            "data": "2026-02-09Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "14.4"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "4.9"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "26.1"
+                },
+                "estatCel": {
+                    "valor": 3
+                }
+            }
+        },
+        {
+            "data": "2026-02-10Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "16.4"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "6.3"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "27.3"
+                },
+                "estatCel": {
+                    "valor": 3
+                }
+            }
+        },
+        {
+            "data": "2026-02-11Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "18.3"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "8.1"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "13.6"
+                },
+                "estatCel": {
+                    "valor": 3
+                }
+            }
+        },
+        {
+            "data": "2026-02-12Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "16.7"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "6.9"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "17.9"
+                },
+                "estatCel": {
+                    "valor": 3
+                }
+            }
+        },
+        {
+            "data": "2026-02-13Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "16.6"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "6.2"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "12.0"
+                },
+                "estatCel": {
+                    "valor": 3
+                }
+            }
+        },
+        {
+            "data": "2026-02-14Z",
+            "variables": {
+                "tmax": {
+                    "unitat": "°C",
+                    "valor": "16.3"
+                },
+                "tmin": {
+                    "unitat": "°C",
+                    "valor": "6.6"
+                },
+                "precipitacio": {
+                    "unitat": "%",
+                    "valor": "21.7"
+                },
+                "estatCel": {
+                    "valor": 3
+                }
+            }
+        }
+    ]
+}

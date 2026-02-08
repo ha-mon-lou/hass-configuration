@@ -1,0 +1,19 @@
+secuencia_by_friendly_name:
+  alias: secuencia by friendly name
+  fields:
+    my_name:
+      description: "a fiendly name"
+    my_estado:
+      description: "turn_on/turn_off/toggle"
+  sequence:
+    - repeat:
+        for_each: >
+          {{ states.switch | selectattr('attributes.friendly_name', 'defined') 
+            | selectattr('attributes.friendly_name', 'search', my_name) 
+            | map(attribute='entity_id') | list }}
+        sequence:
+          - delay: 00:00:01
+          - action: switch.{{my_estado}}
+            target:
+              entity_id: "{{ repeat.item }}"
+  mode: single

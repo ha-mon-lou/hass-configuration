@@ -1,0 +1,46 @@
+- id: "ventiladores_por_calor_exterior"
+  alias: Enciende ventiladores si hace más calor fuera
+  description: Enciende los ventiladores si la temperatura exterior supera la interior + margen y hay alguien en casa
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.temperatura_interior
+        - input_number.nivel_sensacion_termica_ideal
+  condition:
+    - condition: template
+      value_template: >
+        {{ states('sensor.temperatura_interior') | float > (states('input_number.nivel_sensacion_termica_ideal') | float) }}
+    - condition: state
+      entity_id: person.ramon
+      state: "home"
+  action:
+    - choose:
+        - conditions:
+            - condition: time
+              after: "07:00:00"
+              before: "23:00:00"
+            - condition: state
+              entity_id: input_boolean.ventilador_despacho
+              state: "off"
+          sequence:
+            - service: script.selector_ventilador
+              data:
+                dispositivo: ventilador_despacho
+                valor: velocidad 1
+
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: time
+                  after: "23:00:00"
+                - condition: time
+                  before: "07:00:00"
+            - condition: state
+              entity_id: input_boolean.ventilador_habitacion
+              state: "off"
+          sequence:
+            - service: script.selector_ventilador
+              data:
+                dispositivo: ventilador_habitacion
+                valor: velocidad 1
+  mode: single

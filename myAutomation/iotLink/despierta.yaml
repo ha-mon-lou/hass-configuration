@@ -1,0 +1,13 @@
+- id: pc_wake_up
+  alias: "[PC] Se ha despertado"
+  trigger:
+    - platform: mqtt
+      topic: "iotlink/workgroup/pc-gaming/lwt"
+      payload: "ON"
+  condition: []
+  action:
+    - action: switch.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.enchufe_habitacion_socket_1

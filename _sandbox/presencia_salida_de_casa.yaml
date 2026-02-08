@@ -1,0 +1,49 @@
+#
+# Se enciende la luz del baño entre 9 y 11
+# Se abre y cierra la puerta casi inmediatamente (i.e. sin desayunar)
+# El ventilador, que estaba encendido, se apaga
+#
+binary_sensor:
+  - platform: bayesian
+    name: "salida_casa_detectada"
+    device_class: presence
+    prior: 0.4
+    probability_threshold: 0.9
+    observations:
+      # 1. Luz del baño se apaga en la mañana
+      - platform: template
+        value_template: >
+          {% set h = now().hour %}
+          {{ h >= 9 and h <= 11 and is_state('switch.zigbee_tuya_ts0012_01_right', 'off')
+             and (as_timestamp(now()) - as_timestamp(states.switch.zigbee_tuya_ts0012_01_right.last_changed, 0)) < 180 }}
+        prob_given_true: 0.8
+        prob_given_false: 0.2
+
+      # 2. Puerta abierta/cerrada en los últimos 2 min
+      - platform: template
+        value_template: >
+          {{ (as_timestamp(now()) - as_timestamp(states.lock.puerta_principal_2.last_changed, 0)) < 120 }}
+        prob_given_true: 0.9
+        prob_given_false: 0.1
+
+      # 3. Ventilador encendido al mismo tiempo
+      - platform: state
+        entity_id: switch.alias_antimosquitos
+        to_state: "on"
+        prob_given_true: 0.6
+        prob_given_false: 0.4
+
+automation:
+  - alias: "Apagar ventilador habitación al salir de casa"
+    id: apagar_ventilador_habitacion_salida_casa
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.salida_casa_detectada
+        to: "on"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.ventilador_habitacion_01_running
+      - service: script.notifica_telegram
+        data:
+          message: <b>PRSC</b> Salida de casa {{ state_attr('binary_sensor.salida_casa_detectada', 'probability') | float * 100 }} %

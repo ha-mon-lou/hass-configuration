@@ -1,0 +1,11 @@
+- platform: group
+  name: "Alias Frigorifico"
+  unique_id: "alias_frigorifico"
+  entities:
+    - switch.zigbee_nous_enchufe_02
+
+- platform: group
+  name: "Alias Lavavajillas"
+  unique_id: "alias_lavavajillas"
+  entities:
+    - switch.zigbee_nous_enchufe_03

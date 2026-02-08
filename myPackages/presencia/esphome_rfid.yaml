@@ -1,0 +1,32 @@
+# ============================================
+# Package completo ESP32 + RC522
+# ============================================
+
+input_text:
+  rfid_tag_last:
+    name: "Tag RFID last"
+    max: 50
+
+sensor:
+  - platform: template
+    sensors:
+      rfid_tag_actual:
+        friendly_name: "Tag RFID actual"
+        unique_id: rfid_tag_actual
+        value_template: "{{ states('input_text.rfid_tag_last') }}"
+
+automation:
+  - alias: "Guardar UID del tag RFID"
+    description: "Cada vez que se acerque un tag, se guarda el UID en input_text"
+    trigger:
+      - platform: state
+        entity_id: sensor.esp32_rfid_rfid_tag
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state not in ['unknown', 'unavailable', ''] }}"
+    action:
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.rfid_tag_last
+        data:
+          value: "{{ trigger.to_state.state }}"

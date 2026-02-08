@@ -1,0 +1,27 @@
+switch.alias_antimosquitos:
+  custom_etiquetas:
+    - ambiente
+switch.alias_pinguino:
+  custom_etiquetas:
+    - ventilacion
+
+switch.alias_shelly_habitacion:
+  custom_etiquetas:
+    - permanente
+
+switch.alias_storage_ac_panasonic:
+  custom_etiquetas:
+    - diurno
+
+switch.enchufe_doble_socket_1:
+  custom_etiquetas:
+    - nocturno
+    - cortesia
+
+switch.regleta_antela_socket_4_2:
+  custom_etiquetas:
+    - nocturno
+
+switch.enchufe_doble_socket_2:
+  custom_etiquetas:
+    - nocturno

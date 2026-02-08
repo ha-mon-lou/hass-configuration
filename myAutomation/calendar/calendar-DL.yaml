@@ -1,0 +1,17 @@
+- id: "1735560626804"
+  alias: Calendar DL
+  description: ""
+  triggers:
+    - trigger: calendar
+      entity_id: calendar.domotica
+      event: start
+      offset: -0:5:0
+  conditions: []
+  actions:
+    - device_id: 2e125cc8a76db2210a51672189f23b01
+      domain: mobile_app
+      type: notify
+      message:
+        Calendar {{ trigger.calendar_event.summary }} at {{trigger.calendar_event.start
+        }}
+  mode: single

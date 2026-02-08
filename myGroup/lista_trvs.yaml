@@ -1,0 +1,7 @@
+lista_trvs:
+  name: TRVs
+  entities:
+    - climate.zigbee_sonoff_trvzb_01
+    - climate.zigbee_sonoff_trvzb_02
+    - climate.zigbee_sonoff_trvzb_03
+    - climate.zigbee_sonoff_trvzb_04

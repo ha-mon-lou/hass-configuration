@@ -1,0 +1,13 @@
+- id: "boton_send_confort"
+  alias: Send Confort
+  description: ""
+  triggers:
+    - trigger: state
+      entity_id:
+        - input_button.send_confort
+  conditions: []
+  action:
+    - service: rest_command.send_to_influxdb
+      data:
+        value: "{{ states('input_number.nivel_confort_actual') | float }}"
+  mode: single

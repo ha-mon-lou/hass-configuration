@@ -1,0 +1,13 @@
+action: call-service
+service: floorplan.style_set
+service_data:
+  style: >
+    const temp = parseFloat(entity.state);
+    const min = 15, max = 30;
+    const clamped = Math.min(Math.max(temp, min), max);
+    const ratio = (clamped - min) / (max - min);
+    const r = Math.round(255 * ratio);
+    const g = Math.round(100 * (1 - ratio));
+    const b = Math.round(255 * (1 - ratio));
+    const alpha = 0.5;
+    return `fill: rgba(${r}, ${g}, ${b}, ${alpha}); transition: fill 1s ease;`;

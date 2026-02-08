@@ -1,0 +1,18 @@
+- id: "1735397441465"
+  alias: myBOx pause enciende luz 1
+  description: ""
+  triggers:
+    - device_id: 4212ed74edbdc7e8bd7b75f3ae1a9c4c
+      domain: media_player
+      entity_id: e97f30b9edecdd38711ec6b28781147b
+      type: idle
+      trigger: device
+  conditions:
+    - condition: sun
+      after: sunset
+  actions:
+    - type: turn_on
+      device_id: fd3d372290728ff8c9438f0d40b84e53
+      entity_id: 6eba2032971432a1ed86d5363bbd2770
+      domain: switch
+  mode: single

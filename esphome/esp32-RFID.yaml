@@ -1,0 +1,77 @@
+#
+# Lector RFID RC522 con ESP32 y ESPHome
+# 07/02/2026
+#
+# SS - GPIO 05
+# SCK - GPIO 18
+# MOSI - GPIO 23
+# MISO - GPIO 19
+# Reset - GPIO 27
+#
+# python -m esphome run esp32-RFID.yaml
+
+esphome:
+  name: esp32-rfid
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+  level: DEBUG
+
+# Enable Home Assistant API
+api:
+
+ota:
+  platform: esphome
+  password: "d3cb6c7c96aa8ecc7f90f923f8124473"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp32-Rfid Fallback Hotspot"
+    password: "oOfYZN4HA2cH"
+
+captive_portal:
+
+output:
+  - platform: gpio
+    pin: GPIO2
+    id: led
+
+spi:
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+  miso_pin: GPIO19
+
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 1100ms
+    window: 550ms
+
+rc522_spi:
+  cs_pin: GPIO5
+  reset_pin: GPIO27
+  update_interval: 2s
+  on_tag:
+    then:
+      - homeassistant.event:
+          event: esphome.tag_scanned
+          data:
+            id: !lambda 'return x;'
+      - output.turn_on: led
+      - delay: 500ms
+      - output.turn_off: led
+      - lambda: |-
+          id(rfid_string_sensor).publish_state(x.c_str());
+
+
+text_sensor:
+  - platform: template
+    name: "RFID Tag"
+    id: rfid_string_sensor

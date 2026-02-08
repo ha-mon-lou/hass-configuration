@@ -1,0 +1,52 @@
+climate:
+  - platform: generic_thermostat
+    name: "Termostato virtual"
+    unique_id: "termostato_virtual"
+    heater: switch.alias_caldera
+    target_sensor: sensor.confort_termico
+    min_temp: 0
+    max_temp: 24
+    ac_mode: false
+    cold_tolerance: 0.5
+    hot_tolerance: 0.5
+    precision: 0.1
+    target_temp_step: 0.1
+    # Configuración para válvulas termostáticas
+    valve_entities:
+      - climate.valvula_salon
+      - climate.valvula_habitacion
+
+automation:
+  # Automatización para sincronizar válvulas con la caldera
+  - alias: "Sincronizar válvulas con caldera"
+    trigger:
+      - platform: state
+        entity_id: switch.alias_caldera
+    action:
+      - choose:
+          # Cuando la caldera se encienda
+          - conditions:
+              - condition: state
+                entity_id: switch.alias_caldera
+                state: "on"
+            sequence:
+              - service: climate.set_hvac_mode
+                target:
+                  entity_id:
+                    - climate.valvula_salon
+                    - climate.valvula_habitacion
+                data:
+                  hvac_mode: "heat"
+          # Cuando la caldera se apague
+          - conditions:
+              - condition: state
+                entity_id: switch.alias_caldera
+                state: "off"
+            sequence:
+              - service: climate.set_hvac_mode
+                target:
+                  entity_id:
+                    - climate.valvula_salon
+                    - climate.valvula_habitacion
+                data:
+                  hvac_mode: "off"

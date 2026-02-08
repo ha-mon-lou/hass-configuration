@@ -1,0 +1,25 @@
+- id: "ventiladores_apagar"
+  alias: ventiladores apagar
+  triggers:
+    - platform: conversation
+      command: apaga todos los ventiladores
+    - trigger: state
+      entity_id:
+        - input_button.ventiladores_off
+  conditions: []
+  actions:
+    - sequence:
+        - service: script.selector_ventilador
+          data:
+            dispositivo: ventilador_habitacion
+            desde: apagar_Script
+            valor: Apagar
+
+        - delay: 00:00:01
+
+        - service: script.selector_ventilador
+          data:
+            dispositivo: ventilador_despacho
+            desde: apagar_Script
+            valor: Apagar
+  mode: single

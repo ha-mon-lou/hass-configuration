@@ -1,0 +1,151 @@
+blueprint:
+  name: "\U0001F6D2Improved Shopping List! + Bring!"
+  description: This blueprint allows you to sync Bring! Shopping List with Improved
+    Shopping List!. Full guide and more functionalities in https://aguacatec.es/domotizar-tu-lista-de-la-compra-2-0/
+  source_url: https://gist.github.com/TitoTB/c82b713c40a6275e9e9f960affe1bf48
+  domain: automation
+  input:
+    bring_list:
+      name: Bring! Shopping ToDo list
+      description: Select your Bring! Shopping ToDo entity
+      selector:
+        entity:
+          domain:
+          - todo
+          multiple: false
+          reorder: false
+trigger:
+- platform: event
+  event_type: shopping_list_updated
+  event_data:
+    action: add
+  alias: Nuevo producto en la lista de la compra
+  id: Add item shopping list
+- platform: event
+  event_type: shopping_list_updated
+  event_data:
+    action: update
+  alias: Producto actualizado en la lista de la compra
+  id: Update item shopping list
+- platform: state
+  entity_id:
+  - !input bring_list
+  alias: Lista Bring Actualizada
+  id: Update Bring List
+condition: []
+action:
+- variables:
+    bring_list: !input bring_list
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - Add item shopping list
+    - condition: not
+      conditions:
+      - condition: template
+        value_template: '{{ trigger.event.data.item.name == "" }}
+
+          '
+    sequence:
+    - service: todo.add_item
+      target:
+        entity_id: !input bring_list
+      data:
+        item: '{{ trigger.event.data.item.name }}'
+    - if:
+      - condition: template
+        value_template: '{{ trigger.event.data.item.name in states(''sensor.bought_items_list'')
+          }}'
+      then:
+      - service: shopping_list.remove_item
+        data:
+          name: '{{ trigger.event.data.item.name }}'
+  - conditions:
+    - condition: trigger
+      id:
+      - Update item shopping list
+    - condition: not
+      conditions:
+      - condition: template
+        value_template: '{{ trigger.event.data.item.name == "" }}
+
+          '
+    sequence:
+    - if:
+      - condition: template
+        value_template: '{{ trigger.event.data.item.complete }}'
+      then:
+      - service: todo.update_item
+        target:
+          entity_id: !input bring_list
+        data:
+          item: '{{ trigger.event.data.item.name }}'
+          status: completed
+      else:
+      - service: todo.add_item
+        target:
+          entity_id: !input bring_list
+        data:
+          item: '{{ trigger.event.data.item.name }}'
+  - conditions:
+    - condition: trigger
+      id:
+      - Update Bring List
+    sequence:
+    - service: todo.get_items
+      target:
+        entity_id: !input bring_list
+      data:
+        status: completed
+      response_variable: bring_completed
+    - variables:
+        items_to_complete: "{%- for item in bring_completed[bring_list]['items'] -%}\n
+          \ {%- if item.summary in states('sensor.items_in_shopping_list_list') -%}\n
+          \   -{{ item.summary }}\n  {%- endif -%}\n{%- endfor -%}\n"
+    - service: todo.get_items
+      target:
+        entity_id: !input bring_list
+      data:
+        status: needs_action
+      response_variable: bring_incompleted
+    - variables:
+        items_to_complete: "{%- for item in bring_completed[bring_list]['items'] -%}\n
+          \ {%- if item.summary in states('sensor.items_in_shopping_list_list') -%}\n
+          \   -{{ item.summary }}\n  {%- endif -%}\n{%- endfor -%}\n"
+        items_to_buy: "{%- for item in bring_incompleted[bring_list]['items'] -%}\n
+          \ {%- if not item.summary in states('sensor.items_in_shopping_list_list')
+          -%}\n    -{{ item.summary }}\n  {%- endif -%}\n{%- endfor -%}\n"
+    - repeat:
+        for_each: '{{ (items_to_complete).split("-") | list }}
+
+          '
+        sequence:
+        - if:
+          - condition: not
+            conditions:
+            - condition: template
+              value_template: '{{ repeat.item == "" }}
+
+                '
+          then:
+          - service: shopping_list.complete_item
+            data:
+              name: '{{ repeat.item }}'
+    - repeat:
+        for_each: '{{ (items_to_buy).split("-") | list }}
+
+          '
+        sequence:
+        - if:
+          - condition: not
+            conditions:
+            - condition: template
+              value_template: '{{ repeat.item == "" }}
+
+                '
+          then:
+          - service: shopping_list.add_item
+            data:
+              name: '{{ repeat.item }}'
+mode: single

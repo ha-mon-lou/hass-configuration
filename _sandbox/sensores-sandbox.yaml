@@ -1,0 +1,59 @@
+- platform: template
+  sensors:
+
+    custom_temperatura_2oo3:
+      friendly_name: "Temperatura 2oo3"
+      device_class: temperature
+      unit_of_measurement: '°C'
+      unique_id: "custom_temperatura_2oo3"
+      value_template: "
+      {# https://www.pacienciadigital.com/redundancia-sensores-home-assistant/ #}
+      {% set sensor1 = 'sensor.aemet_temperature' %}
+      {% set sensor2 = 'sensor.aemet_temperature_feeling' %}
+      {% set sensor3 = 'sensor.st_quirze_del_v_vallsuau_barcelona_temperature' %}
+      {% set timeout=600 %} {# tiempo límite en segundos #}
+      {# establecemos código -99 si no es un número #}
+      {% set sensor1_value = states(sensor1) |float |default(-99,true) %}
+      {% set sensor2_value = states(sensor2) |float |default(-99,true) %}
+      {% set sensor3_value = states(sensor3) |float |default(-99,true) %}
+      {% set sensor1_valid=(sensor1_value!=-99) %}
+      {% set sensor2_valid=(sensor1_value!=-99) %}
+      {% set sensor3_valid=(sensor1_value!=-99)  %}
+      {# 3 instrumentos funcionando, calculamos mediana #}
+      {% if sensor1_valid and sensor2_valid and sensor3_valid %}
+          {{ max(min(sensor1_value,sensor2_value), min(max(sensor1_value,sensor2_value),sensor3_value)) }}
+      
+      {# 2 instrumentos funcionando, calculamos media
+      {% elif not sensor1_valid and sensor2_valid and sensor3_valid %}
+          {{ (sensor2_value+sensor3_value)/2 }}
+      {% elif sensor1_valid and not sensor2_valid and sensor3_valid %}
+          {{ (sensor1_value+sensor3_value)/2 }}
+      {% elif sensor1_valid and sensor2_valid and not sensor3_valid %}
+          {{ (sensor1_value+sensor2_value)/2 }}
+      
+      {# 1 sensor funcionando, elegimos sensor operativo #}
+      {% elif sensor1_valid and not sensor2_valid and not sensor3_valid %}
+          {{ sensor1_value }}
+      {% elif not sensor1_valid and sensor2_valid and not sensor3_valid %}
+          {{ sensor2_value }}
+      {% elif not sensor1_valid and not sensor2_valid and sensor3_valid %}
+          {{ sensor3_value }}
+      
+      {# 3 instrumentos fallando #}
+      {% else %}
+          'Fallo'        
+      {% endif %}    
+      "
+      icon_template: mdi:calculator
+
+    ferrocarriles_lat:  
+      unique_id: "ferrocarriles latitude"
+      value_template: "{{ state_attr('sensor.fgc_sqv','lat') }}"
+      unit_of_measurement: "°"
+
+    ferrocarriles_lon:  
+      unique_id: "ferrocarriles longitude"
+      value_template: "{{ state_attr('sensor.fgc_sqv','coordenadas.lon') }}"
+      unit_of_measurement: "°"
+
+

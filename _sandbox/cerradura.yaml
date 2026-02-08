@@ -1,0 +1,95 @@
+input_boolean:
+  bloquear_puerta_principal:
+    name: "Bloquear puerta principal"
+    icon: mdi:lock
+
+  desbloquear_puerta_principal:
+    name: "Desbloquear puerta principal"
+    icon: mdi:lock-open
+
+  abrir_puerta_principal:
+    name: "Abrir puerta principal"
+    icon: mdi:door-open
+
+automation:
+  - alias: "Bloquear puerta principal con switch"
+    id: bloquear_puerta_principal_con_switch
+    trigger:
+      - platform: state
+        entity_id: input_boolean.bloquear_puerta_principal
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: lock.puerta_principal_2
+        state: "unlocked"
+    action:
+      - service: lock.lock
+        target:
+          entity_id: lock.puerta_principal_2
+      - delay: "00:00:01"
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.bloquear_puerta_principal
+
+  - alias: "Desbloquear puerta principal con switch"
+    id: desbloquear_puerta_principal_con_switch
+    trigger:
+      - platform: state
+        entity_id: input_boolean.desbloquear_puerta_principal
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: lock.puerta_principal_2
+        state: "locked"
+    action:
+      - service: lock.unlock
+        target:
+          entity_id: lock.puerta_principal_2
+      - delay: "00:00:01"
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.desbloquear_puerta_principal
+
+  - alias: "Abrir puerta principal con switch"
+    id: abrir_puerta_principal_con_switch
+    trigger:
+      - platform: state
+        entity_id: input_boolean.abrir_puerta_principal
+        to: "on"
+    condition:
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: lock.puerta_principal_2
+            state: "unavailable"
+    action:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: lock.puerta_principal_2
+                state: "locked"
+            sequence:
+              - service: lock.unlock
+                target:
+                  entity_id: lock.puerta_principal_2
+              - delay: "00:00:02"
+      - service: lock.open
+        target:
+          entity_id: lock.puerta_principal_2
+      - delay: "00:00:01"
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.abrir_puerta_principal
+      - delay: "00:00:30"
+      - condition: state
+        entity_id: sun.sun
+        state: "below_horizon"
+      - condition: state
+        entity_id: binary_sensor.puerta_principal_door_2
+        state: "off"
+      - condition: state
+        entity_id: lock.puerta_principal_2
+        state: "unlocked"
+      - service: lock.lock
+        target:
+          entity_id: lock.puerta_principal_2

@@ -1,0 +1,8 @@
+{% macro calculate_body_fat(weight, height_cm, birth_year, gender, impedance) %}
+  {% set height_m = height_cm | float / 100 %}
+  {% set age = now().year - (birth_year | int) %}
+  {% set bmi = weight | float / (height_m ** 2) %}
+  {% set base = (1.2 * bmi) + (0.23 * age) - (10.8 if gender == 'male' else 0) - 5.4 %}
+  {% set imp_adj = 0.2 * (impedance | float / height_cm | float) %}
+  {{ (base + imp_adj) | round(2) }}
+{% endmacro %}

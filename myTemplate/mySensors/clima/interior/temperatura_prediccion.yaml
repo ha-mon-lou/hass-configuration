@@ -1,0 +1,8 @@
+- sensor:
+    - name: "T. Prediccion IA"
+      unique_id: "temperatura_prediccion_ia"
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: >
+        {{ state_attr('sensor.influxdb_output', 'temperature') }}
+      icon: mdi:thermometer

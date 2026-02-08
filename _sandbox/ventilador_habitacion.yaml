@@ -1,0 +1,37 @@
+- id: "ventilador_habitacion_speed_1"
+  alias: ventilador habitacion speed 1
+  triggers:
+    - platform: conversation
+      command: enciende ventilador habitacion
+    - trigger: state
+      entity_id: input_boolean.ventilador_habitacion
+      to: "on"
+
+  conditions: []
+  actions:
+    - sequence:
+        - action: script.selector_ventilador
+          data:
+            dispositivo: "ventilador_habitacion"
+            valor: "velocidad 1"
+  mode: single
+
+- id: "ventilador_habitacion_apagar"
+  alias: ventilador habitacion apagar
+  triggers:
+    - platform: conversation
+      command: apaga ventilador habitacion
+    - trigger: state
+      entity_id: input_button.ventilador_habitacion_off
+    - trigger: state
+      entity_id: input_boolean.ventilador_habitacion
+      to: "off"
+
+  conditions: []
+  actions:
+    - sequence:
+        - action: script.selector_ventilador
+          data:
+            dispositivo: "ventilador_habitacion"
+            valor: "Apagar"
+  mode: single

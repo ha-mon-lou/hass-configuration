@@ -1,0 +1,577 @@
+views:
+  - type: sections
+    max_columns: 4
+    title: Weather
+    path: meteoclimatic
+    icon: ""
+    sections:
+      - type: grid
+        cards:
+          - type: custom:clock-weather-card
+            entity: weather.meteocat_xf_weather_sant_quirze_del_valles
+          - type: tile
+            entity: weather.forecast_home
+            features_position: bottom
+            vertical: false
+          - type: tile
+            entity: sensor.home_sensacion_bochorno
+            name: Bochorno
+            features_position: bottom
+            vertical: false
+          - type: tile
+            features_position: bottom
+            vertical: false
+            entity: weather.meteocat_xf_weather_sant_quirze_del_valles
+          - type: tile
+            entity: weather.forecast_work
+            features_position: bottom
+            vertical: false
+          - type: vertical-stack
+            cards:
+              - type: custom:clock-weather-card
+                entity: weather.meteocat_xf_weather_sant_quirze_del_valles
+                sun_entity: sun.sun
+                temperature_sensor: sensor.meteocat_xf_sant_quirze_del_valles_temperature
+                weather_icon_type: line
+                animated_icon: true
+                forecast_rows: 5
+                time_pattern: HH:mm
+                time_format: 24
+                date_pattern: ccc, d.MM.yy
+                hide_today_section: false
+                hide_forecast_section: false
+                hide_clock: true
+                hide_date: true
+                hourly_forecast: true
+                use_browser_time: false
+              - type: custom:horizon-card
+                moon: true
+                refresh_period: 60
+                fields: null
+                sunrise: true
+                sunset: true
+                dawn: true
+                noon: true
+                dusk: true
+                azimuth: true
+                sun_azimuth: true
+                moon_azimuth: true
+                elevation: true
+                sun_elevation: true
+                moon_elevation: true
+                moonrise: true
+                moonset: true
+                moon_phase: true
+                use_browser_time: false
+            title: St Quirze
+          - type: vertical-stack
+            cards:
+              - type: custom:mini-graph-card
+                name: 🌡 Prevision lluvia
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.multi_forecast_home_precipitation_1h
+                    name: 1h
+                  - entity: sensor.multi_forecast_home_precipitation_2h
+                    name: 2h
+                  - entity: sensor.multi_forecast_home_precipitation_4h
+                    name: 4h
+                  - entity: sensor.multi_forecast_home_precipitation_8h
+                    name: 8h
+                  - entity: sensor.multi_forecast_home_precipitation_12h
+                    name: 12h
+                hours_to_show: 48
+                points_per_hour: 1
+                line_width: 3
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+              - type: custom:mini-graph-card
+                name: 🌡 Prevision Temperatura 12h
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.multi_forecast_home_next_hour_temperature
+                    name: next
+                  - entity: sensor.temperatura_exterior
+                    name: ext
+                  - entity: sensor.multi_forecast_home_max_temp_12h
+                    name: max
+                  - entity: sensor.multi_forecast_home_min_temp_12h
+                    name: min
+                hours_to_show: 48
+                points_per_hour: 1
+                line_width: 3
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+              - type: custom:mini-graph-card
+                name: 🌡 Prevision Humedad 12h
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.multi_forecast_home_next_hour_humidity
+                    name: next
+                  - entity: sensor.humedad_exterior
+                    name: ext
+                  - entity: sensor.multi_forecast_home_max_humidity_12h
+                    name: max
+                  - entity: sensor.multi_forecast_home_min_humidity_12h
+                    name: min
+                hours_to_show: 48
+                points_per_hour: 1
+                line_width: 3
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+              - type: custom:mini-graph-card
+                name: 🌡 Prevision Temperatura 24h
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.multi_forecast_home_next_hour_temperature
+                    name: next
+                  - entity: sensor.temperatura_exterior
+                    name: ext
+                  - entity: sensor.multi_forecast_home_max_temp_24h
+                    name: max
+                  - entity: sensor.multi_forecast_home_min_temp_24h
+                    name: min
+                hours_to_show: 48
+                points_per_hour: 1
+                line_width: 3
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+              - type: custom:mini-graph-card
+                name: 🌡 Prevision Humedad 24h
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.multi_forecast_home_next_hour_humidity
+                    name: next
+                  - entity: sensor.humedad_exterior
+                    name: ext
+                  - entity: sensor.multi_forecast_home_max_humidity_24h
+                    name: max
+                  - entity: sensor.multi_forecast_home_min_humidity_24h
+                    name: min
+                hours_to_show: 48
+                points_per_hour: 1
+                line_width: 3
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Temperaturas próximas horas
+                filter:
+                  include:
+                    - options: {}
+                      entity_id: sensor.multi_forecast_home*_temperature*
+                  exclude:
+                    - options: {}
+                      state: unknown
+                    - options: {}
+                      state: unavailable
+                sort:
+                  method: name
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Humedad próximas horas
+                filter:
+                  include:
+                    - entity_id: sensor.multi_forecast_home*_humidity*
+                  exclude:
+                    - state: unknown
+                    - state: unavailable
+                sort:
+                  method: name
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Viento próximas horas
+                filter:
+                  include:
+                    - entity_id: sensor.multi_forecast_home*_wind*
+                  exclude:
+                    - state: unknown
+                    - state: unavailable
+                sort:
+                  method: name
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Precipitación próximas horas
+                filter:
+                  include:
+                    - entity_id: sensor.multi_forecast_home*_precipitation*
+                      options:
+                        state_filter:
+                          operator: ">"
+                          value: "0"
+                  exclude:
+                    - state: unknown
+                    - state: unavailable
+                    - state: 0.0 mm
+                sort:
+                  method: name
+          - type: vertical-stack
+            cards:
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Temperaturas work próximas horas
+                filter:
+                  include:
+                    - options: {}
+                      entity_id: sensor.multi_forecast_work*_temperature*
+                  exclude:
+                    - options: {}
+                      state: unknown
+                    - options: {}
+                      state: unavailable
+                sort:
+                  method: name
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Humedad work próximas horas
+                filter:
+                  include:
+                    - entity_id: sensor.multi_forecast_work*_humidity*
+                  exclude:
+                    - state: unknown
+                    - state: unavailable
+                sort:
+                  method: name
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Viento work próximas horas
+                filter:
+                  include:
+                    - entity_id: sensor.multi_forecast_work*_wind*
+                  exclude:
+                    - state: unknown
+                    - state: unavailable
+                sort:
+                  method: name
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Precipitación work próximas horas
+                filter:
+                  include:
+                    - entity_id: sensor.multi_forecast_work*_precipitation*
+                      options:
+                        state_filter:
+                          operator: ">"
+                          value: "0"
+                  exclude:
+                    - state: unknown
+                    - state: unavailable
+                    - state: 0.0 mm
+      - type: grid
+        cards:
+          - type: entities
+            entities:
+              - entity: input_button.get_forecasts
+              - entity: input_button.get_trip_forecasts
+          - type: entities
+            title: Umbrales Forecast
+            show_header_toggle: false
+            entities:
+              - entity: input_boolean.forecast_alert_active
+              - entity: input_button.reset_luces_alerta
+              - entity: input_number.forecast_threshold_wind_speed
+                name: Viento fuerte (km/h)
+              - entity: input_number.forecast_threshold_precipitation
+                name: Precipitación intensa (mm/h)
+              - entity: input_number.forecast_threshold_temperature_low
+                name: Temperatura baja (°C)
+              - entity: input_number.forecast_threshold_temperature_high
+                name: Temperatura alta (°C)
+              - entity: input_number.forecast_threshold_humidity_high
+                name: Humedad alta (%)
+          - type: vertical-stack
+            cards:
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Weather Home current
+                filter:
+                  include:
+                    - options: {}
+                      entity_id: sensor.weather_home*
+                  exclude:
+                    - options: {}
+                      state: unknown
+                    - options: {}
+                      state: unavailable
+                sort:
+                  method: name
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  title: Weather Work current
+                filter:
+                  include:
+                    - options: {}
+                      entity_id: sensor.weather_work*
+                  exclude:
+                    - options: {}
+                      state: unknown
+                    - options: {}
+                      state: unavailable
+                sort:
+                  method: name
+    cards: []
+  - type: sections
+    max_columns: 4
+    title: Calendar
+    path: calendar
+    sections:
+      - type: grid
+        cards:
+          - type: custom:atomic-calendar-revive
+            entities:
+              - entity: calendar.domotica
+                name: My Calendar
+                color: red
+                allowlist: (Comida)|(despertador)
+              - entity: calendar.domotica
+                color: yellow
+                allowlist: (cena)
+  - type: sections
+    max_columns: 4
+    title: Viento
+    path: viento
+    icon: mdi:weather-windy
+    sections:
+      - type: grid
+        cards:
+          - type: custom:mushroom-template-card
+            primary: |
+              {{ states('sensor.multi_forecast_home_wind_speed_1h') }} km/h
+            secondary: >
+              Dirección: {{ states('sensor.multi_forecast_home_wind_bearing_1h')
+              }}°
+            icon: mdi:weather-windy
+            entity: sensor.multi_forecast_home_wind_speed_1h
+            color: blue
+            vertical: true
+            features_position: bottom
+          - type: custom:windrose-card
+            title: Home wind (12h)
+            hours_to_show: 12
+            wind_direction_entity:
+              entity: sensor.multi_forecast_home_wind_bearing_1h
+            windspeed_entities:
+              - entity: sensor.multi_forecast_home_wind_speed_1h
+            cardinal_directions:
+              - "N"
+              - NE
+              - E
+              - SE
+              - S
+              - SW
+              - W
+              - NW
+            show_average: true
+            show_extrema: true
+      - type: grid
+        cards:
+          - type: custom:mushroom-template-card
+            primary: |
+              {{ states('sensor.multi_forecast_work_wind_speed_1h') }} km/h
+            secondary: >
+              Dirección: {{ states('sensor.multi_forecast_work_wind_bearing_1h')
+              }}°
+            icon: mdi:weather-windy
+            entity: sensor.multi_forecast_work_wind_speed_1h
+            color: blue
+            vertical: true
+            features_position: bottom
+          - type: custom:windrose-card
+            title: Work wind (12h)
+            hours_to_show: 12
+            wind_direction_entity:
+              entity: sensor.multi_forecast_work_wind_bearing_1h
+            windspeed_entities:
+              - entity: sensor.multi_forecast_work_wind_speed_1h
+            cardinal_directions:
+              - "N"
+              - NE
+              - E
+              - SE
+              - S
+              - SW
+              - W
+              - NW
+            show_average: true
+            show_extrema: true
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:mini-graph-card
+                name: 🌡 wind speed
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.multi_forecast_home_wind_speed_1h
+                    name: home
+                  - entity: sensor.multi_forecast_work_wind_speed_1h
+                    name: work
+                hours_to_show: 48
+                points_per_hour: 1
+                line_width: 3
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+              - type: custom:mini-graph-card
+                name: 🌡 wind bearing
+                icon: mdi:thermometer
+                entities:
+                  - entity: sensor.multi_forecast_home_wind_bearing_1h
+                    name: home
+                  - entity: sensor.multi_forecast_work_wind_bearing_1h
+                    name: work
+                hours_to_show: 48
+                points_per_hour: 1
+                line_width: 3
+                show:
+                  extrema: false
+                  average: false
+                  labels: false
+  - type: sections
+    max_columns: 4
+    title: imagenes
+    path: imagenes
+    sections:
+      - type: grid
+        cards:
+          - type: picture-entity
+            entity: image.aemet_weather_radar
+            show_name: false
+            show_state: false
+  - type: sections
+    max_columns: 4
+    title: MeteoCat
+    path: meteocat
+    sections:
+      - type: grid
+        cards:
+          - show_current: true
+            show_forecast: true
+            type: weather-forecast
+            entity: weather.home
+            forecast_type: hourly
+            forecast_slots: 6
+          - show_current: true
+            show_forecast: true
+            type: weather-forecast
+            entity: weather.meteocat_xf_weather_sant_quirze_del_valles
+            forecast_type: hourly
+            forecast_slots: 6
+          - show_current: true
+            show_forecast: true
+            type: weather-forecast
+            entity: weather.forecast_home
+            forecast_type: hourly
+            forecast_slots: 6
+          - show_current: true
+            show_forecast: false
+            type: weather-forecast
+            entity: weather.st_quirze_del_v_vallsuau_barcelona
+            secondary_info_attribute: humidity
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-title-card
+                title: Alertas Meteocat
+              - type: custom:auto-entities
+                show_empty: false
+                card:
+                  type: entities
+                  title: Alertas Meteocat SQV
+                filter:
+                  include:
+                    - options: {}
+                      entity_id: sensor.meteocat_xf_*_alert*
+                  exclude:
+                    - options: {}
+                      state: unknown
+                    - options: {}
+                      state: unavailable
+                    - options: {}
+                      state: "0"
+                    - options: {}
+                      state: closed
+                    - options: {}
+                      state: updated
+                sort:
+                  method: name
+              - type: custom:auto-entities
+                show_empty: false
+                card:
+                  type: entities
+                  title: Alertas Meteocat BCN
+                filter:
+                  include:
+                    - options: {}
+                      entity_id: sensor.meteocat_x4_*_alert*
+                  exclude:
+                    - options: {}
+                      state: unknown
+                    - options: {}
+                      state: unavailable
+                    - options: {}
+                      state: "0"
+                    - options: {}
+                      state: closed
+                    - options: {}
+                      state: updated
+                sort:
+                  method: name
+      - type: grid
+        cards:
+          - show_current: true
+            show_forecast: true
+            type: weather-forecast
+            entity: weather.aemet_work
+            forecast_type: hourly
+            forecast_slots: 6
+          - show_current: true
+            show_forecast: true
+            type: weather-forecast
+            entity: weather.meteocat_x4_bcn_weather_barcelona
+            forecast_type: hourly
+            forecast_slots: 6
+          - show_current: true
+            show_forecast: true
+            type: weather-forecast
+            entity: weather.forecast_work
+            forecast_type: hourly
+            forecast_slots: 6
+    badges:
+      - type: entity
+        show_name: false
+        show_state: true
+        show_icon: true
+        entity: sensor.temperatura_exterior
+  - type: masonry
+    path: mc-ginys
+    title: mc-ginys
+    cards:
+      - type: iframe
+        url: >-
+          https://static-m.meteo.cat/ginys/municipal72h?location=082384&language=ca&color=2c3e50&tempFormat=ºC&windSpeedFormat=km/h&mainChart=estCel&secondaryChart=true&target=_blank
+        aspect_ratio: 100%

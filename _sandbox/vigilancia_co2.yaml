@@ -1,0 +1,137 @@
+- id: "vigilancia_ventilador_por_co2_max"
+  alias: "Control de ventilador por CO2 max con scheduler"
+  trigger:
+    # Cuando el CO₂ supere el umbral
+    - platform: numeric_state
+      entity_id: sensor.zigbee_heiman_hs3aq_01_co2
+      above: 1000
+      for:
+        minutes: 2
+
+    # Cada 5 minutos verifica el estado
+    - platform: time_pattern
+      minutes: "/4"
+
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.alerta_CO2
+
+  mode: single
+
+
+- id: "vigilancia_ventilador_por_co2_min"
+  alias: "Control de ventilador por CO2 min con scheduler"
+  trigger:
+    # Cuando el CO₂ baje del umbral
+    - platform: numeric_state
+      entity_id: sensor.zigbee_heiman_hs3aq_01_co2
+      below: 750
+      for:
+        minutes: 2
+
+    # Cada 5 minutos verifica el estado
+    - platform: time_pattern
+      minutes: "/5"
+
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.alias_pinguino
+    - service: switch.turn_off
+      target:
+        entity_id: switch.zigbee_nous_enchufe_01
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.alerta_CO2
+  mode: single
+
+
+
+- id: alerta_co2_activada
+  alias: Alerta CO2 activada
+  trigger:
+    - platform: state
+      entity_id: input_boolean.alerta_co2
+      to: 'on'
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.alias_pinguino
+    - service: switch.turn_on
+      target:
+        entity_id: switch.zigbee_nous_enchufe_01
+    mode: single
+
+
+- id: alerta_co2_desactivada
+  alias: Alerta CO2 activada
+  trigger:
+    - platform: state
+      entity_id: input_boolean.alerta_co2
+      to: 'off'
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.alias_pinguino
+    - service: switch.turn_off
+      target:
+        entity_id: switch.zigbee_nous_enchufe_01
+    mode: single
+
+- id: "vigilancia_ventilador_por_co2"
+  alias: "Control de ventilador por CO2 con scheduler"
+  trigger:
+    # Cuando el CO₂ supere el umbral
+    - platform: numeric_state
+      entity_id: sensor.zigbee_heiman_hs3aq_01_co2
+      above: 1000
+      for:
+        minutes: 2
+
+    # Cuando el CO₂ baje del umbral
+    - platform: numeric_state
+      entity_id: sensor.zigbee_heiman_hs3aq_01_co2
+      below: 750
+      for:
+        minutes: 2
+
+    # Cada 5 minutos verifica el estado
+    - platform: time_pattern
+      minutes: "/4"
+
+  action:
+    - choose:
+        # Si el CO₂ está alto, enciende el ventilador
+        - conditions:
+            - condition: numeric_state
+              entity_id: sensor.zigbee_heiman_hs3aq_01_co2
+              above: 1000
+          sequence:
+            - service: switch.turn_on
+              target:
+                entity_id: switch.alias_pinguino
+            - service: switch.turn_on
+              target:
+                entity_id: switch.zigbee_nous_enchufe_01
+            - service: input_boolean.turn_on
+              target:
+                entity_id: input_boolean.alerta_CO2
+
+        # Si el CO₂ está bajo, apaga el ventilador
+        - conditions:
+            - condition: numeric_state
+              entity_id: sensor.zigbee_heiman_hs3aq_01_co2
+              below: 750
+          sequence:
+            - service: switch.turn_off
+              target:
+                entity_id: switch.alias_pinguino
+            - service: switch.turn_off
+              target:
+                entity_id: switch.zigbee_nous_enchufe_01
+            - service: input_boolean.turn_off
+              target:
+                entity_id: input_boolean.alerta_CO2
+
+  mode: single

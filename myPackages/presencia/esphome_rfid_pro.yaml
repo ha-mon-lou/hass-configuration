@@ -28,7 +28,6 @@ sensor:
         unique_id: rfid_persona_actual
         value_template: "{{ states('input_select.rfid_persona') }}"
 
-# SCRIPT REUTILIZABLE - ¡El corazón del sistema!
 script:
   lookup_rfid_persona:
     alias: "🔍 Buscar persona por RFID"

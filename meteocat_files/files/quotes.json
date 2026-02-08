@@ -1,6 +1,6 @@
 {
     "actualitzat": {
-        "dataUpdate": "2026-02-08T09:36:14.633808+01:00"
+        "dataUpdate": "2026-02-08T13:36:15.642400+01:00"
     },
     "client": {
         "nom": "918 Ramon Loureiro Alonso"
@@ -38,8 +38,8 @@
             "nom": "Quota",
             "periode": "Mensual",
             "maxConsultes": 300,
-            "consultesRestants": 255,
-            "consultesRealitzades": 45
+            "consultesRestants": 254,
+            "consultesRealitzades": 46
         }
     ]
 }

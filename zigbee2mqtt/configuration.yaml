@@ -117,5 +117,15 @@ devices:
   '0xa4c138b8c5468a38':
     friendly_name: zigbee_tuya_TS0012_01
     description: LED ATOMANT Interruptor de Cristal ZigBee 3.0, 2 Vias
+  '0x08fd52fffef5e553':
+    friendly_name: ikea_tradfri_led_01
+  '0x00be44fffe6f0d13':
+    friendly_name: ikea_tradfri_led_E14_01
+  '0x00be44fffeac11d4':
+    friendly_name: ikea_tradfri_led_E14_03
+  '0x64028ffffecf1082':
+    friendly_name: ikea_tradfri_led_E14_02
+  '0x08b95ffffef87bb7':
+    friendly_name: ikea_somrig_button_01
 availability:
   enabled: true

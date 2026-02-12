@@ -1,6 +1,6 @@
 {
     "0xa4c1387fe2e7effc": {
-        "voltage": 228,
+        "voltage": 230,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -9,50 +9,50 @@
         "power": 0,
         "energy": 61.53,
         "current": 0,
-        "linkquality": 248
+        "linkquality": 232
     },
     "0xa4c13819d046464f": {
-        "voltage": 228,
+        "voltage": 230,
         "state": "ON",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "linkquality": 96,
-        "power": 34,
-        "energy": 329.06,
-        "current": 0.25
+        "linkquality": 92,
+        "power": 0,
+        "energy": 331.9,
+        "current": 0.02
     },
     "0xa4c138b8caa59009": {
-        "voltage": 229,
-        "state": "ON",
+        "voltage": 230,
+        "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
         "power": 0,
-        "energy": 81.31,
+        "energy": 82.14,
         "current": 0,
-        "linkquality": 52
+        "linkquality": 116
     },
     "0x00124b002a565fae": {
         "voltage": 2900,
-        "battery": 97.5,
-        "temperature": 18.18,
-        "humidity": 56.92,
+        "battery": 98,
+        "temperature": 18.97,
+        "humidity": 53.6,
         "linkquality": 255
     },
     "0xa4c138b7c1781a47": {
-        "voltage": 229,
-        "state": "ON",
+        "voltage": 230,
+        "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
-        "power": 36,
-        "energy": 58.63,
-        "current": 0.16,
-        "linkquality": 255
+        "power": 0,
+        "energy": 59.2,
+        "current": 0,
+        "linkquality": 252
     },
     "0x842712fffe173a94": {
         "local_temperature_calibration": -0.4,
@@ -64,7 +64,7 @@
         "valve_opening_limit_voltage": 1749,
         "valve_closing_limit_voltage": 3168,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 18.6,
+        "local_temperature": 19.5,
         "occupied_heating_setpoint": 6,
         "system_mode": "off",
         "running_state": "idle",
@@ -80,9 +80,9 @@
             "saturday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
             "sunday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16"
         },
-        "linkquality": 220,
+        "linkquality": 212,
         "temperature_sensor_select": "internal",
-        "external_temperature_input": 18.3,
+        "external_temperature_input": 19,
         "temperature_accuracy": -1,
         "update": {
             "state": "idle",
@@ -112,13 +112,13 @@
         "valve_opening_limit_voltage": 1611,
         "valve_closing_limit_voltage": 2521,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 17.2,
+        "local_temperature": 17.3,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
-        "battery": 28,
+        "battery": 25,
         "weekly_schedule": {
             "monday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
             "tuesday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
@@ -128,9 +128,9 @@
             "saturday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
             "sunday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16"
         },
-        "linkquality": 252,
+        "linkquality": 232,
         "temperature_sensor_select": "internal",
-        "external_temperature_input": 15.3,
+        "external_temperature_input": 17.1,
         "temperature_accuracy": -1,
         "update": {
             "state": "idle",
@@ -157,11 +157,11 @@
         "valve_opening_limit_voltage": 1937,
         "valve_closing_limit_voltage": 3206,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 18.3,
+        "local_temperature": 19.5,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
-        "battery": 25,
+        "battery": 23,
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
         "weekly_schedule": {
@@ -175,7 +175,7 @@
         },
         "linkquality": 255,
         "temperature_sensor_select": "internal",
-        "external_temperature_input": 17.5,
+        "external_temperature_input": 18.9,
         "temperature_accuracy": -1,
         "update": {
             "state": "idle",
@@ -194,9 +194,9 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 15.97,
-        "humidity": 65.75,
-        "co2": 796,
+        "temperature": 17.9,
+        "humidity": 53.2,
+        "co2": 905,
         "linkquality": 255
     },
     "0xe406bffffe34f94b": {
@@ -223,15 +223,15 @@
         "valve_opening_limit_voltage": 1755,
         "valve_closing_limit_voltage": 2526,
         "valve_motor_running_voltage": 0,
-        "external_temperature_input": 15.6,
+        "external_temperature_input": 17.5,
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
         "temperature_accuracy": -1,
-        "local_temperature": 18.7,
+        "local_temperature": 19.6,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
-        "battery": 37,
+        "battery": 36,
         "weekly_schedule": {
             "monday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
             "tuesday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
@@ -241,7 +241,7 @@
             "saturday": "00:00/16 07:00/19 10:00/19 17:00/19 23:00/16 23:00/16",
             "sunday": "00:00/16 07:00/19 10:00/19 10:00/19 10:00/19 23:00/16"
         },
-        "linkquality": 144,
+        "linkquality": 108,
         "update": {
             "state": "idle",
             "installed_version": 5124,
@@ -259,5 +259,73 @@
         "timer_mode_target_temp": 0,
         "temporary_mode_duration": 0,
         "temporary_mode_select": "boost"
+    },
+    "0x08fd52fffef5e553": {
+        "update": {
+            "state": "idle",
+            "installed_version": 50331683,
+            "latest_version": 50331683,
+            "latest_source": "https://raw.githubusercontent.com/Koenkk/zigbee-OTA/master/images/IKEA/zingo-ws-soc_release_prod_v50331683_f909cf22-3452-47e3-b8b2-c59d82102e17.ota",
+            "latest_release_notes": "https://ww8.ikea.com/ikeahomesmart/releasenotes/releasenotes.html"
+        },
+        "linkquality": 236,
+        "state": "ON",
+        "color_mode": "color_temp",
+        "color_temp": 389,
+        "brightness": 199,
+        "power_on_behavior": "previous",
+        "color_temp_startup": 250,
+        "level_config": {
+            "on_level": "previous"
+        }
+    },
+    "0x00be44fffe6f0d13": {
+        "state": "OFF",
+        "update": {
+            "state": "idle",
+            "installed_version": 16842784,
+            "latest_version": 16842784,
+            "latest_source": "https://raw.githubusercontent.com/Koenkk/zigbee-OTA/master/images/IKEA/zingo-kt-bulb-hwpwmcs-ws_release_prod_v16842784_32dc5ff1-4fa4-4960-a847-5e548a81047c.ota",
+            "latest_release_notes": "https://ww8.ikea.com/ikeahomesmart/releasenotes/releasenotes.html"
+        },
+        "linkquality": 196,
+        "power_on_behavior": "previous",
+        "brightness": 254,
+        "color_temp": 454,
+        "color_mode": "color_temp"
+    },
+    "0x00be44fffeac11d4": {
+        "update": {
+            "state": "idle",
+            "installed_version": 16842784,
+            "latest_version": 16842784,
+            "latest_source": "https://raw.githubusercontent.com/Koenkk/zigbee-OTA/master/images/IKEA/zingo-kt-bulb-hwpwmcs-ws_release_prod_v16842784_32dc5ff1-4fa4-4960-a847-5e548a81047c.ota",
+            "latest_release_notes": "https://ww8.ikea.com/ikeahomesmart/releasenotes/releasenotes.html"
+        },
+        "state": "OFF",
+        "linkquality": 244,
+        "power_on_behavior": "previous",
+        "brightness": 254,
+        "color_temp": 454,
+        "color_mode": "color_temp"
+    },
+    "0x64028ffffecf1082": {
+        "state": "OFF",
+        "brightness": 254,
+        "color_temp": 250,
+        "color_mode": "color_temp",
+        "linkquality": 255
+    },
+    "0x08b95ffffef87bb7": {
+        "battery": 95,
+        "voltage": 1300,
+        "update": {
+            "state": "available",
+            "installed_version": 16777248,
+            "latest_version": 16777249,
+            "latest_source": "https://raw.githubusercontent.com/Koenkk/zigbee-OTA/master/images/IKEA/rodret-shortcut-soc_release_prod_v16777249_d89ffc33-55d1-4d47-acac-42365e5d9dd8.ota",
+            "latest_release_notes": "https://ww8.ikea.com/ikeahomesmart/releasenotes/releasenotes.html"
+        },
+        "linkquality": 192
     }
 }

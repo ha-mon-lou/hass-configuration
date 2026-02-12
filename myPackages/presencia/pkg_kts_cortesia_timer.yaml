@@ -1,7 +1,7 @@
 # timers.yaml
 timer:
   luces_cortesia_entrada:
-    duration: "00:01:00"
+    duration: "00:05:00"
 
 # Encender dispositivos de cortesía al entrar
 automation:

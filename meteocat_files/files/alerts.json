@@ -1,6 +1,1392 @@
 {
     "actualitzat": {
-        "dataUpdate": "2026-02-07T13:56:00.136188+01:00"
+        "dataUpdate": "2026-02-11T14:24:49.977195+01:00"
     },
-    "dades": []
+    "dades": [
+        {
+            "estat": {
+                "nom": "Obert",
+                "data": null
+            },
+            "meteor": {
+                "nom": "Vent"
+            },
+            "avisos": [
+                {
+                    "tipus": "Avís",
+                    "dataEmisio": "2026-02-11T08:58Z",
+                    "dataInici": "2026-02-11T06:00Z",
+                    "dataFi": "2026-02-12T23:59Z",
+                    "evolucions": [
+                        {
+                            "dia": "2026-02-11T00:00Z",
+                            "comentari": "El vent bufarà de component oest.",
+                            "representatiu": 1,
+                            "llindar1": "Ratxa màxima > 20m/s",
+                            "llindar2": null,
+                            "distribucioGeografica": "EXTENSA",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 1,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 3,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 6,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 7,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 8,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 9,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 11,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 12,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 13,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 16,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 17,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 21,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 22,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 29,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 30,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 31,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 36,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 41,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 42,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 6,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 7,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 3,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 5,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 6,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 7,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 11,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 12,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 17,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 24,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 26,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 34,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 36,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 39,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 41,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 42,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valorMaxim": null
+                        },
+                        {
+                            "dia": "2026-02-12T00:00Z",
+                            "comentari": "El vent bufarà de component oest. \nDe cara a dissabte s'espera un nou episodi de fort vent de component nord.",
+                            "representatiu": 2,
+                            "llindar1": "Ratxa màxima > 20m/s",
+                            "llindar2": "Ratxa màxima > 30m/s",
+                            "distribucioGeografica": "GENERAL",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 1,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 2,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 3,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 4,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 5,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 6,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 7,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 8,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 9,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 10,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 11,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 12,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 13,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 14,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 15,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 16,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 17,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 18,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 19,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 20,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 21,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 22,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 23,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 24,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 25,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 26,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 27,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 28,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 29,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 30,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 31,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 32,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 33,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 34,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 35,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 36,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 37,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 38,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 39,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 40,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 41,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 42,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 43,
+                                            "nivell": 2
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 1,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 40m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 2,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 3,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 4,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 5,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 6,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 7,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 8,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 9,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 10,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 11,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 12,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 13,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 14,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 15,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 16,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 17,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 18,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 19,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 20,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 21,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 22,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 23,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 24,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 25,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 26,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 27,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 28,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 29,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 30,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 31,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 32,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 33,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 34,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 35,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 36,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 37,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 38,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 39,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 40,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 41,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 42,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 5,
+                                            "idComarca": 43,
+                                            "nivell": 2
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 1,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 40m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 2,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 3,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 4,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 5,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 6,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 7,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 8,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 10,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 11,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 12,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 13,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 14,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 15,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 16,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 17,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 18,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 19,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 20,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 21,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 23,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 24,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 25,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 26,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 27,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 28,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 35m/s",
+                                            "auxiliar": false,
+                                            "perill": 4,
+                                            "idComarca": 31,
+                                            "nivell": 2
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 32,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 33,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 34,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 35,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 36,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 38,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 39,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 41,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 42,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 43,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 2,
+                                            "nivell": 1
+                                        },
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 25m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 31,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valorMaxim": null
+                        }
+                    ],
+                    "estat": "Vigent"
+                }
+            ]
+        }
+    ]
 }

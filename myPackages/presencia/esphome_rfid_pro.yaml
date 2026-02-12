@@ -1,5 +1,5 @@
 # ============================================
-# RFID Tags → Personas (Sistema PRO)
+# RFID Tags → Personas (Sistema PRO) ✅ FIJO
 # ============================================
 
 input_text:
@@ -31,10 +31,15 @@ sensor:
 script:
   lookup_rfid_persona:
     alias: "🔍 Buscar persona por RFID"
-    description: "Busca persona por UID RFID usando mapeo interno"
+    fields:
+      tag_id:
+        description: "UID del tag RFID (opcional)"
+        example: "D7-98-4C-33"
+        required: false
+        selector:
+          text:
     sequence:
       - variables:
-          # Mapeo centralizado - AQUÍ cambias los UIDs y nombres
           rfid_mapping: >
             {{
               {
@@ -45,31 +50,19 @@ script:
               }
             }}
           persona: "{{ rfid_mapping.get(tag_id|default(states('input_text.rfid_tag_last_pro')), 'Desconocido') }}"
-
-      # Actualiza el input_select
       - service: input_select.select_option
         target:
           entity_id: input_select.rfid_persona
         data:
           option: "{{ persona }}"
+      # - service: persistent_notification.create
+      #   data:
+      #     title: "RFID Detectado"
+      #     message: "Tag: {{ tag_id|default(states('input_text.rfid_tag_last_pro')) }} → {{ persona }}"
 
-    #      # Notificación de debug (opcional)
-    #      - service: persistent_notification.create
-    #        data:
-    #          title: "RFID Detectado"
-    #          message: "Tag: {{ tag_id|default(states('input_text.rfid_tag_last_pro')) }} → {{ persona }}"
-
-    fields:
-      tag_id:
-        description: "UID del tag RFID (opcional)"
-        example: "D7-98-4C-33"
-        required: false
-        selector:
-          text:
-
-# Guarda UID del sensor ESPHome
+# Automatizaciones (tu original + delay)
 automation:
-  - alias: "Guardar UID RFID"
+  - alias: "📥 Guardar UID RFID"
     trigger:
       - platform: state
         entity_id: sensor.esp32_rfid_rfid_tag
@@ -82,11 +75,10 @@ automation:
           entity_id: input_text.rfid_tag_last_pro
         data:
           value: "{{ trigger.to_state.state }}"
-      # Llama al script PRO automáticamente
+      - delay: "00:00:00.1" # ← 100ms para que se guarde
       - service: script.lookup_rfid_persona
 
-  # Reset después de 30s de inactividad
-  - alias: "Reset RFID inactivo"
+  - alias: "🕒 Reset RFID inactivo"
     trigger:
       - platform: state
         entity_id: sensor.esp32_rfid_rfid_tag
@@ -98,13 +90,3 @@ automation:
           entity_id: input_select.rfid_persona
         data:
           option: "Desconocido"
-
-  # BONUS: Ejemplo de uso manual del script
-  - alias: "Test manual RFID"
-    trigger:
-      - platform: state
-        entity_id: input_boolean.test_rfid # Crea este helper si quieres
-    action:
-      - service: script.lookup_rfid_persona
-        data:
-          tag_id: "{{ states('input_text.test_tag_id') }}"

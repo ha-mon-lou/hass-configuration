@@ -1,6 +1,126 @@
 {
     "actualitzat": {
-        "dataUpdate": "2026-02-07T13:56:00.136188+01:00"
+        "dataUpdate": "2026-02-11T14:24:49.977195+01:00"
     },
-    "dades": []
+    "dades": [
+        {
+            "estat": {
+                "nom": "Obert",
+                "data": null
+            },
+            "meteor": {
+                "nom": "Vent"
+            },
+            "avisos": [
+                {
+                    "tipus": "Avís",
+                    "dataEmisio": "2026-02-11T08:58Z",
+                    "dataInici": "2026-02-11T06:00Z",
+                    "dataFi": "2026-02-12T18:00Z",
+                    "evolucions": [
+                        {
+                            "dia": "2026-02-11T00:00Z",
+                            "comentari": "El vent bufarà de component oest.",
+                            "representatiu": 1,
+                            "llindar1": "Ratxa màxima > 20m/s",
+                            "llindar2": null,
+                            "distribucioGeografica": "EXTENSA",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-11T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 2,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valorMaxim": null
+                        },
+                        {
+                            "dia": "2026-02-12T00:00Z",
+                            "comentari": "El vent bufarà de component oest. \nDe cara a dissabte s'espera un nou episodi de fort vent de component nord.",
+                            "representatiu": 2,
+                            "llindar1": "Ratxa màxima > 20m/s",
+                            "llindar2": "Ratxa màxima > 30m/s",
+                            "distribucioGeografica": "GENERAL",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 40,
+                                            "nivell": 2
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 30m/s",
+                                            "auxiliar": false,
+                                            "perill": 6,
+                                            "idComarca": 40,
+                                            "nivell": 2
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-12T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 3,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": null
+                                }
+                            ],
+                            "valorMaxim": null
+                        }
+                    ],
+                    "estat": "Vigent"
+                }
+            ]
+        }
+    ]
 }

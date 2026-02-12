@@ -24,7 +24,7 @@ from .const import DOMAIN, PLATFORMS
 _LOGGER = logging.getLogger(__name__)
 
 # Versión
-__version__ = "4.0.5"
+__version__ = "4.1.0"
 
 # Definir el esquema de configuración CONFIG_SCHEMA
 CONFIG_SCHEMA = vol.Schema(
@@ -163,6 +163,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Lista de coordinadores con sus clases
     coordinator_configs = [
         ("sensor_coordinator", "MeteocatSensorCoordinator"),
+        ("sensor_file_coordinator", "MeteocatSensorFileCoordinator"),
         ("static_sensor_coordinator", "MeteocatStaticSensorCoordinator"),
         ("entity_coordinator", "MeteocatEntityCoordinator"),
         ("uvi_coordinator", "MeteocatUviCoordinator"),

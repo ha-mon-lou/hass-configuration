@@ -1,0 +1,33 @@
+# Si esto va en un "package", la estructura es:
+light:
+  - platform: group
+    name: "Columna led entrada"
+    unique_id: columna_led_entrada
+    entities:
+      - light.ikea_tradfri_led_e14_01
+      - light.ikea_tradfri_led_e14_02
+      - light.ikea_tradfri_led_e14_03
+
+automation:
+  - id: columna_led_entrada_encendido_progresivo
+    alias: Columna led entrada - encendido progresivo por presencia
+    mode: restart
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presencia_zona_entrada
+        from: "off"
+        to: "on"
+    action:
+      - service: script.ikea_columna_led_on
+
+  - id: columna_led_entrada_apagado_progresivo
+    alias: Columna led entrada - apagado progresivo sin presencia
+    mode: restart
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.presencia_zona_entrada
+        from: "on"
+        to: "off"
+        for: "00:00:10" # <-- MEJORA: El trigger espera los 10s aquí
+    action:
+      - service: script.ikea_columna_led_off

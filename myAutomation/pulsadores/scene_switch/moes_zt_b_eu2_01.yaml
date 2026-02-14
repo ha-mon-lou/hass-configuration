@@ -1,0 +1,14 @@
+- id: "pulsador_moes_zt_b_eu2_01"
+  alias: MOES Zigbee Scene Switch - Todas las acciones
+  trigger:
+    - platform: state
+      entity_id: sensor.moes_zt_b_eu2_01_action
+
+  condition: []
+
+  action:
+    - service: script.moes_zt_b_eu2_01_event
+      data:
+        evento: "{{ trigger.to_state.state }}"
+
+  mode: single

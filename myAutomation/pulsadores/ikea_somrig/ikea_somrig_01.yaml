@@ -1,0 +1,38 @@
+- id: "ikea_somrig_01_acciones"
+  alias: "Mando SOMRIG - Control Total"
+  mode: restart
+
+  trigger:
+    - platform: state
+      entity_id: sensor.ikea_somrig_button_01_action
+
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.to_state.state in [
+          '1_short_release', '2_short_release', 
+          '1_double_press', '2_double_press', 
+          '1_long_release', '2_long_release'
+        ] }}
+
+  action:
+    - service: script.ikea_somrig_01_event
+      data:
+        evento: >
+          {% set s = trigger.to_state.state %}
+          {% set boton = s.split('_')[0] %}
+          {% if 'short' in s %}
+            {{ boton }}_single
+          {% elif 'double' in s %}
+            {{ boton }}_double
+          {% elif 'long' in s %}
+            {{ boton }}_long
+          {% endif %}
+
+# Estado original	Se envía al script
+# 1_short_release	1_single
+# 1_double_press	1_double
+# 1_long_release	1_long
+# 2_short_release	2_single
+# 2_double_press	2_double
+# 2_long_release	2_long

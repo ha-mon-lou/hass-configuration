@@ -1,0 +1,43 @@
+script:
+  escena_living_dormir:
+    alias: "Escena Living Dormir (Secuencial)"
+    icon: mdi:chat-sleep
+    mode: single
+
+    sequence:
+      - service: script.cerrar_puerta_principal
+      - service: script.ikea_tradfri_off
+        data:
+          luz_objetivo: light.columna_led_entrada
+      - service: switch.turn_off
+        target:
+          entity_id: switch.enchufe_habitacion_socket_1
+
+      - delay: "00:00:01"
+
+      - service: switch.turn_off
+        target:
+          entity_id: switch.enchufe_habitacion_socket_2
+
+      - delay: "00:00:01"
+
+      - service: switch.turn_off
+        target:
+          entity_id: switch.enchufe_doble_socket_1
+
+      - delay: "00:00:01"
+
+      - service: switch.turn_off
+        target:
+          entity_id: switch.enchufe_doble_socket_2
+
+      - delay: "00:00:01"
+
+      - service: media_player.turn_off
+        target:
+          entity_id: media_player.my_box_2
+
+      # StudioBricks off
+      - service: switch.turn_off
+        target:
+          entity_id: switch.regleta_antela_socket_3

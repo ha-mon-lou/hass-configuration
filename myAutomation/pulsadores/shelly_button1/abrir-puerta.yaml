@@ -4,17 +4,29 @@
     - platform: state
       entity_id: event.shelly_blu_button1_908f_button
   condition:
-    - condition: state
-      entity_id: lock.puerta_principal_2
-      state: "locked"
     - condition: template
       value_template: >
         {{ trigger.to_state.attributes.event_type == 'press' }}
   action:
-    - service: script.ikea_tradfri_off
+    - service: script.ikea_tradfri_on
       data:
         luz_objetivo: light.columna_led_entrada
+    - service: script.abrir_puerta_principal
 
+- alias: Retardo Abrir puerta con botón Shelly BLU 908F
+  id: shelly_blu_908f_abrir_puerta_retardo
+  trigger:
+    - platform: state
+      entity_id: event.shelly_blu_button1_908f_button
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.to_state.attributes.event_type == 'long_press' }}
+  action:
+    - service: script.ikea_tradfri_on
+      data:
+        luz_objetivo: light.columna_led_entrada
+    - delay: 00:01:00
     - service: script.abrir_puerta_principal
 
 - alias: Cerrar puerta con botón Shelly BLU 908F
@@ -23,9 +35,6 @@
     - platform: state
       entity_id: event.shelly_blu_button1_908f_button
   condition:
-    - condition: state
-      entity_id: lock.puerta_principal_2
-      state: "unlocked"
     - condition: template
       value_template: >
         {{ trigger.to_state.attributes.event_type == 'press' }}

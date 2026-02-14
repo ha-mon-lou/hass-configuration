@@ -1,6 +1,63 @@
 {
     "actualitzat": {
-        "dataUpdate": "2026-02-13T14:36:46.233003+01:00"
+        "dataUpdate": "2026-02-14T14:41:39.980447+01:00"
     },
-    "dades": []
+    "dades": [
+        {
+            "estat": {
+                "nom": "Obert",
+                "data": null
+            },
+            "meteor": {
+                "nom": "Vent"
+            },
+            "avisos": [
+                {
+                    "tipus": "Avís",
+                    "dataEmisio": "2026-02-14T08:16Z",
+                    "dataInici": "2026-02-14T18:00Z",
+                    "dataFi": "2026-02-14T23:59Z",
+                    "evolucions": [
+                        {
+                            "dia": "2026-02-14T00:00Z",
+                            "comentari": "El vent bufarà de component nord i oest. Al Pirineu hi haurà torb.",
+                            "representatiu": 2,
+                            "llindar1": "Ratxa màxima > 25m/s",
+                            "llindar2": "Ratxa màxima > 35m/s",
+                            "distribucioGeografica": "EXTENSA",
+                            "periodes": [
+                                {
+                                    "nom": "00-06",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "06-12",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "12-18",
+                                    "afectacions": null
+                                },
+                                {
+                                    "nom": "18-00",
+                                    "afectacions": [
+                                        {
+                                            "dia": "2026-02-14T00:00Z",
+                                            "llindar": "Ratxa màxima > 20m/s",
+                                            "auxiliar": false,
+                                            "perill": 1,
+                                            "idComarca": 40,
+                                            "nivell": 1
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valorMaxim": null
+                        }
+                    ],
+                    "estat": "Vigent"
+                }
+            ]
+        }
+    ]
 }

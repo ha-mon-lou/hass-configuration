@@ -1,47 +1,31 @@
-ikea_somrig_01_1_single:
-  alias: IKEA Somrig 01 -Botón 1 simple (Toggle Switch)
-  sequence:
-    - service: script.ikea_tradfri_on
-      data:
-        luz_objetivo: light.columna_led_entrada
+ikea_somrig_01_event:
+  alias: IKEA Somrig 01 Evento
   mode: single
-
-ikea_somrig_01_2_single:
-  alias: IKEA Somrig 01 -Botón 2 simple
+  fields:
+    evento:
+      description: "tipo evento: X_single/double/long"
   sequence:
-    - service: script.ikea_tradfri_off
-      data:
-        luz_objetivo: light.columna_led_entrada
-  mode: single
+    - choose:
+        - conditions: "{{ evento == '1_single' }}"
+          sequence:
+            - service: script.ikea_tradfri_on
+              data:
+                luz_objetivo: light.columna_led_entrada
 
-## copiamos porque no se me ocurre nada que hacer con dos pulsaciones
-ikea_somrig_01_1_double:
-  alias: IKEA Somrig 01 -Botón 1 doble
-  sequence:
-    - service: script.ikea_somrig_01_1_single
-  mode: single
+        - conditions: "{{ evento == '2_single' }}"
+          sequence:
+            - service: script.ikea_tradfri_off
+              data:
+                luz_objetivo: light.columna_led_entrada
 
-## copiamos porque no se me ocurre nada que hacer con dos pulsaciones
-ikea_somrig_01_2_double:
-  alias: IKEA Somrig 01 -Botón 2 doble
-  sequence:
-    - service: script.ikea_somrig_01_2_single
-  mode: single
+        - conditions: "{{ evento == '1_long' }}"
+          sequence:
+            - service: script.ikea_tradfri_on
+              data:
+                luz_objetivo: light.ikea_tradfri_led_01
 
-ikea_somrig_01_1_long:
-  alias: IKEA Somrig 01 -Botón 1 long
-  sequence:
-    - service: script.ikea_tradfri_on
-      data:
-        luz_objetivo: light.ikea_tradfri_led_01
-
-    - service: script.ikea_somrig_01_1_single
-  mode: single
-
-ikea_somrig_01_2_long:
-  alias: IKEA Somrig 01 -Botón 2 long
-  sequence:
-    - service: script.ikea_tradfri_off
-      data:
-        luz_objetivo: light.ikea_tradfri_led_01
-  mode: single
+        - conditions: "{{ evento == '2_long' }}"
+          sequence:
+            - service: script.ikea_tradfri_off
+              data:
+                luz_objetivo: light.ikea_tradfri_led_01

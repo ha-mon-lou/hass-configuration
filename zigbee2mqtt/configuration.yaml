@@ -127,5 +127,7 @@ devices:
     friendly_name: ikea_tradfri_led_E14_02
   '0x08b95ffffef87bb7':
     friendly_name: ikea_somrig_button_01
+  '0xfc4d6afffe4fda04':
+    friendly_name: moes_zt_b_eu2_01
 availability:
   enabled: true

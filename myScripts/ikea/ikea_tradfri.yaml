@@ -1,0 +1,32 @@
+ikea_tradfri_on:
+  alias: "IKEA Luz On Genérica"
+  sequence:
+    - service: light.turn_on
+      target:
+        entity_id: "{{ luz_objetivo }}"
+  mode: parallel # Permite encender varias luces a la vez si se desea
+
+ikea_tradfri_off:
+  alias: "IKEA Luz Off Genérica"
+  sequence:
+    - service: light.turn_off
+      target:
+        entity_id: "{{ luz_objetivo }}"
+      data:
+        transition: 5
+  mode: parallel
+
+ikea_tradfri_toggle:
+  alias: "IKEA Luz Toggle Genérica"
+  sequence:
+    - if:
+        - condition: template
+          value_template: "{{ is_state(luz_objetivo, 'on') }}"
+      then:
+        - service: script.ikea_tradfri_off
+          data:
+            luz_objetivo: "{{ luz_objetivo }}"
+      else:
+        - service: script.ikea_tradfri_on
+          data:
+            luz_objetivo: "{{ luz_objetivo }}"

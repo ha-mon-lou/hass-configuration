@@ -11,6 +11,10 @@
       value_template: >
         {{ trigger.to_state.attributes.event_type == 'press' }}
   action:
+    - service: script.ikea_tradfri_off
+      data:
+        luz_objetivo: light.columna_led_entrada
+
     - service: script.abrir_puerta_principal
 
 - alias: Cerrar puerta con botón Shelly BLU 908F

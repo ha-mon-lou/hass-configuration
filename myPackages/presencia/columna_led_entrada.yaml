@@ -18,7 +18,9 @@ automation:
         from: "off"
         to: "on"
     action:
-      - service: script.ikea_columna_led_on
+      - service: script.ikea_tradfri_on
+        data:
+          luz_objetivo: light.columna_led_entrada
 
   - id: columna_led_entrada_apagado_progresivo
     alias: Columna led entrada - apagado progresivo sin presencia
@@ -30,4 +32,7 @@ automation:
         to: "off"
         for: "00:00:10" # <-- MEJORA: El trigger espera los 10s aquí
     action:
-      - service: script.ikea_columna_led_off
+      - delay: 00:01:30
+      - service: script.ikea_tradfri_off
+        data:
+          luz_objetivo: light.columna_led_entrada

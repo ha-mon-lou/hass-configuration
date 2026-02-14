@@ -1,13 +1,17 @@
 ikea_somrig_01_1_single:
   alias: IKEA Somrig 01 -Botón 1 simple (Toggle Switch)
   sequence:
-    - service: script.ikea_columna_led_on
+    - service: script.ikea_tradfri_on
+      data:
+        luz_objetivo: light.columna_led_entrada
   mode: single
 
 ikea_somrig_01_2_single:
   alias: IKEA Somrig 01 -Botón 2 simple
   sequence:
-    - service: script.ikea_columna_led_off
+    - service: script.ikea_tradfri_off
+      data:
+        luz_objetivo: light.columna_led_entrada
   mode: single
 
 ## copiamos porque no se me ocurre nada que hacer con dos pulsaciones
@@ -27,11 +31,17 @@ ikea_somrig_01_2_double:
 ikea_somrig_01_1_long:
   alias: IKEA Somrig 01 -Botón 1 long
   sequence:
+    - service: script.ikea_tradfri_on
+      data:
+        luz_objetivo: light.ikea_tradfri_led_01
+
     - service: script.ikea_somrig_01_1_single
   mode: single
 
 ikea_somrig_01_2_long:
   alias: IKEA Somrig 01 -Botón 2 long
   sequence:
-    - service: script.ikea_somrig_01_2_single
+    - service: script.ikea_tradfri_off
+      data:
+        luz_objetivo: light.ikea_tradfri_led_01
   mode: single

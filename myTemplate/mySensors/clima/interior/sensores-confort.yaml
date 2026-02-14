@@ -126,3 +126,20 @@
       state: >
         {% from 'confort_termico.jinja' import macro_confort_termico %}
         {{ macro_confort_termico('sensor.indoor_outdoor_meter_5427_temperature','sensor.indoor_outdoor_meter_5427_humidity') }}
+
+    ########################################
+    # NetAtmo
+    ########################################
+    - name: Sensación Térmica (NetAtmo 01)
+      default_entity_id: sensor.sensacion_termica_netatmo_01
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'sensacion_termica.jinja' import macro_sensacion_termica %}
+        {{ macro_sensacion_termica('sensor.healthy_home_coach_temperature_sensor','sensor.healthy_home_coach_humidity_sensor') }}
+
+    - name: Confort Térmico (NetAtmo 01)
+      default_entity_id: sensor.confort_termico_netatmo_01
+      unit_of_measurement: "°C"
+      state: >
+        {% from 'confort_termico.jinja' import macro_confort_termico %}
+        {{ macro_confort_termico('sensor.healthy_home_coach_temperature_sensor','sensor.healthy_home_coach_humidity_sensor') }}

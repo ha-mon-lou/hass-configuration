@@ -1,0 +1,13 @@
+- id: "nfc_etiqueta_despacho_luz"
+  alias: NFC etiqueta despacho luz
+  mode: single
+  trigger:
+    - platform: conversation
+      command: despacho
+    - platform: tag
+      tag_id: !secret nfc_tag_ha_despacho_luz
+
+  action:
+    - service: script.ikea_tradfri_toggle
+      data:
+        luz_objetivo: light.ikea_tradfri_led_01

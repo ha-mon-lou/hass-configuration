@@ -1,6 +1,6 @@
 {
     "actualitzat": {
-        "dataUpdate": "2026-02-14T13:21:40.273614+01:00"
+        "dataUpdate": "2026-02-14T19:21:40.217042+01:00"
     },
     "data": [
         {
@@ -176,6 +176,90 @@
                             "valor": 968.3,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "dataExtrem": "2026-02-14T12:29Z",
+                            "valor": 968.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "dataExtrem": "2026-02-14T12:59Z",
+                            "valor": 969.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "dataExtrem": "2026-02-14T13:29Z",
+                            "valor": 969.9,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "dataExtrem": "2026-02-14T13:59Z",
+                            "valor": 970.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "dataExtrem": "2026-02-14T14:27Z",
+                            "valor": 970.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "dataExtrem": "2026-02-14T14:57Z",
+                            "valor": 971.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "dataExtrem": "2026-02-14T15:28Z",
+                            "valor": 971.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "dataExtrem": "2026-02-14T15:59Z",
+                            "valor": 972.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "dataExtrem": "2026-02-14T16:29Z",
+                            "valor": 973.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "dataExtrem": "2026-02-14T16:59Z",
+                            "valor": 974.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "dataExtrem": "2026-02-14T17:29Z",
+                            "valor": 975.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "dataExtrem": "2026-02-14T17:59Z",
+                            "valor": 976.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -347,6 +431,90 @@
                             "data": "2026-02-14T11:30Z",
                             "dataExtrem": "2026-02-14T11:30Z",
                             "valor": 967.7,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "dataExtrem": "2026-02-14T12:01Z",
+                            "valor": 968,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "dataExtrem": "2026-02-14T12:31Z",
+                            "valor": 968.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "dataExtrem": "2026-02-14T13:00Z",
+                            "valor": 969.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "dataExtrem": "2026-02-14T13:30Z",
+                            "valor": 969.7,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "dataExtrem": "2026-02-14T14:00Z",
+                            "valor": 970.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "dataExtrem": "2026-02-14T14:30Z",
+                            "valor": 970.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "dataExtrem": "2026-02-14T15:04Z",
+                            "valor": 971,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "dataExtrem": "2026-02-14T15:30Z",
+                            "valor": 971.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "dataExtrem": "2026-02-14T16:00Z",
+                            "valor": 972.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "dataExtrem": "2026-02-14T16:30Z",
+                            "valor": 973.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "dataExtrem": "2026-02-14T17:02Z",
+                            "valor": 974.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "dataExtrem": "2026-02-14T17:30Z",
+                            "valor": 975.2,
                             "estat": " ",
                             "baseHoraria": "SH"
                         }
@@ -522,6 +690,90 @@
                             "valor": 57,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "dataExtrem": "2026-02-14T12:23Z",
+                            "valor": 57,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "dataExtrem": "2026-02-14T12:36Z",
+                            "valor": 55,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "dataExtrem": "2026-02-14T13:06Z",
+                            "valor": 55,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "dataExtrem": "2026-02-14T13:35Z",
+                            "valor": 54,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "dataExtrem": "2026-02-14T14:25Z",
+                            "valor": 51,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "dataExtrem": "2026-02-14T14:32Z",
+                            "valor": 50,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "dataExtrem": "2026-02-14T15:02Z",
+                            "valor": 49,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "dataExtrem": "2026-02-14T15:45Z",
+                            "valor": 43,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "dataExtrem": "2026-02-14T16:11Z",
+                            "valor": 42,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "dataExtrem": "2026-02-14T16:58Z",
+                            "valor": 42,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "dataExtrem": "2026-02-14T17:28Z",
+                            "valor": 45,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "dataExtrem": "2026-02-14T17:50Z",
+                            "valor": 44,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -669,6 +921,78 @@
                         {
                             "data": "2026-02-14T11:30Z",
                             "valor": 6.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 6.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 5.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 5.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 4.9,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 5.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 5.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 5.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 5.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 4.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 4.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 4.6,
                             "estat": " ",
                             "baseHoraria": "SH"
                         }
@@ -820,6 +1144,78 @@
                             "valor": 294,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 295,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 284,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 290,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 284,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 295,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 294,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 289,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 308,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 308,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 307,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 307,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 297,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -967,6 +1363,78 @@
                         {
                             "data": "2026-02-14T11:30Z",
                             "valor": 15.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 14.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 14.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 17.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 16.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 18.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 15,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 14.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 14.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 14.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 13.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 13.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 11.5,
                             "estat": " ",
                             "baseHoraria": "SH"
                         }
@@ -1118,6 +1586,78 @@
                             "valor": 6.6,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 6.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 5.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 5.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 5.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 5.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 5.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 5.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 5.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 4.7,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 4.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 4.7,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -1265,6 +1805,78 @@
                         {
                             "data": "2026-02-14T11:30Z",
                             "valor": 294,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 294,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 284,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 290,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 285,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 295,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 293,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 289,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 308,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 308,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 306,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 306,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 297,
                             "estat": " ",
                             "baseHoraria": "SH"
                         }
@@ -1416,6 +2028,78 @@
                             "valor": 14.4,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 14.9,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 15.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 15.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 16.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 16.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 16.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 16.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 15.9,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 15.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 14.7,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 13.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 13.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -1563,6 +2247,78 @@
                         {
                             "data": "2026-02-14T11:30Z",
                             "valor": 55,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 55,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 53,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 52,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 51,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 49,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 48,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 44,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 40,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 40,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 40,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 43,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 43,
                             "estat": " ",
                             "baseHoraria": "SH"
                         }
@@ -1714,6 +2470,78 @@
                             "valor": 968,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 968.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 969,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 969.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 970,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 970.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 970.9,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 971.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 972,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 973,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 974,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 974.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 975.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -1861,6 +2689,78 @@
                         {
                             "data": "2026-02-14T11:30Z",
                             "valor": 0.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 0,
                             "estat": " ",
                             "baseHoraria": "SH"
                         }
@@ -2012,6 +2912,78 @@
                             "valor": 614,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 627,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 616,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 585,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 561,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 490,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 386,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 318,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 226,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 151,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 72,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 10,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": -2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -2159,6 +3131,78 @@
                         {
                             "data": "2026-02-14T11:30Z",
                             "valor": 5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 11,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 14,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 20,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 105,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 111,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 72,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 37,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 21,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 9,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 1,
                             "estat": " ",
                             "baseHoraria": "SH"
                         }
@@ -2334,6 +3378,90 @@
                             "valor": 14.8,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "dataExtrem": "2026-02-14T12:24Z",
+                            "valor": 15.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "dataExtrem": "2026-02-14T12:54Z",
+                            "valor": 15.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "dataExtrem": "2026-02-14T13:26Z",
+                            "valor": 16.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "dataExtrem": "2026-02-14T13:56Z",
+                            "valor": 16.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "dataExtrem": "2026-02-14T14:12Z",
+                            "valor": 16.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "dataExtrem": "2026-02-14T14:34Z",
+                            "valor": 16.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "dataExtrem": "2026-02-14T15:14Z",
+                            "valor": 16.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "dataExtrem": "2026-02-14T15:32Z",
+                            "valor": 16.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "dataExtrem": "2026-02-14T16:00Z",
+                            "valor": 15.7,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "dataExtrem": "2026-02-14T16:30Z",
+                            "valor": 15,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "dataExtrem": "2026-02-14T17:01Z",
+                            "valor": 14.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "dataExtrem": "2026-02-14T17:31Z",
+                            "valor": 13.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -2505,6 +3633,90 @@
                             "data": "2026-02-14T11:30Z",
                             "dataExtrem": "2026-02-14T11:36Z",
                             "valor": 14.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "dataExtrem": "2026-02-14T12:04Z",
+                            "valor": 14.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "dataExtrem": "2026-02-14T12:32Z",
+                            "valor": 15,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "dataExtrem": "2026-02-14T13:02Z",
+                            "valor": 15.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "dataExtrem": "2026-02-14T13:41Z",
+                            "valor": 15.9,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "dataExtrem": "2026-02-14T14:02Z",
+                            "valor": 16.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "dataExtrem": "2026-02-14T14:59Z",
+                            "valor": 15.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "dataExtrem": "2026-02-14T15:02Z",
+                            "valor": 15.7,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "dataExtrem": "2026-02-14T15:42Z",
+                            "valor": 15.4,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "dataExtrem": "2026-02-14T16:29Z",
+                            "valor": 15,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "dataExtrem": "2026-02-14T16:59Z",
+                            "valor": 14.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "dataExtrem": "2026-02-14T17:29Z",
+                            "valor": 13.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "dataExtrem": "2026-02-14T17:51Z",
+                            "valor": 12.9,
                             "estat": " ",
                             "baseHoraria": "SH"
                         }
@@ -2680,6 +3892,90 @@
                             "valor": 53,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "dataExtrem": "2026-02-14T12:03Z",
+                            "valor": 52,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "dataExtrem": "2026-02-14T12:51Z",
+                            "valor": 51,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "dataExtrem": "2026-02-14T13:27Z",
+                            "valor": 49,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "dataExtrem": "2026-02-14T13:56Z",
+                            "valor": 50,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "dataExtrem": "2026-02-14T14:16Z",
+                            "valor": 48,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "dataExtrem": "2026-02-14T14:51Z",
+                            "valor": 46,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "dataExtrem": "2026-02-14T15:29Z",
+                            "valor": 40,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "dataExtrem": "2026-02-14T15:58Z",
+                            "valor": 39,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "dataExtrem": "2026-02-14T16:21Z",
+                            "valor": 39,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "dataExtrem": "2026-02-14T16:31Z",
+                            "valor": 39,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "dataExtrem": "2026-02-14T17:03Z",
+                            "valor": 40,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "dataExtrem": "2026-02-14T17:59Z",
+                            "valor": 42,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -2853,6 +4149,90 @@
                             "valor": 12,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "dataExtrem": "2026-02-14T12:03Z",
+                            "valor": 11.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "dataExtrem": "2026-02-14T12:31Z",
+                            "valor": 9.7,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "dataExtrem": "2026-02-14T13:00Z",
+                            "valor": 9.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "dataExtrem": "2026-02-14T13:37Z",
+                            "valor": 8.9,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "dataExtrem": "2026-02-14T14:23Z",
+                            "valor": 8.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "dataExtrem": "2026-02-14T14:42Z",
+                            "valor": 10.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "dataExtrem": "2026-02-14T15:28Z",
+                            "valor": 8.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "dataExtrem": "2026-02-14T15:58Z",
+                            "valor": 11.3,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "dataExtrem": "2026-02-14T16:01Z",
+                            "valor": 8.5,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "dataExtrem": "2026-02-14T16:30Z",
+                            "valor": 8.6,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "dataExtrem": "2026-02-14T17:03Z",
+                            "valor": 8.2,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "dataExtrem": "2026-02-14T17:58Z",
+                            "valor": 8.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -3002,6 +4382,78 @@
                             "valor": 302,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 294,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 307,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 281,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 295,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 292,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 305,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 296,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 320,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 322,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 299,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 326,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 288,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -3148,6 +4600,78 @@
                         },
                         {
                             "data": "2026-02-14T11:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
                             "valor": 0,
                             "estat": " ",
                             "baseHoraria": "SH"
@@ -3300,6 +4824,78 @@
                             "valor": 1,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -3449,6 +5045,78 @@
                             "valor": 7999,
                             "estat": " ",
                             "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 7999,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 7999,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 7999,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 7999,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 7999,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 9998,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 9998,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 9998,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 9998,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 9998,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 9998,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 9998,
+                            "estat": " ",
+                            "baseHoraria": "SH"
                         }
                     ]
                 },
@@ -3596,6 +5264,78 @@
                         {
                             "data": "2026-02-14T11:30Z",
                             "valor": 13.9,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "valor": 13.9,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "valor": 13.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "valor": 13.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "valor": 13.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "valor": 13.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "valor": 13.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "valor": 13.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "valor": 13.7,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "valor": 13.7,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "valor": 13.8,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "valor": 13.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "valor": 13,
                             "estat": " ",
                             "baseHoraria": "SH"
                         }
@@ -3769,6 +5509,90 @@
                             "data": "2026-02-14T11:30Z",
                             "dataExtrem": "2026-02-14T11:36Z",
                             "valor": 0.1,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:00Z",
+                            "dataExtrem": "2026-02-14T12:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T12:30Z",
+                            "dataExtrem": "2026-02-14T12:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:00Z",
+                            "dataExtrem": "2026-02-14T13:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T13:30Z",
+                            "dataExtrem": "2026-02-14T13:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:00Z",
+                            "dataExtrem": "2026-02-14T14:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T14:30Z",
+                            "dataExtrem": "2026-02-14T14:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:00Z",
+                            "dataExtrem": "2026-02-14T15:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T15:30Z",
+                            "dataExtrem": "2026-02-14T15:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:00Z",
+                            "dataExtrem": "2026-02-14T16:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T16:30Z",
+                            "dataExtrem": "2026-02-14T16:30Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:00Z",
+                            "dataExtrem": "2026-02-14T17:00Z",
+                            "valor": 0,
+                            "estat": " ",
+                            "baseHoraria": "SH"
+                        },
+                        {
+                            "data": "2026-02-14T17:30Z",
+                            "dataExtrem": "2026-02-14T17:30Z",
+                            "valor": 0,
                             "estat": " ",
                             "baseHoraria": "SH"
                         }

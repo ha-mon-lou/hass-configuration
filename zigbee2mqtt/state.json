@@ -19,9 +19,9 @@
         "indicator_mode": "off/on",
         "child_lock": "UNLOCK",
         "linkquality": 152,
-        "power": 83,
-        "energy": 333.35,
-        "current": 0.54
+        "power": 0,
+        "energy": 333.52,
+        "current": 0.02
     },
     "0xa4c138b8caa59009": {
         "voltage": 228,
@@ -37,13 +37,13 @@
     },
     "0x00124b002a565fae": {
         "voltage": 2900,
-        "battery": 97.5,
-        "temperature": 18.16,
-        "humidity": 46.44,
+        "battery": 98,
+        "temperature": 18.08,
+        "humidity": 41.2,
         "linkquality": 255
     },
     "0xa4c138b7c1781a47": {
-        "voltage": 229,
+        "voltage": 230,
         "state": "OFF",
         "countdown": 0,
         "power_outage_memory": "restore",
@@ -82,7 +82,7 @@
         },
         "linkquality": 116,
         "temperature_sensor_select": "internal",
-        "external_temperature_input": 18.6,
+        "external_temperature_input": 18.9,
         "temperature_accuracy": -1,
         "update": {
             "state": "idle",
@@ -112,7 +112,7 @@
         "valve_opening_limit_voltage": 1611,
         "valve_closing_limit_voltage": 2521,
         "valve_motor_running_voltage": 0,
-        "local_temperature": 16.6,
+        "local_temperature": 17.1,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
@@ -130,7 +130,7 @@
         },
         "linkquality": 248,
         "temperature_sensor_select": "internal",
-        "external_temperature_input": 15.9,
+        "external_temperature_input": 18.2,
         "temperature_accuracy": -1,
         "update": {
             "state": "idle",
@@ -194,9 +194,9 @@
     },
     "0x38398ffffe565011": {
         "battery": 100,
-        "temperature": 16.86,
-        "humidity": 52.12,
-        "co2": 536,
+        "temperature": 18.83,
+        "humidity": 56.23,
+        "co2": 849,
         "linkquality": 255
     },
     "0xe406bffffe34f94b": {
@@ -223,11 +223,11 @@
         "valve_opening_limit_voltage": 1755,
         "valve_closing_limit_voltage": 2526,
         "valve_motor_running_voltage": 0,
-        "external_temperature_input": 16.7,
+        "external_temperature_input": 17.6,
         "valve_opening_degree": 100,
         "valve_closing_degree": 100,
         "temperature_accuracy": -1,
-        "local_temperature": 19.6,
+        "local_temperature": 20.1,
         "occupied_heating_setpoint": 7,
         "system_mode": "off",
         "running_state": "idle",
@@ -280,7 +280,7 @@
         }
     },
     "0x00be44fffe6f0d13": {
-        "state": "ON",
+        "state": "OFF",
         "update": {
             "state": "idle",
             "installed_version": 16842784,
@@ -290,8 +290,8 @@
         },
         "linkquality": 240,
         "power_on_behavior": "previous",
-        "brightness": 254,
-        "color_temp": 250,
+        "brightness": 249,
+        "color_temp": 454,
         "color_mode": "color_temp"
     },
     "0x00be44fffeac11d4": {
@@ -302,17 +302,17 @@
             "latest_source": "https://raw.githubusercontent.com/Koenkk/zigbee-OTA/master/images/IKEA/zingo-kt-bulb-hwpwmcs-ws_release_prod_v16842784_32dc5ff1-4fa4-4960-a847-5e548a81047c.ota",
             "latest_release_notes": "https://ww8.ikea.com/ikeahomesmart/releasenotes/releasenotes.html"
         },
-        "state": "ON",
+        "state": "OFF",
         "linkquality": 144,
         "power_on_behavior": "previous",
-        "brightness": 254,
-        "color_temp": 250,
+        "brightness": 249,
+        "color_temp": 454,
         "color_mode": "color_temp"
     },
     "0x64028ffffecf1082": {
-        "state": "ON",
-        "brightness": 254,
-        "color_temp": 250,
+        "state": "OFF",
+        "brightness": 249,
+        "color_temp": 454,
         "color_mode": "color_temp",
         "linkquality": 152,
         "update": {
@@ -324,7 +324,7 @@
         }
     },
     "0x08b95ffffef87bb7": {
-        "battery": 90,
+        "battery": 91,
         "voltage": 1300,
         "update": {
             "state": "available",

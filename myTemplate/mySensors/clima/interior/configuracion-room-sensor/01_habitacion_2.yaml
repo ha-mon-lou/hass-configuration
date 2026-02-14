@@ -4,7 +4,7 @@
       device_class: temperature
       unit_of_measurement: "°C"
       state: >
-        {% set temp = states('sensor.zigbee_sonoff_snzb02_01_temperature') %}
+        {% set temp = states('sensor.sensor.healthy_home_coach_temperature_sensor') %}
         {{ temp | float(none) if temp not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer
 
@@ -13,7 +13,7 @@
       device_class: humidity
       unit_of_measurement: "%"
       state: >
-        {% set hum = states('sensor.zigbee_sonoff_snzb02_01_humidity') %}
+        {% set hum = states('sensor.healthy_home_coach_humidity_sensor') %}
         {{ hum | float(none) | round(2) if hum not in ['unknown', 'unavailable'] else none }}
       icon: mdi:water-percent
 
@@ -22,6 +22,6 @@
       device_class: temperature
       unit_of_measurement: "°C"
       state: >
-        {% set sens = states('sensor.sensacion_termica_zigbee_sonoff_snzb02_01') %}
+        {% set sens = states('sensor.sensacion_termica_netatmo_01') %}
         {{ sens | float(none) | round(2) if sens not in ['unknown', 'unavailable'] else none }}
       icon: mdi:thermometer

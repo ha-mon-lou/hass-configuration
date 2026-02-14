@@ -16,7 +16,7 @@ moes_zt_b_eu2_01_event:
           sequence:
             - service: switch.turn_on
               target:
-                entity_id: switch.enchufe_habitacion_socket_2
+                entity_id: switch.enchufe_doble_socket_2
 
         - conditions: "{{ evento == '2_double' }}"
           sequence:

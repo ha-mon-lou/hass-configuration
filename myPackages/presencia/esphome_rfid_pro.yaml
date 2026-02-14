@@ -1,5 +1,6 @@
 # ============================================
-# RFID Tags → Personas (Sistema PRO) ✅ FIJO
+# RFID Tags → Personas (Sistema PRO)
+# ✅ template-moderno 14/02/2026
 # ============================================
 
 input_text:
@@ -20,17 +21,15 @@ input_select:
     initial: "Desconocido"
     icon: mdi:account-group
 
-sensor:
-  - platform: template
-    sensors:
-      rfid_persona_actual:
-        friendly_name: "Persona detectada"
-        unique_id: rfid_persona_actual
-        value_template: "{{ states('input_select.rfid_persona') }}"
+template:
+  - sensor:
+      - unique_id: rfid_persona_actual
+        name: "Persona detectada"
+        state: "{{ states('input_select.rfid_persona') }}"
 
 script:
   lookup_rfid_persona:
-    alias: "🔍 Buscar persona por RFID"
+    alias: "Buscar persona por RFID"
     fields:
       tag_id:
         description: "UID del tag RFID (opcional)"
@@ -55,14 +54,9 @@ script:
           entity_id: input_select.rfid_persona
         data:
           option: "{{ persona }}"
-      # - service: persistent_notification.create
-      #   data:
-      #     title: "RFID Detectado"
-      #     message: "Tag: {{ tag_id|default(states('input_text.rfid_tag_last_pro')) }} → {{ persona }}"
 
-# Automatizaciones (tu original + delay)
 automation:
-  - alias: "📥 Guardar UID RFID"
+  - alias: "Guardar UID RFID"
     trigger:
       - platform: state
         entity_id: sensor.esp32_rfid_rfid_tag
@@ -75,10 +69,10 @@ automation:
           entity_id: input_text.rfid_tag_last_pro
         data:
           value: "{{ trigger.to_state.state }}"
-      - delay: "00:00:00.1" # ← 100ms para que se guarde
+      - delay: "00:00:00.1"
       - service: script.lookup_rfid_persona
 
-  - alias: "🕒 Reset RFID inactivo"
+  - alias: "Reset RFID inactivo"
     trigger:
       - platform: state
         entity_id: sensor.esp32_rfid_rfid_tag

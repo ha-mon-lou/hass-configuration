@@ -1,15 +1,17 @@
-sensor:
-  - platform: template
-    sensors:
-      esp32_btproxy_areas:
-        friendly_name: "Áreas con ESP32 Proxy activo"
-        value_template: >
-          {% set entities = states.light | map(attribute='entity_id') | list %}
-          {% set areas = entities
-            | select('match', '^light\.esp32_btproxy_.*_led_area$')
-            | map('regex_replace', '^light\.esp32_btproxy_(.*?)_led_area$', '\\1')
-            | unique | list %}
-          {{ areas | join(',') }}
+# ============================================
+# ✅ template-moderno 14/02/2026
+# ============================================
+
+template:
+- sensor:
+  - default_entity_id: sensor.esp32_btproxy_areas
+  - unique_id: esp32_btproxy_areas
+    name: Áreas con ESP32 Proxy activo
+    state: "{% set entities = states.light | map(attribute='entity_id') | list %}
+      {% set areas = entities\n  | select('match', '^light\\.esp32_btproxy_.*_led_area$')\n
+      \ | map('regex_replace', '^light\\.esp32_btproxy_(.*?)_led_area$', '\\\\1')\n
+      \ | unique | list %}\n{{ areas | join(',') }}"
+
 
 automation:
   - alias: "Encender y apagar leds ESP32 Proxy según ubicación y áreas activas"

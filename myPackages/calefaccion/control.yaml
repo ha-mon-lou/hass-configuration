@@ -1,162 +1,161 @@
 ############################################################
-# PACKAGE FINAL 2025.x: CONTROL DE CALEFACCIÓN CON TRVS
+# PACKAGE DEFINITIVO 2025.x
+# CONTROL CENTRALIZADO DE CALEFACCIÓN CON TRVs
+# ✅ template-moderno 14/02/2026
 ############################################################
 
 ############################################################
-# 1) BINARY SENSOR DE DEMANDA DE CALEFACCIÓN
+# 1) TEMPLATE ENTITIES
 ############################################################
-binary_sensor:
-  - platform: template
-    sensors:
-      demanda_calefaccion:
-        friendly_name: "Demanda de calefacción"
+template:
+  ##########################################################
+  # DEMANDA REAL DE CALEFACCIÓN
+  ##########################################################
+  - binary_sensor:
+      - name: "Demanda de calefacción"
+        unique_id: demanda_calefaccion
         device_class: heat
-        value_template: >-
-          {% macro macro_trvs(parametroTemperatura, rango='max', margen=0.3, solo_demanda=true) %}
-            {% set trvs_list = expand('group.lista_trvs') | map(attribute='entity_id') | list %}
-            {% set temps = namespace(lista=[]) %}
-            {% for trv in trvs_list %}
-              {% set modo = states(trv) | lower %}
-              {% set t_act = state_attr(trv, 'current_temperature') %}
-              {% set t_obj = state_attr(trv, 'temperature') %}
-              {% set valor = state_attr(trv, parametroTemperatura) %}
-              {% if modo in ['heat','auto'] and valor is number
-                    and (not solo_demanda
-                         or (t_act is number and t_obj is number and t_act < (t_obj - margen))) %}
-                {% set temps.lista = temps.lista + [valor] %}
-              {% endif %}
-            {% endfor %}
-            {% set sensorTemperatura = 'sensor.temperatura_interior' %}
-            {% if parametroTemperatura == 'temperature' %}
-              {% set sensorTemperatura = 'sensor.temperatura_caldera' %}
-            {% endif %}
-            {% if rango == 'max' %}
-              {{ temps.lista | max if temps.lista | length > 0 else states(sensorTemperatura) }}
-            {% else %}
-              {{ temps.lista | min if temps.lista | length > 0 else states(sensorTemperatura) }}
-            {% endif %}
-          {% endmacro %}
-          {{ macro_trvs('current_temperature') != states('sensor.temperatura_caldera') }}
+        state: >
+          {% set margen = 0.3 %}
+          {% set trvs = expand('group.lista_trvs') %}
+          {% set activa = namespace(valor=false) %}
 
-############################################################
-# 2) SENSORES DE TEMPERATURA AGREGADA (OPCIONAL)
-############################################################
-sensor:
-  - platform: template
-    sensors:
-      temp_trv_max:
-        friendly_name: "Temperatura máxima TRVs"
+          {% for trv in trvs %}
+            {% set modo = states(trv.entity_id) | lower %}
+            {% set t_actual = state_attr(trv.entity_id, 'current_temperature') %}
+            {% set t_objetivo = state_attr(trv.entity_id, 'temperature') %}
+
+            {% if modo in ['heat','auto']
+                  and t_actual is number
+                  and t_objetivo is number
+                  and t_actual < (t_objetivo - margen) %}
+              {% set activa.valor = true %}
+            {% endif %}
+          {% endfor %}
+
+          {{ activa.valor }}
+
+  ##########################################################
+  # TEMPERATURAS AGREGADAS TRVs
+  ##########################################################
+  - sensor:
+      - name: "Temperatura máxima TRVs"
+        unique_id: temp_trv_max
         unit_of_measurement: "°C"
-        value_template: >-
-          {% macro macro_trvs(parametroTemperatura, rango='max', margen=0.3, solo_demanda=false) %}
-            {% set trvs_list = expand('group.lista_trvs') | map(attribute='entity_id') | list %}
-            {% set temps = namespace(lista=[]) %}
-            {% for trv in trvs_list %}
-              {% set modo = states(trv) | lower %}
-              {% set valor = state_attr(trv, parametroTemperatura) %}
-              {% if modo in ['heat','auto'] and valor is number %}
-                {% set temps.lista = temps.lista + [valor] %}
-              {% endif %}
-            {% endfor %}
-            {% if rango == 'max' %}
-              {{ temps.lista | max if temps.lista | length > 0 else states('sensor.temperatura_caldera') }}
-            {% else %}
-              {{ temps.lista | min if temps.lista | length > 0 else states('sensor.temperatura_caldera') }}
-            {% endif %}
-          {% endmacro %}
-          {{ macro_trvs('current_temperature','max') }}
+        state: >
+          {% set trvs = expand('group.lista_trvs') %}
+          {% set valores = namespace(lista=[]) %}
 
-      temp_trv_min:
-        friendly_name: "Temperatura mínima TRVs"
-        unit_of_measurement: "°C"
-        value_template: >-
-          {% macro macro_trvs(parametroTemperatura, rango='min', margen=0.3, solo_demanda=false) %}
-            {% set trvs_list = expand('group.lista_trvs') | map(attribute='entity_id') | list %}
-            {% set temps = namespace(lista=[]) %}
-            {% for trv in trvs_list %}
-              {% set modo = states(trv) | lower %}
-              {% set valor = state_attr(trv, parametroTemperatura) %}
-              {% if modo in ['heat','auto'] and valor is number %}
-                {% set temps.lista = temps.lista + [valor] %}
-              {% endif %}
-            {% endfor %}
-            {% if rango == 'min' %}
-              {{ temps.lista | min if temps.lista | length > 0 else states('sensor.temperatura_caldera') }}
-            {% else %}
-              {{ temps.lista | max if temps.lista | length > 0 else states('sensor.temperatura_caldera') }}
+          {% for trv in trvs %}
+            {% set modo = states(trv.entity_id) | lower %}
+            {% set valor = state_attr(trv.entity_id, 'current_temperature') %}
+            {% if modo in ['heat','auto'] and valor is number %}
+              {% set valores.lista = valores.lista + [valor] %}
             {% endif %}
-          {% endmacro %}
-          {{ macro_trvs('current_temperature','min') }}
+          {% endfor %}
+
+          {{ valores.lista | max if valores.lista | length > 0
+             else states('sensor.temperatura_interior') | float(0) }}
+
+      - name: "Temperatura mínima TRVs"
+        unique_id: temp_trv_min
+        unit_of_measurement: "°C"
+        state: >
+          {% set trvs = expand('group.lista_trvs') %}
+          {% set valores = namespace(lista=[]) %}
+
+          {% for trv in trvs %}
+            {% set modo = states(trv.entity_id) | lower %}
+            {% set valor = state_attr(trv.entity_id, 'current_temperature') %}
+            {% if modo in ['heat','auto'] and valor is number %}
+              {% set valores.lista = valores.lista + [valor] %}
+            {% endif %}
+          {% endfor %}
+
+          {{ valores.lista | min if valores.lista | length > 0
+             else states('sensor.temperatura_interior') | float(0) }}
 
 ############################################################
-# 3) AUTOMATIZACIÓN DE CALDERA
+# 2) CONTROL DE CALDERA (DESACOPLADO)
 ############################################################
 automation:
-  - alias: Caldera por demanda TRVs + Climate Virtual
-    id: caldera_por_demanda
+  - alias: "Caldera - Control por demanda TRVs"
+    id: caldera_control_por_demanda_trvs
+    mode: single
+
     trigger:
       - platform: state
         entity_id: binary_sensor.demanda_calefaccion
-    condition:
-      - condition: state
-        entity_id: climate.termostato_virtual
-        state: ["heat", "auto"] # solo funciona si climate_virtual está activo
+
     action:
       - choose:
-          # Alguna TRV demanda → encender caldera
+          ##################################################
+          # ENCENDER CALDERA
+          ##################################################
           - conditions:
               - condition: state
                 entity_id: binary_sensor.demanda_calefaccion
                 state: "on"
             sequence:
-              - service: switch.turn_on
+              - action: switch.turn_on
                 target:
                   entity_id: switch.alias_caldera
-          # Ninguna TRV demanda → apagar caldera
+
+          ##################################################
+          # APAGAR CALDERA
+          ##################################################
           - conditions:
               - condition: state
                 entity_id: binary_sensor.demanda_calefaccion
                 state: "off"
             sequence:
-              - service: switch.turn_off
+              - action: switch.turn_off
                 target:
                   entity_id: switch.alias_caldera
-    mode: single
 
   ############################################################
-  # 4) INTEGRACIÓN CON TU SCHEDULER PROFESIONAL
+  # 3) SCHEDULER → CONTROLA EL CLIMATE VIRTUAL
   ############################################################
-  - id: "scheduler_calefaccion_on"
-    alias: Scheduler calefaccion on
+
+  - id: scheduler_calefaccion_on
+    alias: Scheduler calefacción ON
+    mode: single
+
     trigger:
       - platform: state
-        entity_id:
-          - schedule.calefaccion_schedule
+        entity_id: schedule.calefaccion_schedule
         to: "on"
+
     condition:
       - condition: state
         entity_id: input_boolean.invierno
         state: "on"
+
     action:
-      - service: climate.set_temperature
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.termostato_virtual
         data:
-          temperature: "{{ states('input_number.nivel_sensacion_termica_ideal') }}"
+          hvac_mode: heat
+
+      - action: climate.set_temperature
+        target:
+          entity_id: climate.termostato_virtual
+        data:
+          temperature: "{{ states('input_number.nivel_sensacion_termica_ideal') | float }}"
+
+  - id: scheduler_calefaccion_off
+    alias: Scheduler calefacción OFF
     mode: single
 
-  - id: "scheduler_calefaccion_off"
-    alias: Scheduler calefaccion off
     trigger:
       - platform: state
-        entity_id:
-          - schedule.calefaccion_schedule
+        entity_id: schedule.calefaccion_schedule
         to: "off"
-    condition: []
+
     action:
-      - sequence:
-          - action: script.control_calefaccion
-            data:
-              mode: "off"
-              temperatura: "{{ states('sensor.temperatura_interior') }}"
-    mode: single
+      - action: climate.set_hvac_mode
+        target:
+          entity_id: climate.termostato_virtual
+        data:
+          hvac_mode: "off"

@@ -1,0 +1,14 @@
+- alias: Abrir puerta con botón Shelly BLU a16c tough
+  id: shelly_blu_a16c_abrir_puerta
+  trigger:
+    - platform: state
+      entity_id: event.bthome_sensor_a16c_button
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.to_state.attributes.event_type == 'double_press' }}
+  action:
+    - service: script.ikea_tradfri_toggle
+      data:
+        luz_objetivo: light.columna_led_entrada
+    - service: script.abrir_puerta_principal

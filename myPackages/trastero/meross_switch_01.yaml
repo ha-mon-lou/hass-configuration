@@ -1,37 +1,79 @@
+############################################################
+# PACKAGE 2025.x - MEROSS SWITCH 01 (MSS305)
+# ✅ template-moderno 17/02/2026
+############################################################
+
+
+############################################################
+# 1) TEMPLATE SENSORS (FORMATO MODERNO)
+############################################################
 template:
+
   - sensor:
+
+      ########################################################
+      # CONSUMO INSTANTÁNEO (W)
+      ########################################################
       - name: "Meross Switch 01 Consumption"
         unique_id: meross_switch_01_consumption
         unit_of_measurement: "W"
         device_class: power
+        state_class: measurement
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_consumption') | float | round(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_consumption') | float(0) | round(2) }}
+        availability: >
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_consumption') not in ['unknown','unavailable'] }}
 
+
+      ########################################################
+      # CORRIENTE (A)
+      ########################################################
       - name: "Meross Switch 01 Current"
         unique_id: meross_switch_01_current
         unit_of_measurement: "A"
         device_class: current
+        state_class: measurement
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_current') | float | round(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_current') | float(0) | round(2) }}
+        availability: >
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_current') not in ['unknown','unavailable'] }}
 
+
+      ########################################################
+      # ENERGÍA ACUMULADA (kWh)
+      ########################################################
       - name: "Meross Switch 01 Energy"
         unique_id: meross_switch_01_energy
         unit_of_measurement: "kWh"
         device_class: energy
         state_class: total_increasing
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_energy') | float | round(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_energy') | float(0) | round(3) }}
+        availability: >
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_energy') not in ['unknown','unavailable'] }}
 
+
+      ########################################################
+      # POTENCIA (W)
+      ########################################################
       - name: "Meross Switch 01 Power"
         unique_id: meross_switch_01_power
         unit_of_measurement: "W"
         device_class: power
+        state_class: measurement
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_power') | float | round(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_power') | float(0) | round(2) }}
+        availability: >
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_power') not in ['unknown','unavailable'] }}
 
+
+      ########################################################
+      # POTENCIA EN ESCALA LOG
+      ########################################################
       - name: "Meross Switch 01 Power Log"
         unique_id: meross_switch_01_power_log
         unit_of_measurement: "log(W)"
+        state_class: measurement
         state: >
           {% set val = states('sensor.meross_switch_01_power') | float(0) %}
           {% if val > 0 %}
@@ -40,47 +82,71 @@ template:
             0
           {% endif %}
         attributes:
-          original: "{{ states('sensor.meross_switch_01_power') }}"
+          original_power_w: "{{ states('sensor.meross_switch_01_power') }}"
 
+
+      ########################################################
+      # SEÑAL WIFI (dBm)
+      ########################################################
       - name: "Meross Switch 01 Signal Strength"
         unique_id: meross_switch_01_signal_strength
         unit_of_measurement: "dBm"
-        device_class: signal_strength
+        state_class: measurement
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_signal_strength') | float | round(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_signal_strength') | float(0) | round(1) }}
+        availability: >
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_signal_strength') not in ['unknown','unavailable'] }}
 
+
+      ########################################################
+      # VOLTAJE (V)
+      ########################################################
       - name: "Meross Switch 01 Voltage"
         unique_id: meross_switch_01_voltage
         unit_of_measurement: "V"
         device_class: voltage
+        state_class: measurement
         state: >
-          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_voltage') | float | round(2) }}
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_voltage') | float(0) | round(1) }}
+        availability: >
+          {{ states('sensor.smart_switch_24100980527555512003c4e7ae0d10f5_voltage') not in ['unknown','unavailable'] }}
 
-switch:
-  - platform: template
-    switches:
-      meross_switch_01_config_overtemp_enable:
+
+
+############################################################
+# 2) TEMPLATE SWITCHES (FORMATO MODERNO)
+############################################################
+  - switch:
+
+      ########################################################
+      # PROTECCIÓN SOBRECALENTAMIENTO
+      ########################################################
+      - name: "Meross Switch 01 Config Overtemp Enable"
         unique_id: meross_switch_01_config_overtemp_enable
-        friendly_name: "Meross Switch 01 Config Overtemp Enable"
-        value_template: "{{ is_state('switch.smart_switch_24100980527555512003c4e7ae0d10f5_config_overtemp_enable', 'on') }}"
+        state: >
+          {{ is_state('switch.smart_switch_24100980527555512003c4e7ae0d10f5_config_overtemp_enable', 'on') }}
         turn_on:
-          service: switch.turn_on
+          action: switch.turn_on
           target:
             entity_id: switch.smart_switch_24100980527555512003c4e7ae0d10f5_config_overtemp_enable
         turn_off:
-          service: switch.turn_off
+          action: switch.turn_off
           target:
             entity_id: switch.smart_switch_24100980527555512003c4e7ae0d10f5_config_overtemp_enable
 
-      meross_switch_01_outlet:
+
+      ########################################################
+      # OUTLET PRINCIPAL
+      ########################################################
+      - name: "Meross Switch 01 Outlet"
         unique_id: meross_switch_01_outlet
-        friendly_name: "Meross Switch 01 Outlet"
-        value_template: "{{ is_state('switch.smart_switch_24100980527555512003c4e7ae0d10f5_outlet', 'on') }}"
+        state: >
+          {{ is_state('switch.smart_switch_24100980527555512003c4e7ae0d10f5_outlet', 'on') }}
         turn_on:
-          service: switch.turn_on
+          action: switch.turn_on
           target:
             entity_id: switch.smart_switch_24100980527555512003c4e7ae0d10f5_outlet
         turn_off:
-          service: switch.turn_off
+          action: switch.turn_off
           target:
             entity_id: switch.smart_switch_24100980527555512003c4e7ae0d10f5_outlet

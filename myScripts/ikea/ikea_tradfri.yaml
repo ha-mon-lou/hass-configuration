@@ -1,10 +1,21 @@
 ikea_tradfri_on:
   alias: "IKEA Luz On Genérica"
+  mode: parallel
   sequence:
-    - service: light.turn_on
-      target:
-        entity_id: "{{ luz_objetivo }}"
-  mode: parallel # Permite encender varias luces a la vez si se desea
+    - choose:
+        - conditions: "{{ brillo is defined or kelvin is defined or transition is defined }}"
+          sequence:
+            - service: light.turn_on
+              target:
+                entity_id: "{{ luz_objetivo }}"
+              data:
+                brightness: "{{ brillo | int if brillo is defined else omit }}"
+                color_temp_kelvin: "{{ kelvin | int if kelvin is defined else omit }}"
+                transition: "{{ transition | int if transition is defined else omit }}"
+      default:
+        - service: light.turn_on
+          target:
+            entity_id: "{{ luz_objetivo }}"
 
 ikea_tradfri_off:
   alias: "IKEA Luz Off Genérica"
@@ -18,15 +29,34 @@ ikea_tradfri_off:
 
 ikea_tradfri_toggle:
   alias: "IKEA Luz Toggle Genérica"
+  mode: parallel
+  fields:
+    luz_objetivo:
+      description: Entidad light.*
+      required: true
+    brillo:
+      description: Brillo 0-255
+      required: false
+    kelvin:
+      description: Temperatura en mired/K
+      required: false
+    transition:
+      description: Tiempo de transición en segundos
+      required: false
   sequence:
-    - if:
-        - condition: template
-          value_template: "{{ is_state(luz_objetivo, 'on') }}"
-      then:
-        - service: script.ikea_tradfri_off
+    - choose:
+        - conditions: "{{ is_state(luz_objetivo, 'on') }}"
+          sequence:
+            - service: light.turn_off
+              target:
+                entity_id: "{{ luz_objetivo }}"
+              data:
+                transition: "{{ transition | int if transition is defined else 1 }}"
+      default:
+        - service: light.turn_on
+          target:
+            entity_id: "{{ luz_objetivo }}"
           data:
-            luz_objetivo: "{{ luz_objetivo }}"
-      else:
-        - service: script.ikea_tradfri_on
-          data:
-            luz_objetivo: "{{ luz_objetivo }}"
+            brightness: "{{ brillo | int if brillo is defined else 255 }}"
+            color_temp: "{{ kelvin | int if kelvin is defined else 250 }}"
+            transition: "{{ transition | int if transition is defined else 1 }}"

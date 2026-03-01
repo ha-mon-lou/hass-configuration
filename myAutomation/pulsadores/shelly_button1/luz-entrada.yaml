@@ -8,10 +8,10 @@
       value_template: >
         {{ trigger.to_state.attributes.event_type == 'press' }}
   action:
-    - service: script.ikea_tradfri_on
+    - service: script.ikea_tradfri_toggle
       data:
         luz_objetivo: light.columna_led_entrada
-    - service: script.abrir_puerta_principal
+  mode: single
 
 - alias: Retardo Abrir puerta con botón Shelly BLU 908F
   id: shelly_blu_908f_abrir_puerta_retardo
@@ -26,17 +26,7 @@
     - service: script.ikea_tradfri_on
       data:
         luz_objetivo: light.columna_led_entrada
-    - delay: 00:01:00
+    - delay: 00:00:10
     - service: script.abrir_puerta_principal
+  mode: single
 
-- alias: Cerrar puerta con botón Shelly BLU 908F
-  id: shelly_blu_908f_cerrar_puerta
-  trigger:
-    - platform: state
-      entity_id: event.shelly_blu_button1_908f_button
-  condition:
-    - condition: template
-      value_template: >
-        {{ trigger.to_state.attributes.event_type == 'press' }}
-  action:
-    - service: script.cerrar_puerta_principal

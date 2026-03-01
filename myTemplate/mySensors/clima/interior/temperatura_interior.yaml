@@ -11,23 +11,3 @@
         {% from 'mediana_grupo.jinja' import mediana_grupo %}
         {{ mediana_grupo('group.grupo_termometros_interior') }}
       icon: mdi:thermometer
-
-- sensor:
-    - name: "Temperatura interior máxima en 24h"
-      unique_id: "temperatura_interior_maxima_24h"
-      platform: statistics
-      entity_id: sensor.temperatura_interior
-      state_characteristic: value_max
-      max_age:
-        hours: 24
-      sampling_size: 200
-
-- sensor:
-    - name: "Temperatura interior mínima en 24h"
-      unique_id: "temperatura_interior_minima_24h"
-      platform: statistics
-      entity_id: sensor.temperatura_interior
-      state_characteristic: value_min
-      max_age:
-        hours: 24
-      sampling_size: 200

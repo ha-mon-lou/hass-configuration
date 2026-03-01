@@ -1,0 +1,252 @@
+############################################################
+# PACKAGE COMPLETO - AC PANASONIC ION
+# VERSION BIDIRECCIONAL ROBUSTA - CORREGIDA
+# ✅ Sin loops, sin IR fantasma
+# ✅ 28/02/2026
+############################################################
+
+############################################################
+# HELPERS
+############################################################
+
+input_boolean:
+  ac_panasonic_ion_encendido:
+    name: Estado del A/C
+    icon: mdi:air-conditioner
+
+input_select:
+  ac_panasonic_ion_modo:
+    name: Modo del A/C
+    options:
+      - cool
+      - "off"
+    initial: "off"
+    icon: mdi:fan
+
+input_number:
+  ac_panasonic_ion_temporizador_minutos:
+    name: Temporizador (minutos)
+    min: 1
+    max: 180
+    step: 1
+    unit_of_measurement: "min"
+
+input_text:
+  ac_panasonic_ion_ultima_desconexion:
+    name: Última desconexión del A/C
+
+timer:
+  ac_panasonic_ion_temporizador:
+    duration: "00:00:00"
+
+############################################################
+# SENSORES
+############################################################
+
+template:
+  - sensor:
+      - name: "AC Panasonic Ion Sensacion Termica"
+        unique_id: ac_panasonic_ion_sensacion_termica
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: >
+          {{ states('sensor.cfg_sensacion_termica_living_1') | float(0) }}
+        availability: >
+          {{ states('sensor.cfg_sensacion_termica_living_1') not in ['unknown','unavailable'] }}
+
+############################################################
+# CLIMATE VIRTUAL
+############################################################
+
+climate:
+  - platform: generic_thermostat
+    name: Aire Acondicionado Virtual
+    heater: input_boolean.ac_panasonic_ion_encendido
+    target_sensor: sensor.ac_panasonic_ion_sensacion_termica
+    target_temp: 24
+    min_temp: 18
+    max_temp: 30
+    ac_mode: true
+    cold_tolerance: 0.3
+    hot_tolerance: 0.3
+    min_cycle_duration:
+      minutes: 3
+    initial_hvac_mode: "off"
+
+############################################################
+# AUTOMATIZACIONES
+############################################################
+
+automation:
+  ############################################################
+  # 1️⃣ CLIMATE → HELPER
+  # GUARDA: solo actúa si el helper tiene un valor distinto,
+  # para cortar el loop con la auto 2.
+  ############################################################
+
+  - alias: PKG AC Sync Climate a Helper
+    trigger:
+      - trigger: state
+        entity_id: climate.aire_acondicionado_virtual
+        attribute: hvac_mode
+
+    action:
+      - choose:
+          # Climate pasó a COOL
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ trigger.to_state.attributes.hvac_mode == 'cool'
+                     and states('input_select.ac_panasonic_ion_modo') != 'cool' }}
+            sequence:
+              - action: input_select.select_option
+                target:
+                  entity_id: input_select.ac_panasonic_ion_modo
+                data:
+                  option: cool
+
+          # Climate pasó a OFF
+          - conditions:
+              - condition: template
+                value_template: >
+                  {{ trigger.to_state.attributes.hvac_mode == 'off'
+                     and states('input_select.ac_panasonic_ion_modo') != 'off' }}
+            sequence:
+              - action: input_select.select_option
+                target:
+                  entity_id: input_select.ac_panasonic_ion_modo
+                data:
+                  option: "off"
+
+  ############################################################
+  # 2️⃣ HELPER → CLIMATE
+  # GUARDA: solo actúa si el climate tiene un modo distinto,
+  # para cortar el loop con la auto 1.
+  ############################################################
+
+  - alias: PKG AC Sync Helper a Climate
+    trigger:
+      - trigger: state
+        entity_id: input_select.ac_panasonic_ion_modo
+
+    action:
+      - choose:
+          # Helper pasó a COOL
+          - conditions:
+              - condition: state
+                entity_id: input_select.ac_panasonic_ion_modo
+                state: cool
+              - condition: template
+                value_template: >
+                  {{ state_attr('climate.aire_acondicionado_virtual', 'hvac_mode') != 'cool' }}
+            sequence:
+              - action: climate.set_hvac_mode
+                target:
+                  entity_id: climate.aire_acondicionado_virtual
+                data:
+                  hvac_mode: cool
+
+          # Helper pasó a OFF
+          - conditions:
+              - condition: state
+                entity_id: input_select.ac_panasonic_ion_modo
+                state: "off"
+              - condition: template
+                value_template: >
+                  {{ state_attr('climate.aire_acondicionado_virtual', 'hvac_mode') != 'off' }}
+            sequence:
+              - action: climate.set_hvac_mode
+                target:
+                  entity_id: climate.aire_acondicionado_virtual
+                data:
+                  hvac_mode: off
+
+  ############################################################
+  # 3️⃣ HELPER ON/OFF → AIRE FÍSICO (IR)
+  # GUARDA: solo envía IR si Meross tiene corriente.
+  # Evita enviar IR cuando el equipo está sin energía.
+  ############################################################
+
+  - alias: PKG AC Ejecutar IR al cambiar encendido
+    trigger:
+      - trigger: state
+        entity_id: input_boolean.ac_panasonic_ion_encendido
+
+    condition:
+      - condition: state
+        entity_id: switch.meross_switch_02_outlet
+        state: "on"
+
+    action:
+      - action: script.ac_panasonic_ion_power
+
+  ############################################################
+  # 4️⃣ MEROSS → CORREGIR CLIMATE (AUTOCORRECCIÓN)
+  # GUARDA en apagado: solo apaga boolean si estaba encendido,
+  # evita disparar auto 3 innecesariamente.
+  # En encendido: restaura modo cool si el helper lo indica.
+  ############################################################
+
+  - alias: PKG AC Sync Meross a Climate
+    trigger:
+      - trigger: state
+        entity_id: switch.meross_switch_02_outlet
+
+    action:
+      - choose:
+          # Meross se APAGÓ → apagar todo
+          - conditions:
+              - condition: state
+                entity_id: switch.meross_switch_02_outlet
+                state: "off"
+            sequence:
+              - action: climate.set_hvac_mode
+                target:
+                  entity_id: climate.aire_acondicionado_virtual
+                data:
+                  hvac_mode: off
+              - condition: state
+                entity_id: input_boolean.ac_panasonic_ion_encendido
+                state: "on"
+              - action: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.ac_panasonic_ion_encendido
+
+          # Meross se ENCENDIÓ → restaurar si el helper indica cool
+          - conditions:
+              - condition: state
+                entity_id: switch.meross_switch_02_outlet
+                state: "on"
+              - condition: state
+                entity_id: input_select.ac_panasonic_ion_modo
+                state: cool
+            sequence:
+              - action: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.ac_panasonic_ion_encendido
+              - action: climate.set_hvac_mode
+                target:
+                  entity_id: climate.aire_acondicionado_virtual
+                data:
+                  hvac_mode: cool
+
+############################################################
+# SCRIPTS
+############################################################
+
+script:
+  ac_panasonic_ion_power:
+    alias: PKG AC Aire acondicionado power
+    mode: restart
+    sequence:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.meross_switch_02_outlet
+
+      - delay: "00:00:05"
+
+      - action: script.envia_comando_broadlink
+        data:
+          dispositivo: "aire_acondicionado"
+          comando: "power"

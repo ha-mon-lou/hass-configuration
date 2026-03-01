@@ -29,23 +29,3 @@
         {% from '1oo2.jinja' import macro_1oo2 %}
         {{ macro_1oo2('sensor.temperatura_localidad_meteocat','sensor.temperatura_localidad') }}
       icon: mdi:thermometer
-
-- sensor:
-    - name: "Temperatura exterior máxima en 24h"
-      unique_id: "temperatura_exterior_maxima_24h"
-      platform: statistics
-      entity_id: sensor.temperatura_exterior
-      state_characteristic: value_max
-      max_age:
-        hours: 24
-      sampling_size: 200
-
-- sensor:
-    - name: "Temperatura exterior mínima en 24h"
-      unique_id: "temperatura_exterior_minima_24h"
-      platform: statistics
-      entity_id: sensor.temperatura_exterior
-      state_characteristic: value_min
-      max_age:
-        hours: 24
-      sampling_size: 200

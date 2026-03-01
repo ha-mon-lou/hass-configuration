@@ -4,7 +4,6 @@
 # ✅ template-moderno 17/02/2026
 ############################################################
 
-
 ############################################################
 # HELPERS
 ############################################################
@@ -40,16 +39,12 @@ timer:
   ac_panasonic_ion_temporizador:
     duration: "00:00:00"
 
-
-
 ############################################################
 # SENSORES
 ############################################################
 
 template:
-
   - sensor:
-
       - name: "AC Panasonic Ion Sensacion Termica"
         unique_id: ac_panasonic_ion_sensacion_termica
         unit_of_measurement: "°C"
@@ -59,8 +54,6 @@ template:
           {{ states('sensor.cfg_sensacion_termica_living_1') | float(0) }}
         availability: >
           {{ states('sensor.cfg_sensacion_termica_living_1') not in ['unknown','unavailable'] }}
-
-
 
 ############################################################
 # CLIMATE VIRTUAL
@@ -81,17 +74,14 @@ climate:
       minutes: 3
     initial_hvac_mode: "off"
 
-
-
 ############################################################
 # AUTOMATIZACIONES
 ############################################################
 
 automation:
-
-############################################################
-# 1️⃣ CLIMATE → HELPER (SINCRONIZACIÓN)
-############################################################
+  ############################################################
+  # 1️⃣ CLIMATE → HELPER (SINCRONIZACIÓN)
+  ############################################################
 
   - alias: PKG AC Sync Climate a Helper
     trigger:
@@ -101,7 +91,6 @@ automation:
 
     action:
       - choose:
-
           - conditions:
               - condition: template
                 value_template: "{{ trigger.to_state.attributes.hvac_mode == 'cool' }}"
@@ -128,11 +117,9 @@ automation:
                 target:
                   entity_id: input_boolean.ac_panasonic_ion_encendido
 
-
-
-############################################################
-# 2️⃣ HELPER → CLIMATE
-############################################################
+  ############################################################
+  # 2️⃣ HELPER → CLIMATE
+  ############################################################
 
   - alias: PKG AC Sync Helper a Climate
     trigger:
@@ -141,7 +128,6 @@ automation:
 
     action:
       - choose:
-
           - conditions:
               - condition: state
                 entity_id: input_select.ac_panasonic_ion_modo
@@ -164,11 +150,9 @@ automation:
                 data:
                   hvac_mode: off
 
-
-
-############################################################
-# 3️⃣ HELPER ON/OFF → AIRE FÍSICO (IR)
-############################################################
+  ############################################################
+  # 3️⃣ HELPER ON/OFF → AIRE FÍSICO (IR)
+  ############################################################
 
   - alias: PKG AC Ejecutar IR al cambiar encendido
     trigger:
@@ -178,11 +162,9 @@ automation:
     action:
       - action: script.ac_panasonic_ion_power
 
-
-
-############################################################
-# 4️⃣ MEROSS → CORREGIR CLIMATE (AUTOCORRECCIÓN)
-############################################################
+  ############################################################
+  # 4️⃣ MEROSS → CORREGIR CLIMATE (AUTOCORRECCIÓN)
+  ############################################################
 
   - alias: PKG AC Sync Meross a Climate
     trigger:
@@ -191,7 +173,6 @@ automation:
 
     action:
       - choose:
-
           - conditions:
               - condition: state
                 entity_id: switch.meross_switch_02_outlet
@@ -214,57 +195,12 @@ automation:
               - action: input_boolean.turn_on
                 target:
                   entity_id: input_boolean.ac_panasonic_ion_encendido
-
-
-
-############################################################
-# 5️⃣ SINCRONIZACIÓN AL REINICIAR HA
-############################################################
-
-  - alias: PKG AC Sync al iniciar Home Assistant
-    trigger:
-      - trigger: homeassistant
-        event: start
-
-    action:
-      - choose:
-
-          - conditions:
-              - condition: state
-                entity_id: switch.meross_switch_02_outlet
-                state: "on"
-            sequence:
-              - action: climate.set_hvac_mode
-                target:
-                  entity_id: climate.aire_acondicionado_virtual
-                data:
-                  hvac_mode: cool
-              - action: input_boolean.turn_on
-                target:
-                  entity_id: input_boolean.ac_panasonic_ion_encendido
-
-          - conditions:
-              - condition: state
-                entity_id: switch.meross_switch_02_outlet
-                state: "off"
-            sequence:
-              - action: climate.set_hvac_mode
-                target:
-                  entity_id: climate.aire_acondicionado_virtual
-                data:
-                  hvac_mode: off
-              - action: input_boolean.turn_off
-                target:
-                  entity_id: input_boolean.ac_panasonic_ion_encendido
-
-
 
 ############################################################
 # SCRIPTS
 ############################################################
 
 script:
-
   ac_panasonic_ion_power:
     alias: PKG AC Aire acondicionado power
     mode: restart

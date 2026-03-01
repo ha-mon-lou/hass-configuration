@@ -8,16 +8,17 @@ moes_zt_b_eu2_01_event:
     - choose:
         - conditions: "{{ evento == '1_single' }}"
           sequence:
-            - service: script.ikea_tradfri_toggle
-              data:
-                luz_objetivo: light.columna_led_entrada
+            - service: switch.toggle
+              target:
+                entity_id: switch.regleta_antela_socket_3
 
         - conditions: "{{ evento == '2_single' }}"
           sequence:
-            - service: switch.turn_on
+            - service: switch.toggle
               target:
                 entity_id: switch.enchufe_doble_socket_2
 
         - conditions: "{{ evento == '2_double' }}"
           sequence:
+            - delay: 00:00:05
             - service: script.escena_living_dormir

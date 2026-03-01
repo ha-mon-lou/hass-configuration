@@ -30,22 +30,3 @@
         {{ macro_1oo2('sensor.humedad_localidad_meteocat','sensor.humedad_localidad') }}
       icon: mdi:calculator
 
-- sensor:
-    - name: "humedad exterior máxima en 24h"
-      unique_id: "humedad_exterior_maxima_24h"
-      platform: statistics
-      entity_id: sensor.humedad_exterior
-      state_characteristic: value_max
-      max_age:
-        hours: 24
-      sampling_size: 200
-
-- sensor:
-    - name: "humedad exterior mínima en 24h"
-      unique_id: "humedad_exterior_minima_24h"
-      platform: statistics
-      entity_id: sensor.humedad_exterior
-      state_characteristic: value_min
-      max_age:
-        hours: 24
-      sampling_size: 200

@@ -1,0 +1,20 @@
+#
+# Sensores statistics de temperatura exterior
+#
+- platform: statistics
+  name: "Temperatura exterior máxima en 24h"
+  unique_id: "temperatura_exterior_maxima_24h"
+  entity_id: sensor.temperatura_exterior
+  state_characteristic: value_max
+  max_age:
+    hours: 24
+  sampling_size: 200
+
+- platform: statistics
+  name: "Temperatura exterior mínima en 24h"
+  unique_id: "temperatura_exterior_minima_24h"
+  entity_id: sensor.temperatura_exterior
+  state_characteristic: value_min
+  max_age:
+    hours: 24
+  sampling_size: 200

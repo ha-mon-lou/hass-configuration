@@ -131,3 +131,8 @@ devices:
     friendly_name: moes_zt_b_eu2_01
 availability:
   enabled: true
+groups:
+  '1':
+    friendly_name: '1'
+  '01':
+    friendly_name: Z2M_ikea_columna_led

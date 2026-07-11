@@ -73,6 +73,8 @@ from .const import (
     ALERT_FILE_STATUS,
     ALERT_WIND,
     ALERT_RAIN_INTENSITY,
+    ALERT_RAIN_INTENSITY_30_MIN,
+    ALERT_RAIN_INTENSITY_3_HOURS,
     ALERT_RAIN,
     ALERT_SEA,
     ALERT_COLD,
@@ -397,6 +399,16 @@ SENSOR_TYPES: tuple[MeteocatSensorEntityDescription, ...] = (
         icon="mdi:alert-outline",
     ),
     MeteocatSensorEntityDescription(
+        key=ALERT_RAIN_INTENSITY_30_MIN,
+        translation_key="alert_rain_intensity_30_min",
+        icon="mdi:alert-outline",
+    ),
+    MeteocatSensorEntityDescription(
+        key=ALERT_RAIN_INTENSITY_3_HOURS,
+        translation_key="alert_rain_intensity_3_hours",
+        icon="mdi:alert-outline",
+    ),
+    MeteocatSensorEntityDescription(
         key=ALERT_RAIN,
         translation_key="alert_rain",
         icon="mdi:alert-outline",
@@ -528,8 +540,13 @@ SENSOR_TYPES: tuple[MeteocatSensorEntityDescription, ...] = (
 async def async_setup_entry(hass, entry, async_add_entities: AddEntitiesCallback) -> None:
     """Set up Meteocat sensors from a config entry."""
     entry_data = hass.data[DOMAIN][entry.entry_id]
+    health = entry_data.get("_health", {})
 
-    # Coordinadores para sensores
+    # Función helper para verificar si un coordinador está operativo
+    def is_coordinator_ok(key: str) -> bool:
+        return key in entry_data and health.get(key, {}).get("status") == "ok"
+
+    # Coordinadores para sensores (siempre obtenidos, incluso degradados)
     sensor_coordinator = entry_data.get("sensor_coordinator")
     sensor_file_coordinator = entry_data.get("sensor_file_coordinator")
     uvi_file_coordinator = entry_data.get("uvi_file_coordinator")
@@ -549,6 +566,11 @@ async def async_setup_entry(hass, entry, async_add_entities: AddEntitiesCallback
     sun_file_coordinator = entry_data.get("sun_file_coordinator")
     moon_coordinator = entry_data.get("moon_coordinator")
     moon_file_coordinator = entry_data.get("moon_file_coordinator")
+
+    # Log de coordinadores degradados
+    degraded = [k for k, v in health.items() if v.get("status") == "degraded"]
+    if degraded:
+        _LOGGER.info("Sensores creados con coordinadores degradados (mostrarán unavailable): %s", degraded)
 
     # Sensores generales
     async_add_entities(
@@ -656,6 +678,8 @@ async def async_setup_entry(hass, entry, async_add_entities: AddEntitiesCallback
         if description.key in {
             ALERT_WIND,
             ALERT_RAIN_INTENSITY,
+            ALERT_RAIN_INTENSITY_30_MIN,
+            ALERT_RAIN_INTENSITY_3_HOURS,
             ALERT_RAIN,
             ALERT_SEA,
             ALERT_COLD,
@@ -673,25 +697,30 @@ async def async_setup_entry(hass, entry, async_add_entities: AddEntitiesCallback
     )
 
     # Sensores cuotas
+    quota_keys = {QUOTA_PREDICCIO, QUOTA_BASIC, QUOTA_XEMA, QUOTA_QUERIES}
+    if lightning_coordinator:
+        quota_keys.add(QUOTA_XDDE)
     async_add_entities(
         MeteocatQuotaSensor(quotes_file_coordinator, description, entry_data)
         for description in SENSOR_TYPES
-        if description.key in {QUOTA_XDDE, QUOTA_PREDICCIO, QUOTA_BASIC, QUOTA_XEMA, QUOTA_QUERIES}
+        if description.key in quota_keys
     )
 
     # Sensores de estado de rayos
-    async_add_entities(
-        MeteocatLightningStatusSensor(lightning_coordinator, description, entry_data)
-        for description in SENSOR_TYPES
-        if description.key == LIGHTNING_FILE_STATUS
-    )
+    if lightning_coordinator:
+        async_add_entities(
+            MeteocatLightningStatusSensor(lightning_coordinator, description, entry_data)
+            for description in SENSOR_TYPES
+            if description.key == LIGHTNING_FILE_STATUS
+        )
 
     # Sensores de rayos en comarca y municipio
-    async_add_entities(
-        MeteocatLightningSensor(lightning_file_coordinator, description, entry_data)
-        for description in SENSOR_TYPES
-        if description.key in {LIGHTNING_REGION, LIGHTNING_TOWN}
-    )
+    if lightning_file_coordinator:
+        async_add_entities(
+            MeteocatLightningSensor(lightning_file_coordinator, description, entry_data)
+            for description in SENSOR_TYPES
+            if description.key in {LIGHTNING_REGION, LIGHTNING_TOWN}
+        )
 
     # Sensor de estado de archivo de sol
     async_add_entities(
@@ -1255,15 +1284,17 @@ class MeteocatHourlyForecastStatusSensor(CoordinatorEntity[MeteocatEntityCoordin
 
         cond1 = days_difference >= min_days
         cond2 = current_time >= min_time
+        cond3 = days_difference >= min_days + 1
 
         _LOGGER.debug(
             "Hourly status → días: %d (≥%d)=%s | hora: %s (≥%s)=%s → %s",
             days_difference, min_days, cond1,
             current_time.strftime("%H:%M"), min_time.strftime("%H:%M"), cond2,
+            min_days + 1, cond3,
             "obsolete" if cond1 and cond2 else "updated"
         )
 
-        if cond1 and cond2:
+        if cond3 or (cond1 and cond2):
             return "obsolete"
         return "updated"
 
@@ -1348,15 +1379,17 @@ class MeteocatDailyForecastStatusSensor(CoordinatorEntity[MeteocatEntityCoordina
 
         cond1 = days_difference >= min_days
         cond2 = current_time >= min_time
+        cond3 = days_difference >= min_days + 1
 
         _LOGGER.debug(
             "Daily status → días: %d (≥%d)=%s | hora: %s (≥%s)=%s → %s",
             days_difference, min_days, cond1,
             current_time.strftime("%H:%M"), min_time.strftime("%H:%M"), cond2,
+            min_days + 1, cond3,
             "obsolete" if cond1 and cond2 else "updated"
         )
 
-        if cond1 and cond2:
+        if cond3 or (cond1 and cond2):
             return "obsolete"
         return "updated"
 
@@ -1451,16 +1484,18 @@ class MeteocatUviStatusSensor(CoordinatorEntity[MeteocatUviCoordinator], SensorE
 
         cond1 = days_difference >= min_days
         cond2 = current_time >= min_time
+        cond3 = days_difference >= min_days + 1
 
         _LOGGER.debug(
             "UVI Status → días: %d (≥%d)=%s | hora: %s (≥%s)=%s → %s",
             days_difference, min_days, cond1,
             current_time.strftime("%H:%M"), min_time.strftime("%H:%M"), cond2,
+            min_days + 1, cond3,
             self._limit_prediccio, quota_level,
-            "obsolete" if cond1 and cond2 else "updated"
+            "obsolete" if cond3 or (cond1 and cond2) else "updated"
         )
 
-        if cond1 and cond2:
+        if cond3 or (cond1 and cond2):
             return "obsolete"
         return "updated"
 
@@ -1645,6 +1680,8 @@ class MeteocatAlertRegionSensor(CoordinatorEntity[MeteocatAlertsRegionCoordinato
     METEOR_MAPPING = {
         "Temps violent": "violent_weather",
         "Intensitat de pluja": "rain_intensity",
+        "Intensitat de pluja en 30 minuts": "rain_intensity_30_min",
+        "Intensitat de pluja en 3 hores": "rain_intensity_3_hours",
         "Acumulació de pluja": "rain_amount",
         "Neu": "snow",
         "Vent": "wind",
@@ -1706,6 +1743,8 @@ class MeteocatAlertMeteorSensor(CoordinatorEntity[MeteocatAlertsRegionCoordinato
     METEOR_MAPPING = {
         ALERT_WIND: "Vent",
         ALERT_RAIN_INTENSITY: "Intensitat de pluja",
+        ALERT_RAIN_INTENSITY_30_MIN: "Intensitat de pluja en 30 minuts",
+        ALERT_RAIN_INTENSITY_3_HOURS: "Intensitat de pluja en 3 hores",
         ALERT_RAIN: "Acumulació de pluja",
         ALERT_SEA: "Estat de la mar",
         ALERT_COLD: "Fred",
@@ -1726,9 +1765,16 @@ class MeteocatAlertMeteorSensor(CoordinatorEntity[MeteocatAlertsRegionCoordinato
         "Ratxa màxima > 30m/s": "wind_30",
         "Ratxa màxima > 25m/s": "wind_25",
         "Ratxa màxima > 20m/s": "wind_20",
+        "Ratxa màxima > 72 km/h (20 m/s)": "wind_72",
+        "Ratxa màxima > 90 km/h (25 m/s)": "wind_90",
+        "Ratxa màxima > 108 km/h (30 m/s)": "wind_108",
+        "Ratxa màxima > 126 km/h (35 m/s)": "wind_126",
+        "Ratxa màxima > 144 km/h (40 m/s)": "wind_144",
         "Pedra de diàmetre > 2 cm": "hail_2_cm",
         "Intensitat > 40 mm / 30 minuts": "intensity_40_30",
         "Intensitat > 20 mm / 30 minuts": "intensity_20_30",
+        "Intensitat > 60 mm / 3 hores": "intensity_60_3",
+        "Intensitat > 90 mm / 3 hores": "intensity_90_3",
         "Acumulada > 200 mm /24 hores": "rain_200_24",
         "Acumulada > 100 mm /24 hores": "rain_100_24",
         "Onades > 4.00 metres (mar brava)": "waves_4",

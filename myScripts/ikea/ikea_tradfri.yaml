@@ -28,35 +28,29 @@ ikea_tradfri_off:
   mode: parallel
 
 ikea_tradfri_toggle:
+  mode: single
   alias: "IKEA Luz Toggle Genérica"
-  mode: parallel
-  fields:
-    luz_objetivo:
-      description: Entidad light.*
-      required: true
-    brillo:
-      description: Brillo 0-255
-      required: false
-    kelvin:
-      description: Temperatura en mired/K
-      required: false
-    transition:
-      description: Tiempo de transición en segundos
-      required: false
+
   sequence:
+    - variables:
+        target: "{{ luz_objetivo }}"
+        was_on: "{{ is_state(target, 'on') }}"
+
     - choose:
-        - conditions: "{{ is_state(luz_objetivo, 'on') }}"
+        - conditions:
+            - condition: template
+              value_template: "{{ was_on }}"
           sequence:
             - service: light.turn_off
               target:
-                entity_id: "{{ luz_objetivo }}"
+                entity_id: "{{ target }}"
+
+        - conditions:
+            - condition: template
+              value_template: "{{ not was_on }}"
+          sequence:
+            - service: light.turn_on
+              target:
+                entity_id: "{{ target }}"
               data:
-                transition: "{{ transition | int if transition is defined else 1 }}"
-      default:
-        - service: light.turn_on
-          target:
-            entity_id: "{{ luz_objetivo }}"
-          data:
-            brightness: "{{ brillo | int if brillo is defined else 255 }}"
-            color_temp: "{{ kelvin | int if kelvin is defined else 250 }}"
-            transition: "{{ transition | int if transition is defined else 1 }}"
+                brightness: "{{ brillo | default(255) | int }}"

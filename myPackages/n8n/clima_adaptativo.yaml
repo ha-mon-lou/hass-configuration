@@ -3,7 +3,7 @@ homeassistant:
 
 rest_command:
   clima_adaptativo:
-    url: "http://192.168.1.178:5678/webhook/clima_adaptativo"
+    url: "http://192.168.1.180:5678/webhook/clima_adaptativo"
     method: POST
     content_type: "application/json"
     payload: >

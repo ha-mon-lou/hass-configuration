@@ -5,4 +5,7 @@
     - platform: tag
       tag_id: !secret nfc_tag_ha_exterior
   action:
-    - action: script.abrir_puerta_principal
+    - service: script.ikea_tradfri_on
+      data:
+        luz_objetivo: light.columna_led_entrada
+    - service: script.abrir_puerta_principal

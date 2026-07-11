@@ -4,6 +4,10 @@ homeassistant:
       friendly_name: "Exterior más cálido que interior"
       icon: mdi:weather-sunny-alert
 
+    sensor.cuanto_exterior_es_mas_calido_que_interior:
+      friendly_name: "Diferencia térmica exterior/interior"
+      icon: mdi:thermometer-chevron-up
+
 template:
   - binary_sensor:
       - name: "Exterior más cálido que interior"
@@ -17,4 +21,16 @@ template:
           temperatura_exterior: "{{ states('sensor.sensacion_termica_exterior') }}"
           temperatura_interior: "{{ states('sensor.sensacion_termica') }}"
 
-          
+  - sensor:
+      - name: "Diferencia termica exterior interior"
+        unique_id: diferencia_termica_exterior_interior
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: >
+          {% set ext = states('sensor.sensacion_termica_exterior') | float(0) %}
+          {% set int = states('sensor.sensacion_termica') | float(0) %}
+          {{ (ext - int) | round(1) }}
+        attributes:
+          temperatura_exterior: "{{ states('sensor.sensacion_termica_exterior') }}"
+          temperatura_interior: "{{ states('sensor.sensacion_termica') }}"

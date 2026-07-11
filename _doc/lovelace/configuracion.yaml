@@ -1473,7 +1473,7 @@ views:
           - type: vertical-stack
             cards:
               - type: custom:mushroom-entity-card
-                entity: binary_sensor.puerta_principal_door
+                entity: binary_sensor.puerta_principal_door_2
                 name: Sensor puerta
                 icon: mdi:door
                 secondary_info: last-changed

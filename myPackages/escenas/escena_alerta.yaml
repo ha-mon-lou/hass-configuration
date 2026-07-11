@@ -1,0 +1,45 @@
+script:
+  escena_alerta:
+    alias: "Escena Alerta (Secuencial)"
+    icon: mdi:alarm
+    mode: single
+
+    sequence:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.alias_lavavajillas
+
+      - service: script.ikea_tradfri_on
+        data:
+          luz_objetivo: light.columna_led_entrada
+      - service: switch.turn_oN
+        target:
+          entity_id: switch.enchufe_habitacion_socket_1
+
+      - delay: "00:00:01"
+
+      - service: switch.turn_on
+        target:
+          entity_id: switch.enchufe_habitacion_socket_2
+
+      - delay: "00:00:01"
+
+      - service: switch.turn_on
+        target:
+          entity_id: switch.enchufe_doble_socket_1
+
+      - delay: "00:00:01"
+
+      - service: switch.turn_on
+        target:
+          entity_id: switch.enchufe_doble_socket_2
+
+      - delay: "00:00:01"
+
+      - service: media_player.turn_off
+        target:
+          entity_id: media_player.my_box_2
+
+      - service: switch.turn_on
+        target:
+          entity_id: switch.regleta_antela_socket_5_2

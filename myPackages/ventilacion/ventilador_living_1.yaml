@@ -55,11 +55,6 @@ automation:
       - condition: state
         entity_id: input_boolean.control_por_presencia
         state: "on"
-      - condition: not
-        conditions:
-          - condition: state
-            entity_id: media_player.my_box_2
-            state: "on"
     action:
       - action: switch.turn_on
         target:

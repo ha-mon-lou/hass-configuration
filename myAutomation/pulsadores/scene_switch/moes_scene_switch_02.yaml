@@ -1,0 +1,28 @@
+#
+# Scene switch MOES de 4 pulsadores
+#
+- id: "pulsador_moes_scene_switch_4p"
+  alias: MOES Zigbee Scene Switch 4p - Todas las acciones
+  trigger:
+    - platform: state
+      entity_id: sensor.zigbee_moes_scene_switch_02_action
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.to_state.state in
+           ['1_single','2_single','3_single','4_single'] }}
+
+  action:
+    - if:
+        - condition: template
+          value_template: >
+            {{ trigger.to_state is not none and
+              trigger.to_state.state in
+              ['1_single','2_single','3_single','4_single'] }}
+      then:
+        - action: script.moes_moes_scene_switch_4p_event
+          data:
+            evento: "{{ trigger.to_state.state }}"
+
+  mode: queued
+  max: 10

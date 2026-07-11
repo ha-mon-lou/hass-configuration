@@ -1,0 +1,37 @@
+#
+# Scene switch MOES de 4 pulsadores
+#
+moes_moes_scene_switch_4p_event:
+  alias: MOES Scene Switch 4p Evento
+  mode: single
+  fields:
+    evento:
+      description: "tipo evento: X_single/double/hold"
+  sequence:
+    - choose:
+        - conditions: "{{ evento == '1_single' }}"
+          sequence:
+            - service: script.ikea_tradfri_toggle
+              data:
+                luz_objetivo: light.ikea_tradfri_led_E27_07
+
+        - conditions: "{{ evento == '2_single' }}"
+          sequence:
+            - service: input_boolean.toggle
+              target:
+                entity_id: input_boolean.scene_switch_01_2
+            - service: input_boolean.toggle
+              target:
+                entity_id: input_boolean.ventilador_habitacion_01_running
+
+        - conditions: "{{ evento == '3_single' }}"
+          sequence:
+            - service: script.ikea_tradfri_toggle
+              data:
+                luz_objetivo: light.ikea_tradfri_led_E27_07
+
+        - conditions: "{{ evento == '4_single' }}"
+          sequence:
+            - service: script.ikea_tradfri_toggle
+              data:
+                luz_objetivo: light.ikea_tradfri_led_E27_07

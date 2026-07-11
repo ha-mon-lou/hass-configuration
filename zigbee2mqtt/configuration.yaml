@@ -129,6 +129,12 @@ devices:
     friendly_name: ikea_somrig_button_01
   '0xfc4d6afffe4fda04':
     friendly_name: moes_zt_b_eu2_01
+  '0xa4c138dbf700ce21':
+    friendly_name: zigbee_moes_scene_switch_02
+  '0x449fdafffe1011c1':
+    friendly_name: zigbee_sonoff_snzb05p_water_sensor
+  '0x180df9fffe1192a3':
+    friendly_name: ikea_tradfri_led_E27_07
 availability:
   enabled: true
 groups:

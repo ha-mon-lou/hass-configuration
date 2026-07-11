@@ -5,6 +5,8 @@
     - platform: conversation
       command: despacho
     - platform: tag
+      tag_id: !secret nfc_tag_despacho_mesa_luz
+    - platform: tag
       tag_id: !secret nfc_tag_ha_despacho_luz
 
   action:

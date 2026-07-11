@@ -17,6 +17,7 @@ class JoinSavingSessionResponse:
 class SavingSession(BaseOctoplusSession):
   id: str
   octopoints: int
+  targetRegions: list[str] | None
 
   def __init__(
     self,
@@ -24,20 +25,25 @@ class SavingSession(BaseOctoplusSession):
     code: str,
     start: datetime,
     end: datetime,
-    octopoints: int
+    octopoints: int,
+    targetRegions: list[str] | None = None
   ):
     BaseOctoplusSession.__init__(self, code, start, end)
     self.id = id
     self.octopoints = octopoints
+    self.targetRegions = targetRegions
 
 class SavingSessionsResponse:
   available_events: list[SavingSession]
   joined_events: list[SavingSession]
+  regionId: str | None
 
   def __init__(
     self,
     available_events: list[SavingSession],
-    joined_events: list[SavingSession]
+    joined_events: list[SavingSession],
+    region: str | None
   ):
     self.available_events = available_events
     self.joined_events = joined_events
+    self.regionId = region

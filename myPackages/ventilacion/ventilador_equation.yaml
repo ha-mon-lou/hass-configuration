@@ -194,25 +194,54 @@ automation:
                   entity_id: input_boolean.ventilador_equation
     mode: single
 
-  - alias: Actualizar presencia en living 1
+  - alias: Encender ventilador equation con presencia
+    id: encender_ventilador_equation_presencia
+    mode: single
+
     trigger:
       - platform: state
-        entity_id:
-          - input_select.ubicacion_ramon
-          - input_select.ubicacion_pau
+        entity_id: binary_sensor.human_presence_sensor_occupancy
+        to: "on"
+        for:
+          seconds: 20
+
     condition:
+      - condition: state
+        entity_id: input_boolean.control_por_presencia
+        state: "on"
+
       - condition: state
         entity_id: input_boolean.verano
         state: "on"
+
     action:
-      - choose:
-          - conditions:
-              - condition: template
-                value_template: >
-                  {% set ubicaciones = expand('group.ubicacion_personas') | map(attribute='state') | list %}
-                  {{ 'living_1' in ubicaciones or 'living_2' in ubicaciones }}
-            sequence:
-              - service: script.modo_ventilador
-                data:
-                  dispositivo: ventilador_equation
-                  valor: auto
+      - service: script.modo_ventilador
+        data:
+          dispositivo: ventilador_equation
+          valor: auto
+
+  - alias: Apagar ventilador equation sin presencia
+    id: apagar_ventilador_equation_sin_presencia
+    mode: single
+
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.human_presence_sensor_occupancy
+        to: "off"
+        for:
+          minutes: 3
+
+    condition:
+      - condition: state
+        entity_id: input_boolean.control_por_presencia
+        state: "on"
+
+    action:
+      - service: script.modo_ventilador
+        data:
+          dispositivo: ventilador_equation
+          valor: manual
+
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.ventilador_equation

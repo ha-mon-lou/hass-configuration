@@ -1,0 +1,164 @@
+###############################################################################
+# PACKAGE: sensor_inundacion
+# Dispositivo:
+#   SONOFF SNZB-05P
+#
+# Entidad principal:
+#   binary_sensor.zigbee_sonoff_snzb05p_water_sensor_water_leak
+#
+# Funciones:
+#   - Notificación inmediata
+#   - Persistencia de alarma
+#   - Timestamp último evento
+#   - Contador de eventos
+#   - Sirena opcional
+#   - Corte de agua opcional
+#   - Reset manual
+###############################################################################
+
+input_boolean:
+  inundacion_detectada:
+    name: Inundación detectada
+    icon: mdi:water-alert
+
+input_datetime:
+  inundacion_ultimo_evento:
+    name: Última inundación
+    has_date: true
+    has_time: true
+
+counter:
+  inundacion_eventos:
+    name: Eventos inundación
+    step: 1
+    restore: true
+    icon: mdi:counter
+
+script:
+  inundacion_reset:
+    alias: Reset alarma inundación
+    mode: single
+
+    sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.inundacion_detectada
+
+automation:
+  #############################################################################
+  # INUNDACIÓN DETECTADA
+  #############################################################################
+
+  - id: inundacion_detectada
+    alias: Inundación detectada
+    mode: single
+
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.zigbee_sonoff_snzb05p_water_sensor_water_leak
+        to: "on"
+
+    action:
+      #########################################################################
+      # Marcar alarma persistente
+      #########################################################################
+
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.inundacion_detectada
+
+      #########################################################################
+      # Guardar timestamp
+      #########################################################################
+
+      - service: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.inundacion_ultimo_evento
+        data:
+          datetime: "{{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+
+      #########################################################################
+      # Notificación móvil
+      #########################################################################
+
+      - service: script.escena_alerta
+
+      - service: script.notifica_alerta_movil
+        data:
+          title: "🚨 Inundación detectada"
+          message: >
+            El sensor SONOFF SNZB-05P ha detectado agua.
+
+      #########################################################################
+      # Notificación persistente HA
+      #########################################################################
+
+      - service: persistent_notification.create
+        data:
+          title: "🚨 Inundación detectada"
+          message: >
+            Sensor:
+            binary_sensor.zigbee_sonoff_snzb05p_water_sensor_water_leak
+
+            Hora:
+            {{ now().strftime('%d/%m/%Y %H:%M:%S') }}
+
+      #########################################################################
+      # OPCIONAL — activar sirena
+      #########################################################################
+
+      # - service: siren.turn_on
+      #   target:
+      #     entity_id: siren.sirena_casa
+
+      #########################################################################
+      # OPCIONAL — cortar agua
+      #########################################################################
+
+      # - service: switch.turn_off
+      #   target:
+      #     entity_id: switch.valvula_agua
+
+  #############################################################################
+  # FIN INUNDACIÓN
+  #############################################################################
+
+  - id: inundacion_restaurada
+    alias: Inundación restaurada
+    mode: single
+
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.zigbee_sonoff_snzb05p_water_sensor_water_leak
+        to: "off"
+
+    action:
+      - service: notify.mobile_app_sm_a155f
+        data:
+          title: "✅ Sensor seco"
+          message: >
+            El sensor de inundación vuelve a estado normal.
+
+###############################################################################
+# SENSORES TEMPLATE
+###############################################################################
+
+template:
+  - binary_sensor:
+      - name: "Alarma inundación activa"
+        unique_id: alarma_inundacion_activa
+        state: >
+          {{ is_state('input_boolean.inundacion_detectada', 'on') }}
+        device_class: problem
+
+  - sensor:
+      - name: "Última inundación formateada"
+        unique_id: ultima_inundacion_formateada
+        state: >
+          {% set fecha = states('input_datetime.inundacion_ultimo_evento') %}
+          {% if fecha not in ['unknown', 'unavailable', ''] %}
+            {{ as_datetime(fecha).strftime('%d/%m/%Y %H:%M') }}
+          {% else %}
+            Nunca
+          {% endif %}
+        icon: mdi:clock-alert

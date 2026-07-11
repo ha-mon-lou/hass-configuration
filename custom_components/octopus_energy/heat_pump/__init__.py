@@ -1,5 +1,6 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 import random
+from typing import Optional
 
 from homeassistant.util.dt import (utcnow)
 
@@ -8,10 +9,12 @@ from ..api_client.heat_pump import HeatPumpResponse
 def get_mock_heat_pump_id():
   return "ABC"
 
+heat_pump_start_date = datetime.fromisoformat("2020-01-01T00:00:00+00:00")
+
 def mock_heat_pump_status_and_configuration():
   now = utcnow()
   data = {
-    "octoHeatPumpControllerStatus": {
+    "heatPumpControllerStatus": {
       "sensors": [
         {
           "code": "ADC1",
@@ -22,6 +25,7 @@ def mock_heat_pump_status_and_configuration():
           "telemetry": {
             "temperatureInCelsius": 57 + (random.randrange(1, 20) * 0.1),
             "humidityPercentage": None,
+            "voltage": 2.0 + (random.randrange(1, 10) * 0.1),
             "retrievedAt": (now - timedelta(seconds=random.randrange(1, 120))).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
           }
         },
@@ -34,6 +38,7 @@ def mock_heat_pump_status_and_configuration():
           "telemetry": {
             "temperatureInCelsius": -273 + (random.randrange(1, 20) * 0.1),
             "humidityPercentage": None,
+            "voltage": 2.0 + (random.randrange(1, 10) * 0.1),
             "retrievedAt": (now - timedelta(seconds=random.randrange(1, 120))).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
           }
         },
@@ -46,6 +51,7 @@ def mock_heat_pump_status_and_configuration():
           "telemetry": {
             "temperatureInCelsius": None,
             "humidityPercentage": None,
+            "voltage": None,
             "retrievedAt": None
           }
         },
@@ -58,6 +64,7 @@ def mock_heat_pump_status_and_configuration():
           "telemetry": {
             "temperatureInCelsius": -273 + (random.randrange(1, 20) * 0.1),
             "humidityPercentage": None,
+            "voltage": 2.0 + (random.randrange(1, 10) * 0.1),
             "retrievedAt": (now - timedelta(seconds=random.randrange(1, 120))).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
           }
         },
@@ -70,6 +77,7 @@ def mock_heat_pump_status_and_configuration():
           "telemetry": {
             "temperatureInCelsius": 18 + (random.randrange(1, 20) * 0.1),
             "humidityPercentage": 57 + (random.randrange(1, 20) * 0.1),
+            "voltage": 2.0 + (random.randrange(1, 10) * 0.1),
             "retrievedAt": (now - timedelta(seconds=random.randrange(1, 120))).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
           }
         },
@@ -82,6 +90,7 @@ def mock_heat_pump_status_and_configuration():
           "telemetry": {
             "temperatureInCelsius": 22 + (random.randrange(1, 20) * 0.1),
             "humidityPercentage": 54 + (random.randrange(1, 20) * 0.1),
+            "voltage": 2.0 + (random.randrange(1, 10) * 0.1),
             "retrievedAt": (now - timedelta(seconds=random.randrange(1, 120))).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
           }
         },
@@ -94,6 +103,7 @@ def mock_heat_pump_status_and_configuration():
           "telemetry": {
             "temperatureInCelsius": 22 + (random.randrange(1, 20) * 0.1),
             "humidityPercentage": 60 + (random.randrange(1, 20) * 0.1),
+            "voltage": 2.0 + (random.randrange(1, 10) * 0.1),
             "retrievedAt": (now - timedelta(seconds=random.randrange(1, 120))).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
           }
         },
@@ -106,6 +116,7 @@ def mock_heat_pump_status_and_configuration():
           "telemetry": {
             "temperatureInCelsius": 22 + (random.randrange(1, 20) * 0.1),
             "humidityPercentage": 46 + (random.randrange(1, 20) * 0.1),
+            "voltage": 2.0 + (random.randrange(1, 10) * 0.1),
             "retrievedAt": (now - timedelta(seconds=random.randrange(1, 120))).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
           }
         }
@@ -153,7 +164,7 @@ def mock_heat_pump_status_and_configuration():
         }
       ]
     },
-    "octoHeatPumpControllerConfiguration": {
+    "heatPumpControllerConfiguration": {
       "controller": {
         "state": [
           "NORMAL_MODE"
@@ -334,19 +345,19 @@ def mock_heat_pump_status_and_configuration():
         }
       ]
     },
-    "octoHeatPumpLifetimePerformance": {
+    "heatPumpLifetimePerformance": {
       "seasonalCoefficientOfPerformance": str(3 + (random.randrange(1, 9) * 0.1)),
       "heatOutput": {
         "unit": "KILOWATT_HOUR",
-        "value": str(100 + (random.randrange(1, 20) * 0.1))
+        "value": str((now - heat_pump_start_date).total_seconds() / 60 * 0.001)
       },
       "energyInput": {
         "unit": "KILOWATT_HOUR",
-        "value": str(20 + (random.randrange(1, 20) * 0.1))
+        "value": str((now - heat_pump_start_date).total_seconds() / 60 * 0.0001)
       },
       "readAt": (now - timedelta(seconds=random.randrange(1, 120))).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
     },
-    "octoHeatPumpLivePerformance": {
+    "heatPumpLivePerformance": {
       "coefficientOfPerformance": str(3 + (random.randrange(1, 20) * 0.1)),
       "outdoorTemperature": {
         "unit": "DEGREES_CELSIUS",
@@ -365,3 +376,11 @@ def mock_heat_pump_status_and_configuration():
   }
 
   return HeatPumpResponse.model_validate(data)
+
+def calculate_battery_percentage(voltage: Optional[float]) -> Optional[float]:
+  if voltage is None:
+    return None
+  
+  # Assuming 2.0V is 0% and 3.0V is 100% rounded to 2 decimal places
+  percentage = round(((voltage - 2.0) / (3.0 - 2.0)) * 100, 2)
+  return max(0, min(100, percentage))

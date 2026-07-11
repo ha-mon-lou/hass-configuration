@@ -8,7 +8,6 @@
       value_template: >
         {{ trigger.to_state.attributes.event_type == 'press' }}
   action:
-    - service: script.ikea_tradfri_toggle
-      data:
-        luz_objetivo: light.columna_led_entrada
+    - service: light.toggle
+      entity_id: light.columna_led_entrada
   mode: single

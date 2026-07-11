@@ -17,6 +17,7 @@ from .const import (
   DATA_CLIENT,
   DATA_HEAT_PUMP_CONFIGURATION_AND_STATUS_COORDINATOR,
   DATA_HEAT_PUMP_CONFIGURATION_AND_STATUS_KEY,
+  DATA_HEAT_PUMP_IDS,
   DOMAIN,
 
   CONFIG_MAIN_API_KEY
@@ -52,8 +53,9 @@ async def async_setup_default_sensors(hass, config, async_add_entities):
     key = DATA_HEAT_PUMP_CONFIGURATION_AND_STATUS_KEY.format(heat_pump_id)
     coordinator = hass.data[DOMAIN][account_id][DATA_HEAT_PUMP_CONFIGURATION_AND_STATUS_COORDINATOR.format(heat_pump_id)]
     entities.extend(setup_heat_pump_sensors(hass, client, account_id, heat_pump_id, hass.data[DOMAIN][account_id][key].data, coordinator, mock_heat_pump))
-  elif "heat_pump_ids" in account_info:
-    for heat_pump_id in account_info["heat_pump_ids"]:
+  else:
+    heat_pump_ids = hass.data[DOMAIN][account_id][DATA_HEAT_PUMP_IDS] if DATA_HEAT_PUMP_IDS in hass.data[DOMAIN][account_id] else []
+    for heat_pump_id in heat_pump_ids:
       key = DATA_HEAT_PUMP_CONFIGURATION_AND_STATUS_KEY.format(heat_pump_id)
       coordinator = hass.data[DOMAIN][account_id][DATA_HEAT_PUMP_CONFIGURATION_AND_STATUS_COORDINATOR.format(heat_pump_id)]
       entities.extend(setup_heat_pump_sensors(hass, client, account_id, heat_pump_id, hass.data[DOMAIN][account_id][key].data, coordinator, mock_heat_pump))
@@ -90,14 +92,27 @@ async def async_setup_default_sensors(hass, config, async_add_entities):
       "async_set_heat_pump_flow_temp_config"
     )
 
+    platform.async_register_entity_service(
+      "set_heat_pump_hush_mode",
+      vol.All(
+        cv.make_entity_service_schema(
+          {
+            vol.Required("is_enabled"): cv.boolean,
+          },
+          extra=vol.ALLOW_EXTRA,
+        ),
+      ),
+      "async_set_hush_mode"
+    )
+
   async_add_entities(entities)
 
 def setup_heat_pump_sensors(hass: HomeAssistant, client: OctopusEnergyApiClient, account_id: str, heat_pump_id: str, heat_pump_response: HeatPumpResponse, coordinator, mock_heat_pump: bool):
 
   entities = []
 
-  if heat_pump_response is not None and heat_pump_response.octoHeatPumpControllerConfiguration is not None:
-    for zone in heat_pump_response.octoHeatPumpControllerConfiguration.zones:
+  if heat_pump_response is not None and heat_pump_response.heatPumpControllerConfiguration is not None:
+    for zone in heat_pump_response.heatPumpControllerConfiguration.zones:
       if zone.configuration is not None:
         if zone.configuration.enabled == False or zone.configuration.zoneType == "WATER":
           continue
@@ -108,7 +123,7 @@ def setup_heat_pump_sensors(hass: HomeAssistant, client: OctopusEnergyApiClient,
           client,
           account_id,
           heat_pump_id,
-          heat_pump_response.octoHeatPumpControllerConfiguration.heatPump,
+          heat_pump_response.heatPumpControllerConfiguration.heatPump,
           zone,
           mock_heat_pump
         ))

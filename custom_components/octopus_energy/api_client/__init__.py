@@ -1,10 +1,10 @@
 import logging
 import json
-from typing import Any
+from typing import Any, List
 import aiohttp
+import asyncio
 from asyncio import TimeoutError
 from datetime import (datetime, timedelta, time, timezone)
-from threading import RLock
 from zoneinfo import ZoneInfo
 
 from homeassistant.util.dt import (as_utc, now, as_local, parse_datetime, parse_date)
@@ -17,13 +17,13 @@ from ..utils import (
 
 from .intelligent_device import IntelligentDevice
 from .octoplus import RedeemOctoplusPointsResponse
-from .intelligent_settings import IntelligentSettings
 from .intelligent_dispatches import IntelligentDispatchItem, IntelligentDispatches
 from .saving_sessions import JoinSavingSessionResponse, SavingSession, SavingSessionsResponse
 from .wheel_of_fortune import WheelOfFortuneSpinsResponse
 from .greenness_forecast import GreennessForecast
 from .free_electricity_sessions import FreeElectricitySession, FreeElectricitySessionsResponse
 from .heat_pump import HeatPumpResponse
+from .intelligent_device_settings import IntelligentDeviceSettingPreferenceSchedule, IntelligentDeviceSettings
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -47,8 +47,14 @@ account_query = '''query {{
   octoplusAccountInfo(accountNumber: "{account_id}") {{
     isOctoplusEnrolled
   }}
-  octoHeatPumpControllerEuids(accountNumber: "{account_id}")
+  properties(accountNumber: "{account_id}") {{
+      id
+      occupancyPeriods {{
+              effectiveTo
+            }}
+    }}
   account(accountNumber: "{account_id}") {{
+    
     electricityAgreements(active: true) {{
 			meterPoint {{
 				mpan
@@ -194,26 +200,18 @@ intelligent_settings_query = '''query {{
     status {{
       isSuspended
     }}
-		... on SmartFlexVehicle {{
-			chargingPreferences {{
-				weekdayTargetTime
-				weekdayTargetSoc
-				weekendTargetTime
-				weekendTargetSoc
-				minimumSoc
-				maximumSoc
-			}}
-		}}
-		... on SmartFlexChargePoint {{
-			chargingPreferences {{
-				weekdayTargetTime
-				weekdayTargetSoc
-				weekendTargetTime
-				weekendTargetSoc
-				minimumSoc
-				maximumSoc
-			}}
-		}}
+    preferences {{
+      targetType
+      unit
+      mode
+      schedules {{
+        dayOfWeek
+        time
+        min
+        max
+        upperLimit
+      }}
+    }}
 	}}
 }}'''
 
@@ -231,7 +229,7 @@ intelligent_settings_mutation = '''mutation {{
 intelligent_settings_mutation_schedule = '''{{
   dayOfWeek: {day_of_week}
   time: "{target_time}"
-  max: {target_percentage}
+  max: "{target_percentage}"
 }}'''
 
 intelligent_turn_on_bump_charge_mutation = '''mutation {{
@@ -276,19 +274,17 @@ octoplus_points_query = '''query octoplus_points {
   }
 }'''
 
-octoplus_saving_session_join_mutation = '''mutation {{
+backend_octoplus_saving_session_join_mutation = '''mutation {{
 	joinSavingSessionsEvent(input: {{
 		accountNumber: "{account_id}"
 		eventCode: "{event_code}"
 	}}) {{
-		possibleErrors {{
-			message
-		}}
+		joinedEventCodes
 	}}
 }}
 '''
 
-octoplus_saving_session_query = '''query {{
+backend_octoplus_saving_session_query = '''query {{
 	savingSessions {{
     events(includeDev: false) {{
 			id
@@ -297,8 +293,14 @@ octoplus_saving_session_query = '''query {{
 			startAt
 			endAt
       devEvent
+      targetRegion {{
+        regionId
+      }}
 		}}
 		account(accountNumber: "{account_id}") {{
+      signedUpMeterPoint {{
+        regionId
+      }}
 			hasJoinedCampaign
 			joinedEvents {{
 				eventId
@@ -310,7 +312,7 @@ octoplus_saving_session_query = '''query {{
 	}}
 }}'''
 
-wheel_of_fortune_query = '''query {{
+backend_wheel_of_fortune_query = '''query {{
   electricity: wheelOfFortuneSpinsAllowed(fuelType:ELECTRICITY, accountNumber: "{account_id}") {{
     spinsAllowed
   }}
@@ -319,7 +321,7 @@ wheel_of_fortune_query = '''query {{
   }}
 }}'''
 
-wheel_of_fortune_mutation = '''mutation {{
+backend_wheel_of_fortune_mutation = '''mutation {{
   spinWheelOfFortune(input: {{ accountNumber: "{account_id}", fuelType: {fuel_type} }}) {{
     prize {{
       value
@@ -327,7 +329,7 @@ wheel_of_fortune_mutation = '''mutation {{
   }}
 }}'''
 
-greener_night_forecast_query = '''query {
+backend_greener_night_forecast_query = '''query {
   greenerNightsForecast {
     date
     isGreenerNight
@@ -346,9 +348,9 @@ redeem_octoplus_points_account_credit_mutation = '''mutation {{
 }}
 '''
 
-heat_pump_set_zone_mode_without_setpoint_mutation = '''
+backend_heat_pump_set_zone_mode_without_setpoint_mutation = '''
 mutation {{
-  octoHeatPumpSetZoneMode(accountNumber: "{account_id}", euid: "{euid}", operationParameters: {{
+  heatPumpSetZoneMode(accountNumber: "{account_id}", euid: "{euid}", operationParameters: {{
     zone: {zone_id},
     mode: {zone_mode}
   }}) {{
@@ -357,24 +359,24 @@ mutation {{
 }}
 '''
 
-heat_pump_set_zone_mode_with_setpoint_mutation = '''
+backend_heat_pump_set_zone_mode_with_setpoint_mutation = '''
 mutation {{
-  octoHeatPumpSetZoneMode(accountNumber: "{account_id}", euid: "{euid}", operationParameters: {{
+  heatPumpSetZoneMode(accountNumber: "{account_id}", euid: "{euid}", operationParameters: {{
     zone: {zone_id},
     mode: {zone_mode},
-    setpointInCelsius: "{target_temperature}"
+    setpointInCelsius: {target_temperature}
   }}) {{
     transactionId
   }}
 }}
 '''
 
-heat_pump_boost_zone_mutation = '''
+backend_heat_pump_boost_zone_mutation = '''
 mutation {{
-  octoHeatPumpSetZoneMode(accountNumber: "{account_id}", euid: "{euid}", operationParameters: {{
+  heatPumpSetZoneMode(accountNumber: "{account_id}", euid: "{euid}", operationParameters: {{
     zone: {zone_id},
     mode: BOOST,
-    setpointInCelsius: "{target_temperature}",
+    setpointInCelsius: {target_temperature},
     endAt: "{end_at}"
   }}) {{
     transactionId
@@ -382,9 +384,10 @@ mutation {{
 }}
 '''
 
-heat_pump_update_flow_temp_config_mutation = '''
+backend_heat_pump_update_flow_temp_config_mutation = '''
 mutation {{
-  octoHeatPumpUpdateFlowTemperatureConfiguration(
+  heatPumpUpdateFlowTemperatureConfiguration(
+    accountNumber: "{account_id}"
     euid: "{euid}"
     flowTemperatureInput: {{
       useWeatherCompensation: {weather_comp_enabled}, 
@@ -404,14 +407,16 @@ mutation {{
       }}
     }}
   ) {{
-    transactionId
+    transactionIds {{
+      transactionId
+    }}
   }}
 }}
 '''
 
-heat_pump_status_and_config_query = '''
+backend_heat_pump_status_and_config_query = '''
 query {{
-  octoHeatPumpControllerStatus(accountNumber: "{account_id}", euid: "{euid}") {{
+  heatPumpControllerStatus(accountNumber: "{account_id}", euid: "{euid}") {{
     sensors {{
       code
       connectivity {{
@@ -421,6 +426,7 @@ query {{
       telemetry {{
         temperatureInCelsius
         humidityPercentage
+        voltage
         retrievedAt
       }}
     }}
@@ -435,7 +441,23 @@ query {{
       }}
     }}
   }}
-  octoHeatPumpControllerConfiguration(accountNumber: "{account_id}", euid: "{euid}") {{
+  heatPumpLivePerformance(accountNumber: "{account_id}", euid: "{euid}") {{
+    coefficientOfPerformance
+    outdoorTemperature {{
+      value
+      unit
+    }}
+    heatOutput {{
+      value
+      unit
+    }}
+    powerInput {{
+      value
+      unit
+    }}
+    readAt
+  }}
+  heatPumpControllerConfiguration(accountNumber: "{account_id}", euid: "{euid}") {{
     controller {{
       state
       heatPumpTimezone
@@ -511,23 +533,7 @@ query {{
       }}
     }}
   }}
-  octoHeatPumpLivePerformance(euid: "{euid}") {{
-    coefficientOfPerformance
-    outdoorTemperature {{
-      value
-      unit
-    }}
-    heatOutput {{
-      value
-      unit
-    }}
-    powerInput {{
-      value
-      unit
-    }}
-    readAt
-  }}
-  octoHeatPumpLifetimePerformance(euid: "{euid}") {{
+  heatPumpLifetimePerformance(accountNumber: "{account_id}", euid: "{euid}") {{
     seasonalCoefficientOfPerformance
     heatOutput {{
       value
@@ -542,10 +548,33 @@ query {{
 }}
 '''
 
+backend_heat_pump_ids_query = '''
+query {{
+  heatPumpControllersAtLocation(accountNumber: "{account_id}", propertyId: "{property_id}") {{
+    controller {{
+      euid
+    }}
+  }}
+}}
+'''
+
+backend_heat_pump_set_hush_mode_mutation = '''
+mutation {{
+  heatPumpSetHushMode(accountNumber: "{account_id}" euid: "{euid}" hushModeEnabled: {is_enabled}) {{
+    transactionId
+  }}
+}}
+'''
+
 
 user_agent_value = "bottlecapdave-ha-octopus-energy"
 
 integration_context_header = "Ha-Integration-Context"
+
+# Not a fan of this, but no other way to identify this type of tariff. Hopefully OE don't change their tariff structure
+intelligent_tariffs = [
+  "IOG-SMB-TOU"
+]
 
 def get_valid_from(rate):
   return rate["valid_from"]
@@ -615,6 +644,25 @@ def rates_to_thirty_minute_increments(data, period_from: datetime, period_to: da
     
   return results
 
+def get_standing_charge(data: list, tariff_code: str, favour_direct_debit_rates: bool):
+  for item in data:
+    if ("payment_method" in item and
+        item["payment_method"] is not None and
+        (
+          (item["payment_method"].lower() == "direct_debit" and favour_direct_debit_rates != True) or
+          (item["payment_method"].lower() != "direct_debit" and favour_direct_debit_rates != False)
+        )):
+      continue
+
+    return {
+      "start": parse_datetime(item["valid_from"]) if "valid_from" in item and item["valid_from"] is not None else None,
+      "end": parse_datetime(item["valid_to"]) if "valid_to" in item and item["valid_to"] is not None else None,
+      "value_inc_vat": float(item["value_inc_vat"]),
+      "tariff_code": tariff_code,
+    }
+  
+  return None
+
 class ApiException(Exception): ...
 
 class ServerException(ApiException): ...
@@ -665,7 +713,7 @@ def process_graphql_response(data: Any, url: str, request_context: str, ignore_e
     for error in data["errors"]:
       if ("extensions" in error and
           "errorCode" in error["extensions"] and
-          error["extensions"]["errorCode"] in ("KT-CT-1139", "KT-CT-1111", "KT-CT-1143", "KT-CT-1134", "KT-CT-1135")):
+          error["extensions"]["errorCode"] in ("KT-CT-1139", "KT-CT-1111", "KT-CT-1143", "KT-CT-1134", "KT-CT-1135", "OE-0103")):
         raise AuthenticationException(f"Authentication failed - {errors_as_string}. See logs for more details.", errors)
 
       if ("extensions" in error and
@@ -683,8 +731,6 @@ def process_graphql_response(data: Any, url: str, request_context: str, ignore_e
   return data
 
 class OctopusEnergyApiClient:
-  _refresh_token_lock = RLock()
-  _session_lock = RLock()
 
   def __init__(self, api_key, electricity_price_cap = None, gas_price_cap = None, timeout_in_seconds = 20, favour_direct_debit_rates = True):
     if (api_key is None):
@@ -700,6 +746,7 @@ class OctopusEnergyApiClient:
     self._graphql_refresh_expiration = None
 
     self._product_tracker_cache = dict()
+    self._tariff_links_cache = dict()
 
     self._electricity_price_cap = electricity_price_cap
     self._gas_price_cap = gas_price_cap
@@ -709,17 +756,23 @@ class OctopusEnergyApiClient:
     self._default_headers = { "user-agent": f'{user_agent_value}/{INTEGRATION_VERSION}' }
 
     self._session = None
+    self._is_api_key_invalid = False
+    
+    # Use asyncio locks for async methods
+    self._session_lock = asyncio.Lock()
+    self._refresh_token_lock = asyncio.Lock()
+    self._tariff_link_lock = asyncio.Lock()
 
   async def async_close(self):
-    with self._session_lock:
+    async with self._session_lock:
       if self._session is not None:
         await self._session.close()
 
-  def _create_client_session(self):
+  async def _create_client_session(self):
     if self._session is not None:
       return self._session
     
-    with self._session_lock:
+    async with self._session_lock:
       if self._session is not None:
         return self._session
       
@@ -731,12 +784,16 @@ class OctopusEnergyApiClient:
     if (self._graphql_expiration is not None and (self._graphql_expiration - timedelta(minutes=5)) > now()):
       return
 
-    with self._refresh_token_lock:
+    async with self._refresh_token_lock:
+      if self._is_api_key_invalid:
+        _LOGGER.debug("API key has previously been marked as invalid - skipping refresh")
+        raise AuthenticationException("API key has previously been marked as invalid - skipping refresh", [])
+
       # Check that our token wasn't refreshed while waiting for the lock
       if (self._graphql_expiration is not None and (self._graphql_expiration - timedelta(minutes=5)) > now()):
         return
 
-      if (self._graphql_refresh_expiration is not None and self._graphql_refresh_expiration >= now()):
+      if (self._graphql_refresh_expiration is not None and self._graphql_refresh_expiration < now()):
         _LOGGER.debug("Refresh token expired - clearing")
         self._graphql_refresh_token = None
         self._graphql_expiration = None
@@ -750,8 +807,15 @@ class OctopusEnergyApiClient:
             self._graphql_refresh_token = None
             self._graphql_expiration = None
             
-            await self.__async_fetch_token()
+            try:
+              await self.__async_fetch_token()
+            except AuthenticationException:
+              _LOGGER.error("Failed to refresh auth token using original API key")
+              self._is_api_key_invalid = True
+              raise
           else:
+            _LOGGER.error("Failed to refresh auth token using original API key")
+            self._is_api_key_invalid = True
             raise
 
       except TimeoutError:
@@ -759,7 +823,7 @@ class OctopusEnergyApiClient:
         raise TimeoutException()
 
   async def __async_fetch_token(self):
-    client = self._create_client_session()
+    client = await self._create_client_session()
     url = f'{self._base_url}/v1/graphql/'
     payload = { "query": api_token_query.format(api_key=self._api_key) if self._graphql_refresh_token is None else api_token_refresh_query.format(refresh_token=self._graphql_refresh_token) }
     headers = { integration_context_header: "refresh-token" }
@@ -777,8 +841,8 @@ class OctopusEnergyApiClient:
         self._graphql_refresh_token = token_response_body["data"]["obtainKrakenToken"]["refreshToken"]
         self._graphql_refresh_expiration = datetime.fromtimestamp(token_response_body["data"]["obtainKrakenToken"]["refreshExpiresIn"], tz=timezone.utc)
         self._graphql_expiration = now() + timedelta(hours=1)
-      elif (self._graphql_expiration is None or self._graphql_expiration > now()):
-        raise AuthenticationException("Failed to retrieve auth token and current token is expired")
+      elif (self._graphql_expiration is None or self._graphql_expiration < now()):
+        raise AuthenticationException("Failed to retrieve auth token and current token is expired", [])
       else:
         _LOGGER.error("Failed to retrieve auth token")
       
@@ -874,12 +938,21 @@ class OctopusEnergyApiClient:
         else []
       ))
     }
+  
+  def map_properties(self, properties):
+    property_ids = []
+    for property in properties:
+      if ("occupancyPeriods" in property and property["occupancyPeriods"] is not None):
+        for period in property["occupancyPeriods"]:
+          if "effectiveTo" in period and (period["effectiveTo"] is None or parse_datetime(period["effectiveTo"]) < now()):
+            property_ids.append(property["id"])
+    return property_ids
 
   async def async_check_headers(self):
     """Checks the headers are set correctly"""
     try:
       request_context = "test-headers"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'http://httpbin.org/headers'
       headers = { "Authorization": f"TEST", integration_context_header: request_context }
       async with client.get(url, headers=headers) as response:
@@ -912,11 +985,11 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "get-account"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       # Get account response
       payload = { "query": account_query.format(account_id=account_id) }
-      headers = { "Authorization": f"JWT {self._graphql_token}", integration_context_header: request_context }
+      headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
       async with client.post(url, json=payload, headers=headers) as account_response:
         account_response_body = await self.__async_read_response__(account_response, url)
         _LOGGER.debug(f'account: {account_response_body}')
@@ -930,7 +1003,13 @@ class OctopusEnergyApiClient:
             "octoplus_enrolled": account_response_body["data"]["octoplusAccountInfo"]["isOctoplusEnrolled"] == True 
             if "octoplusAccountInfo" in account_response_body["data"] and "isOctoplusEnrolled" in account_response_body["data"]["octoplusAccountInfo"]
             else False,
-            "heat_pump_ids": account_response_body["data"]["octoHeatPumpControllerEuids"] if "data" in account_response_body and "octoHeatPumpControllerEuids" in account_response_body["data"] else [],
+            "property_ids": list(
+              self.map_properties(
+                account_response_body["data"]["properties"]
+                if "data" in account_response_body and "properties" in account_response_body["data"]
+                else []
+              )
+            ),
             "electricity_meter_points": list(map(self.map_electricity_meters, 
               account_response_body["data"]["account"]["electricityAgreements"]
               if "electricityAgreements" in account_response_body["data"]["account"] and account_response_body["data"]["account"]["electricityAgreements"] is not None
@@ -951,25 +1030,63 @@ class OctopusEnergyApiClient:
     
     return None
 
+  async def async_get_heat_pump_ids(self, account_id: str, property_ids: list[str]):
+    """Get the user's heat pump ids"""
+    await self.async_refresh_token()
+
+    try:
+      request_context = "heatpump-ids"
+      client = await self._create_client_session()
+      url = f'{self._backend_base_url}/v1/graphql/'
+      
+      heat_pump_ids = []
+      for (property_id) in property_ids:
+        payload = { "query": backend_heat_pump_ids_query.format(account_id=account_id, property_id=property_id) }
+        headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
+        async with client.post(url, json=payload, headers=headers) as heat_pump_response:
+          response = await self.__async_read_response__(heat_pump_response, url)
+
+          if (response is not None
+              and "data" in response
+              and "heatPumpControllersAtLocation" in response["data"]):
+            
+            heat_pump_ids.extend(list(
+              map(
+                lambda controller: controller["controller"]["euid"],
+                response["data"]["heatPumpControllersAtLocation"]
+              )
+            ))
+
+      return heat_pump_ids
+
+    except TimeoutError:
+      _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
+      raise TimeoutException()
+
   async def async_get_heat_pump_configuration_and_status(self, account_id: str, euid: str):
     """Get a heat pump configuration and status"""
     await self.async_refresh_token()
 
     try:
       request_context = "heatpump-configuration"
-      client = self._create_client_session()
-      url = f'{self._base_url}/v1/graphql/'
-      payload = { "query": heat_pump_status_and_config_query.format(account_id=account_id, euid=euid) }
-      headers = { "Authorization": f"JWT {self._graphql_token}", integration_context_header: request_context }
+      client = await self._create_client_session()
+      url = f'{self._backend_base_url}/v1/graphql/'
+      payload = {
+        "query": backend_heat_pump_status_and_config_query.format(
+          account_id=account_id,
+          euid=euid,
+        )
+      }
+      headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
       async with client.post(url, json=payload, headers=headers) as heat_pump_response:
         response = await self.__async_read_response__(heat_pump_response, url)
 
         if (response is not None
             and "data" in response
-            and "octoHeatPumpControllerConfiguration" in response["data"]
-            and "octoHeatPumpControllerStatus" in response["data"]
-            and "octoHeatPumpLivePerformance" in response["data"]
-            and "octoHeatPumpLifetimePerformance" in response["data"]):
+            and "heatPumpControllerConfiguration" in response["data"]
+            and "heatPumpControllerStatus" in response["data"]
+            and "heatPumpLifetimePerformance" in response["data"]
+            and "heatPumpLivePerformance" in response["data"]):
           return HeatPumpResponse.model_validate(response["data"])
 
       return None
@@ -978,17 +1095,42 @@ class OctopusEnergyApiClient:
       _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
       raise TimeoutException()
 
-  async def async_set_heat_pump_flow_temp_config(self, euid: str, weather_comp_enabled: bool, weather_comp_min_temperature: float, weather_comp_max_temperature: float, fixed_flow_temperature: float):
+  async def async_set_heat_pump_hush_mode(self, account_id: str, euid: str, is_enabled: bool):
+    """Get a heat pump configuration and status"""
+    await self.async_refresh_token()
+
+    try:
+      request_context = "heatpump-hush-mode"
+      client = await self._create_client_session()
+      url = f'{self._backend_base_url}/v1/graphql/'
+      payload = {
+        "query": backend_heat_pump_set_hush_mode_mutation.format(
+          account_id=account_id,
+          euid=euid,
+          is_enabled=str(is_enabled).lower()
+        )
+      }
+      headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
+      async with client.post(url, json=payload, headers=headers) as heat_pump_response:
+        await self.__async_read_response__(heat_pump_response, url)
+
+      return None
+
+    except TimeoutError:
+      _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
+      raise TimeoutException()
+
+  async def async_set_heat_pump_flow_temp_config(self, account_id: str, euid: str, weather_comp_enabled: bool, weather_comp_min_temperature: float, weather_comp_max_temperature: float, fixed_flow_temperature: float):
     """Sets the flow temperature for a given heat pump zone"""
     await self.async_refresh_token()
 
     try:
       request_context = "set-heatpump-flow-temp"
-      client = self._create_client_session()
-      url = f'{self._base_url}/v1/graphql/'
-      query = heat_pump_update_flow_temp_config_mutation.format(euid=euid, weather_comp_enabled=str(weather_comp_enabled).lower(), weather_comp_min_temperature=weather_comp_min_temperature, weather_comp_max_temperature=weather_comp_max_temperature, fixed_flow_temperature=fixed_flow_temperature) 
+      client = await self._create_client_session()
+      url = f'{self._backend_base_url}/v1/graphql/'
+      query = backend_heat_pump_update_flow_temp_config_mutation.format(account_id=account_id, euid=euid, weather_comp_enabled=str(weather_comp_enabled).lower(), weather_comp_min_temperature=weather_comp_min_temperature, weather_comp_max_temperature=weather_comp_max_temperature, fixed_flow_temperature=fixed_flow_temperature) 
       payload = { "query": query }
-      headers = { "Authorization": f"JWT {self._graphql_token}", integration_context_header: request_context }
+      headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
       async with client.post(url, json=payload, headers=headers) as heat_pump_response:
         await self.__async_read_response__(heat_pump_response, url)
     
@@ -1002,13 +1144,13 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "set-heatpump-mode"
-      client = self._create_client_session()
-      url = f'{self._base_url}/v1/graphql/'
-      query = (heat_pump_set_zone_mode_with_setpoint_mutation.format(account_id=account_id, euid=euid, zone_id=zone_id, zone_mode=zone_mode, target_temperature=target_temperature) 
+      client = await self._create_client_session()
+      url = f'{self._backend_base_url}/v1/graphql/'
+      query = (backend_heat_pump_set_zone_mode_with_setpoint_mutation.format(account_id=account_id, euid=euid, zone_id=zone_id, zone_mode=zone_mode, target_temperature=target_temperature) 
                if target_temperature is not None 
-               else heat_pump_set_zone_mode_without_setpoint_mutation.format(account_id=account_id, euid=euid, zone_id=zone_id, zone_mode=zone_mode))
+               else backend_heat_pump_set_zone_mode_without_setpoint_mutation.format(account_id=account_id, euid=euid, zone_id=zone_id, zone_mode=zone_mode))
       payload = { "query": query }
-      headers = { "Authorization": f"JWT {self._graphql_token}", integration_context_header: request_context }
+      headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
       async with client.post(url, json=payload, headers=headers) as heat_pump_response:
         await self.__async_read_response__(heat_pump_response, url)
     
@@ -1022,11 +1164,11 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "set-heatpump-boost"
-      client = self._create_client_session()
-      url = f'{self._base_url}/v1/graphql/'
-      query = heat_pump_boost_zone_mutation.format(account_id=account_id, euid=euid, zone_id=zone_id, end_at=end_datetime.isoformat(sep="T"), target_temperature=target_temperature) 
+      client = await self._create_client_session()
+      url = f'{self._backend_base_url}/v1/graphql/'
+      query = backend_heat_pump_boost_zone_mutation.format(account_id=account_id, euid=euid, zone_id=zone_id, end_at=end_datetime.isoformat(sep="T"), target_temperature=target_temperature) 
       payload = { "query": query }
-      headers = { "Authorization": f"JWT {self._graphql_token}", integration_context_header: request_context }
+      headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
       async with client.post(url, json=payload, headers=headers) as heat_pump_response:
         await self.__async_read_response__(heat_pump_response, url)
     
@@ -1040,9 +1182,9 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "greener-night-forecast"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._backend_base_url}/v1/graphql/'
-      payload = { "query": greener_night_forecast_query }
+      payload = { "query": backend_greener_night_forecast_query }
       headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
       async with client.post(url, json=payload, headers=headers) as greener_night_forecast_response:
 
@@ -1072,10 +1214,9 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "saving-sessions"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._backend_base_url}/v1/graphql/'
-      # Get account response
-      payload = { "query": octoplus_saving_session_query.format(account_id=account_id) }
+      payload = { "query": backend_octoplus_saving_session_query.format(account_id=account_id) }
       headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
       async with client.post(url, json=payload, headers=headers) as account_response:
         response_body = await self.__async_read_response__(account_response, url)
@@ -1085,14 +1226,21 @@ class OctopusEnergyApiClient:
                                                                           ev["code"],
                                                                           as_utc(parse_datetime(ev["startAt"])),
                                                                           as_utc(parse_datetime(ev["endAt"])),
-                                                                          ev["rewardPerKwhInOctoPoints"]),
+                                                                          ev["rewardPerKwhInOctoPoints"],
+                                                                          list(map(lambda gsp: f"{gsp['regionId']}", ev["targetRegion"]))
+                                                                          if "targetRegion" in ev and ev["targetRegion"] is not None
+                                                                          else None),
                                         response_body["data"]["savingSessions"]["events"])), 
                                         list(map(lambda ev: SavingSession(ev["eventId"],
                                                                           None,
                                                                           as_utc(parse_datetime(ev["startAt"])),
                                                                           as_utc(parse_datetime(ev["endAt"])),
-                                                                          ev["rewardGivenInOctoPoints"]),
-                                        response_body["data"]["savingSessions"]["account"]["joinedEvents"])))
+                                                                          ev["rewardGivenInOctoPoints"],
+                                                                          None),
+                                        response_body["data"]["savingSessions"]["account"]["joinedEvents"])),
+                                        f"{response_body["data"]["savingSessions"]["account"]["signedUpMeterPoint"]["regionId"]}"
+                                        if "signedUpMeterPoint" in response_body["data"]["savingSessions"]["account"] and response_body["data"]["savingSessions"]["account"]["signedUpMeterPoint"] is not None and "regionId" in response_body["data"]["savingSessions"]["account"]["signedUpMeterPoint"]
+                                        else None)
         else:
           _LOGGER.error("Failed to retrieve saving sessions")
     except TimeoutError:
@@ -1106,7 +1254,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "free-electricity-sessions"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'https://oe-api.davidskendall.co.uk/free_electricity.json'
       payload = { }
       headers = { integration_context_header: request_context }
@@ -1139,7 +1287,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "octoplus-points"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       # Get account response
       payload = { "query": octoplus_points_query }
@@ -1164,17 +1312,17 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "join-saving-session"
-      client = self._create_client_session()
-      url = f'{self._base_url}/v1/graphql/'
-      # Get account response
-      payload = { "query": octoplus_saving_session_join_mutation.format(account_id=account_id, event_code=event_code) }
-      headers = { "Authorization": f"JWT {self._graphql_token}", integration_context_header: request_context }
+      client = await self._create_client_session()
+      url = f'{self._backend_base_url}/v1/graphql/'
+      payload = { "query": backend_octoplus_saving_session_join_mutation.format(account_id=account_id, event_code=event_code) }
+      headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
       async with client.post(url, json=payload, headers=headers) as join_response:
 
         try:
           await self.__async_read_response__(join_response, url)
           return JoinSavingSessionResponse(True, [])
         except RequestException as e:
+          _LOGGER.info(e)
           return JoinSavingSessionResponse(False, e.errors)
     
     except TimeoutError:
@@ -1187,7 +1335,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "redeem-octoplus-points"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       payload = { "query": redeem_octoplus_points_account_credit_mutation.format(account_id=account_id, points=points_to_redeem) }
       headers = { "Authorization": f"JWT {self._graphql_token}", integration_context_header: request_context }
@@ -1208,7 +1356,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "home-mini-consumption"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
 
       payload = { "query": live_consumption_query.format(device_id=device_id, period_from=period_from.strftime("%Y-%m-%dT%H:%M:%S%z"), period_to=period_to.strftime("%Y-%m-%dT%H:%M:%S%z")) }
@@ -1240,7 +1388,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "electricity-rates"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       auth = aiohttp.BasicAuth(self._api_key, '')
       page = 1
       has_more_rates = True
@@ -1270,7 +1418,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "electricity-rates"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       auth = aiohttp.BasicAuth(self._api_key, '')
       url = f'{self._base_url}/v1/products/{product_code}/electricity-tariffs/{tariff_code}/day-unit-rates?period_from={period_from.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}&period_to={period_to.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}'
       headers = { integration_context_header: request_context }
@@ -1282,7 +1430,7 @@ class OctopusEnergyApiClient:
           # Normalise the rates to be in 30 minute increments and remove any rates that fall outside of our day period 
           day_rates = rates_to_thirty_minute_increments(data, period_from, period_to, tariff_code, self._electricity_price_cap, self._favour_direct_debit_rates)
           for rate in day_rates:
-            if self.__is_night_rate(rate, is_smart_meter) == False:
+            if self.__is_night_rate(rate, is_smart_meter, product_code) == False:
               results.append(rate)
 
       url = f'{self._base_url}/v1/products/{product_code}/electricity-tariffs/{tariff_code}/night-unit-rates?period_from={period_from.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}&period_to={period_to.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}'
@@ -1294,7 +1442,7 @@ class OctopusEnergyApiClient:
         # Normalise the rates to be in 30 minute increments and remove any rates that fall outside of our night period 
         night_rates = rates_to_thirty_minute_increments(data, period_from, period_to, tariff_code, self._electricity_price_cap, self._favour_direct_debit_rates)
         for rate in night_rates:
-          if self.__is_night_rate(rate, is_smart_meter) == True:
+          if self.__is_night_rate(rate, is_smart_meter, product_code) == True:
             results.append(rate)
     except TimeoutError:
       _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
@@ -1307,6 +1455,46 @@ class OctopusEnergyApiClient:
 
   async def async_get_electricity_rates(self, product_code: str, tariff_code: str, is_smart_meter: bool, period_from: datetime, period_to: datetime):
     """Get the current rates"""
+    
+    rate_links = await self._async_get_tariff_code_rate_links(product_code, tariff_code)
+    if (rate_links is not None):
+      results = []
+
+      for rate_link in rate_links:
+
+        try:
+          request_context = "electricity-rates"
+          client = await self._create_client_session()
+          auth = aiohttp.BasicAuth(self._api_key, '')
+          page = 1
+          has_more_rates = True
+          while has_more_rates:
+            url = f'{rate_link}?period_from={period_from.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}&period_to={period_to.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}&page={page}'
+            headers = { integration_context_header: request_context }
+            async with client.get(url, auth=auth, headers=headers) as response:
+              data = await self.__async_read_response__(response, url)
+              if data is None:
+                return None
+              else:
+                thirty_minute_rates = rates_to_thirty_minute_increments(data, period_from, period_to, tariff_code, self._electricity_price_cap, self._favour_direct_debit_rates)
+                for rate in thirty_minute_rates:
+                  is_night_rate = self.__is_night_rate(rate, is_smart_meter, product_code)
+                  if (("day-unit-rates" not in rate_link and "night-unit-rates" not in rate_link) or 
+                      (is_night_rate == True and "night-unit-rates" in rate_link) or
+                      (is_night_rate == False and "day-unit-rates" in rate_link)):
+                    results.append(rate)
+                has_more_rates = "next" in data and data["next"] is not None
+                if has_more_rates:
+                  page = page + 1
+        
+        except TimeoutError:
+          _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
+          raise TimeoutException()
+        
+      results.sort(key=get_start)
+      return results
+    
+    _LOGGER.debug(f"Failed to retrieve rate links for tariff code: {tariff_code}; product code: {product_code}. Falling back to old way of determining tariffs")
 
     if is_day_night_tariff(tariff_code):
       return await self.async_get_electricity_day_night_rates(product_code, tariff_code, is_smart_meter, period_from, period_to)
@@ -1318,7 +1506,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "electricity-consumption"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       auth = aiohttp.BasicAuth(self._api_key, '')
 
       query_params = []
@@ -1365,7 +1553,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "gas-rates"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       auth = aiohttp.BasicAuth(self._api_key, '')
       url = f'{self._base_url}/v1/products/{product_code}/gas-tariffs/{tariff_code}/standard-unit-rates?period_from={period_from.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}&period_to={period_to.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}'
       headers = { integration_context_header: request_context }
@@ -1387,7 +1575,7 @@ class OctopusEnergyApiClient:
     
     try:
       request_context = "gas-consumption"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       auth = aiohttp.BasicAuth(self._api_key, '')
 
       query_params = []
@@ -1425,21 +1613,83 @@ class OctopusEnergyApiClient:
     except TimeoutError:
       _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
       raise TimeoutException()
+    
+  def _get_rate_links(self, links: list):
+    result = []
+    for link in links:
+      if "rel" in link and link["rel"] in ["standard_unit_rates", "day_unit_rates", "night_unit_rates"] and link["href"] is not None:
+        result.append(link["href"])
+    
+    return result
 
-  async def async_get_product(self, product_code):
+  def _get_rate_links_for_code(self, tariff: dict):
+    links = []
+    code = None
+    if "direct_debit_monthly" in tariff and "links" in tariff["direct_debit_monthly"]:
+      code = tariff["direct_debit_monthly"]["code"]
+      links.extend(self._get_rate_links(tariff["direct_debit_monthly"]["links"]))
+    elif "varying" in tariff and "links" in tariff["varying"]:
+      code = tariff["varying"]["code"]
+      links.extend(self._get_rate_links(tariff["varying"]["links"]))
+
+    return (code, links)
+    
+  async def _async_get_tariff_code_rate_links(self, product_code: str, tariff_code: str) -> list[str] | None:
+    async with self._tariff_link_lock:
+
+      if tariff_code in self._tariff_links_cache:
+        _LOGGER.debug(f"Found cached rate links for tariff code: {tariff_code}")
+        return self._tariff_links_cache[tariff_code]
+
+      try:
+        request_context = "get-product-info"
+        client = await self._create_client_session()
+        auth = aiohttp.BasicAuth(self._api_key, '')
+        url = f'{self._base_url}/v1/products/{product_code}'
+        headers = { integration_context_header: request_context }
+        async with client.get(url, auth=auth, headers=headers) as response:
+          result = await self.__async_read_response__(response, url)
+
+          if (result is not None):
+            if ("single_register_electricity_tariffs" in result):
+              for tariff in result["single_register_electricity_tariffs"]:
+                (code, links) = self._get_rate_links_for_code(result["single_register_electricity_tariffs"][tariff])
+                if (code is not None):
+                  self._tariff_links_cache[code] = links
+
+            if ("dual_register_electricity_tariffs" in result):
+              for tariff in result["dual_register_electricity_tariffs"]:
+                (code, links) = self._get_rate_links_for_code(result["dual_register_electricity_tariffs"][tariff])
+                if (code is not None):
+                  self._tariff_links_cache[code] = links
+
+            if ("four_rate_ev_electricity_tariffs" in result):
+              for tariff in result["four_rate_ev_electricity_tariffs"]:
+                (code, links) = self._get_rate_links_for_code(result["four_rate_ev_electricity_tariffs"][tariff])
+                if (code is not None):
+                  self._tariff_links_cache[code] = links
+
+            return self._tariff_links_cache[tariff_code] if tariff_code in self._tariff_links_cache else None
+      except TimeoutError:
+        _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
+        raise TimeoutException()
+
+  async def async_get_product(self, product_code: str):
     """Get all products"""
 
-    try:
-      request_context = "get-product-info"
-      client = self._create_client_session()
-      auth = aiohttp.BasicAuth(self._api_key, '')
-      url = f'{self._base_url}/v1/products/{product_code}'
-      headers = { integration_context_header: request_context }
-      async with client.get(url, auth=auth, headers=headers) as response:
-        return await self.__async_read_response__(response, url)
-    except TimeoutError:
-      _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
-      raise TimeoutException()
+    async with self._tariff_link_lock:
+      try:
+        request_context = "get-product-info"
+        client = await self._create_client_session()
+        auth = aiohttp.BasicAuth(self._api_key, '')
+        url = f'{self._base_url}/v1/products/{product_code}'
+        headers = { integration_context_header: request_context }
+        async with client.get(url, auth=auth, headers=headers) as response:
+          result = await self.__async_read_response__(response, url)
+          return result
+      except TimeoutError:
+        _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
+        raise TimeoutException()
 
   async def async_get_electricity_standing_charge(self, product_code: str, tariff_code: str, period_from: datetime, period_to: datetime):
     """Get the electricity standing charges"""
@@ -1447,19 +1697,14 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "electricity-standing-charge"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       auth = aiohttp.BasicAuth(self._api_key, '')
       url = f'{self._base_url}/v1/products/{product_code}/electricity-tariffs/{tariff_code}/standing-charges?period_from={period_from.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}&period_to={period_to.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}'
       headers = { integration_context_header: request_context }
       async with client.get(url, auth=auth, headers=headers) as response:
         data = await self.__async_read_response__(response, url)
         if (data is not None and "results" in data and len(data["results"]) > 0):
-          result = {
-            "start": parse_datetime(data["results"][0]["valid_from"]) if "valid_from" in data["results"][0] and data["results"][0]["valid_from"] is not None else None,
-            "end": parse_datetime(data["results"][0]["valid_to"]) if "valid_to" in data["results"][0] and data["results"][0]["valid_to"] is not None else None,
-            "value_inc_vat": float(data["results"][0]["value_inc_vat"]),
-            "tariff_code": tariff_code,
-          }
+          result = get_standing_charge(data["results"], tariff_code, self._favour_direct_debit_rates)
 
       return result
     except TimeoutError:
@@ -1472,19 +1717,14 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "gas-standing-charge"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       auth = aiohttp.BasicAuth(self._api_key, '')
       url = f'{self._base_url}/v1/products/{product_code}/gas-tariffs/{tariff_code}/standing-charges?period_from={period_from.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}&period_to={period_to.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}'
       headers = { integration_context_header: request_context }
       async with client.get(url, auth=auth, headers=headers) as response:
         data = await self.__async_read_response__(response, url)
         if (data is not None and "results" in data and len(data["results"]) > 0):
-          result = {
-            "start": parse_datetime(data["results"][0]["valid_from"]) if "valid_from" in data["results"][0] and data["results"][0]["valid_from"] is not None else None,
-            "end": parse_datetime(data["results"][0]["valid_to"]) if "valid_to" in data["results"][0] and data["results"][0]["valid_to"] is not None else None,
-            "value_inc_vat": float(data["results"][0]["value_inc_vat"]),
-            "tariff_code": tariff_code,
-          }
+          result = get_standing_charge(data["results"], tariff_code, self._favour_direct_debit_rates)
 
       return result
     except TimeoutError:
@@ -1497,7 +1737,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "intelligent-dispatches"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       payload = { "query": intelligent_dispatches_query.format(account_id=account_id, device_id=device_id) }
       headers = { "Authorization": f"JWT {self._graphql_token}", integration_context_header: request_context }
@@ -1556,7 +1796,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "intelligent-settings"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       payload = { "query": intelligent_settings_query.format(account_id=account_id, device_id=device_id) }
       headers = { "Authorization": f"JWT {self._graphql_token}", integration_context_header: request_context }
@@ -1569,23 +1809,7 @@ class OctopusEnergyApiClient:
 
           devices = list(response_body["data"]["devices"])
           if len(devices) == 1:
-            smart_charge = devices[0]["status"]["isSuspended"] == False if "status" in devices[0] and "isSuspended" in devices[0]["status"] else None
-            charging_preferences = devices[0]["chargingPreferences"] if "chargingPreferences" in devices[0] else None
-            return IntelligentSettings(
-              smart_charge,
-              int(charging_preferences["weekdayTargetSoc"])
-              if charging_preferences is not None and "weekdayTargetSoc" in charging_preferences
-              else None,
-              int(charging_preferences["weekendTargetSoc"])
-              if charging_preferences is not None and "weekendTargetSoc" in charging_preferences
-              else None,
-              self.__ready_time_to_time__(charging_preferences["weekdayTargetTime"])
-              if charging_preferences is not None and "weekdayTargetTime" in charging_preferences
-              else None,
-              self.__ready_time_to_time__(charging_preferences["weekendTargetTime"])
-              if charging_preferences is not None and "weekendTargetTime" in charging_preferences
-              else None
-            )
+            return IntelligentDeviceSettings.model_validate(devices[0])
         else:
           _LOGGER.error("Failed to retrieve intelligent settings")
       
@@ -1615,14 +1839,21 @@ class OctopusEnergyApiClient:
     await self.async_refresh_token()
 
     settings = await self.async_get_intelligent_settings(account_id, device_id)
+    if (settings is None):
+      raise Exception('Failed to retrieve intelligent settings')
+
+    new_schedules = []
+    for schedule in settings.preferences.schedules:
+      schedule.max = target_percentage
+      new_schedules.append(schedule)
 
     try:
       request_context = "set-intelligent-target-perc"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       payload = { "query": intelligent_settings_mutation.format(
           device_id=device_id,
-          schedules=self.__intelligent_settings_schedules__(target_percentage, settings.ready_time_weekday if settings is not None else time(hour=7, minute=0))
+          schedules=self.__intelligent_settings_schedules__(new_schedules)
         )
       }
 
@@ -1646,14 +1877,21 @@ class OctopusEnergyApiClient:
     await self.async_refresh_token()
     
     settings = await self.async_get_intelligent_settings(account_id, device_id)
+    if (settings is None):
+      raise Exception('Failed to retrieve intelligent settings')
+
+    new_schedules = []
+    for schedule in settings.preferences.schedules:
+      schedule.time = target_time
+      new_schedules.append(schedule)
 
     try:
       request_context = "set-intelligent-target-time"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       payload = { "query": intelligent_settings_mutation.format(
           device_id=device_id,
-          schedules=self.__intelligent_settings_schedules__(settings.charge_limit_weekday if settings is not None else 100, target_time)
+          schedules=self.__intelligent_settings_schedules__(new_schedules)
         )
       }
 
@@ -1665,12 +1903,11 @@ class OctopusEnergyApiClient:
       _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
       raise TimeoutException()
 
-  def __intelligent_settings_schedules__(self, target_percentage: int, target_time: time) -> str:
-    daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
-    return ", ".join(list(map(lambda day: intelligent_settings_mutation_schedule
-                    .format(day_of_week=day,
-                            target_percentage=target_percentage,
-                            target_time=target_time.strftime("%H:%M")), daysOfWeek)))
+  def __intelligent_settings_schedules__(self, schedules: List[IntelligentDeviceSettingPreferenceSchedule]) -> str:
+    return ", ".join(list(map(lambda schedule: intelligent_settings_mutation_schedule
+                    .format(day_of_week=schedule.dayOfWeek,
+                            target_percentage=schedule.max,
+                            target_time=schedule.time.strftime("%H:%M")), schedules)))
 
   async def async_turn_on_intelligent_bump_charge(
       self, device_id: str,
@@ -1680,7 +1917,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "set-intelligent-bump"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       payload = { "query": intelligent_turn_on_bump_charge_mutation.format(
         device_id=device_id,
@@ -1702,7 +1939,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "set-intelligent-bump"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       payload = { "query": intelligent_turn_off_bump_charge_mutation.format(
         device_id=device_id,
@@ -1724,7 +1961,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "set-intelligent-smart"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       payload = { "query": intelligent_turn_on_smart_charge_mutation.format(
         device_id=device_id,
@@ -1746,7 +1983,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "set-intelligent-smart"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       payload = { "query": intelligent_turn_off_smart_charge_mutation.format(
         device_id=device_id,
@@ -1766,7 +2003,7 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "get-intelligent-device"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._base_url}/v1/graphql/'
       payload = { "query": intelligent_device_query.format(account_id=account_id) }
       headers = { "Authorization": f"JWT {self._graphql_token}", integration_context_header: request_context }
@@ -1840,9 +2077,9 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "wheel-of-fortune"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._backend_base_url}/v1/graphql/'
-      payload = { "query": wheel_of_fortune_query.format(account_id=account_id) }
+      payload = { "query": backend_wheel_of_fortune_query.format(account_id=account_id) }
       headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
       async with client.post(url, json=payload, headers=headers) as response:
         response_body = await self.__async_read_response__(response, url)
@@ -1872,9 +2109,9 @@ class OctopusEnergyApiClient:
 
     try:
       request_context = "spin-wheel-of-fortune"
-      client = self._create_client_session()
+      client = await self._create_client_session()
       url = f'{self._backend_base_url}/v1/graphql/'
-      payload = { "query": wheel_of_fortune_mutation.format(account_id=account_id, fuel_type="ELECTRICITY" if is_electricity == True else "GAS") }
+      payload = { "query": backend_wheel_of_fortune_mutation.format(account_id=account_id, fuel_type="ELECTRICITY" if is_electricity == True else "GAS") }
       headers = { "Authorization": f"{self._graphql_token}", integration_context_header: request_context }
       async with client.post(url, json=payload, headers=headers) as response:
         response_body = await self.__async_read_response__(response, url)
@@ -1898,12 +2135,21 @@ class OctopusEnergyApiClient:
   def __get_interval_end(self, item):
     return (item["end"].timestamp(), item["end"].fold)
 
-  def __is_night_rate(self, rate, is_smart_meter):
+  def __is_night_rate(self, rate, is_smart_meter: bool, product_code: str):
     # Normally the economy seven night rate is between 12am and 7am UK time
     # https://octopus.energy/help-and-faqs/articles/what-is-an-economy-7-meter-and-tariff/
     # However, if a smart meter is being used then the times are between 12:30am and 7:30am UTC time
     # https://octopus.energy/help-and-faqs/articles/what-happens-to-my-economy-seven-e7-tariff-when-i-have-a-smart-meter-installed/
-    if is_smart_meter:
+
+    is_intelligent_tariff = False
+    for intelligent_tariff in intelligent_tariffs:
+      if intelligent_tariff in product_code:
+        is_intelligent_tariff = True
+        break
+
+    if is_intelligent_tariff:
+      is_night_rate = self.__is_between_times(rate, "23:30:00", "05:30:00", False)
+    elif is_smart_meter:
         is_night_rate = self.__is_between_times(rate, "00:30:00", "07:30:00", True)
     else:
         is_night_rate = self.__is_between_times(rate, "00:00:00", "07:00:00", False)

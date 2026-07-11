@@ -2,13 +2,14 @@
 
 from homeassistant.const import CONF_NAME
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
-from homeassistant.helpers.entity import UNDEFINED, Entity, EntityDescription
+from homeassistant.helpers.entity import Entity, EntityDescription
+from homeassistant.helpers.typing import UNDEFINED
 
 from .const import DOMAIN, VERSION
 from .metrics import BodyScaleMetricsHandler
 
 
-class BodyScaleBaseEntity(Entity):  # type: ignore[misc]
+class BodyScaleBaseEntity(Entity):
     """Body scale base entity."""
 
     _attr_should_poll = False
@@ -35,10 +36,11 @@ class BodyScaleBaseEntity(Entity):  # type: ignore[misc]
         name = handler.config[CONF_NAME]
         self._attr_unique_id = "_".join([DOMAIN, name, self.entity_description.key])
 
-        if self.entity_description.name == UNDEFINED:
-            # Name not provided... get it from the key
-            self._attr_name = self.entity_description.key.replace("_", " ").capitalize()
+        if self.entity_description.name is UNDEFINED:
+            # Normal sensor — let HA resolve the name via translation_key
+            pass
         else:
+            # Main umbrella entity — use the profile name directly
             self._attr_name = (
                 self._handler.config[CONF_NAME].replace("_", " ").capitalize()
             )

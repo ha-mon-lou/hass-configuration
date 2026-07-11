@@ -34,7 +34,7 @@ class SavingSessionsCoordinatorResult(BaseCoordinatorResult):
     self.available_events = available_events
     self.joined_events = joined_events
 
-def filter_available_events(current: datetime, available_events: list[SavingSession], joined_events: list[SavingSession]) -> list[SavingSession]:
+def filter_available_events(current: datetime, available_events: list[SavingSession], joined_events: list[SavingSession], regionId: str | None) -> list[SavingSession]:
   filtered_events = []
   for upcoming_event in available_events:
     is_joined = False
@@ -43,7 +43,13 @@ def filter_available_events(current: datetime, available_events: list[SavingSess
         is_joined = True
         break
 
-    if (upcoming_event.start >= current and is_joined == False):
+    is_in_region = upcoming_event.targetRegions is None or len(upcoming_event.targetRegions) == 0 or (regionId is not None and regionId in upcoming_event.targetRegions)
+    if (is_in_region == False):
+      _LOGGER.info(f"Excluding saving session {upcoming_event.code} as it is not in the correct region. Event regions: {','.join(upcoming_event.targetRegions)}, user region: {regionId}")
+
+    if (upcoming_event.start >= current and
+        is_joined == False and
+        is_in_region):
       filtered_events.append(upcoming_event)
 
   return filtered_events
@@ -58,7 +64,7 @@ async def async_refresh_saving_sessions(
   if existing_saving_sessions_result is None or current >= existing_saving_sessions_result.next_refresh:
     try:
       result = await client.async_get_saving_sessions(account_id)
-      available_events = filter_available_events(current, result.available_events, result.joined_events)
+      available_events = filter_available_events(current, result.available_events, result.joined_events, result.regionId)
 
       for available_event in available_events:
         is_new = True
@@ -73,12 +79,14 @@ async def async_refresh_saving_sessions(
         if is_new:
           fire_event(EVENT_NEW_SAVING_SESSION, { 
             "account_id": account_id,
+            "account_region_id": result.regionId,
             "event_code": available_event.code,
             "event_id": available_event.id,
             "event_start": as_local(available_event.start),
             "event_end": as_local(available_event.end),
             "event_duration_in_minutes": available_event.duration_in_minutes,
-            "event_octopoints_per_kwh": available_event.octopoints
+            "event_octopoints_per_kwh": available_event.octopoints,
+            "event_target_regions": available_event.targetRegions
           })
 
       joined_events = []
@@ -96,18 +104,21 @@ async def async_refresh_saving_sessions(
           "end": as_local(ev.end),
           "duration_in_minutes": ev.duration_in_minutes,
           "rewarded_octopoints": ev.octopoints,
-          "octopoints_per_kwh": original_event.octopoints if original_event is not None else None
+          "octopoints_per_kwh": original_event.octopoints if original_event is not None else None,
+          "target_regions": original_event.targetRegions if original_event is not None else []
         })
 
       fire_event(EVENT_ALL_SAVING_SESSIONS, { 
         "account_id": account_id,
+        "account_region_id": result.regionId,
         "available_events": list(map(lambda ev: {
           "id": ev.id,
           "code": ev.code,
           "start": as_local(ev.start),
           "end": as_local(ev.end),
           "duration_in_minutes": ev.duration_in_minutes,
-          "octopoints_per_kwh": ev.octopoints
+          "octopoints_per_kwh": ev.octopoints,
+          "target_regions": ev.targetRegions
         }, available_events)),
         "joined_events": joined_events, 
       })

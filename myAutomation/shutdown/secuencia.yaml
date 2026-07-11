@@ -34,7 +34,6 @@
         value: >
           {{ "\n· Calefacción apagada (" ~ states('sensor.temperatura_interior') ~ "°C)" }}
 
-    - action: script.ac_panasonic_control_refrigeracion_away
     - service: input_text.set_value
       data:
         entity_id: input_text.resumen_shutdown

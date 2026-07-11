@@ -7,7 +7,8 @@ from datetime import timedelta
 from numbers import Number
 from typing import cast
 
-from .common import utcnow_no_timezone
+from homeassistant.util import dt as dt_util
+
 from .const import WINDOW_SIZE_UNIT_NUMBER_EVENTS, WINDOW_SIZE_UNIT_TIME
 
 _LOGGER = logging.getLogger(__name__)
@@ -20,7 +21,7 @@ class FilterState:
 
     def __init__(self, state: str | float | int) -> None:
         """Initialize with HA State object."""
-        self.timestamp = utcnow_no_timezone()
+        self.timestamp = dt_util.utcnow()
         try:
             self.state = float(state)
         except ValueError:
@@ -118,6 +119,10 @@ class LowOutlierFilter(Filter):
         previous_state_values = [cast(float, s.state) for s in self.states]
         new_state_value = cast(float, new_state.state)
         self._skip_processing = False
+
+        if new_state_value <= 0:
+            self._skip_processing = True
+            return new_state
 
         if previous_state_values and new_state_value >= previous_state_values[-1]:
             _LOGGER.debug(

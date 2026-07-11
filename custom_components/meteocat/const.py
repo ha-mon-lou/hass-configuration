@@ -29,6 +29,8 @@ ALERTS = "alerts"
 ALERT_FILE_STATUS = "alert_file_status"
 ALERT_WIND = "alert_wind"
 ALERT_RAIN_INTENSITY = "alert_rain_intensity"
+ALERT_RAIN_INTENSITY_30_MIN = "alert_rain_intensity_30_min"
+ALERT_RAIN_INTENSITY_3_HOURS = "alert_rain_intensity_3_hours"
 ALERT_RAIN = "alert_rain"
 ALERT_SEA = "alert_sea"
 ALERT_COLD = "alert_cold"
@@ -60,13 +62,13 @@ DEFAULT_NAME = "METEOCAT"
 
 # Tiempos para validación de API
 DEFAULT_VALIDITY_DAYS = 1  # Número de días a partir de los cuales se considera que el archivo de información está obsoleto
-DEFAULT_VALIDITY_HOURS = 6  # Hora a partir de la cual la API tiene la información actualizada de predicciones disponible para descarga
+DEFAULT_VALIDITY_HOURS = 7  # Hora a partir de la cual la API tiene la información actualizada de predicciones disponible para descarga
 DEFAULT_VALIDITY_MINUTES = 0  # Minutos a partir de los cuales la API tiene la información actualizada de predicciones disponible para descarga
 DEFAULT_HOURLY_FORECAST_MIN_HOURS_SINCE_LAST_UPDATE = 15  # Horas mínimas desde la última actualización de predicciones horararias para proceder a una nueva llamada a la API
 DEFAULT_DAILY_FORECAST_MIN_HOURS_SINCE_LAST_UPDATE = 15  # Horas mínimas desde la última actualización de predicciones diarias para proceder a una nueva llamada a la API
-DEFAULT_UVI_LOW_VALIDITY_HOURS = 5  # Hora a partir de la cual la API tiene la información actualizada de datos UVI disponible para descarga con límite bajo de cuota
+DEFAULT_UVI_LOW_VALIDITY_HOURS = 11  # Hora a partir de la cual la API tiene la información actualizada de datos UVI disponible para descarga con límite bajo de cuota
 DEFAULT_UVI_LOW_VALIDITY_MINUTES = 0  # Minutos a partir de los cuales la API tiene la información actualizada de datos UVI disponible para descarga con límite bajo de cuota
-DEFAULT_UVI_HIGH_VALIDITY_HOURS = 9  # Hora a partir de la cual la API tiene la información actualizada de datos UVI disponible para descarga con límite alto de cuota
+DEFAULT_UVI_HIGH_VALIDITY_HOURS = 11  # Hora a partir de la cual la API tiene la información actualizada de datos UVI disponible para descarga con límite alto de cuota
 DEFAULT_UVI_HIGH_VALIDITY_MINUTES = 0  # Minutos a partir de los cuales la API tiene la información actualizada de datos UVI disponible para descarga con límite alto de cuota
 DEFAULT_UVI_MIN_HOURS_SINCE_LAST_UPDATE = 15 # Horas mínimas desde la última actualización de datos UVI para proceder a una nueva llamada a la API
 DEFAULT_ALERT_VALIDITY_TIME = 120  # Minutos a partir de los cuales las alertas están obsoletas y se se debe proceder a una nueva llamada a la API

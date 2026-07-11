@@ -64,10 +64,10 @@ async def async_get_diagnostics(client: OctopusEnergyApiClient, account_id: str,
       for meter_index in range(meters_length):
 
         try:
-          consumptions = await client.async_get_electricity_consumption(account_info["electricity_meter_points"][point_index]["mpan"], account_info["electricity_meter_points"][point_index]["meters"][meter_index]["serial_number"], page_size=1)
-          account_info["electricity_meter_points"][point_index]["meters"][meter_index]["latest_consumption"] = consumptions[-1]["end"] if consumptions is not None and len(consumptions) > 0 else "Not available"
+          consumptions = await client.async_get_electricity_consumption(account_info["electricity_meter_points"][point_index]["mpan"], account_info["electricity_meter_points"][point_index]["meters"][meter_index]["serial_number"], page_size=52)
+          account_info["electricity_meter_points"][point_index]["meters"][meter_index]["latest_consumption_data"] = consumptions if consumptions is not None else "Not available"
         except TimeoutException:
-          account_info["electricity_meter_points"][point_index]["meters"][meter_index]["latest_consumption"] = "time out"
+          account_info["electricity_meter_points"][point_index]["meters"][meter_index]["latest_consumption_data"] = "timed out"
 
         device_id  = account_info["electricity_meter_points"][point_index]["meters"][meter_index]["device_id"]
         if device_id is not None and device_id != "":
@@ -90,10 +90,10 @@ async def async_get_diagnostics(client: OctopusEnergyApiClient, account_id: str,
       for meter_index in range(meters_length):
         
         try:
-          consumptions = await client.async_get_gas_consumption(account_info["gas_meter_points"][point_index]["mprn"], account_info["gas_meter_points"][point_index]["meters"][meter_index]["serial_number"], page_size=1)
-          account_info["gas_meter_points"][point_index]["meters"][meter_index]["latest_consumption"] = consumptions[-1]["end"] if consumptions is not None and len(consumptions) > 0 else "Not available"
+          consumptions = await client.async_get_gas_consumption(account_info["gas_meter_points"][point_index]["mprn"], account_info["gas_meter_points"][point_index]["meters"][meter_index]["serial_number"], page_size=52)
+          account_info["gas_meter_points"][point_index]["meters"][meter_index]["latest_consumption_data"] = consumptions if consumptions is not None else "Not available"
         except TimeoutException:
-          account_info["gas_meter_points"][point_index]["meters"][meter_index]["latest_consumption"] = "time out"
+          account_info["gas_meter_points"][point_index]["meters"][meter_index]["latest_consumption_data"] = "timed out"
 
         device_id  = account_info["gas_meter_points"][point_index]["meters"][meter_index]["device_id"]
         if device_id is not None and device_id != "":
@@ -115,7 +115,7 @@ async def async_get_diagnostics(client: OctopusEnergyApiClient, account_id: str,
     intelligent_device_dict = intelligent_device.to_dict()
     intelligent_settings = await client.async_get_intelligent_settings(account_id, intelligent_device.id)
     intelligent_device_dict["id"] = "**REDACTED**"
-    intelligent_device_dict["settings"] = intelligent_settings.to_dict() if intelligent_settings is not None else None
+    intelligent_device_dict["settings"] = intelligent_settings.dict() if intelligent_settings is not None else None
 
     intelligent_devices_dict.append(intelligent_device_dict)
   
@@ -129,8 +129,9 @@ async def async_get_diagnostics(client: OctopusEnergyApiClient, account_id: str,
   if mock_heat_pump:
     heat_pump_id = get_mock_heat_pump_id()
     heat_pumps[heat_pump_id] = mock_heat_pump_status_and_configuration().dict()
-  elif "heat_pump_ids" in account_info:
-    for heat_pump_id in account_info["heat_pump_ids"]:
+  else:
+    heat_pump_ids = await client.async_get_heat_pump_ids(account_id, account_info["property_ids"]) if account_info is not None else []
+    for heat_pump_id in heat_pump_ids:
       try:
         heat_pump = await client.async_get_heat_pump_configuration_and_status(account_id, heat_pump_id)
         heat_pumps[heat_pump_id] = heat_pump.dict() if heat_pump is not None else "Not found"

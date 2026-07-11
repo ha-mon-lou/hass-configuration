@@ -17,6 +17,6 @@ envia_comando_broadlink:
         hold_secs: 0
         device: "{{ dispositivo }}"
         command: "{{ comando }}"
-    - service: script.notifica_telegram
-      data:
-        message: <b>BL</b> {{ dispositivo }} <b>cmd</b> {{ comando }}
+#    - service: script.notifica_telegram
+#      data:
+#        message: <b>BL</b> {{ dispositivo }} <b>cmd</b> {{ comando }}

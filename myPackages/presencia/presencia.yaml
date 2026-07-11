@@ -186,6 +186,8 @@ automation:
     trigger:
       - platform: tag
         tag_id: !secret nfc_tag_ha_despacho
+      - platform: tag
+        tag_id: !secret nfc_tag_despacho_mesa_2
     condition:
       - condition: state
         entity_id: input_boolean.control_por_presencia
@@ -263,5 +265,3 @@ automation:
           entity_id: input_select.ubicacion_ramon
         data:
           option: "{{ trigger.to_state.state }}"
-
-          

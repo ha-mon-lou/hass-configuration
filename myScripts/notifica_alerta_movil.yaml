@@ -1,0 +1,16 @@
+notifica_alerta_movil:
+  alias: notifica alerta movil
+  fields:
+    title:
+      description: "The title of the notification"
+    message:
+      description: "The message content"
+  sequence:
+    - service: notify.mobile_app_sm_a155f
+      data:
+        message: "{{ message }}"
+        title: "{{ title }}"
+        data:
+          ttl: 0
+          priority: high
+          channel: alarm_stream

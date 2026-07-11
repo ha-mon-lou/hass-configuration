@@ -1822,15 +1822,20 @@ class MeteocatAlertsCoordinator(DataUpdateCoordinator):
             except (ValueError, TypeError):
                 display_time = update_str.split("T")[0]
 
+            active_region_alerts = await self._get_active_region_alerts_for_log()
+            active_alerts_block = self._build_active_alerts_log_block(active_region_alerts)
+
             _LOGGER.warning(
                 "ALERTAS: API falló → usando caché local (region=%s):\n"
                 "   • Archivo: %s\n"
                 "   • Última actualización: %s\n"
-                "   • Alertas activas: %d",
+                "   • Alertas activas: %d\n"
+                "%s",
                 self.region_id,
                 self.alerts_file.name,
                 display_time,
-                len(cached_data.get("dades", []))
+                len(active_region_alerts),
+                active_alerts_block,
             )
 
             self.async_set_updated_data({"actualizado": cached_data["actualitzat"]["dataUpdate"]})
@@ -2612,13 +2617,13 @@ class MeteocatLightningCoordinator(DataUpdateCoordinator):
             _LOGGER.warning("Timeout al obtener rayos.")
             raise ConfigEntryNotReady from err
         except ForbiddenError as err:
-            _LOGGER.error("Acceso denegado al obtener cuotas de la API de Meteocat: %s", err)
+            _LOGGER.error("Acceso denegado al obtener datos de rayos de la API de Meteocat: %s", err)
             raise ConfigEntryNotReady from err
         except TooManyRequestsError as err:
-            _LOGGER.warning("Límite de solicitudes alcanzado al obtener cuotas de la API de Meteocat: %s", err)
+            _LOGGER.warning("Límite de solicitudes alcanzado al obtener datos de rayos de la API de Meteocat: %s", err)
             raise ConfigEntryNotReady from err
         except (BadRequestError, InternalServerError, UnknownAPIError) as err:
-            _LOGGER.error("Error al obtener cuotas de la API de Meteocat: %s", err)
+            _LOGGER.error("Error al obtener datos de rayos de la API de Meteocat: %s", err)
             raise
         except Exception as err:
             _LOGGER.exception("Error inesperado al obtener rayos (region=%s)", self.region_id)
@@ -2689,13 +2694,13 @@ class MeteocatLightningCoordinator(DataUpdateCoordinator):
             _LOGGER.warning("Tiempo de espera agotado al obtener los datos de rayos de la API de Meteocat.")
             raise ConfigEntryNotReady from err
         except ForbiddenError as err:
-            _LOGGER.error("Acceso denegado al obtener cuotas de la API de Meteocat: %s", err)
+            _LOGGER.error("Acceso denegado al obtener datos de rayos de la API de Meteocat: %s", err)
             raise ConfigEntryNotReady from err
         except TooManyRequestsError as err:
-            _LOGGER.warning("Límite de solicitudes alcanzado al obtener cuotas de la API de Meteocat: %s", err)
+            _LOGGER.warning("Límite de solicitudes alcanzado al obtener datos de rayos de la API de Meteocat: %s", err)
             raise ConfigEntryNotReady from err
         except (BadRequestError, InternalServerError, UnknownAPIError) as err:
-            _LOGGER.error("Error al obtener cuotas de la API de Meteocat: %s", err)
+            _LOGGER.error("Error al obtener datos de rayos de la API de Meteocat: %s", err)
             raise
         except Exception as err:
             _LOGGER.exception("Error al obtener datos de rayos: %s", err)

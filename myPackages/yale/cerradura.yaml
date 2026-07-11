@@ -9,7 +9,7 @@ automation:
     mode: restart
     trigger:
       - platform: state
-        entity_id: binary_sensor.puerta_principal_door
+        entity_id: binary_sensor.puerta_principal_door_2
         to: "off"
     action:
       - service: timer.start
@@ -34,7 +34,7 @@ automation:
         entity_id: lock.puerta_principal_2
         state: "unlocked"
       - condition: state
-        entity_id: binary_sensor.puerta_principal_door
+        entity_id: binary_sensor.puerta_principal_door_2
         state: "off" # puerta cerrada
     action:
       - service: lock.lock

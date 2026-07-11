@@ -21,7 +21,14 @@
       },
       "set_api_limits": {
         "description": "Define los límites del plan de la API.",
-        "title": "API límites"
+        "title": "API límites",
+        "data": {
+          "limit_xema": "Límite XEMA (Red de Estaciones Meteorológicas Automáticas)",
+          "limit_prediccio": "Límite Predicción",
+          "limit_xdde": "Límite XDDE (Red de Detección de Descargas Eléctricas) (0 para desactivar)",
+          "limit_quota": "Límite Quota",
+          "limit_basic": "Límite Básico"
+        }
       }
     },
     "error": {
@@ -36,7 +43,7 @@
   "options": {
     "step": {
       "init": {
-        "description": "Configura la clave API, los límites de la API, regenera los archivos de 'assets' o actualiza las coordenadas.",
+        "description": "Configura la clave API, los límites de la API, regenera los archivos de 'assets', actualiza coordenadas o fuerza la actualización de datos.",
         "title": "Opciones de configuración",
         "data": {
           "option": "Opciones"
@@ -44,11 +51,25 @@
       },
       "update_api_and_limits": {
         "description": "Configura el API Key y los límites de la API.",
-        "title": "API Key y límites"
+        "title": "API Key y límites",
+        "data": {
+          "limit_xema": "Límite XEMA (Red de Estaciones Meteorológicas Automáticas)",
+          "limit_prediccio": "Límite Predicción",
+          "limit_xdde": "Límite XDDE (Red de Detección de Descargas Eléctricas) (0 para desactivar)",
+          "limit_quota": "Límite Quota",
+          "limit_basic": "Límite Básico"
+        }
       },
       "update_limits_only": {
         "description": "Configura los límites de la API.",
-        "title": "Límites de la API"
+        "title": "Límites de la API",
+        "data": {
+          "limit_xema": "Límite XEMA (Red de Estaciones Meteorológicas Automáticas)",
+          "limit_prediccio": "Límite Predicción",
+          "limit_xdde": "Límite XDDE (Red de Detección de Descargas Eléctricas) (0 para desactivar)",
+          "limit_quota": "Límite Quota",
+          "limit_basic": "Límite Básico"
+        }
       },
       "update_coordinates": {
         "description": "Introduce nuevas coordenadas. Coordenadas actuales: latitud {current_latitude}, longitud {current_longitude}. Altitud actual: {current_altitude} metros.",
@@ -117,7 +138,7 @@
     }
   },
   "entity": {
-    "sensor": {      
+    "sensor": {
       "wind_speed": {
         "name": "Viento Velocidad"
       },
@@ -238,7 +259,7 @@
         "name": "Archivo Horario",
         "state": {
           "updated": "Actualizado",
-          "obsolete": "Obsoleto"      
+          "obsolete": "Obsoleto"
         },
         "state_attributes": {
           "update_date": {
@@ -253,7 +274,7 @@
         "name": "Archivo Diario",
         "state": {
           "updated": "Actualizado",
-          "obsolete": "Obsoleto"      
+          "obsolete": "Obsoleto"
         },
         "state_attributes": {
           "update_date": {
@@ -268,7 +289,7 @@
         "name": "Archivo UVI",
         "state": {
           "updated": "Actualizado",
-          "obsolete": "Obsoleto"      
+          "obsolete": "Obsoleto"
         },
         "state_attributes": {
           "update_date": {
@@ -283,7 +304,7 @@
         "name": "Archivo Estación",
         "state": {
           "updated": "Actualizado",
-          "obsolete": "Obsoleto"      
+          "obsolete": "Obsoleto"
         },
         "state_attributes": {
           "update_date": {
@@ -298,7 +319,7 @@
         "name": "Archivo Alerta",
         "state": {
           "updated": "Actualizado",
-          "obsolete": "Obsoleto"      
+          "obsolete": "Obsoleto"
         },
         "state_attributes": {
           "update_date": {
@@ -310,7 +331,7 @@
         "name": "Archivo Cuota",
         "state": {
           "updated": "Actualizado",
-          "obsolete": "Obsoleto"      
+          "obsolete": "Obsoleto"
         },
         "state_attributes": {
           "update_date": {
@@ -322,7 +343,7 @@
         "name": "Archivo Rayos",
         "state": {
           "updated": "Actualizado",
-          "obsolete": "Obsoleto"      
+          "obsolete": "Obsoleto"
         },
         "state_attributes": {
           "update_date": {
@@ -363,7 +384,7 @@
         "state": {
           "ok": "Ok",
           "exceeded": "Superada",
-          "unknown": "Desconocido"      
+          "unknown": "Desconocido"
         },
         "state_attributes": {
           "period": {
@@ -390,7 +411,7 @@
         "state": {
           "ok": "Ok",
           "exceeded": "Superada",
-          "unknown": "Desconocido"      
+          "unknown": "Desconocido"
         },
         "state_attributes": {
           "period": {
@@ -417,7 +438,7 @@
         "state": {
           "ok": "Ok",
           "exceeded": "Superada",
-          "unknown": "Desconocido"      
+          "unknown": "Desconocido"
         },
         "state_attributes": {
           "period": {
@@ -444,7 +465,7 @@
         "state": {
           "ok": "Ok",
           "exceeded": "Superada",
-          "unknown": "Desconocido"      
+          "unknown": "Desconocido"
         },
         "state_attributes": {
           "period": {
@@ -471,7 +492,7 @@
         "state": {
           "ok": "Ok",
           "exceeded": "Superada",
-          "unknown": "Desconocido"      
+          "unknown": "Desconocido"
         },
         "state_attributes": {
           "period": {
@@ -501,6 +522,8 @@
             "state": {
               "violent_weather": "Tiempo violento",
               "rain_intensity": "Intensidad de lluvia",
+              "rain_intensity_30_min": "Intensidad de lluvia 30 min",
+              "rain_intensity_3_hours": "Intensidad de lluvia 3 horas",
               "rain_amount": "Acumulación de lluvia",
               "snow": "Nieve",
               "wind": "Viento",
@@ -515,6 +538,8 @@
             "state": {
               "violent_weather": "Tiempo violento",
               "rain_intensity": "Intensidad de lluvia",
+              "rain_intensity_30_min": "Intensidad de lluvia 30 min",
+              "rain_intensity_3_hours": "Intensidad de lluvia 3 horas",
               "rain_amount": "Acumulación de lluvia",
               "snow": "Nieve",
               "wind": "Viento",
@@ -529,6 +554,8 @@
             "state": {
               "violent_weather": "Tiempo violento",
               "rain_intensity": "Intensidad de lluvia",
+              "rain_intensity_30_min": "Intensidad de lluvia 30 min",
+              "rain_intensity_3_hours": "Intensidad de lluvia 3 horas",
               "rain_amount": "Acumulación de lluvia",
               "snow": "Nieve",
               "wind": "Viento",
@@ -543,6 +570,8 @@
             "state": {
               "violent_weather": "Tiempo violento",
               "rain_intensity": "Intensidad de lluvia",
+              "rain_intensity_30_min": "Intensidad de lluvia 30 min",
+              "rain_intensity_3_hours": "Intensidad de lluvia 3 horas",
               "rain_amount": "Acumulación de lluvia",
               "snow": "Nieve",
               "wind": "Viento",
@@ -557,6 +586,8 @@
             "state": {
               "violent_weather": "Tiempo violento",
               "rain_intensity": "Intensidad de lluvia",
+              "rain_intensity_30_min": "Intensidad de lluvia 30 min",
+              "rain_intensity_3_hours": "Intensidad de lluvia 3 horas",
               "rain_amount": "Acumulación de lluvia",
               "snow": "Nieve",
               "wind": "Viento",
@@ -572,7 +603,7 @@
         "name": "Alerta Viento",
         "state": {
           "opened": "Abierto",
-          "closed": "Cerrado"      
+          "closed": "Cerrado"
         },
         "state_attributes": {
           "inicio": {
@@ -601,6 +632,11 @@
               "wind_30": "Racha máxima > 30 m/s",
               "wind_25": "Racha máxima > 25 m/s",
               "wind_20": "Racha máxima > 20 m/s",
+              "wind_72": "Racha máxima > 72 km/h",
+              "wind_90": "Racha máxima > 90 km/h",
+              "wind_108": "Racha máxima > 108 km/h",
+              "wind_126": "Racha máxima > 126 km/h",
+              "wind_144": "Racha máxima > 144 km/h",
               "unknown": "Desconocido"
             }
           },
@@ -616,7 +652,7 @@
         "name": "Alerta Intensidad Lluvia",
         "state": {
           "opened": "Abierto",
-          "closed": "Cerrado"      
+          "closed": "Cerrado"
         },
         "state_attributes": {
           "inicio": {
@@ -641,6 +677,92 @@
               "microburst": "Reventón",
               "intensity_40_30": "Intensidad > 40 mm / 30 minutos",
               "intensity_20_30": "Intensidad > 20 mm / 30 minutos",
+              "intensity_60_3": "Intensidad > 60 mm / 3 horas",
+              "intensity_90_3": "Intensidad > 90 mm / 3 horas",
+              "unknown": "Desconocido"
+            }
+          },
+          "peligro": {
+            "name": "Peligro"
+          },
+          "nivel": {
+            "name": "Nivel"
+          }
+        }
+      },
+      "alert_rain_intensity_30_min": {
+        "name": "Alerta Intensidad Lluvia 30 min",
+        "state": {
+          "opened": "Abierto",
+          "closed": "Cerrado"
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Inicio"
+          },
+          "fin": {
+            "name": "Final"
+          },
+          "fecha": {
+            "name": "Fecha"
+          },
+          "periodo": {
+            "name": "Periodo"
+          },
+          "comentario": {
+            "name": "Comentario"
+          },
+          "umbral": {
+            "name": "Umbral",
+            "state": {
+              "hail_2_cm": "Granizo de diámetro > 2 cm",
+              "microburst": "Reventón",
+              "intensity_40_30": "Intensidad > 40 mm / 30 minutos",
+              "intensity_20_30": "Intensidad > 20 mm / 30 minutos",
+              "intensity_60_3": "Intensidad > 60 mm / 3 horas",
+              "intensity_90_3": "Intensidad > 90 mm / 3 horas",
+              "unknown": "Desconocido"
+            }
+          },
+          "peligro": {
+            "name": "Peligro"
+          },
+          "nivel": {
+            "name": "Nivel"
+          }
+        }
+      },
+      "alert_rain_intensity_3_hours": {
+        "name": "Alerta Intensidad Lluvia 3 horas",
+        "state": {
+          "opened": "Abierto",
+          "closed": "Cerrado"
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Inicio"
+          },
+          "fin": {
+            "name": "Final"
+          },
+          "fecha": {
+            "name": "Fecha"
+          },
+          "periodo": {
+            "name": "Periodo"
+          },
+          "comentario": {
+            "name": "Comentario"
+          },
+          "umbral": {
+            "name": "Umbral",
+            "state": {
+              "hail_2_cm": "Granizo de diámetro > 2 cm",
+              "microburst": "Reventón",
+              "intensity_40_30": "Intensidad > 40 mm / 30 minutos",
+              "intensity_20_30": "Intensidad > 20 mm / 30 minutos",
+              "intensity_60_3": "Intensidad > 60 mm / 3 horas",
+              "intensity_90_3": "Intensidad > 90 mm / 3 horas",
               "unknown": "Desconocido"
             }
           },
@@ -656,7 +778,7 @@
         "name": "Alerta Lluvia",
         "state": {
           "opened": "Abierto",
-          "closed": "Cerrado"      
+          "closed": "Cerrado"
         },
         "state_attributes": {
           "inicio": {
@@ -695,7 +817,7 @@
         "name": "Alerta Mar",
         "state": {
           "opened": "Abierto",
-          "closed": "Cerrado"      
+          "closed": "Cerrado"
         },
         "state_attributes": {
           "inicio": {
@@ -735,7 +857,7 @@
         "name": "Alerta Frío",
         "state": {
           "opened": "Abierto",
-          "closed": "Cerrado"      
+          "closed": "Cerrado"
         },
         "state_attributes": {
           "inicio": {
@@ -773,7 +895,7 @@
         "name": "Alerta Calor",
         "state": {
           "opened": "Abierto",
-          "closed": "Cerrado"      
+          "closed": "Cerrado"
         },
         "state_attributes": {
           "inicio": {
@@ -811,7 +933,7 @@
         "name": "Alerta Calor Nocturno",
         "state": {
           "opened": "Abierto",
-          "closed": "Cerrado"      
+          "closed": "Cerrado"
         },
         "state_attributes": {
           "inicio": {
@@ -849,7 +971,7 @@
         "name": "Alerta Nieve",
         "state": {
           "opened": "Abierto",
-          "closed": "Cerrado"      
+          "closed": "Cerrado"
         },
         "state_attributes": {
           "inicio": {
@@ -1005,7 +1127,7 @@
         "name": "Archivo Sol",
         "state": {
           "updated": "Actualizado",
-          "obsolete": "Obsoleto"      
+          "obsolete": "Obsoleto"
         },
         "state_attributes": {
           "update_date": {

@@ -1,0 +1,138 @@
+# =============================================================================
+# PACKAGE: Monitorización de consumo eléctrico
+# =============================================================================
+# Combina:
+#   - Enchufes inteligentes (potencia/energía por dispositivo)
+#   - edata (consumo total facturado por tu distribuidora vía Datadis)
+#   - Octopus Energy (precio del kWh en cada momento)
+#
+# =============================================================================
+
+input_text:
+  # No se usa funcionalmente, sirve solo como recordatorio visual en el dashboard
+  edata_nota:
+    name: "Sensor edata (consumo facturado)"
+    initial: "sensor.edata_fj0f"
+
+template:
+  - sensor:
+      # ---------------------------------------------------------------------
+      # Potencia instantánea total de TODOS los enchufes (vatios)
+      # Edita la lista de entidades dentro del [ ... ]
+      # ---------------------------------------------------------------------
+      - name: "Potencia total enchufes"
+        unique_id: potencia_total_enchufes
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set enchufes = [
+            'sensor.meross_switch_01_power', 
+            'sensor.meross_switch_02_power', 
+            'sensor.meross_switch_03_power', 
+            'sensor.regleta_antela_power', 
+            'sensor.regleta_antela_power_2', 
+            'sensor.enchufe_doble_power', 
+            'sensor.enchufe_habitacion_power', 
+            'sensor.zigbee_nous_enchufe_01_power', 
+            'sensor.zigbee_nous_enchufe_02_power', 
+            'sensor.zigbee_nous_enchufe_03_power', 
+            'sensor.zigbee_nous_enchufe_04_power', 
+          ] %}
+          {{ enchufes
+             | select('has_value')
+             | map('states')
+             | map('float', 0)
+             | sum
+             | round(1) }}
+
+      # ---------------------------------------------------------------------
+      # Coste estimado en tiempo real de lo que consumen tus enchufes,
+      # usando el precio actual de Octopus Energy (€/kWh)
+      # Cambia el sensor de tarifa por el tuyo (mira Octopus > Entidades,
+      # termina en "_current_rate")
+      # ---------------------------------------------------------------------
+      - name: "Coste instantáneo enchufes"
+        unique_id: coste_instantaneo_enchufes
+        unit_of_measurement: "€/h"
+        state_class: measurement
+        state: >
+          {% set potencia_kw = states('sensor.potencia_total_enchufes') | float(0) / 1000 %}
+          {% set precio = states('sensor.precio_actual') | float(0) %}
+          {{ (potencia_kw * precio) | round(4) }}
+
+# -----------------------------------------------------------------------------
+# Energía acumulada por dispositivo → contadores diarios/semanales/mensuales
+# Si tus enchufes YA exponen un sensor de energía (kWh) tipo
+# sensor.enchufe_x_energy, añádelo abajo tal cual. Si solo tienen potencia (W),
+# primero hay que integrar con un sensor "integration" (ver PASO 2 opcional).
+# -----------------------------------------------------------------------------
+utility_meter:
+  consumo_diario_enchufes:
+    source: sensor.energia_total_enchufes
+    name: "Consumo enchufes (hoy)"
+    cycle: daily
+  consumo_semanal_enchufes:
+    source: sensor.energia_total_enchufes
+    name: "Consumo enchufes (semana)"
+    cycle: weekly
+  consumo_mensual_enchufes:
+    source: sensor.energia_total_enchufes
+    name: "Consumo enchufes (mes)"
+    cycle: monthly
+
+# -----------------------------------------------------------------------------
+# PASO 2 (opcional) · Si tus enchufes solo dan potencia (W) y no energía (kWh),
+# esto la calcula integrando la potencia en el tiempo.
+# -----------------------------------------------------------------------------
+sensor:
+  - platform: integration
+    source: sensor.potencia_total_enchufes
+    name: "Energía total enchufes"
+    unique_id: energia_total_enchufes
+    unit_prefix: k
+    round: 3
+    method: left
+
+  # Estadísticas útiles para el dashboard (máximo del día, media, etc.)
+  - platform: statistics
+    name: "Potencia máxima enchufes (24h)"
+    entity_id: sensor.potencia_total_enchufes
+    state_characteristic: value_max
+    max_age:
+      hours: 24
+
+# -----------------------------------------------------------------------------
+# Aviso si el consumo se dispara (ajusta el umbral en vatios)
+# -----------------------------------------------------------------------------
+automation:
+  - alias: "Aviso: consumo elevado en enchufes"
+    id: aviso_consumo_elevado_enchufes
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.potencia_total_enchufes
+        above: 4000
+        for:
+          minutes: 5
+    action:
+      - service: notify.notify
+        data:
+          title: "⚡ Consumo eléctrico alto"
+          message: >
+            Los enchufes monitorizados llevan más de 5 minutos consumiendo
+            {{ states('sensor.potencia_total_enchufes') }} W.
+
+  - alias: "Aviso: tarifa Octopus barata activa"
+    id: aviso_tarifa_barata_octopus
+    trigger:
+      - platform: state
+        entity_id: sensor.precio_actual
+    condition:
+      - condition: numeric_state
+        entity_id: sensor.precio_actual
+        below: 0.11
+    action:
+      - service: notify.notify
+        data:
+          title: "💶 Tarifa eléctrica barata"
+          message: "Ahora mismo el kWh está a {{ states('sensor.precio_actual') }} €. Buen momento para lavadora/lavavajillas."

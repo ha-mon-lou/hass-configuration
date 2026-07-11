@@ -21,7 +21,14 @@
       },
       "set_api_limits": {
         "description": "Set the API limits.",
-        "title": "API limits"
+        "title": "API limits",
+        "data": {
+          "limit_xema": "XEMA Limit (Automatic Meteorological Stations Network)",
+          "limit_prediccio": "Prediction Limit",
+          "limit_xdde": "XDDE Limit (Lightning Detection Network) (0 to disable)",
+          "limit_quota": "Quota Limit",
+          "limit_basic": "Basic Limit"
+        }
       }
     },
     "error": {
@@ -36,7 +43,7 @@
   "options": {
     "step": {
       "init": {
-        "description": "Setup the API Key, the API limits, regenerate 'assets' files, or update coordinates.",
+        "description": "Setup the API Key, the API limits, regenerate 'assets' files, update coordinates or force update data.",
         "title": "Setup options",
         "data": {
           "option": "Options"
@@ -44,11 +51,25 @@
       },
       "update_api_and_limits": {
         "description": "Setup the API Key and the API limits.",
-        "title": "API Key and limits"
+        "title": "API Key and limits",
+        "data": {
+          "limit_xema": "XEMA Limit (Automatic Meteorological Stations Network)",
+          "limit_prediccio": "Prediction Limit",
+          "limit_xdde": "XDDE Limit (Lightning Detection Network) (0 to disable)",
+          "limit_quota": "Quota Limit",
+          "limit_basic": "Basic Limit"
+        }
       },
       "update_limits_only": {
         "description": "Setup the API limits.",
-        "title": "API limits"
+        "title": "API limits",
+        "data": {
+          "limit_xema": "XEMA Limit (Automatic Meteorological Stations Network)",
+          "limit_prediccio": "Prediction Limit",
+          "limit_xdde": "XDDE Limit (Lightning Detection Network) (0 to disable)",
+          "limit_quota": "Quota Limit",
+          "limit_basic": "Basic Limit"
+        }
       },
       "update_coordinates": {
         "description": "Enter new coordinates. Current coordinates: latitude {current_latitude}, longitude {current_longitude}. Current altitude: {current_altitude} meters.",
@@ -117,7 +138,7 @@
     }
   },
   "entity": {
-    "sensor": {      
+    "sensor": {
       "wind_speed": {
         "name": "Wind Speed"
       },
@@ -238,7 +259,7 @@
         "name": "Hourly File",
         "state": {
           "updated": "Updated",
-          "obsolete": "Obsolete"      
+          "obsolete": "Obsolete"
         },
         "state_attributes": {
           "update_date": {
@@ -253,7 +274,7 @@
         "name": "Daily File",
         "state": {
           "updated": "Updated",
-          "obsolete": "Obsolete"      
+          "obsolete": "Obsolete"
         },
         "state_attributes": {
           "update_date": {
@@ -268,7 +289,7 @@
         "name": "Uvi File",
         "state": {
           "updated": "Updated",
-          "obsolete": "Obsolete"      
+          "obsolete": "Obsolete"
         },
         "state_attributes": {
           "update_date": {
@@ -283,7 +304,7 @@
         "name": "Station Data File",
         "state": {
           "updated": "Updated",
-          "obsolete": "Obsolete"      
+          "obsolete": "Obsolete"
         },
         "state_attributes": {
           "update_date": {
@@ -298,7 +319,7 @@
         "name": "Alert File",
         "state": {
           "updated": "Updated",
-          "obsolete": "Obsolete"      
+          "obsolete": "Obsolete"
         },
         "state_attributes": {
           "update_date": {
@@ -310,7 +331,7 @@
         "name": "Quota File",
         "state": {
           "updated": "Updated",
-          "obsolete": "Obsolete"      
+          "obsolete": "Obsolete"
         },
         "state_attributes": {
           "update_date": {
@@ -322,7 +343,7 @@
         "name": "Lightning File",
         "state": {
           "updated": "Updated",
-          "obsolete": "Obsolete"      
+          "obsolete": "Obsolete"
         },
         "state_attributes": {
           "update_date": {
@@ -363,7 +384,7 @@
         "state": {
           "ok": "Ok",
           "exceeded": "Exceeded",
-          "unknown": "Unknown"      
+          "unknown": "Unknown"
         },
         "state_attributes": {
           "period": {
@@ -390,7 +411,7 @@
         "state": {
           "ok": "Ok",
           "exceeded": "Exceeded",
-          "unknown": "Unknown"      
+          "unknown": "Unknown"
         },
         "state_attributes": {
           "period": {
@@ -417,7 +438,7 @@
         "state": {
           "ok": "Ok",
           "exceeded": "Exceeded",
-          "unknown": "Unknown"      
+          "unknown": "Unknown"
         },
         "state_attributes": {
           "period": {
@@ -444,7 +465,7 @@
         "state": {
           "ok": "Ok",
           "exceeded": "Exceeded",
-          "unknown": "Unknown"      
+          "unknown": "Unknown"
         },
         "state_attributes": {
           "period": {
@@ -471,7 +492,7 @@
         "state": {
           "ok": "Ok",
           "exceeded": "Exceeded",
-          "unknown": "Unknown"      
+          "unknown": "Unknown"
         },
         "state_attributes": {
           "period": {
@@ -501,6 +522,8 @@
             "state": {
               "violent_weather": "Violent weather",
               "rain_intensity": "Rain intensity",
+              "rain_intensity_30_min": "Rain intensity 30 min",
+              "rain_intensity_3_hours": "Rain intensity 3 hours",
               "rain_amount": "Rain amount",
               "snow": "Snow",
               "wind": "Wind",
@@ -515,6 +538,8 @@
             "state": {
               "violent_weather": "Violent weather",
               "rain_intensity": "Rain intensity",
+              "rain_intensity_30_min": "Rain intensity 30 min",
+              "rain_intensity_3_hours": "Rain intensity 3 hours",
               "rain_amount": "Rain amount",
               "snow": "Snow",
               "wind": "Wind",
@@ -529,6 +554,8 @@
             "state": {
               "violent_weather": "Violent weather",
               "rain_intensity": "Rain intensity",
+              "rain_intensity_30_min": "Rain intensity 30 min",
+              "rain_intensity_3_hours": "Rain intensity 3 hours",
               "rain_amount": "Rain amount",
               "snow": "Snow",
               "wind": "Wind",
@@ -543,6 +570,8 @@
             "state": {
               "violent_weather": "Violent weather",
               "rain_intensity": "Rain intensity",
+              "rain_intensity_30_min": "Rain intensity 30 min",
+              "rain_intensity_3_hours": "Rain intensity 3 hours",
               "rain_amount": "Rain amount",
               "snow": "Snow",
               "wind": "Wind",
@@ -557,6 +586,8 @@
             "state": {
               "violent_weather": "Violent weather",
               "rain_intensity": "Rain intensity",
+              "rain_intensity_30_min": "Rain intensity 30 min",
+              "rain_intensity_3_hours": "Rain intensity 3 hours",
               "rain_amount": "Rain amount",
               "snow": "Snow",
               "wind": "Wind",
@@ -572,7 +603,7 @@
         "name": "Alert Wind",
         "state": {
           "opened": "Opened",
-          "closed": "Closed"      
+          "closed": "Closed"
         },
         "state_attributes": {
           "inicio": {
@@ -601,6 +632,11 @@
               "wind_30": "Max. wind speed > 30 m/s",
               "wind_25": "Max. wind speed > 25 m/s",
               "wind_20": "Max. wind speed > 20 m/s",
+              "wind_72": "Max. wind speed > 72 km/h",
+              "wind_90": "Max. wind speed > 90 km/h",
+              "wind_108": "Max. wind speed > 108 km/h",
+              "wind_126": "Max. wind speed > 126 km/h",
+              "wind_144": "Max. wind speed > 144 km/h",
               "unknown": "Unknown"
             }
           },
@@ -616,7 +652,7 @@
         "name": "Alert Rain Intensity",
         "state": {
           "opened": "Opened",
-          "closed": "Closed"      
+          "closed": "Closed"
         },
         "state_attributes": {
           "inicio": {
@@ -641,6 +677,92 @@
               "microburst": "Microburst",
               "intensity_40_30": "Intensity > 40 mm / 30 minutes",
               "intensity_20_30": "Intensity > 20 mm / 30 minutes",
+              "intensity_60_3": "Intensity > 60 mm / 3 hours",
+              "intensity_90_3": "Intensity > 90 mm / 3 hours",
+              "unknown": "Unknown"
+            }
+          },
+          "peligro": {
+            "name": "Danger"
+          },
+          "nivel": {
+            "name": "Level"
+          }
+        }
+      },
+      "alert_rain_intensity_30_min": {
+        "name": "Alert Rain Intensity 30 min",
+        "state": {
+          "opened": "Opened",
+          "closed": "Closed"
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Starts"
+          },
+          "fin": {
+            "name": "Ends"
+          },
+          "fecha": {
+            "name": "Date"
+          },
+          "periodo": {
+            "name": "Period"
+          },
+          "comentario": {
+            "name": "Comment"
+          },
+          "umbral": {
+            "name": "Threshold",
+            "state": {
+              "hail_2_cm": "Hail with diameter > 2 cm",
+              "microburst": "Microburst",
+              "intensity_40_30": "Intensity > 40 mm / 30 minutes",
+              "intensity_20_30": "Intensity > 20 mm / 30 minutes",
+              "intensity_60_3": "Intensity > 60 mm / 3 hours",
+              "intensity_90_3": "Intensity > 90 mm / 3 hours",
+              "unknown": "Unknown"
+            }
+          },
+          "peligro": {
+            "name": "Danger"
+          },
+          "nivel": {
+            "name": "Level"
+          }
+        }
+      },
+      "alert_rain_intensity_3_hours": {
+        "name": "Alert Rain Intensity 3 hours",
+        "state": {
+          "opened": "Opened",
+          "closed": "Closed"
+        },
+        "state_attributes": {
+          "inicio": {
+            "name": "Starts"
+          },
+          "fin": {
+            "name": "Ends"
+          },
+          "fecha": {
+            "name": "Date"
+          },
+          "periodo": {
+            "name": "Period"
+          },
+          "comentario": {
+            "name": "Comment"
+          },
+          "umbral": {
+            "name": "Threshold",
+            "state": {
+              "hail_2_cm": "Hail with diameter > 2 cm",
+              "microburst": "Microburst",
+              "intensity_40_30": "Intensity > 40 mm / 30 minutes",
+              "intensity_20_30": "Intensity > 20 mm / 30 minutes",
+              "intensity_60_3": "Intensity > 60 mm / 3 hours",
+              "intensity_90_3": "Intensity > 90 mm / 3 hours",
               "unknown": "Unknown"
             }
           },
@@ -656,7 +778,7 @@
         "name": "Alert Rain",
         "state": {
           "opened": "Opened",
-          "closed": "Closed"      
+          "closed": "Closed"
         },
         "state_attributes": {
           "inicio": {
@@ -695,7 +817,7 @@
         "name": "Alert Sea",
         "state": {
           "opened": "Opened",
-          "closed": "Closed"      
+          "closed": "Closed"
         },
         "state_attributes": {
           "inicio": {
@@ -735,7 +857,7 @@
         "name": "Alert Cold",
         "state": {
           "opened": "Opened",
-          "closed": "Closed"      
+          "closed": "Closed"
         },
         "state_attributes": {
           "inicio": {
@@ -773,7 +895,7 @@
         "name": "Alert Warm",
         "state": {
           "opened": "Opened",
-          "closed": "Closed"      
+          "closed": "Closed"
         },
         "state_attributes": {
           "inicio": {
@@ -811,7 +933,7 @@
         "name": "Alert Warm Night",
         "state": {
           "opened": "Opened",
-          "closed": "Closed"      
+          "closed": "Closed"
         },
         "state_attributes": {
           "inicio": {
@@ -849,7 +971,7 @@
         "name": "Alert Snow",
         "state": {
           "opened": "Opened",
-          "closed": "Closed"      
+          "closed": "Closed"
         },
         "state_attributes": {
           "inicio": {
@@ -1005,7 +1127,7 @@
         "name": "Sun File",
         "state": {
           "updated": "Updated",
-          "obsolete": "Obsolete"      
+          "obsolete": "Obsolete"
         },
         "state_attributes": {
           "update_date": {

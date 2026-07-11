@@ -1,6 +1,6 @@
 {
     "actualitzat": {
-        "dataUpdate": "2026-02-18T05:21:40.240046+01:00"
+        "dataUpdate": "2026-07-11T11:00:55.131533+02:00"
     },
     "ine": "082384",
     "nom": "Sant Quirze del Vallès",
@@ -8,7 +8,7 @@
     "capital": false,
     "uvi": [
         {
-            "date": "2026-02-17",
+            "date": "2026-07-11",
             "hours": [
                 {
                     "hour": 0,
@@ -47,58 +47,58 @@
                 },
                 {
                     "hour": 7,
-                    "uvi": 0,
-                    "uvi_clouds": 0
+                    "uvi": 1,
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 8,
-                    "uvi": 0,
-                    "uvi_clouds": 0
+                    "uvi": 2,
+                    "uvi_clouds": 2
                 },
                 {
                     "hour": 9,
-                    "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi": 4,
+                    "uvi_clouds": 4
                 },
                 {
                     "hour": 10,
-                    "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi": 6,
+                    "uvi_clouds": 6
                 },
                 {
                     "hour": 11,
-                    "uvi": 2,
-                    "uvi_clouds": 2
+                    "uvi": 7,
+                    "uvi_clouds": 7
                 },
                 {
                     "hour": 12,
-                    "uvi": 2,
-                    "uvi_clouds": 2
+                    "uvi": 8,
+                    "uvi_clouds": 8
                 },
                 {
                     "hour": 13,
-                    "uvi": 2,
-                    "uvi_clouds": 2
+                    "uvi": 7,
+                    "uvi_clouds": 7
                 },
                 {
                     "hour": 14,
+                    "uvi": 6,
+                    "uvi_clouds": 6
+                },
+                {
+                    "hour": 15,
+                    "uvi": 4,
+                    "uvi_clouds": 4
+                },
+                {
+                    "hour": 16,
                     "uvi": 2,
                     "uvi_clouds": 2
                 },
                 {
-                    "hour": 15,
+                    "hour": 17,
                     "uvi": 1,
                     "uvi_clouds": 1
-                },
-                {
-                    "hour": 16,
-                    "uvi": 0,
-                    "uvi_clouds": 0
-                },
-                {
-                    "hour": 17,
-                    "uvi": 0,
-                    "uvi_clouds": 0
                 },
                 {
                     "hour": 18,
@@ -133,7 +133,7 @@
             ]
         },
         {
-            "date": "2026-02-18",
+            "date": "2026-07-12",
             "hours": [
                 {
                     "hour": 0,
@@ -172,58 +172,58 @@
                 },
                 {
                     "hour": 7,
-                    "uvi": 0,
-                    "uvi_clouds": 0
+                    "uvi": 1,
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 8,
-                    "uvi": 0,
-                    "uvi_clouds": 0
+                    "uvi": 2,
+                    "uvi_clouds": 2
                 },
                 {
                     "hour": 9,
-                    "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi": 4,
+                    "uvi_clouds": 4
                 },
                 {
                     "hour": 10,
-                    "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi": 6,
+                    "uvi_clouds": 6
                 },
                 {
                     "hour": 11,
-                    "uvi": 2,
-                    "uvi_clouds": 2
+                    "uvi": 7,
+                    "uvi_clouds": 7
                 },
                 {
                     "hour": 12,
-                    "uvi": 2,
-                    "uvi_clouds": 2
+                    "uvi": 8,
+                    "uvi_clouds": 8
                 },
                 {
                     "hour": 13,
+                    "uvi": 7,
+                    "uvi_clouds": 7
+                },
+                {
+                    "hour": 14,
+                    "uvi": 6,
+                    "uvi_clouds": 6
+                },
+                {
+                    "hour": 15,
+                    "uvi": 4,
+                    "uvi_clouds": 4
+                },
+                {
+                    "hour": 16,
                     "uvi": 2,
                     "uvi_clouds": 2
                 },
                 {
-                    "hour": 14,
-                    "uvi": 2,
-                    "uvi_clouds": 1
-                },
-                {
-                    "hour": 15,
+                    "hour": 17,
                     "uvi": 1,
                     "uvi_clouds": 1
-                },
-                {
-                    "hour": 16,
-                    "uvi": 0,
-                    "uvi_clouds": 0
-                },
-                {
-                    "hour": 17,
-                    "uvi": 0,
-                    "uvi_clouds": 0
                 },
                 {
                     "hour": 18,
@@ -258,7 +258,7 @@
             ]
         },
         {
-            "date": "2026-02-19",
+            "date": "2026-07-13",
             "hours": [
                 {
                     "hour": 0,
@@ -297,58 +297,58 @@
                 },
                 {
                     "hour": 7,
-                    "uvi": 0,
-                    "uvi_clouds": 0
+                    "uvi": 1,
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 8,
-                    "uvi": 0,
-                    "uvi_clouds": 0
+                    "uvi": 2,
+                    "uvi_clouds": 2
                 },
                 {
                     "hour": 9,
-                    "uvi": 1,
-                    "uvi_clouds": 0
+                    "uvi": 4,
+                    "uvi_clouds": 4
                 },
                 {
                     "hour": 10,
-                    "uvi": 1,
-                    "uvi_clouds": 1
+                    "uvi": 6,
+                    "uvi_clouds": 6
                 },
                 {
                     "hour": 11,
-                    "uvi": 2,
-                    "uvi_clouds": 1
+                    "uvi": 7,
+                    "uvi_clouds": 7
                 },
                 {
                     "hour": 12,
-                    "uvi": 2,
-                    "uvi_clouds": 2
+                    "uvi": 8,
+                    "uvi_clouds": 8
                 },
                 {
                     "hour": 13,
+                    "uvi": 7,
+                    "uvi_clouds": 7
+                },
+                {
+                    "hour": 14,
+                    "uvi": 6,
+                    "uvi_clouds": 6
+                },
+                {
+                    "hour": 15,
+                    "uvi": 4,
+                    "uvi_clouds": 4
+                },
+                {
+                    "hour": 16,
                     "uvi": 2,
                     "uvi_clouds": 2
                 },
                 {
-                    "hour": 14,
-                    "uvi": 1,
-                    "uvi_clouds": 1
-                },
-                {
-                    "hour": 15,
-                    "uvi": 1,
-                    "uvi_clouds": 1
-                },
-                {
-                    "hour": 16,
-                    "uvi": 0,
-                    "uvi_clouds": 0
-                },
-                {
                     "hour": 17,
-                    "uvi": 0,
-                    "uvi_clouds": 0
+                    "uvi": 1,
+                    "uvi_clouds": 1
                 },
                 {
                     "hour": 18,

@@ -16,9 +16,9 @@ moes_zt_b_eu2_01_event:
           sequence:
             - service: switch.toggle
               target:
-                entity_id: switch.enchufe_doble_socket_2
+                entity_id: switch.enchufe_doble_socket_1
 
         - conditions: "{{ evento == '2_double' }}"
           sequence:
-            - delay: 00:00:05
+            - delay: 00:00:01
             - service: script.escena_living_dormir

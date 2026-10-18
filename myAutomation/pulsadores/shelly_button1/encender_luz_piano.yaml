@@ -8,13 +8,6 @@
       value_template: >
         {{ trigger.to_state.attributes.event_type == 'double_press' }}
   action:
-    - service: hassio.addon_restart
-      data:
-        addon: 45df7312_zigbee2mqtt
-    - service: system_log.write
-      data:
-        message: "Zigbee2MQTT reiniciado automáticamente por sensores caídos."
-        level: warning
     - action: switch.toggle
       metadata: {}
       data: {}

@@ -66,20 +66,10 @@ selector_ventilador:
                     value: >
                       {{ states('input_text.resumen_shutdown') ~ valor ~ " " ~ dispositivo }}
 
-                # Evitar enviar 'apagar' si ya está apagado
-                - if: >
-                    {{ not (valor | lower == 'apagar' and is_state('input_boolean.' ~ dispositivo, 'off')) }}
-                  then:
-                    - service: script.envia_comando_broadlink
-                      data:
-                        dispositivo: "{{ dispositivo }}"
-                        comando: "{{ valor }}"
-                  else:
-                    - service: input_text.set_value
-                      data:
-                        entity_id: input_text.resumen_shutdown
-                        value: >
-                          {{ states('input_text.resumen_shutdown') ~ "[no envio: ya apagado] " }}
+                - service: script.envia_comando_broadlink
+                  data:
+                    dispositivo: "{{ dispositivo }}"
+                    comando: "{{ valor }}"
 
                 # Lógica ON/OFF y temporizador
                 - choose:

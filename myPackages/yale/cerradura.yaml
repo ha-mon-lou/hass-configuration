@@ -3,11 +3,14 @@ timer:
     duration: "00:00:20"
 
 automation:
-  # Inicia el temporizador cuando la puerta se cierra
-  - alias: Iniciar o reiniciar temporizador de bloqueo al cerrar puerta
+  # Inicia el temporizador al desbloquear o al cerrar la puerta
+  - alias: Iniciar o reiniciar temporizador de bloqueo al desbloquear o cerrar puerta
     id: iniciar_temporizador_bloqueo_puerta
     mode: restart
     trigger:
+      - platform: state
+        entity_id: lock.puerta_principal_2
+        to: "unlocked"
       - platform: state
         entity_id: binary_sensor.puerta_principal_door_2
         to: "off"
@@ -18,9 +21,28 @@ automation:
       - service: system_log.write
         data:
           level: info
-          message: "Temporizador iniciado al cerrarse la puerta principal"
+          message: "Temporizador iniciado al desbloquear o cerrar la puerta principal"
 
-  # Bloquea la puerta tras el temporizador, solo si está cerrada y desbloqueada
+  - alias: Encender luz de entrada al desbloquear puerta principal
+    id: encender_luz_entrada_al_desbloquear_puerta
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: lock.puerta_principal_2
+        to: "unlocked"
+    action:
+      - service: light.turn_on
+        target:
+          entity_id: light.columna_led_entrada
+        data:
+          brightness_pct: 100
+          transition: 0
+      - service: system_log.write
+        data:
+          level: info
+          message: "Luz de entrada encendida al desbloquear la puerta principal"
+
+  # Bloquea la puerta tras el temporizador solo si ya está cerrada y desbloqueada
   - alias: Bloquear puerta al terminar temporizador
     id: bloquear_puerta_tras_temporizador
     mode: single
@@ -44,6 +66,27 @@ automation:
         data:
           level: info
           message: "Puerta principal bloqueada automáticamente tras cierre y temporizador"
+
+  - alias: No bloquear puerta si sigue abierta tras el temporizador
+    id: no_bloquear_puerta_si_sigue_abierta
+    mode: single
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.bloqueo_puerta_principal
+    condition:
+      - condition: state
+        entity_id: lock.puerta_principal_2
+        state: "unlocked"
+      - condition: state
+        entity_id: binary_sensor.puerta_principal_door_2
+        state: "on" # puerta aún abierta
+    action:
+      - service: system_log.write
+        data:
+          level: warning
+          message: "No se bloquea la puerta principal porque sigue abierta tras el temporizador"
 
 script:
   abrir_puerta_principal:

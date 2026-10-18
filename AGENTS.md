@@ -24,4 +24,4 @@ Si una configuración no aparece en los directorios activos del sistema principa
 
 ## Convención de "guarda"
 
-Cuando el usuario diga "guarda", se debe documentar el cambio en OpenSpecs y actualizar este `AGENTS.md`, crear un commit y hacer push. Incluir solo los archivos relacionados con el cambio; no incorporar otros cambios pendientes del usuario.
+Cuando el usuario diga "guarda", se debe documentar el cambio en `documentacion/openspecs/` y actualizar este `AGENTS.md`, crear un commit y hacer push. Incluir solo los archivos relacionados con el cambio; no incorporar otros cambios pendientes del usuario.

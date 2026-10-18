@@ -25,7 +25,7 @@
       to: idle
   condition: []
   actions:
-    - action: script.notifica_movil
+    - action: script.notificacion_movil
       data:
         title: "luces automation off"
         message: "Han pasado {{ states('input_number.temporizador_luces_mm') }} min"

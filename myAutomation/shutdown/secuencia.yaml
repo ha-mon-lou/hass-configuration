@@ -19,7 +19,7 @@
       data:
         entity_id: input_text.resumen_shutdown
         value: "🛑 Cerrando puerta..."
-    - service: script.notifica_movil
+    - action: script.notificacion_movil
       data:
         title: "Shut down"
         message: "{{ states('input_text.resumen_shutdown') }}"
@@ -93,7 +93,7 @@
         value: >
           {{ states('input_text.resumen_shutdown') ~ "\n✅ Fin desconexión total." }}
 
-    - service: script.notifica_movil
+    - action: script.notificacion_movil
       data:
         title: "Shutdown"
         message: "{{ states('input_text.resumen_shutdown') }}"

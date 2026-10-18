@@ -1,4 +1,4 @@
-notifica_movil:
+notificacion_movil:
   alias: notifica movil
   fields:
     title:
